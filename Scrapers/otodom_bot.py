@@ -1,43 +1,28 @@
 import os 
-import psycopg2
-from psycopg2 import OperationalError
+import time 
+from playwright.sync_api import sync_playwright
 
-def create_db_connection():
-    """
-    Creates a secure connection to the PostgreSQL database.
-    Returns the connection object if successful, otherwise None.
-    """
-    try:
-       
-        connection = psycopg2.connect(
-            host="localhost",
-            port="5432",
-            database="WarsawPropTech",
-            user="postgres",
-            password=os.getenv("DB_PASSWORD")  
-        )
-
-        print("🟢 SUCCESS: Connected to the WarsawPropTech database!")
-        return connection
-
-    except OperationalError as e:
-        print(f"🔴 FATAL ERROR: Database connection failed.\nDetails: {e}")
-        return None
-
-
-def close_connection(connection):
-    """
-    Safely closes the database connection 
-    """
-    if connection:
-        connection.close()
-        print("⚪ INFO: Connection closed safely.")
-
-# ----- TEST ------
-
+def test_scraper():
+    print("INFO: Bot is waking up and launching the browser... ")
+    
+    with sync_playwright() as p:
+        
+        browser = p.chromium.launch(headless=False)
+        page = browser.new_page()
+        
+        print("INFO: Navigating to Otodom Warsaw real estate listing... ")
+        
+        page.goto("https://www.otodom.pl/pl/wyniki/sprzedaz/mieszkanie/mazowieckie/warszawa/warszawa/warszawa")
+        
+        time.sleep(5)
+        
+        page_title = page.title()
+        print(f"SUCCESS: Extracted page title -> {page_title}")
+        
+        browser.close()
+        print("INFO: Operation complete ,browser closed safely.")
+        
 if __name__ == "__main__":
-    print("⏳ INFO: Initializing system...")
-    db_cnn = create_db_connection()
-
-    if db_cnn:
-        close_connection(db_cnn)
+    print("INFO: System initializing...")
+    test_scraper()
+    
