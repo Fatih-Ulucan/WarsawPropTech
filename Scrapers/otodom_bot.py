@@ -33,15 +33,23 @@ def test_scraper():
             
             first_listing = page.locator('[data-sentry-component="AdvertCard"]').first
             
-            listing_data = first_listing.inner_text()
+            title = first_listing.locator('[data-cy="listing-item-link"]').first.inner_text()
+            
+            location = first_listing.locator('[data-sentry-component="Address"]').first.inner_text()
+            
+            price = first_listing.locator('[data-sentry-element="MainPrice"]').first.inner_text()
             
             print("\n" + "="*50)
-            print("BOOM FIRST LISTING CAPTURED:")
-            print(listing_data)
+            print("BOOM: SNIPER MODE ACTIVE:")
+            print(f"Title: {title}")
+            print(f"Location: {location}")
+            print(f"Price: {price}")
             print("="*50 + "\n")
             
         except Exception as e:
-            print(f"ERROR: Failed to extract listing data. Details: {e}")
+            print(f"ERROR: Failed to extract listing data. Details: {e}")    
+            
+        
         
         time.sleep(3)
         
