@@ -31,26 +31,43 @@ def test_scraper():
         try:
             page.wait_for_selector('[data-sentry-component="AdvertCard"]', timeout=10000)
             
-            first_listing = page.locator('[data-sentry-component="AdvertCard"]').first
+            print("INFO: Scrolling down to trick 'Lazy Loading'...")
+            page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
+            time.sleep(2)
             
-            title = first_listing.locator('[data-cy="listing-item-link"]').first.inner_text()
+            all_listing = page.locator('[data-sentry-component="AdvertCard"]').all()
             
-            location = first_listing.locator('[data-sentry-component="Address"]').first.inner_text()
+            print(f"INFO: Hurricane Mode active! Found {len(all_listing)} listing on the page. Extracting...\n")
             
-            price = first_listing.locator('[data-sentry-element="MainPrice"]').first.inner_text()
+            print("="*70)
             
-            print("\n" + "="*50)
-            print("BOOM: SNIPER MODE ACTIVE:")
-            print(f"Title: {title}")
-            print(f"Location: {location}")
-            print(f"Price: {price}")
-            print("="*50 + "\n")
+            for index, listing in enumerate(all_listing):
+            
+                try:
+                    title = listing.locator('[data-cy="listing-item-link"]').first.inner_text()
+                    location = listing.locator('[data-sentry-component="Address"]').first.inner_text()
+                    raw_price = listing.locator('[data-sentry-element="MainPrice"]').first.inner_text()
+                    
+                    try:
+                        clean_price = int(raw_price.replace("zł","").replace(" ","").replace("\xa0",""))
+                    except ValueError:
+                        
+                        clean_price = 0
+                    
+                    raw_url = listing.locator('[data-cy="listing-item-link"]').first.get_attribute('href')
+                    full_url = f"https://www.otodom.pl{raw_url}"
+                    
+                    print(f"[{index + 1}] {clean_price} PLN | {title} | {location}\n Link: {full_url}\n")
+                    
+                except Exception:
+                    print(f"[{index + 1}] WARNING: Missing data skipped (likely a hidden sponsored ad).")
+                    continue
+            
+            print("="*70 + "\n")
             
         except Exception as e:
-            print(f"ERROR: Failed to extract listing data. Details: {e}")    
+            print(f"ERROR: Failed to extract listing data. Details: {e}")
             
-        
-        
         time.sleep(3)
         
         browser.close()
