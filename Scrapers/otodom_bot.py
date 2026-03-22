@@ -63,12 +63,12 @@ def test_scraper():
         except Exception:
             print("INFO: No Cookie banner found, moving on.")
 
-        for page_num in range(1, 6):
+        for page_num in range(1, 16):
             print(f"\n============================================================")
             print(f"🚀 SCRAPING INITIATED: PAGE {page_num}")
             print(f"============================================================")
 
-            target_url = f"https://www.otodom.pl/pl/wyniki/sprzedaz/mieszkanie/mazowieckie/warszawa/warszawa/warszawa?page={page_num}"
+            target_url = f"https://www.otodom.pl/pl/wyniki/sprzedaz/mieszkanie/mazowieckie/warszawa/warszawa/warszawa?direction=ASC&sorting=PRICE&page={page_num}"
             page.goto(target_url)
 
             print("INFO: Scanning for real estate listings...")
@@ -119,8 +119,8 @@ def test_scraper():
                             "url_link": full_url,
                             "source_platform": "Otodom",
                             "is_active": True,
-                            "trans_id": 1,  # 1 = Sale
-                            "type_id": 1    # 1 = Apartment
+                            "trans_id": 1, 
+                            "type_id": 1    
                         }
 
                         if matched_loc_id is not None:
