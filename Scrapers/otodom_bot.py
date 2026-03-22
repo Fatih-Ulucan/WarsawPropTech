@@ -1,12 +1,32 @@
 import os
 import time
+import requests
 from playwright.sync_api import sync_playwright
+
+SUPABASE_URL = "https://mvappdsdacsamgvkrcmb.supabase.co"
+SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im12YXBwZHNkYWNzYW1ndmtyY21iIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQxMjcyOTQsImV4cCI6MjA4OTcwMzI5NH0.jJ4G_l21Njm-aNPoqJ9LijnsotQCsoEpiJHS4uzIzK8"
+
+def save_to_supabase(data):
+    """Sends extracted data to the 'listings' table."""
+    clean_url = SUPABASE_URL.strip("/")
+    table_url = f"{clean_url}/rest/v1/listings"
+    headers = {
+        "apikey": SUPABASE_KEY,
+        "Authorization": f"Bearer {SUPABASE_KEY}",
+        "Content-Type": "application/json",
+        "Prefer": "return=minimal"
+    } 
+
+    try:
+        response = requests.post(table_url, json=data, headers=headers, timeout=10)
+        return response.status_code
+    except Exception:
+        return None
 
 def test_scraper():
     print("INFO: Bot is waking up and launching the browser...")
 
     with sync_playwright() as p:
-
         browser = p.chromium.launch(headless=False)
         page = browser.new_page()
 
@@ -58,10 +78,26 @@ def test_scraper():
                         full_url = raw_url
                     else:
                         full_url = f"https://www.otodom.pl{raw_url}"
-                    
-                    display_price = f"{clean_price:,}".replace(","," ")    
+
+                    display_price = f"{clean_price:,}".replace(","," ")
 
                     print(f"[{index + 1}] 💰 {display_price} PLN | 📌 {title} | 📍 {location}\n 🔗 Link: {full_url}\n")
+
+                    payload = {
+                        "price_pln": clean_price,
+                        "url_link": full_url,
+                        "source_platform": "Otodom",
+                        "is_active": True
+                    }
+
+                    db_status = save_to_supabase(payload)
+
+                    if db_status in [200, 201, 204]:
+                        print(f"      ✅ DB SYNC SUCCESS (New Listing Added)")
+                    elif db_status == 409:
+                        print(f"      🔄 ALREADY EXISTS (Skipped)")
+                    else:
+                        print(f"      ❌ DB ERROR (Code: {db_status})")
 
                 except Exception:
                     print(f"[{index + 1}] ⚠ WARNING: Missing data skipped (likely a hidden sponsored ad).")
