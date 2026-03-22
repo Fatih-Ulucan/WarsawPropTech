@@ -14,6 +14,11 @@ LOCATION_MAP = {
     'Żoliborz': 17, 'Rembertów': 18
 }
 
+SCRAPE_TARGETS = [
+    {"url_part": "sprzedaz", "trans_id": 1, "label": "FOR SALE (Sprzedaż)"},
+    {"url_part": "wynajem", "trans_id": 2, "label": "FOR RENT (Wynajem)"}
+]
+
 def find_loc_id(location_text):
     """Check the address text, finds the district, and returns its ID."""
     if not location_text:
@@ -38,7 +43,7 @@ def save_to_supabase(data):
         response = requests.post(table_url, json=data, headers=headers, timeout=10)
         if response.status_code == 400:
             print(f"      ❌ SERVER REJECTED (400): {response.text}")
-        
+
         return response.status_code
     except Exception as e:
         print(f"      ❌ CONNECTION ERROR: {e}")
@@ -51,7 +56,7 @@ def test_scraper():
         browser = p.chromium.launch(headless=False)
         page = browser.new_page()
 
-        print("INFO: Navigating to Otodom Warsaw real estate listing...")
+        print("INFO: Navigating to Otodom to clear cookies...")
         page.goto("https://www.otodom.pl/pl/wyniki/sprzedaz/mieszkanie/mazowieckie/warszawa/warszawa/warszawa")
 
         print("INFO: Looking for the Cookie banner...")
@@ -63,93 +68,98 @@ def test_scraper():
         except Exception:
             print("INFO: No Cookie banner found, moving on.")
 
-        for page_num in range(1, 16):
-            print(f"\n============================================================")
-            print(f"🚀 SCRAPING INITIATED: PAGE {page_num}")
-            print(f"============================================================")
+        for target in SCRAPE_TARGETS:
+            print(f"\n{'='*70}")
+            print(f"🚀 INITIATING MISSION: {target['label']}")
+            print(f"{'='*70}")
 
-            target_url = f"https://www.otodom.pl/pl/wyniki/sprzedaz/mieszkanie/mazowieckie/warszawa/warszawa/warszawa?direction=ASC&sorting=PRICE&page={page_num}"
-            page.goto(target_url)
+            for page_num in range(1, 16):
+                print(f"\n============================================================")
+                print(f"📄 SCRAPING INITIATED: PAGE {page_num} [{target['label']}]")
+                print(f"============================================================")
 
-            print("INFO: Scanning for real estate listings...")
+                target_url = f"https://www.otodom.pl/pl/wyniki/{target['url_part']}/mieszkanie/mazowieckie/warszawa/warszawa/warszawa?direction=ASC&sorting=PRICE&page={page_num}"
+                page.goto(target_url)
 
-            try:
-                page.wait_for_selector('[data-sentry-component="AdvertCard"]', timeout=10000)
+                print("INFO: Scanning for real estate listings...")
 
-                print("INFO: Scrolling down to trick 'Lazy Loading' (3 times)...")
-                for _ in range(3):
-                    page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
-                    time.sleep(1.5)
+                try:
+                    page.wait_for_selector('[data-sentry-component="AdvertCard"]', timeout=10000)
 
-                all_listing = page.locator('[data-sentry-component="AdvertCard"]').all()
+                    print("INFO: Scrolling down to trick 'Lazy Loading' (3 times)...")
+                    for _ in range(3):
+                        page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
+                        time.sleep(1.5)
 
-                print(f"INFO: Hurricane Mode active! Found {len(all_listing)} listings on page {page_num}. Extracting...\n")
-                print("="*70)
+                    all_listing = page.locator('[data-sentry-component="AdvertCard"]').all()
 
-                for index, listing in enumerate(all_listing):
-                    try:
-                        title = listing.locator('[data-cy="listing-item-link"]').first.inner_text()
-                        location = listing.locator('[data-sentry-component="Address"]').first.inner_text()
-                        raw_price = listing.locator('[data-sentry-element="MainPrice"]').first.inner_text()
+                    print(f"INFO: Hurricane Mode active! Found {len(all_listing)} listings on page {page_num}. Extracting...\n")
+                    print("="*70)
 
+                    for index, listing in enumerate(all_listing):
                         try:
-                            clean_price = int(raw_price.replace("zł","").replace(" ","").replace("\xa0",""))
-                        except ValueError:
-                            clean_price = 0
+                            title = listing.locator('[data-cy="listing-item-link"]').first.inner_text()
+                            location = listing.locator('[data-sentry-component="Address"]').first.inner_text()
+                            raw_price = listing.locator('[data-sentry-element="MainPrice"]').first.inner_text()
 
-                        raw_url = listing.locator('[data-cy="listing-item-link"]').first.get_attribute('href')
+                            try:
+                                clean_price = int(raw_price.replace("zł","").replace(" ","").replace("\xa0",""))
+                            except ValueError:
+                                clean_price = 0
 
-                        if not raw_url:
+                            raw_url = listing.locator('[data-cy="listing-item-link"]').first.get_attribute('href')
+
+                            if not raw_url:
+                                continue
+                            if raw_url.startswith("/hpr"):
+                                raw_url = raw_url.replace("/hpr", "")
+                            if raw_url.startswith("http"):
+                                full_url = raw_url
+                            else:
+                                full_url = f"https://www.otodom.pl{raw_url}"
+
+                            display_price = f"{clean_price:,}".replace(","," ")
+
+                            matched_loc_id = find_loc_id(location)
+
+                            print(f"[P:{page_num} - {index + 1}] 💰 {display_price} PLN | 📌 {title} | 📍 District ID: {matched_loc_id}\n 🔗 Link: {full_url}\n")
+
+                            payload = {
+                                "price_pln": clean_price,
+                                "url_link": full_url,
+                                "source_platform": "Otodom",
+                                "is_active": True,
+                                "trans_id": target['trans_id'],  
+                                "type_id": 1
+                            }
+
+                            if matched_loc_id is not None:
+                                payload["loc_id"] = matched_loc_id
+
+                            db_status = save_to_supabase(payload)
+
+                            if db_status in [200, 201, 204]:
+                                print(f"      ✅ DB SYNC SUCCESS (New Listing Added)")
+                            elif db_status == 409:
+                                print(f"      🔄 ALREADY EXISTS (Skipped)")
+                            else:
+                                print(f"      ❌ DB ERROR (Code: {db_status})")
+
+                        except Exception:
+                            print(f"[{index + 1}] ⚠ WARNING: Missing data skipped (likely a hidden sponsored ad).")
                             continue
-                        if raw_url.startswith("/hpr"):
-                            raw_url = raw_url.replace("/hpr", "")
-                        if raw_url.startswith("http"):
-                            full_url = raw_url
-                        else:
-                            full_url = f"https://www.otodom.pl{raw_url}"
 
-                        display_price = f"{clean_price:,}".replace(","," ")
+                    print("="*70 + "\n")
 
-                        matched_loc_id = find_loc_id(location)
+                except Exception as e:
+                    print(f"ERROR: Failed to extract listing data for Page {page_num}. Details: {e}")
 
-                        print(f"[P:{page_num} - {index + 1}] 💰 {display_price} PLN | 📌 {title} | 📍 District ID: {matched_loc_id}\n 🔗 Link: {full_url}\n")
-
-                        payload = {
-                            "price_pln": clean_price,
-                            "url_link": full_url,
-                            "source_platform": "Otodom",
-                            "is_active": True,
-                            "trans_id": 1, 
-                            "type_id": 1    
-                        }
-
-                        if matched_loc_id is not None:
-                            payload["loc_id"] = matched_loc_id
-
-                        db_status = save_to_supabase(payload)
-
-                        if db_status in [200, 201, 204]:
-                            print(f"      ✅ DB SYNC SUCCESS (New Listing Added)")
-                        elif db_status == 409:
-                            print(f"      🔄 ALREADY EXISTS (Skipped)")
-                        else:
-                            print(f"      ❌ DB ERROR (Code: {db_status})")
-
-                    except Exception:
-                        print(f"[{index + 1}] ⚠ WARNING: Missing data skipped (likely a hidden sponsored ad).")
-                        continue
-
-                print("="*70 + "\n")
-
-            except Exception as e:
-                print(f"ERROR: Failed to extract listing data for Page {page_num}. Details: {e}")
-
-            print(f"INFO: Page {page_num} completed. Resting for 5 seconds to avoid IP ban...")
-            time.sleep(5)
+                print(f"INFO: Page {page_num} completed. Resting for 5 seconds to avoid IP ban...")
+                time.sleep(5)
 
         time.sleep(3)
         browser.close()
-        print("INFO: Operation complete, browser closed safely.")
+        print("INFO: ALL MISSIONS COMPLETE! Operation complete, browser closed safely.")
 
 if __name__ == "__main__":
     print("INFO: System initializing...")
