@@ -2,7 +2,9 @@ import os
 import time
 import requests
 import logging
+import re 
 from playwright.sync_api import sync_playwright
+
 
 logging.basicConfig(
     level=logging.INFO,
@@ -133,6 +135,8 @@ def test_scraper():
 
                     for index, listing in enumerate(all_listing):
                         try:
+                            card_text = listing.inner_text()
+                            
                             title = listing.locator('[data-cy="listing-item-link"]').first.inner_text()
                             location = listing.locator('[data-sentry-component="Address"]').first.inner_text()
                             raw_price = listing.locator('[data-sentry-element="MainPrice"]').first.inner_text()
@@ -142,6 +146,14 @@ def test_scraper():
                             except ValueError:
                                 clean_price = 0
 
+                         
+                            sqm_match = re.search(r'(\d+(?:[.,]\d+)?)\s*m²', card_text)
+                            sqm = float(sqm_match.group(1).replace(',', '.')) if sqm_match else None
+
+                            rooms_match = re.search(r'(\d+)\s*pok', card_text)
+                            rooms = int(rooms_match.group(1)) if rooms_match else None
+                         
+                            
                             raw_url = listing.locator('[data-cy="listing-item-link"]').first.get_attribute('href')
 
                             if not raw_url:
@@ -157,7 +169,7 @@ def test_scraper():
 
                             matched_loc_id = find_loc_id(location)
 
-                            logger.info(f"[P:{page_num} - {index + 1}] 💰 {display_price} PLN | 📌 {title} | 📍 District ID: {matched_loc_id}\n 🔗 Link: {full_url}\n")
+                            logger.info(f"[P:{page_num} - {index + 1}] 💰 {display_price} PLN | 📏 {sqm}m² | 🚪 {rooms} Rooms | 📌 {title} | 📍 District ID: {matched_loc_id}\n 🔗 Link: {full_url}\n")
 
                             payload = {
                                 "price_pln": clean_price,
@@ -170,6 +182,10 @@ def test_scraper():
 
                             if matched_loc_id is not None:
                                 payload["loc_id"] = matched_loc_id
+                            if sqm is not None:
+                                payload["sqm"] = sqm
+                            if rooms is not None:
+                                payload["rooms"] = rooms
 
                             db_status = save_to_supabase(payload)
 

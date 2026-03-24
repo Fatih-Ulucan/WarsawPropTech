@@ -497,3 +497,1645 @@ STARTING CYCLE #1
 2026-03-24 13:48:11,430 [INFO] [P:4 - 13] 💰 1 081 000 PLN | 📌 Doskonała inwestycja | Gotowe | Garaż | 📍 District ID: 4
  🔗 Link: https://www.otodom.pl/pl/oferta/doskonala-inwestycja-gotowe-garaz-ID4AeKE
 
+2026-03-24 13:58:47,964 [INFO] INFO: System initializing...
+2026-03-24 13:58:47,964 [INFO] 🔥 ENDLESS DATA BEAST MODE ACTIVATED! 🔥
+2026-03-24 13:58:47,964 [INFO] 
+**************************************************
+STARTING CYCLE #1
+**************************************************
+2026-03-24 13:58:47,964 [INFO] INFO: Bot is waking up and launching the browser...
+2026-03-24 13:58:48,675 [INFO] INFO: Navigating to Otodom to clear cookies...
+2026-03-24 13:58:51,171 [INFO] INFO: Looking for the Cookie banner...
+2026-03-24 13:58:51,363 [INFO] SUCCESS: Cookie banner destroyed! The view is clear.
+2026-03-24 13:58:51,364 [INFO] 
+======================================================================
+2026-03-24 13:58:51,364 [INFO] 🚀 INITIATING MEGA MISSION: APARTMENT SALE
+2026-03-24 13:58:51,364 [INFO] ======================================================================
+2026-03-24 13:58:51,364 [INFO] 
+============================================================
+2026-03-24 13:58:51,365 [INFO] 📄 SCRAPING INITIATED: PAGE 1 [APARTMENT SALE]
+2026-03-24 13:58:51,365 [INFO] ============================================================
+2026-03-24 13:58:54,762 [INFO] INFO: Scanning for real estate listings...
+2026-03-24 13:58:54,811 [INFO] INFO: Scrolling down to trick 'Lazy Loading' (3 times)...
+2026-03-24 13:58:59,506 [INFO] INFO: Hurricane Mode active! Found 42 listings on page 1. Extracting...
+
+2026-03-24 13:58:59,506 [INFO] ======================================================================
+2026-03-24 13:58:59,647 [INFO] [P:1 - 1] 💰 825 000 PLN | 📏 48.0m² | 🚪 3 Rooms | 📌 Po remoncie. Rondo Wiatraczna | 📍 District ID: 2
+ 🔗 Link: https://www.otodom.pl/pl/oferta/po-remoncie-rondo-wiatraczna-ID4Ax2r
+
+2026-03-24 13:59:02,143 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 13:59:02,651 [INFO] [P:1 - 2] 💰 1 149 999 PLN | 📏 76.9m² | 🚪 3 Rooms | 📌 Gotowe do wprowadzenia! 3 pokoje + duży taras – Białołęka, ul. Krokwi | 📍 District ID: 5
+ 🔗 Link: https://www.otodom.pl/pl/oferta/gotowe-do-wprowadzenia-3-pokoje-duzy-taras-bialoleka-ul-krokwi-ID4yRVr
+
+2026-03-24 13:59:11,296 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 13:59:11,677 [INFO] [P:1 - 3] 💰 1 035 936 PLN | 📏 104.64m² | 🚪 6 Rooms | 📌 104,64m2 salon + 3 sypialnie + poddasze 78m2 pow. użytkowej BIAŁOŁĘCKA | 📍 District ID: 5
+ 🔗 Link: https://www.otodom.pl/pl/oferta/104-64m2-salon-3-sypialnie-poddasze-78m2-pow-uzytkowej-bialolecka-ID4u5SE
+
+2026-03-24 13:59:13,707 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 13:59:13,812 [INFO] [P:1 - 4] 💰 620 000 PLN | 📏 32.8m² | 🚪 1 Rooms | 📌 kawalerka | taras | gotowe do wprowadzenia | Mokotów | 📍 District ID: 1
+ 🔗 Link: https://www.otodom.pl/pl/oferta/kawalerka-taras-gotowe-do-wprowadzenia-mokotow-ID4AqjG
+
+2026-03-24 13:59:14,244 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 13:59:14,301 [INFO] [P:1 - 5] 💰 3 590 000 PLN | 📏 115.0m² | 🚪 3 Rooms | 📌 **3pokojowy Apartament z Dwoma Miejscami Postojowymi w sercu Powiśla** | 📍 District ID: 9
+ 🔗 Link: https://www.otodom.pl/pl/oferta/3pokojowy-apartament-z-dwoma-miejscami-postojowymi-w-sercu-powisla-ID4ADi8
+
+2026-03-24 13:59:14,727 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 13:59:14,787 [INFO] [P:1 - 6] 💰 3 290 000 PLN | 📏 140.0m² | 🚪 5 Rooms | 📌 Redukcja ceny, penthouse przy Pałacu w Wilanowie | 📍 District ID: 15
+ 🔗 Link: https://www.otodom.pl/pl/oferta/redukcja-ceny-penthouse-przy-palacu-w-wilanowie-ID4AEeR
+
+2026-03-24 13:59:15,242 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 13:59:15,308 [INFO] [P:1 - 7] 💰 1 100 000 PLN | 📏 89.01m² | 🚪 3 Rooms | 📌 | 3pok. | spokojna okolica | balkon | dobry rozkład | | 📍 District ID: 1
+ 🔗 Link: https://www.otodom.pl/pl/oferta/3pok-spokojna-okolica-balkon-dobry-rozklad-ID4AqAR
+
+2026-03-24 13:59:15,748 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 13:59:15,808 [INFO] [P:1 - 8] 💰 1 300 000 PLN | 📏 50.0m² | 🚪 2 Rooms | 📌 Apartament z fenomenalnym widokiem na panoramę nad Wisłą | 📍 District ID: 9
+ 🔗 Link: https://www.otodom.pl/pl/oferta/apartament-z-fenomenalnym-widokiem-na-panorame-nad-wisla-ID4zW1i
+
+2026-03-24 13:59:16,196 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 13:59:16,306 [INFO] [P:1 - 9] 💰 549 000 PLN | 📏 44.6m² | 🚪 2 Rooms | 📌 Mieszkanie, 44,60 m², Warszawa | 📍 District ID: 5
+ 🔗 Link: https://www.otodom.pl/pl/oferta/mieszkanie-44-60-m-warszawa-ID4AEdF
+
+2026-03-24 13:59:17,109 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 13:59:17,218 [INFO] [P:1 - 10] 💰 485 000 PLN | 📏 28.84m² | 🚪 1 Rooms | 📌 Nowa kawalerka w kamienicy po rewitalizacji | bez prowizji | 📍 District ID: 2
+ 🔗 Link: https://www.otodom.pl/pl/oferta/nowa-kawalerka-w-kamienicy-po-rewitalizacji-bez-prowizji-ID4AwLU
+
+2026-03-24 13:59:18,065 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 13:59:18,140 [INFO] [P:1 - 11] 💰 820 000 PLN | 📏 57.0m² | 🚪 3 Rooms | 📌 3 pokoje, jasne | parking | odświeżone | 📍 District ID: 1
+ 🔗 Link: https://www.otodom.pl/pl/oferta/3-pokoje-jasne-parking-odswiezone-ID4AEda
+
+2026-03-24 13:59:18,707 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 13:59:18,764 [INFO] [P:1 - 12] 💰 620 000 PLN | 📏 25.1m² | 🚪 1 Rooms | 📌 1pok. Saska Kępa |po remoncie |balkon|klimatyzacja | 📍 District ID: 2
+ 🔗 Link: https://www.otodom.pl/pl/oferta/1pok-saska-kepa-po-remoncie-balkon-klimatyzacja-ID4AEd9
+
+2026-03-24 13:59:19,241 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 13:59:19,361 [INFO] [P:1 - 13] 💰 715 000 PLN | 📏 60.0m² | 🚪 3 Rooms | 📌 Przestronne mieszkanie na Bielanach – gotowe do wp | 📍 District ID: 6
+ 🔗 Link: https://www.otodom.pl/pl/oferta/przestronne-mieszkanie-na-bielanach-gotowe-do-wp-ID4AqJX
+
+2026-03-24 13:59:20,024 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 13:59:20,108 [INFO] [P:1 - 14] 💰 890 000 PLN | 📏 49.33m² | 🚪 2 Rooms | 📌 Wyjątkowe mieszkanie z garażem przy Metrze | 📍 District ID: 4
+ 🔗 Link: https://www.otodom.pl/pl/oferta/wyjatkowe-mieszkanie-z-garazem-przy-metrze-ID4AiuI
+
+2026-03-24 13:59:20,580 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 13:59:20,639 [INFO] [P:1 - 15] 💰 974 974 PLN | 📏 47.9m² | 🚪 3 Rooms | 📌 Nowe, niezamieszkałe, 3 pokoje, blisko Norblin i Browary! | 📍 District ID: 4
+ 🔗 Link: https://www.otodom.pl/pl/oferta/nowe-niezamieszkale-3-pokoje-blisko-norblin-i-browary-ID4AqsO
+
+2026-03-24 13:59:21,097 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 13:59:21,157 [INFO] [P:1 - 16] 💰 775 000 PLN | 📏 41.17m² | 🚪 2 Rooms | 📌 Najlepiej usytuowane w budynku | możliwość 2 pokoi | 📍 District ID: 9
+ 🔗 Link: https://www.otodom.pl/pl/oferta/najlepiej-usytuowane-w-budynku-mozliwosc-2-pokoi-ID4A5uA
+
+2026-03-24 13:59:21,597 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 13:59:21,655 [INFO] [P:1 - 17] 💰 0 PLN | 📏 58.28m² | 🚪 3 Rooms | 📌 3-pokojowe mieszkanie 58m2 + taras Bezpośrednio | 📍 District ID: 1
+ 🔗 Link: https://www.otodom.pl/pl/oferta/3-pokojowe-mieszkanie-58m2-taras-bezposrednio-ID4z5Va
+
+2026-03-24 13:59:22,072 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 13:59:22,121 [INFO] [P:1 - 18] 💰 699 000 PLN | 📏 38.0m² | 🚪 1 Rooms | 📌 1 pok. 38 m² | Metro Lazurowa | Bemowo | 📍 District ID: 7
+ 🔗 Link: https://www.otodom.pl/pl/oferta/1-pok-38-m-metro-lazurowa-bemowo-ID4AbuX
+
+2026-03-24 13:59:22,518 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 13:59:22,571 [INFO] [P:1 - 19] 💰 889 000 PLN | 📏 44.72m² | 🚪 2 Rooms | 📌 Mieszkanie 2 pok, 44 m2, Wola ul. Sławińska | 📍 District ID: 4
+ 🔗 Link: https://www.otodom.pl/pl/oferta/mieszkanie-2-pok-44-m2-wola-ul-slawinska-ID4xU1R
+
+2026-03-24 13:59:23,007 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 13:59:23,062 [INFO] [P:1 - 20] 💰 1 300 000 PLN | 📏 60.5m² | 🚪 3 Rooms | 📌 Zakup BEZ PROWIZJI i PODATKU PCC, 3 pokoje,wysoki standard,ost. piętro | 📍 District ID: 14
+ 🔗 Link: https://www.otodom.pl/pl/oferta/zakup-bez-prowizji-i-podatku-pcc-3-pokoje-wysoki-standard-ost-pietro-ID4Aux6
+
+2026-03-24 13:59:23,414 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 13:59:23,470 [INFO] [P:1 - 21] 💰 1 190 000 PLN | 📏 59.97m² | 🚪 2 Rooms | 📌 Mieszkanie inwestycyjne | 📍 District ID: 9
+ 🔗 Link: https://www.otodom.pl/pl/oferta/mieszkanie-inwestycyjne-ID4AboL
+
+2026-03-24 13:59:23,781 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 13:59:23,826 [INFO] [P:1 - 22] 💰 2 090 000 PLN | 📏 98.0m² | 🚪 4 Rooms | 📌 ✨ Jasny Apartament Z Tarasem I Widokiem Na Zieleń✨ | 📍 District ID: 11
+ 🔗 Link: https://www.otodom.pl/pl/oferta/jasny-apartament-z-tarasem-i-widokiem-na-zielen-ID4AEbO
+
+2026-03-24 13:59:24,160 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 13:59:24,217 [INFO] [P:1 - 23] 💰 604 000 PLN | 📏 39.0m² | 🚪 2 Rooms | 📌 Warszawa, Fasolowa: 39m² - 2 pokoje z balkonem | 📍 District ID: 14
+ 🔗 Link: https://www.otodom.pl/pl/oferta/warszawa-fasolowa-39m-2-pokoje-z-balkonem-ID4AEbe
+
+2026-03-24 13:59:24,569 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 13:59:24,623 [INFO] [P:1 - 24] 💰 2 190 000 PLN | 📏 74.0m² | 🚪 2 Rooms | 📌 Apartament Piękna Nova | 📍 District ID: 9
+ 🔗 Link: https://www.otodom.pl/pl/oferta/apartament-piekna-nova-ID4AkWY
+
+2026-03-24 13:59:25,047 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 13:59:25,095 [INFO] [P:1 - 25] 💰 1 550 000 PLN | 📏 88.25m² | 🚪 3 Rooms | 📌 3pok. | Metro | loggia | b.dobra lokalizacja | | 📍 District ID: 4
+ 🔗 Link: https://www.otodom.pl/pl/oferta/3pok-metro-loggia-b-dobra-lokalizacja-ID4AEbo
+
+2026-03-24 13:59:25,503 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 13:59:25,563 [INFO] [P:1 - 26] 💰 2 449 000 PLN | 📏 66.6m² | 🚪 3 Rooms | 📌 Unikalny apartament w Śródmieściu Południowym - Plac Konstytucji 6 | 📍 District ID: 9
+ 🔗 Link: https://www.otodom.pl/pl/oferta/unikalny-apartament-w-srodmiesciu-poludniowym-plac-konstytucji-6-ID4Aqr0
+
+2026-03-24 13:59:25,905 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 13:59:25,962 [INFO] [P:1 - 27] 💰 499 000 PLN | 📏 40.5m² | 🚪 2 Rooms | 📌 2 pokoje do remontu| ul. Walerego Sławka | 📍 District ID: 12
+ 🔗 Link: https://www.otodom.pl/pl/oferta/2-pokoje-do-remontu-ul-walerego-slawka-ID4AyrH
+
+2026-03-24 13:59:26,337 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 13:59:26,394 [INFO] [P:1 - 28] 💰 479 000 PLN | 📏 32.0m² | 🚪 2 Rooms | 📌 Mieszkanie 2 Pok. Bezpośrednio ul.Batumi | 📍 District ID: 1
+ 🔗 Link: https://www.otodom.pl/pl/oferta/mieszkanie-2-pok-bezposrednio-ul-batumi-ID4AEb6
+
+2026-03-24 13:59:26,784 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 13:59:26,836 [INFO] [P:1 - 29] 💰 659 000 PLN | 📏 36.5m² | 🚪 2 Rooms | 📌 2-pokojowe mieszkanie Włochy !Gotowe! | 📍 District ID: 14
+ 🔗 Link: https://www.otodom.pl/pl/oferta/2-pokojowe-mieszkanie-wlochy-gotowe-ID4xfX7
+
+2026-03-24 13:59:27,201 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 13:59:27,265 [INFO] [P:1 - 30] 💰 2 995 000 PLN | 📏 114.43m² | 🚪 4 Rooms | 📌 Premium | sauna | siłownia | 📍 District ID: 1
+ 🔗 Link: https://www.otodom.pl/pl/oferta/premium-sauna-silownia-ID4z1zq
+
+2026-03-24 13:59:27,639 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 13:59:27,696 [INFO] [P:1 - 31] 💰 749 000 PLN | 📏 51.6m² | 🚪 2 Rooms | 📌 Rozkładowe, cicha okolica, metro | 📍 District ID: 8
+ 🔗 Link: https://www.otodom.pl/pl/oferta/rozkladowe-cicha-okolica-metro-ID4AEaW
+
+2026-03-24 13:59:28,102 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 13:59:28,154 [INFO] [P:1 - 32] 💰 620 000 PLN | 📏 42.4m² | 🚪 2 Rooms | 📌 2 pokoje | Ursynów | 7 min spacerem do metra | 📍 District ID: 3
+ 🔗 Link: https://www.otodom.pl/pl/oferta/2-pokoje-ursynow-7-min-spacerem-do-metra-ID4AEaU
+
+2026-03-24 13:59:28,520 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 13:59:28,576 [INFO] [P:1 - 33] 💰 735 000 PLN | 📏 35.14m² | 🚪 1 Rooms | 📌 Duża loggia / nowe budownictwo / Top lokalizacja | 📍 District ID: 2
+ 🔗 Link: https://www.otodom.pl/pl/oferta/duza-loggia-nowe-budownictwo-top-lokalizacja-ID4AvJX
+
+2026-03-24 13:59:28,962 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 13:59:29,013 [INFO] [P:1 - 34] 💰 1 760 000 PLN | 📏 71.0m² | 🚪 3 Rooms | 📌 Kamienica Ogrodzona 2 Balkony | 📍 District ID: 9
+ 🔗 Link: https://www.otodom.pl/pl/oferta/kamienica-ogrodzona-2-balkony-ID4AEaP
+
+2026-03-24 13:59:29,367 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 13:59:29,424 [INFO] [P:1 - 35] 💰 599 000 PLN | 📏 72.0m² | 🚪 4 Rooms | 📌 Okazja! Mieszkanie do aranżacji na 14 piętrze! | 📍 District ID: 2
+ 🔗 Link: https://www.otodom.pl/pl/oferta/okazja-mieszkanie-do-aranzacji-na-14-pietrze-ID4AEaN
+
+2026-03-24 13:59:29,861 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 13:59:29,919 [INFO] [P:1 - 36] 💰 899 000 PLN | 📏 55.0m² | 🚪 3 Rooms | 📌 200 m2 ogród / do wejścia / podwyższony standard | 📍 District ID: 5
+ 🔗 Link: https://www.otodom.pl/pl/oferta/200-m2-ogrod-do-wejscia-podwyzszony-standard-ID4zRUs
+
+2026-03-24 13:59:30,245 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 13:59:30,304 [INFO] [P:1 - 37] 💰 1 188 000 PLN | 📏 74.3m² | 🚪 4 Rooms | 📌 4 pokoje | gotowe do wejścia | Kępa Potocka | 📍 District ID: 6
+ 🔗 Link: https://www.otodom.pl/pl/oferta/4-pokoje-gotowe-do-wejscia-kepa-potocka-ID4AEaJ
+
+2026-03-24 13:59:30,757 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 13:59:30,811 [INFO] [P:1 - 38] 💰 1 200 000 PLN | 📏 44.5m² | 🚪 2 Rooms | 📌 Wilanów | gotowe do wejścia z ogródkiem i garażem | 📍 District ID: 15
+ 🔗 Link: https://www.otodom.pl/pl/oferta/wilanow-gotowe-do-wejscia-z-ogrodkiem-i-garazem-ID4AEaK
+
+2026-03-24 13:59:31,159 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 13:59:31,201 [INFO] [P:1 - 39] 💰 625 000 PLN | 📏 42.05m² | 🚪 3 Rooms | 📌 Taras 17 m2 / możliwość 3 pokoi /parking podziemny | 📍 District ID: 5
+ 🔗 Link: https://www.otodom.pl/pl/oferta/taras-17-m2-mozliwosc-3-pokoi-parking-podziemny-ID4AfEx
+
+2026-03-24 13:59:31,570 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 13:59:31,611 [INFO] [P:1 - 40] 💰 729 000 PLN | 📏 54.65m² | 🚪 2 Rooms | 📌 Doskonała lokalizacja | kamienica | 📍 District ID: 14
+ 🔗 Link: https://www.otodom.pl/pl/oferta/doskonala-lokalizacja-kamienica-ID4zPyb
+
+2026-03-24 13:59:32,018 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 13:59:32,053 [INFO] [P:1 - 41] 💰 648 800 PLN | 📏 42.0m² | 🚪 2 Rooms | 📌 Najtańsze 2 pokoje Z GARAŻEM W CENIE + Umów DNI OTWARTE +15min CENTRUM | 📍 District ID: 12
+ 🔗 Link: https://www.otodom.pl/pl/oferta/najtansze-2-pokoje-z-garazem-w-cenie-umow-dni-otwarte-15min-centrum-ID4Aup4
+
+2026-03-24 13:59:32,420 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 13:59:32,461 [INFO] [P:1 - 42] 💰 542 300 PLN | 📏 37.5m² | 🚪 2 Rooms | 📌 Ostatnie w tej CENIE + Umów DNI OTWARTE _ 15min do CENTUM _ METRO | 📍 District ID: 12
+ 🔗 Link: https://www.otodom.pl/pl/oferta/ostatnie-w-tej-cenie-umow-dni-otwarte-15min-do-centum-metro-ID4Aw62
+
+2026-03-24 13:59:32,798 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 13:59:32,799 [INFO] ======================================================================
+
+2026-03-24 13:59:32,799 [INFO] INFO: Page 1 completed. Resting for 5 seconds to avoid IP ban...
+2026-03-24 13:59:37,800 [INFO] 
+============================================================
+2026-03-24 13:59:37,801 [INFO] 📄 SCRAPING INITIATED: PAGE 2 [APARTMENT SALE]
+2026-03-24 13:59:37,801 [INFO] ============================================================
+2026-03-24 13:59:40,395 [INFO] INFO: Scanning for real estate listings...
+2026-03-24 13:59:40,434 [INFO] INFO: Scrolling down to trick 'Lazy Loading' (3 times)...
+2026-03-24 13:59:45,078 [INFO] INFO: Hurricane Mode active! Found 36 listings on page 2. Extracting...
+
+2026-03-24 13:59:45,079 [INFO] ======================================================================
+2026-03-24 13:59:45,177 [INFO] [P:2 - 1] 💰 650 000 PLN | 📏 48.6m² | 🚪 2 Rooms | 📌 NOWA CENA Słoneczne mieszkanie na warszawskim Okęciu | 📍 District ID: 14
+ 🔗 Link: https://www.otodom.pl/pl/oferta/nowa-cena-sloneczne-mieszkanie-na-warszawskim-okeciu-ID4zNuq
+
+2026-03-24 13:59:46,157 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 13:59:46,249 [INFO] [P:2 - 2] 💰 860 000 PLN | 📏 50.0m² | 🚪 2 Rooms | 📌 Apartament 2 POKOJE 50m2 Z GARAŻEM w pobliżu C.H. PROMENADA | 📍 District ID: 2
+ 🔗 Link: https://www.otodom.pl/pl/oferta/apartament-2-pokoje-50m2-z-garazem-w-poblizu-c-h-promenada-ID4ACvU
+
+2026-03-24 13:59:46,924 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 13:59:47,013 [INFO] [P:2 - 3] 💰 1 649 000 PLN | 📏 57.0m² | 🚪 2 Rooms | 📌 Wyjątkowa Lokalizacja | Saska Kępa | Taras 25m2 | Wys.3m |Stadion|Park | 📍 District ID: 2
+ 🔗 Link: https://www.otodom.pl/pl/oferta/wyjatkowa-lokalizacja-saska-kepa-taras-25m2-wys-3m-stadion-park-ID4ABPS
+
+2026-03-24 13:59:47,411 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 13:59:47,443 [INFO] [P:2 - 4] 💰 979 030 PLN | 📏 57.82m² | 🚪 3 Rooms | 📌 3-pokojowe mieszkanie 57m2 + ogródek | 📍 District ID: 13
+ 🔗 Link: https://www.otodom.pl/pl/oferta/3-pokojowe-mieszkanie-57m2-ogrodek-ID4umVi
+
+2026-03-24 13:59:47,865 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 13:59:47,918 [INFO] [P:2 - 5] 💰 1 777 000 PLN | 📏 74.51m² | 🚪 3 Rooms | 📌 Eleganckie mieszkanie na Mokotowie | 📍 District ID: 1
+ 🔗 Link: https://www.otodom.pl/pl/oferta/eleganckie-mieszkanie-na-mokotowie-ID4AEai
+
+2026-03-24 13:59:48,297 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 13:59:48,347 [INFO] [P:2 - 6] 💰 495 000 PLN | 📏 27.7m² | 🚪 1 Rooms | 📌 Widok | lokalizacja | kawalerka | 📍 District ID: 1
+ 🔗 Link: https://www.otodom.pl/pl/oferta/widok-lokalizacja-kawalerka-ID4zYrk
+
+2026-03-24 13:59:48,689 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 13:59:48,741 [INFO] [P:2 - 7] 💰 1 150 000 PLN | 📏 46.83m² | 🚪 2 Rooms | 📌 APARTAMENT KLASY PREMIUM | ART DÉCO | JEMS | ORB | 46,83 m² | | 📍 District ID: 1
+ 🔗 Link: https://www.otodom.pl/pl/oferta/apartament-klasy-premium-art-dco-jems-orb-46-83-m-ID4Adw2
+
+2026-03-24 13:59:49,143 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 13:59:49,188 [INFO] [P:2 - 8] 💰 804 200 PLN | 📏 60.0m² | 🚪 2 Rooms | 📌 Nowe 2 pokoje z GARAŻEM W CENIE ! + Umów Dziś DNI OTWARTE Z Rabatami ! | 📍 District ID: 12
+ 🔗 Link: https://www.otodom.pl/pl/oferta/nowe-2-pokoje-z-garazem-w-cenie-umow-dzis-dni-otwarte-z-rabatami-ID4AE9Y
+
+2026-03-24 13:59:49,550 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 13:59:49,579 [INFO] [P:2 - 9] 💰 799 000 PLN | 📏 53.32m² | 🚪 2 Rooms | 📌 Słoneczne 2 pok, Osiedle Wilno, kolejką do Centrum | 📍 District ID: 8
+ 🔗 Link: https://www.otodom.pl/pl/oferta/sloneczne-2-pok-osiedle-wilno-kolejka-do-centrum-ID4y426
+
+2026-03-24 13:59:49,952 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 13:59:49,996 [INFO] [P:2 - 10] 💰 513 040 PLN | 📏 38.43m² | 🚪 2 Rooms | 📌 PROMOCJA! Dojazd 4 minuty do tramwaju, 10 min METRO! Galeria Północna! | 📍 District ID: 5
+ 🔗 Link: https://www.otodom.pl/pl/oferta/promocja-dojazd-4-minuty-do-tramwaju-10-min-metro-galeria-polnocna-ID4AtC7
+
+2026-03-24 13:59:50,316 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 13:59:50,362 [INFO] [P:2 - 11] 💰 779 999 PLN | 📏 64.8m² | 🚪 3 Rooms | 📌 3 Pokoje I Białołęka I Cicha okolica | 📍 District ID: 5
+ 🔗 Link: https://www.otodom.pl/pl/oferta/3-pokoje-i-bialoleka-i-cicha-okolica-ID4AE9x
+
+2026-03-24 13:59:50,739 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 13:59:50,787 [INFO] [P:2 - 12] 💰 804 169 PLN | 📏 60.0m² | 🚪 3 Rooms | 📌 Dni otwarte do soboty -> GARAŻ GRATIS !! -> METRO Karolin + SKM | 📍 District ID: 12
+ 🔗 Link: https://www.otodom.pl/pl/oferta/dni-otwarte-do-soboty-garaz-gratis-metro-karolin-skm-ID4AE9r
+
+2026-03-24 13:59:51,178 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 13:59:51,225 [INFO] [P:2 - 13] 💰 3 900 000 PLN | 📏 125.0m² | 🚪 4 Rooms | 📌 Apartament po generalnym remoncie Marina Mokotów | 📍 District ID: 1
+ 🔗 Link: https://www.otodom.pl/pl/oferta/apartament-po-generalnym-remoncie-marina-mokotow-ID4zO0t
+
+2026-03-24 13:59:51,568 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 13:59:51,620 [INFO] [P:2 - 14] 💰 506 428 PLN | 📏 32.0m² | 🚪 1 Rooms | 📌 Dni otwarte do soboty -> Ostatnie terminy -> METRO Karolin + SKM | 📍 District ID: 12
+ 🔗 Link: https://www.otodom.pl/pl/oferta/dni-otwarte-do-soboty-ostatnie-terminy-metro-karolin-skm-ID4AE9o
+
+2026-03-24 13:59:51,956 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 13:59:52,000 [INFO] [P:2 - 15] 💰 869 000 PLN | 📏 56.0m² | 🚪 3 Rooms | 📌 3 pokoje | 56 m² | Ciche| jasna kuchnia | piwnica! | 📍 District ID: 17
+ 🔗 Link: https://www.otodom.pl/pl/oferta/3-pokoje-56-m-ciche-jasna-kuchnia-piwnica-ID4Awj2
+
+2026-03-24 13:59:52,338 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 13:59:52,386 [INFO] [P:2 - 16] 💰 519 000 PLN | 📏 32.0m² | 🚪 1 Rooms | 📌 Kawalerka przy metrze. | 📍 District ID: 12
+ 🔗 Link: https://www.otodom.pl/pl/oferta/kawalerka-przy-metrze-ID4Ayjh
+
+2026-03-24 13:59:52,781 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 13:59:52,831 [INFO] [P:2 - 17] 💰 690 000 PLN | 📏 37.0m² | 🚪 2 Rooms | 📌 Bez kredytu | Wola | 2 pok | po remoncie | metro Księcia Janusza | 📍 District ID: 4
+ 🔗 Link: https://www.otodom.pl/pl/oferta/bez-kredytu-wola-2-pok-po-remoncie-metro-ksiecia-janusza-ID4vHK0
+
+2026-03-24 13:59:53,215 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 13:59:53,260 [INFO] [P:2 - 18] 💰 775 000 PLN | 📏 60.0m² | 🚪 4 Rooms | 📌 3-4 pok. Najlepsza lokalizacja na Ursusie | 📍 District ID: 12
+ 🔗 Link: https://www.otodom.pl/pl/oferta/3-4-pok-najlepsza-lokalizacja-na-ursusie-ID4AyhB
+
+2026-03-24 13:59:53,670 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 13:59:53,719 [INFO] [P:2 - 19] 💰 629 000 PLN | 📏 42.0m² | 🚪 2 Rooms | 📌 2Pok 42m²Balkon 2 Windy Bezpośrednio Soczi | 📍 District ID: 1
+ 🔗 Link: https://www.otodom.pl/pl/oferta/2pok-42mbalkon-2-windy-bezposrednio-soczi-ID4AE7N
+
+2026-03-24 13:59:54,064 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 13:59:54,113 [INFO] [P:2 - 20] 💰 1 350 000 PLN | 📏 62.25m² | 🚪 3 Rooms | 📌 3 pokoje |Mokotów| Wykończone| 0% Prowizji| RABAT! | 📍 District ID: 1
+ 🔗 Link: https://www.otodom.pl/pl/oferta/3-pokoje-mokotow-wykonczone-0-prowizji-rabat-ID4yNbB
+
+2026-03-24 13:59:54,465 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 13:59:54,505 [INFO] [P:2 - 21] 💰 1 643 429 PLN | 📏 43.31m² | 🚪 1 Rooms | 📌 1-pokojowe mieszkanie 43m2 + loggia Bez Prowizji | 📍 District ID: 1
+ 🔗 Link: https://www.otodom.pl/pl/oferta/1-pokojowe-mieszkanie-43m2-loggia-bez-prowizji-ID4Ah8V
+
+2026-03-24 13:59:54,942 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 13:59:54,989 [INFO] [P:2 - 22] 💰 799 000 PLN | 📏 43.0m² | 🚪 2 Rooms | 📌 Mieszkanie na Nowosieleckiej - Bez Prowizji | 📍 District ID: 9
+ 🔗 Link: https://www.otodom.pl/pl/oferta/mieszkanie-na-nowosieleckiej-bez-prowizji-ID4yB4p
+
+2026-03-24 13:59:55,380 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 13:59:55,430 [INFO] [P:2 - 23] 💰 740 000 PLN | 📏 48.36m² | 🚪 3 Rooms | 📌 Mieszkanie na Saskiej Kępie| Zielona okolica 48m2 | 📍 District ID: 2
+ 🔗 Link: https://www.otodom.pl/pl/oferta/mieszkanie-na-saskiej-kepie-zielona-okolica-48m2-ID4A0zb
+
+2026-03-24 13:59:55,765 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 13:59:55,814 [INFO] [P:2 - 24] 💰 745 000 PLN | 📏 52.0m² | 🚪 2 Rooms | 📌 Z Widokiem | Funkcjonalny układ | Balkon | 📍 District ID: 12
+ 🔗 Link: https://www.otodom.pl/pl/oferta/z-widokiem-funkcjonalny-uklad-balkon-ID4A0ze
+
+2026-03-24 13:59:56,245 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 13:59:56,293 [INFO] [P:2 - 25] 💰 699 000 PLN | 📏 56.72m² | 🚪 2 Rooms | 📌 Klimatyczne mieszkanie na Bielanach | 📍 District ID: 6
+ 🔗 Link: https://www.otodom.pl/pl/oferta/klimatyczne-mieszkanie-na-bielanach-ID4zZWW
+
+2026-03-24 13:59:56,838 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 13:59:56,883 [INFO] [P:2 - 26] 💰 569 860 PLN | 📏 40.82m² | 🚪 2 Rooms | 📌 2 pokojowe mieszkanie na Skoroszach | 📍 District ID: 12
+ 🔗 Link: https://www.otodom.pl/pl/oferta/2-pokojowe-mieszkanie-na-skoroszach-ID4Ax1C
+
+2026-03-24 13:59:57,342 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 13:59:57,378 [INFO] [P:2 - 27] 💰 805 000 PLN | 📏 60.0m² | 🚪 4 Rooms | 📌 Najtańsze 4 pokoje + GARAŻ W CENIE MIESZKANIA +Umów DNI OTWARTE ZOBACZ | 📍 District ID: 12
+ 🔗 Link: https://www.otodom.pl/pl/oferta/najtansze-4-pokoje-garaz-w-cenie-mieszkania-umow-dni-otwarte-zobacz-ID4AE8n
+
+2026-03-24 13:59:57,888 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 13:59:57,924 [INFO] [P:2 - 28] 💰 759 900 PLN | 📏 39.0m² | 🚪 2 Rooms | 📌 Bezpośrednio Metro - 2 pokoje Wola- wysoki standard!!! | 📍 District ID: 4
+ 🔗 Link: https://www.otodom.pl/pl/oferta/bezposrednio-metro-2-pokoje-wola-wysoki-standard-ID4AwPf
+
+2026-03-24 13:59:58,472 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 13:59:58,510 [INFO] [P:2 - 29] 💰 319 000 PLN | 📏 22.4m² | 🚪 1 Rooms | 📌 Blisko do metra | Zielona okolica | Do wejścia | 📍 District ID: 8
+ 🔗 Link: https://www.otodom.pl/pl/oferta/blisko-do-metra-zielona-okolica-do-wejscia-ID4AuNT
+
+2026-03-24 13:59:59,337 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 13:59:59,379 [INFO] [P:2 - 30] 💰 1 990 000 PLN | 📏 86.97m² | 🚪 3 Rooms | 📌 Wyjątkowy apartament na sprzedaż – Mokotów 3 pokoje 86,97 m2 | 📍 District ID: 1
+ 🔗 Link: https://www.otodom.pl/pl/oferta/wyjatkowy-apartament-na-sprzedaz-mokotow-3-pokoje-86-97-m2-ID4AqnG
+
+2026-03-24 13:59:59,897 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 13:59:59,932 [INFO] [P:2 - 31] 💰 974 000 PLN | 📏 43.26m² | 🚪 2 Rooms | 📌 2-pokojowe mieszkanie 43m2 + balkon Bezpośrednio | 📍 District ID: 4
+ 🔗 Link: https://www.otodom.pl/pl/oferta/2-pokojowe-mieszkanie-43m2-balkon-bezposrednio-ID4uooJ
+
+2026-03-24 14:00:00,386 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:00:00,415 [INFO] [P:2 - 32] 💰 1 320 000 PLN | 📏 75.46m² | 🚪 3 Rooms | 📌 Designerski apartament | Żoliborz | 3 min do Metra | 📍 District ID: 17
+ 🔗 Link: https://www.otodom.pl/pl/oferta/designerski-apartament-zoliborz-3-min-do-metra-ID4Asuq
+
+2026-03-24 14:00:00,884 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:00:00,921 [INFO] [P:2 - 33] 💰 0 PLN | 📏 59.4m² | 🚪 3 Rooms | 📌 3-pokojowe mieszkanie 59m2 + loggia Bezpośrednio | 📍 District ID: 1
+ 🔗 Link: https://www.otodom.pl/pl/oferta/3-pokojowe-mieszkanie-59m2-loggia-bezposrednio-ID4uo5p
+
+2026-03-24 14:00:01,424 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:00:01,458 [INFO] [P:2 - 34] 💰 819 900 PLN | 📏 54.0m² | 🚪 3 Rooms | 📌 Świetna lokalizacja/do odświeżenia/parking | 📍 District ID: 1
+ 🔗 Link: https://www.otodom.pl/pl/oferta/swietna-lokalizacja-do-odswiezenia-parking-ID4AE81
+
+2026-03-24 14:00:01,897 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:00:01,932 [INFO] [P:2 - 35] 💰 625 747 PLN | 📏 40.8m² | 🚪 2 Rooms | 📌 2pokoje z Halą Garażową GRATIS blisko METRO Karolin, Factory i SKM ! | 📍 District ID: 12
+ 🔗 Link: https://www.otodom.pl/pl/oferta/2pokoje-z-hala-garazowa-gratis-blisko-metro-karolin-factory-i-skm-ID4AE80
+
+2026-03-24 14:00:02,380 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:00:02,415 [INFO] [P:2 - 36] 💰 979 030 PLN | 📏 57.82m² | 🚪 3 Rooms | 📌 3-pokojowe mieszkanie 57m2 + ogródek | 📍 District ID: 13
+ 🔗 Link: https://www.otodom.pl/pl/oferta/3-pokojowe-mieszkanie-57m2-ogrodek-ID4umVi
+
+2026-03-24 14:00:02,862 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:00:02,862 [INFO] ======================================================================
+
+2026-03-24 14:00:02,862 [INFO] INFO: Page 2 completed. Resting for 5 seconds to avoid IP ban...
+2026-03-24 14:00:07,863 [INFO] 
+============================================================
+2026-03-24 14:00:07,864 [INFO] 📄 SCRAPING INITIATED: PAGE 3 [APARTMENT SALE]
+2026-03-24 14:00:07,864 [INFO] ============================================================
+2026-03-24 14:00:11,282 [INFO] INFO: Scanning for real estate listings...
+2026-03-24 14:00:11,375 [INFO] INFO: Scrolling down to trick 'Lazy Loading' (3 times)...
+2026-03-24 14:00:16,272 [INFO] INFO: Hurricane Mode active! Found 47 listings on page 3. Extracting...
+
+2026-03-24 14:00:16,273 [INFO] ======================================================================
+2026-03-24 14:00:16,386 [INFO] [P:3 - 1] 💰 325 000 PLN | 📏 22.25m² | 🚪 1 Rooms | 📌 Nowa mikro - kawalerka! VAT 23%! | 📍 District ID: 14
+ 🔗 Link: https://www.otodom.pl/pl/oferta/nowa-mikro-kawalerka-vat-23-ID4ADGZ
+
+2026-03-24 14:00:16,876 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:00:16,954 [INFO] [P:3 - 2] 💰 734 999 PLN | 📏 55.0m² | 🚪 3 Rooms | 📌 3 pokoje | 7 min do Metro Bródno | balkon | dwustronne | po remoncie | 📍 District ID: 8
+ 🔗 Link: https://www.otodom.pl/pl/oferta/3-pokoje-7-min-do-metro-brodno-balkon-dwustronne-po-remoncie-ID4AzGE
+
+2026-03-24 14:00:17,679 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:00:17,781 [INFO] [P:3 - 3] 💰 1 495 000 PLN | 📏 76.0m² | 🚪 3 Rooms | 📌 Wola Mirów | kamienica | 76 m² | parkiet jodełka | oddzielna kuchnia | 📍 District ID: 4
+ 🔗 Link: https://www.otodom.pl/pl/oferta/wola-mirow-kamienica-76-m-parkiet-jodelka-oddzielna-kuchnia-ID4AnVY
+
+2026-03-24 14:00:18,170 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:00:18,210 [INFO] [P:3 - 4] 💰 804 145 PLN | 📏 60.0m² | 🚪 4 Rooms | 📌 3/4pokoje z Halą Garażową GRATIS blisko METRO Karolin, Factory i SKM ! | 📍 District ID: 12
+ 🔗 Link: https://www.otodom.pl/pl/oferta/3-4pokoje-z-hala-garazowa-gratis-blisko-metro-karolin-factory-i-skm-ID4AE7W
+
+2026-03-24 14:00:18,577 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:00:18,623 [INFO] [P:3 - 5] 💰 537 905 PLN | 📏 34.4m² | 🚪 2 Rooms | 📌 2pokoje z Halą Garażową GRATIS blisko METRO Karolin, Factory i SKM ! | 📍 District ID: 12
+ 🔗 Link: https://www.otodom.pl/pl/oferta/2pokoje-z-hala-garazowa-gratis-blisko-metro-karolin-factory-i-skm-ID4AE7U
+
+2026-03-24 14:00:19,018 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:00:19,056 [INFO] [P:3 - 6] 💰 579 000 PLN | 📏 37.57m² | 🚪 2 Rooms | 📌 2 pokoje do generalnego remontu | Saska Kępa | 📍 District ID: 2
+ 🔗 Link: https://www.otodom.pl/pl/oferta/2-pokoje-do-generalnego-remontu-saska-kepa-ID4AE7S
+
+2026-03-24 14:00:19,460 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:00:19,500 [INFO] [P:3 - 7] 💰 745 000 PLN | 📏 55.0m² | 🚪 3 Rooms | 📌 Przestronne 3 pok. w zielonej części Bielan — do własnej aranżacji | 📍 District ID: 6
+ 🔗 Link: https://www.otodom.pl/pl/oferta/przestronne-3-pok-w-zielonej-czesci-bielan-do-wlasnej-aranzacji-ID4AE7I
+
+2026-03-24 14:00:19,942 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:00:19,981 [INFO] [P:3 - 8] 💰 1 019 000 PLN | 📏 42.85m² | 🚪 2 Rooms | 📌 2pk | Do wejścia | Miasteczko Wilanów | 📍 District ID: 15
+ 🔗 Link: https://www.otodom.pl/pl/oferta/2pk-do-wejscia-miasteczko-wilanow-ID4ADf4
+
+2026-03-24 14:00:20,327 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:00:20,380 [INFO] [P:3 - 9] 💰 3 550 000 PLN | 📏 135.83m² | 🚪 5 Rooms | 📌 Za chwilę gotowy PENTHOUSE z TARASEM ponad 100m2, salon ponad 40m2! | 📍 District ID: 1
+ 🔗 Link: https://www.otodom.pl/pl/oferta/za-chwile-gotowy-penthouse-z-tarasem-ponad-100m2-salon-ponad-40m2-ID4AE7l
+
+2026-03-24 14:00:20,740 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:00:20,792 [INFO] [P:3 - 10] 💰 990 662 PLN | 📏 56.4m² | 🚪 3 Rooms | 📌 3-pokojowe mieszkanie 56m2 + balkon | 📍 District ID: 1
+ 🔗 Link: https://www.otodom.pl/pl/oferta/3-pokojowe-mieszkanie-56m2-balkon-ID4ulWS
+
+2026-03-24 14:00:21,157 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:00:21,191 [INFO] [P:3 - 11] 💰 1 740 000 PLN | 📏 88.0m² | 🚪 3 Rooms | 📌 Dla rodziny | Komfortowe | 2 miejsca postojowe | 📍 District ID: 15
+ 🔗 Link: https://www.otodom.pl/pl/oferta/dla-rodziny-komfortowe-2-miejsca-postojowe-ID4z45B
+
+2026-03-24 14:00:21,585 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:00:21,626 [INFO] [P:3 - 12] 💰 780 800 PLN | 📏 61.5m² | 🚪 3 Rooms | 📌 Zaraz Gotowe 3 pokoje + Hala Garażowa + Obok SKL/METRO + DNI OTWARTE | 📍 District ID: 12
+ 🔗 Link: https://www.otodom.pl/pl/oferta/zaraz-gotowe-3-pokoje-hala-garazowa-obok-skl-metro-dni-otwarte-ID4AE71
+
+2026-03-24 14:00:22,032 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:00:22,071 [INFO] [P:3 - 13] 💰 850 000 PLN | 📏 59.23m² | 🚪 4 Rooms | 📌 Balkon 27m2 | 3 stronne | 2 miejsca w garażu | 📍 District ID: 5
+ 🔗 Link: https://www.otodom.pl/pl/oferta/balkon-27m2-3-stronne-2-miejsca-w-garazu-ID4zYum
+
+2026-03-24 14:00:22,449 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:00:22,505 [INFO] [P:3 - 14] 💰 1 249 000 PLN | 📏 57.38m² | 🚪 3 Rooms | 📌 Dopracowane | Do wprowadzenia | Wysoki standard | 📍 District ID: 1
+ 🔗 Link: https://www.otodom.pl/pl/oferta/dopracowane-do-wprowadzenia-wysoki-standard-ID4A3BO
+
+2026-03-24 14:00:22,935 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:00:22,964 [INFO] [P:3 - 15] 💰 525 000 PLN | 📏 35.07m² | 🚪 1 Rooms | 📌 Kawalerka, metro Dw. Wileński, ul. Wileńska 12 | 📍 District ID: 13
+ 🔗 Link: https://www.otodom.pl/pl/oferta/kawalerka-metro-dw-wilenski-ul-wilenska-12-ID4Ay6W
+
+2026-03-24 14:00:23,319 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:00:23,350 [INFO] [P:3 - 16] 💰 1 985 000 PLN | 📏 96.6m² | 🚪 4 Rooms | 📌 Dwustronne mieszkanie 97 m2 | 4 Pokoje | 2 tarasy | 📍 District ID: 11
+ 🔗 Link: https://www.otodom.pl/pl/oferta/dwustronne-mieszkanie-97-m2-4-pokoje-2-tarasy-ID4zh9z
+
+2026-03-24 14:00:23,722 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:00:23,747 [INFO] [P:3 - 17] 💰 490 028 PLN | 📏 31.82m² | 🚪 2 Rooms | 📌 kameralne 3pietrowe budynki⚡cisza i zieleń⚡PKP | 📍 District ID: 12
+ 🔗 Link: https://www.otodom.pl/pl/oferta/kameralne-3pietrowe-budynkicisza-i-zielenpkp-ID4AE6O
+
+2026-03-24 14:00:24,096 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:00:24,125 [INFO] [P:3 - 18] 💰 849 000 PLN | 📏 63.4m² | 🚪 4 Rooms | 📌 Rozkładowe | Przestronne | Jasne | Do urządzenia | 📍 District ID: 1
+ 🔗 Link: https://www.otodom.pl/pl/oferta/rozkladowe-przestronne-jasne-do-urzadzenia-ID4AxsN
+
+2026-03-24 14:00:24,468 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:00:24,514 [INFO] [P:3 - 19] 💰 1 781 000 PLN | 📏 92.53m² | 🚪 4 Rooms | 📌 4-pokojowe mieszkanie 92m2 + balkon | 📍 District ID: 4
+ 🔗 Link: https://www.otodom.pl/pl/oferta/4-pokojowe-mieszkanie-92m2-balkon-ID4y2Ft
+
+2026-03-24 14:00:24,935 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:00:24,986 [INFO] [P:3 - 20] 💰 853 200 PLN | 📏 58.32m² | 🚪 3 Rooms | 📌 3-pokojowe mieszkanie 58m2 + balkon Bezpośrednio | 📍 District ID: 2
+ 🔗 Link: https://www.otodom.pl/pl/oferta/3-pokojowe-mieszkanie-58m2-balkon-bezposrednio-ID4yJ8X
+
+2026-03-24 14:00:25,333 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:00:25,363 [INFO] [P:3 - 21] 💰 490 200 PLN | 📏 32.0m² | 🚪 2 Rooms | 📌 Zaraz Gotowe Najtańsze 2 Pokoje + 15min Centrum+ Umów Dziś Dni Otwarte | 📍 District ID: 12
+ 🔗 Link: https://www.otodom.pl/pl/oferta/zaraz-gotowe-najtansze-2-pokoje-15min-centrum-umow-dzis-dni-otwarte-ID4AE6z
+
+2026-03-24 14:00:25,701 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:00:25,729 [INFO] [P:3 - 22] 💰 1 757 580 PLN | 📏 53.26m² | 🚪 3 Rooms | 📌 3-pokojowe mieszkanie 53m2 + balkon Bezpośrednio | 📍 District ID: 4
+ 🔗 Link: https://www.otodom.pl/pl/oferta/3-pokojowe-mieszkanie-53m2-balkon-bezposrednio-ID4uoqO
+
+2026-03-24 14:00:26,159 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:00:26,209 [INFO] [P:3 - 23] 💰 1 182 384 PLN | 📏 64.4m² | 🚪 3 Rooms | 📌 3-pokojowe mieszkanie 64m2 + ogródek Bez Prowizji | 📍 District ID: 1
+ 🔗 Link: https://www.otodom.pl/pl/oferta/3-pokojowe-mieszkanie-64m2-ogrodek-bez-prowizji-ID4zWmo
+
+2026-03-24 14:00:26,659 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:00:26,699 [INFO] [P:3 - 24] 💰 606 760 PLN | 📏 27.58m² | 🚪 1 Rooms | 📌 1-pokojowe mieszkanie 27m2 + balkon Bez Prowizji | 📍 District ID: 13
+ 🔗 Link: https://www.otodom.pl/pl/oferta/1-pokojowe-mieszkanie-27m2-balkon-bez-prowizji-ID4uSjb
+
+2026-03-24 14:00:27,122 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:00:27,158 [INFO] [P:3 - 25] 💰 1 054 050 PLN | 📏 70.27m² | 🚪 3 Rooms | 📌 3-pokojowe mieszkanie 70m2 + balkon Bezpośrednio | 📍 District ID: 14
+ 🔗 Link: https://www.otodom.pl/pl/oferta/3-pokojowe-mieszkanie-70m2-balkon-bezposrednio-ID4upG2
+
+2026-03-24 14:00:27,665 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:00:27,693 [INFO] [P:3 - 26] 💰 1 800 093 PLN | 📏 71.86m² | 🚪 3 Rooms | 📌 3-pokojowe mieszkanie 71m2 + balkon Bezpośrednio | 📍 District ID: 14
+ 🔗 Link: https://www.otodom.pl/pl/oferta/3-pokojowe-mieszkanie-71m2-balkon-bezposrednio-ID4uo7e
+
+2026-03-24 14:00:28,079 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:00:28,113 [INFO] [P:3 - 27] 💰 696 226 PLN | 📏 43.11m² | 🚪 2 Rooms | 📌 2-pokojowe mieszkanie 43m2 + balkon | 📍 District ID: 12
+ 🔗 Link: https://www.otodom.pl/pl/oferta/2-pokojowe-mieszkanie-43m2-balkon-ID4upn8
+
+2026-03-24 14:00:28,650 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:00:28,683 [INFO] [P:3 - 28] 💰 757 020 PLN | 📏 40.92m² | 🚪 2 Rooms | 📌 2-pokojowe mieszkanie 40m2 + ogródek | 📍 District ID: 13
+ 🔗 Link: https://www.otodom.pl/pl/oferta/2-pokojowe-mieszkanie-40m2-ogrodek-ID4upUP
+
+2026-03-24 14:00:29,043 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:00:29,081 [INFO] [P:3 - 29] 💰 1 036 445 PLN | 📏 56.63m² | 🚪 3 Rooms | 📌 3-pokojowe mieszkanie 56m2 + balkon Bez Prowizji | 📍 District ID: 14
+ 🔗 Link: https://www.otodom.pl/pl/oferta/3-pokojowe-mieszkanie-56m2-balkon-bez-prowizji-ID4unG9
+
+2026-03-24 14:00:29,406 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:00:29,478 [INFO] [P:3 - 30] 💰 568 900 PLN | 📏 40.0m² | 🚪 2 Rooms | 📌 Zaraz Gotowe 2 pokoje + Hala Garażowa + Obok SKM/METRO + DNI OTWARTE | 📍 District ID: 12
+ 🔗 Link: https://www.otodom.pl/pl/oferta/zaraz-gotowe-2-pokoje-hala-garazowa-obok-skm-metro-dni-otwarte-ID4AE65
+
+2026-03-24 14:00:29,881 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:00:29,914 [INFO] [P:3 - 31] 💰 804 156 PLN | 📏 59.89m² | 🚪 3 Rooms | 📌 3pokoje +GARAŻ za 0 PLN_ blisko METRO Karolin -> Dni otwarte do soboty | 📍 District ID: 12
+ 🔗 Link: https://www.otodom.pl/pl/oferta/3pokoje-garaz-za-0-pln-blisko-metro-karolin-dni-otwarte-do-soboty-ID4AE60
+
+2026-03-24 14:00:30,312 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:00:30,354 [INFO] [P:3 - 32] 💰 1 081 000 PLN | 📏 47.68m² | 🚪 2 Rooms | 📌 Doskonała inwestycja | Gotowe | Garaż | 📍 District ID: 4
+ 🔗 Link: https://www.otodom.pl/pl/oferta/doskonala-inwestycja-gotowe-garaz-ID4AeKE
+
+2026-03-24 14:00:30,713 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:00:30,743 [INFO] [P:3 - 33] 💰 506 408 PLN | 📏 32.0m² | 🚪 1 Rooms | 📌 Kawalerka z Ogrodem blisko METRO Karolin -> Dni otwarte do soboty | 📍 District ID: 12
+ 🔗 Link: https://www.otodom.pl/pl/oferta/kawalerka-z-ogrodem-blisko-metro-karolin-dni-otwarte-do-soboty-ID4AE5U
+
+2026-03-24 14:00:31,095 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:00:31,141 [INFO] [P:3 - 34] 💰 625 738 PLN | 📏 40.74m² | 🚪 2 Rooms | 📌 2pokoje +GARAŻ za 0 PLN_ blisko METRO Karolin -> Dni otwarte do soboty | 📍 District ID: 12
+ 🔗 Link: https://www.otodom.pl/pl/oferta/2pokoje-garaz-za-0-pln-blisko-metro-karolin-dni-otwarte-do-soboty-ID4AE5P
+
+2026-03-24 14:00:31,554 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:00:31,590 [INFO] [P:3 - 35] 💰 1 095 000 PLN | 📏 53.5m² | 🚪 2 Rooms | 📌 Ciche i słoneczne mieszkanie na Mokotowie! Nowy Apartamentowiec! | 📍 District ID: 1
+ 🔗 Link: https://www.otodom.pl/pl/oferta/ciche-i-sloneczne-mieszkanie-na-mokotowie-nowy-apartamentowiec-ID4zb11
+
+2026-03-24 14:00:31,984 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:00:32,014 [INFO] [P:3 - 36] 💰 537 892 PLN | 📏 34.2m² | 🚪 2 Rooms | 📌 2pokoje +GARAŻ za 0 PLN_ blisko METRO Karolin -> Dni otwarte do soboty | 📍 District ID: 12
+ 🔗 Link: https://www.otodom.pl/pl/oferta/2pokoje-garaz-za-0-pln-blisko-metro-karolin-dni-otwarte-do-soboty-ID4AE5N
+
+2026-03-24 14:00:32,413 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:00:32,455 [INFO] [P:3 - 37] 💰 670 000 PLN | 📏 42.0m² | 🚪 2 Rooms | 📌 42 m², 2 pokoje, 7 piętro, blisko METRO I SGGW | 📍 District ID: 3
+ 🔗 Link: https://www.otodom.pl/pl/oferta/42-m-2-pokoje-7-pietro-blisko-metro-i-sggw-ID4ACa7
+
+2026-03-24 14:00:32,802 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:00:32,841 [INFO] [P:3 - 38] 💰 735 714 PLN | 📏 54.71m² | 🚪 2 Rooms | 📌 Niski czynsz | Widok na Zieleń | Blisko do metra | 📍 District ID: 3
+ 🔗 Link: https://www.otodom.pl/pl/oferta/niski-czynsz-widok-na-zielen-blisko-do-metra-ID4AazZ
+
+2026-03-24 14:00:33,199 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:00:33,230 [INFO] [P:3 - 39] 💰 880 000 PLN | 📏 50.8m² | 🚪 2 Rooms | 📌 2 pokoje, do remontu, świetna lokalizacja | 📍 District ID: 1
+ 🔗 Link: https://www.otodom.pl/pl/oferta/2-pokoje-do-remontu-swietna-lokalizacja-ID4AbM0
+
+2026-03-24 14:00:33,698 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:00:33,733 [INFO] [P:3 - 40] 💰 850 000 PLN | 📏 48.35m² | 🚪 2 Rooms | 📌 2 pokoje po remoncie | Plac Szembeka | Kamienica | 📍 District ID: 2
+ 🔗 Link: https://www.otodom.pl/pl/oferta/2-pokoje-po-remoncie-plac-szembeka-kamienica-ID4Aowz
+
+2026-03-24 14:00:34,097 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:00:34,145 [INFO] [P:3 - 41] 💰 3 604 056 PLN | 📏 111.24m² | 🚪 4 Rooms | 📌 4-pokojowe mieszkanie 111m2 + 2 tarasy | 📍 District ID: 6
+ 🔗 Link: https://www.otodom.pl/pl/oferta/4-pokojowe-mieszkanie-111m2-2-tarasy-ID4xPad
+
+2026-03-24 14:00:34,502 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:00:34,547 [INFO] [P:3 - 42] 💰 639 000 PLN | 📏 31.44m² | 🚪 2 Rooms | 📌 31,44 m² | Jurajska | Klimatyzacja | Garaż | 📍 District ID: 3
+ 🔗 Link: https://www.otodom.pl/pl/oferta/31-44-m-jurajska-klimatyzacja-garaz-ID4AxJy
+
+2026-03-24 14:00:34,917 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:00:34,969 [INFO] [P:3 - 43] 💰 950 000 PLN | 📏 77.0m² | 🚪 4 Rooms | 📌 400m Metro Trocka parking 2 balkony winda okazja | 📍 District ID: 8
+ 🔗 Link: https://www.otodom.pl/pl/oferta/400m-metro-trocka-parking-2-balkony-winda-okazja-ID4AzzY
+
+2026-03-24 14:00:35,319 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:00:35,368 [INFO] [P:3 - 44] 💰 2 000 000 PLN | 📏 77.69m² | 🚪 3 Rooms | 📌 3 oddzielne studia w świetnej lokalizacji | 📍 District ID: 9
+ 🔗 Link: https://www.otodom.pl/pl/oferta/3-oddzielne-studia-w-swietnej-lokalizacji-ID4AE4v
+
+2026-03-24 14:00:35,773 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:00:35,811 [INFO] [P:3 - 45] 💰 780 900 PLN | 📏 61.5m² | 🚪 4 Rooms | 📌 Najtańsze 3 lub 4 pokoje +Umów DNI OTWARTE + 15min do CENTRUM +TOP HIT | 📍 District ID: 12
+ 🔗 Link: https://www.otodom.pl/pl/oferta/najtansze-3-lub-4-pokoje-umow-dni-otwarte-15min-do-centrum-top-hit-ID4ArxF
+
+2026-03-24 14:00:36,128 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:00:36,162 [INFO] [P:3 - 46] 💰 542 000 PLN | 📏 37.5m² | 🚪 2 Rooms | 📌 Ostatnie na TEN ROK + GARAŻ/BOKS+ Umów DNI OTWARTE Z RABATAMI I ZOBACZ | 📍 District ID: 12
+ 🔗 Link: https://www.otodom.pl/pl/oferta/ostatnie-na-ten-rok-garaz-boks-umow-dni-otwarte-z-rabatami-i-zobacz-ID4ArvR
+
+2026-03-24 14:00:36,517 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:00:36,552 [INFO] [P:3 - 47] 💰 804 145 PLN | 📏 60.0m² | 🚪 4 Rooms | 📌 3/4pokoje z Halą Garażową GRATIS blisko METRO Karolin, Factory i SKM ! | 📍 District ID: 12
+ 🔗 Link: https://www.otodom.pl/pl/oferta/3-4pokoje-z-hala-garazowa-gratis-blisko-metro-karolin-factory-i-skm-ID4AE7W
+
+2026-03-24 14:00:36,920 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:00:36,921 [INFO] ======================================================================
+
+2026-03-24 14:00:36,922 [INFO] INFO: Page 3 completed. Resting for 5 seconds to avoid IP ban...
+2026-03-24 14:00:41,923 [INFO] 
+============================================================
+2026-03-24 14:00:41,923 [INFO] 📄 SCRAPING INITIATED: PAGE 4 [APARTMENT SALE]
+2026-03-24 14:00:41,924 [INFO] ============================================================
+2026-03-24 14:00:44,132 [INFO] INFO: Scanning for real estate listings...
+2026-03-24 14:00:44,176 [INFO] INFO: Scrolling down to trick 'Lazy Loading' (3 times)...
+2026-03-24 14:00:48,779 [INFO] INFO: Hurricane Mode active! Found 42 listings on page 4. Extracting...
+
+2026-03-24 14:00:48,780 [INFO] ======================================================================
+2026-03-24 14:00:48,819 [INFO] [P:4 - 1] 💰 0 PLN | 📏 46.05m² | 🚪 2 Rooms | 📌 2-pokojowe mieszkanie 46m2 + balkon Bezpośrednio | 📍 District ID: 7
+ 🔗 Link: https://www.otodom.pl/pl/oferta/2-pokojowe-mieszkanie-46m2-balkon-bezposrednio-ID4yEnm
+
+2026-03-24 14:00:50,909 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:00:51,073 [INFO] [P:4 - 2] 💰 610 000 PLN | 📏 38.0m² | 🚪 2 Rooms | 📌 Sprzedam 2 pokoje przy ul. Chodeckiej, do zamieszkania | 📍 District ID: 8
+ 🔗 Link: https://www.otodom.pl/pl/oferta/sprzedam-2-pokoje-przy-ul-chodeckiej-do-zamieszkania-ID4ADE4
+
+2026-03-24 14:00:51,661 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:00:51,737 [INFO] [P:4 - 3] 💰 939 000 PLN | 📏 7.2m² | 🚪 2 Rooms | 📌 2 pokoje |ostatnie piętro| balkon 7,2 m²| klimatyzacja | basen i sauna | 📍 District ID: 4
+ 🔗 Link: https://www.otodom.pl/pl/oferta/2-pokoje-ostatnie-pietro-balkon-7-2-m-klimatyzacja-basen-i-sauna-ID4AwGV
+
+2026-03-24 14:00:52,087 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:00:52,141 [INFO] [P:4 - 4] 💰 490 100 PLN | 📏 32.0m² | 🚪 2 Rooms | 📌 Kawalerka lub 2 pokoje + Umów DNI OTWARTE + 15min do CENTRUM _ ZOBACZ | 📍 District ID: 12
+ 🔗 Link: https://www.otodom.pl/pl/oferta/kawalerka-lub-2-pokoje-umow-dni-otwarte-15min-do-centrum-zobacz-ID4Ax4s
+
+2026-03-24 14:00:52,683 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:00:52,729 [INFO] [P:4 - 5] 💰 0 PLN | 📏 50.67m² | 🚪 3 Rooms | 📌 Marimonte | mieszkanie 3-pok. | M​U.2.20 | 📍 District ID: 6
+ 🔗 Link: https://www.otodom.pl/pl/oferta/marimonte-mieszkanie-3-pok-mu-2-20-ID4vmEx
+
+2026-03-24 14:00:53,101 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:00:53,172 [INFO] [P:4 - 6] 💰 829 000 PLN | 📏 65.0m² | 🚪 3 Rooms | 📌 Ciche, z dużym balkonem przy metrze Imielin | 📍 District ID: 3
+ 🔗 Link: https://www.otodom.pl/pl/oferta/ciche-z-duzym-balkonem-przy-metrze-imielin-ID4yJlL
+
+2026-03-24 14:00:53,499 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:00:53,531 [INFO] [P:4 - 7] 💰 769 000 PLN | 📏 40.06m² | 🚪 2 Rooms | 📌 2 pokoje, gotowy budynek, bez PCC | 📍 District ID: 6
+ 🔗 Link: https://www.otodom.pl/pl/oferta/2-pokoje-gotowy-budynek-bez-pcc-ID4Ak3i
+
+2026-03-24 14:00:53,886 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:00:53,935 [INFO] [P:4 - 8] 💰 1 599 000 PLN | 📏 90.0m² | 🚪 4 Rooms | 📌 Ksawerów, basen/fitness w budynku metro 3 minuty | 📍 District ID: 1
+ 🔗 Link: https://www.otodom.pl/pl/oferta/ksawerow-basen-fitness-w-budynku-metro-3-minuty-ID4A04t
+
+2026-03-24 14:00:54,245 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:00:54,295 [INFO] [P:4 - 9] 💰 1 200 000 PLN | 📏 58.5m² | 🚪 2 Rooms | 📌 Rezerwacja | Przestronne 2-pokoje na Woli | Basen | 📍 District ID: 4
+ 🔗 Link: https://www.otodom.pl/pl/oferta/rezerwacja-przestronne-2-pokoje-na-woli-basen-ID4AywN
+
+2026-03-24 14:00:54,658 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:00:54,687 [INFO] [P:4 - 10] 💰 990 000 PLN | 📏 62.0m² | 🚪 3 Rooms | 📌 Przestronne 62 m² przy Metrze Płocka/Loggia | 📍 District ID: 4
+ 🔗 Link: https://www.otodom.pl/pl/oferta/przestronne-62-m-przy-metrze-plocka-loggia-ID4AE3P
+
+2026-03-24 14:00:55,097 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:00:55,139 [INFO] [P:4 - 11] 💰 800 000 PLN | 📏 26.0m² | 🚪 1 Rooms | 📌 Absolutnie wyjątkowe w kamienicy z windą | 📍 District ID: 9
+ 🔗 Link: https://www.otodom.pl/pl/oferta/absolutnie-wyjatkowe-w-kamienicy-z-winda-ID4AE3f
+
+2026-03-24 14:00:55,459 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:00:55,508 [INFO] [P:4 - 12] 💰 1 800 000 PLN | 📏 87.16m² | 🚪 5 Rooms | 📌 Inwestycyjnie, 2 mieszkania w 1, 5 pokoi | 📍 District ID: 9
+ 🔗 Link: https://www.otodom.pl/pl/oferta/inwestycyjnie-2-mieszkania-w-1-5-pokoi-ID4AE35
+
+2026-03-24 14:00:55,878 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:00:55,926 [INFO] [P:4 - 13] 💰 965 000 PLN | 📏 78.8m² | 🚪 4 Rooms | 📌 Bemowo ul. Lazurowa⭐78,8m2 / 4 pokoje + loggia PARKING Park Górczewska | 📍 District ID: 7
+ 🔗 Link: https://www.otodom.pl/pl/oferta/bemowo-ul-lazurowa78-8m2-4-pokoje-loggia-parking-park-gorczewska-ID4AE2Z
+
+2026-03-24 14:00:56,228 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:00:56,269 [INFO] [P:4 - 14] 💰 1 725 000 PLN | 📏 93.13m² | 🚪 4 Rooms | 📌 Komfortowe 4 pokoje na Dolnym Mokotowie | 📍 District ID: 1
+ 🔗 Link: https://www.otodom.pl/pl/oferta/komfortowe-4-pokoje-na-dolnym-mokotowie-ID4AmlK
+
+2026-03-24 14:00:56,757 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:00:56,801 [INFO] [P:4 - 15] 💰 1 500 000 PLN | 📏 67.0m² | 🚪 2 Rooms | 📌 2- pok,67 m² zielony azyl w jednej z topowych części Bielan | 📍 District ID: 6
+ 🔗 Link: https://www.otodom.pl/pl/oferta/2-pok-67-m-zielony-azyl-w-jednej-z-topowych-czesci-bielan-ID4AE2T
+
+2026-03-24 14:00:57,133 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:00:57,173 [INFO] [P:4 - 16] 💰 640 000 PLN | 📏 37.5m² | 🚪 2 Rooms | 📌 2-pokojowe 37,5 m2 / Mokotów ul. Św. Bonifacego | 📍 District ID: 1
+ 🔗 Link: https://www.otodom.pl/pl/oferta/2-pokojowe-37-5-m2-mokotow-ul-sw-bonifacego-ID4AE2O
+
+2026-03-24 14:00:57,505 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:00:57,545 [INFO] [P:4 - 17] 💰 920 000 PLN | 📏 57.0m² | 🚪 3 Rooms | 📌 3-pokojowe mieszkanie 57m² z ogródkiem | 📍 District ID: 14
+ 🔗 Link: https://www.otodom.pl/pl/oferta/3-pokojowe-mieszkanie-57m-z-ogrodkiem-ID4Azfd
+
+2026-03-24 14:00:57,877 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:00:57,939 [INFO] [P:4 - 18] 💰 390 000 PLN | 📏 19.0m² | 🚪 1 Rooms | 📌 Inwestycyja przy Polu Mokotowskim - Batorego 33 | 📍 District ID: 1
+ 🔗 Link: https://www.otodom.pl/pl/oferta/inwestycyja-przy-polu-mokotowskim-batorego-33-ID4AiVj
+
+2026-03-24 14:00:58,308 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:00:58,357 [INFO] [P:4 - 19] 💰 599 000 PLN | 📏 38.0m² | 🚪 3 Rooms | 📌 Ciche z widokiem na zieleń, parking za szlabanem, duży balkon! OKAZJA | 📍 District ID: 2
+ 🔗 Link: https://www.otodom.pl/pl/oferta/ciche-z-widokiem-na-zielen-parking-za-szlabanem-duzy-balkon-okazja-ID4An1x
+
+2026-03-24 14:00:58,749 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:00:58,787 [INFO] [P:4 - 20] 💰 859 000 PLN | 📏 53.0m² | 🚪 2 Rooms | 📌 Widok na Jeziorko Gocławskie! garaż, idealna lokalizacja | 📍 District ID: 2
+ 🔗 Link: https://www.otodom.pl/pl/oferta/widok-na-jeziorko-goclawskie-garaz-idealna-lokalizacja-ID4An1K
+
+2026-03-24 14:00:59,122 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:00:59,166 [INFO] [P:4 - 21] 💰 759 000 PLN | 📏 49.3m² | 🚪 3 Rooms | 📌 Dwustronne, słoneczne, z balkonem, ustawne, Park, WUM, PO REMONCIE | 📍 District ID: 11
+ 🔗 Link: https://www.otodom.pl/pl/oferta/dwustronne-sloneczne-z-balkonem-ustawne-park-wum-po-remoncie-ID4An21
+
+2026-03-24 14:00:59,514 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:00:59,561 [INFO] [P:4 - 22] 💰 2 350 000 PLN | 📏 87.0m² | 🚪 4 Rooms | 📌 Wyjątkowy 4 pokojowy apartament z tarasem Wola! | 📍 District ID: 4
+ 🔗 Link: https://www.otodom.pl/pl/oferta/wyjatkowy-4-pokojowy-apartament-z-tarasem-wola-ID4ABTc
+
+2026-03-24 14:00:59,969 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:01:00,014 [INFO] [P:4 - 23] 💰 3 600 000 PLN | 📏 40.0m² | 🚪 5 Rooms | 📌 Wilanów | Prywatność | Taras 40 m² | 2x Garaż | | 📍 District ID: 15
+ 🔗 Link: https://www.otodom.pl/pl/oferta/wilanow-prywatnosc-taras-40-m-2x-garaz-ID4AE2l
+
+2026-03-24 14:01:00,596 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:01:00,633 [INFO] [P:4 - 24] 💰 477 133 PLN | 📏 32.62m² | 🚪 2 Rooms | 📌 Ogródek 24m2 6min do Metra, blisko PKP Promocja! | 📍 District ID: 8
+ 🔗 Link: https://www.otodom.pl/pl/oferta/ogrodek-24m2-6min-do-metra-blisko-pkp-promocja-ID4AE2e
+
+2026-03-24 14:01:00,996 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:01:01,040 [INFO] [P:4 - 25] 💰 1 100 000 PLN | 📏 53.0m² | 🚪 3 Rooms | 📌 3 pokoje 53 m² + ogród 47 m² – Bemowo, metro Karolin 2026 | 📍 District ID: 7
+ 🔗 Link: https://www.otodom.pl/pl/oferta/3-pokoje-53-m-ogrod-47-m-bemowo-metro-karolin-2026-ID4zuz7
+
+2026-03-24 14:01:01,377 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:01:01,405 [INFO] [P:4 - 26] 💰 562 133 PLN | 📏 39.31m² | 🚪 2 Rooms | 📌 6min do Metra, blisko PKP 2-pok w Promocji! | 📍 District ID: 8
+ 🔗 Link: https://www.otodom.pl/pl/oferta/6min-do-metra-blisko-pkp-2-pok-w-promocji-ID4AE2b
+
+2026-03-24 14:01:01,740 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:01:01,787 [INFO] [P:4 - 27] 💰 843 480 PLN | 📏 59.4m² | 🚪 3 Rooms | 📌 3-pokoje Promocyjna Cena - 10min do Metra | 📍 District ID: 1
+ 🔗 Link: https://www.otodom.pl/pl/oferta/3-pokoje-promocyjna-cena-10min-do-metra-ID4AE28
+
+2026-03-24 14:01:02,098 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:01:02,150 [INFO] [P:4 - 28] 💰 1 279 000 PLN | 📏 66.98m² | 🚪 2 Rooms | 📌 Rozkładowe, jasne mieszkanie w doskonałej lokaliza | 📍 District ID: 1
+ 🔗 Link: https://www.otodom.pl/pl/oferta/rozkladowe-jasne-mieszkanie-w-doskonalej-lokaliza-ID4AE1V
+
+2026-03-24 14:01:02,480 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:01:02,522 [INFO] [P:4 - 29] 💰 1 100 000 PLN | 📏 54.0m² | 🚪 2 Rooms | 📌 Zamieszkaj na Mokotowie! 54 m², 2 pokoje, balkon – Cybernetyki | 📍 District ID: 1
+ 🔗 Link: https://www.otodom.pl/pl/oferta/zamieszkaj-na-mokotowie-54-m-2-pokoje-balkon-cybernetyki-ID4zCEr
+
+2026-03-24 14:01:02,986 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:01:03,014 [INFO] [P:4 - 30] 💰 680 000 PLN | 📏 38.8m² | 🚪 2 Rooms | 📌 2 Pokojowe 38,8 M2 Osiedle Za Żelazną Bramą | 📍 District ID: 9
+ 🔗 Link: https://www.otodom.pl/pl/oferta/2-pokojowe-38-8-m2-osiedle-za-zelazna-brama-ID4AE1O
+
+2026-03-24 14:01:03,379 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:01:03,410 [INFO] [P:4 - 31] 💰 2 375 000 PLN | 📏 90.5m² | 🚪 4 Rooms | 📌 Apartament Mokotów, ul. Gandalfa - 90,5 m + 16,77 tarasów | 📍 District ID: 1
+ 🔗 Link: https://www.otodom.pl/pl/oferta/apartament-mokotow-ul-gandalfa-90-5-m-16-77-tarasow-ID4zemi
+
+2026-03-24 14:01:03,786 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:01:03,813 [INFO] [P:4 - 32] 💰 849 000 PLN | 📏 42.0m² | 🚪 2 Rooms | 📌 Komfortowe 2 pokoje w super lokalizacji na Miasteczku Wilanów | 📍 District ID: 15
+ 🔗 Link: https://www.otodom.pl/pl/oferta/komfortowe-2-pokoje-w-super-lokalizacji-na-miasteczku-wilanow-ID4AA6p
+
+2026-03-24 14:01:04,148 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:01:04,186 [INFO] [P:4 - 33] 💰 1 930 000 PLN | 📏 71.47m² | 🚪 3 Rooms | 📌 Apartament przy parku┃standard Premium | 📍 District ID: 2
+ 🔗 Link: https://www.otodom.pl/pl/oferta/apartament-przy-parkustandard-premium-ID4A5Tk
+
+2026-03-24 14:01:04,538 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:01:04,569 [INFO] [P:4 - 34] 💰 1 412 802 PLN | 📏 88.6m² | 🚪 4 Rooms | 📌 4-pokojowe mieszkanie 88m2 + ogródek | 📍 District ID: 1
+ 🔗 Link: https://www.otodom.pl/pl/oferta/4-pokojowe-mieszkanie-88m2-ogrodek-ID4wHHO
+
+2026-03-24 14:01:04,920 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:01:04,960 [INFO] [P:4 - 35] 💰 709 000 PLN | 📏 38.0m² | 🚪 2 Rooms | 📌 Metro Wierzbno | Parkiet | Jasne i ciche | 📍 District ID: 1
+ 🔗 Link: https://www.otodom.pl/pl/oferta/metro-wierzbno-parkiet-jasne-i-ciche-ID4AE1A
+
+2026-03-24 14:01:05,294 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:01:05,326 [INFO] [P:4 - 36] 💰 1 330 000 PLN | 📏 73.53m² | 🚪 3 Rooms | 📌 Duża Kuchnia! 2 Tarasy! Przestronne! Blisko Metra i Galerii Targówek! | 📍 District ID: 8
+ 🔗 Link: https://www.otodom.pl/pl/oferta/duza-kuchnia-2-tarasy-przestronne-blisko-metra-i-galerii-targowek-ID4AE1x
+
+2026-03-24 14:01:05,630 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:01:05,680 [INFO] [P:4 - 37] 💰 1 380 000 PLN | 📏 74.0m² | 🚪 2 Rooms | 📌 Mieszkanie w modernistycznym stylu┃winda┃metro | 📍 District ID: 9
+ 🔗 Link: https://www.otodom.pl/pl/oferta/mieszkanie-w-modernistycznym-styluwindametro-ID4An8P
+
+2026-03-24 14:01:06,058 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:01:06,083 [INFO] [P:4 - 38] 💰 1 100 000 PLN | 📏 80.7m² | 🚪 4 Rooms | 📌 3 /4 pokoje, ciche, balkon, garaż, 2002 | 📍 District ID: 12
+ 🔗 Link: https://www.otodom.pl/pl/oferta/3-4-pokoje-ciche-balkon-garaz-2002-ID4ArzK
+
+2026-03-24 14:01:06,421 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:01:06,454 [INFO] [P:4 - 39] 💰 650 000 PLN | 📏 35.5m² | 🚪 2 Rooms | 📌 Piękny widok┃metro pod klatką┃Sgh naprzeciwko | 📍 District ID: 1
+ 🔗 Link: https://www.otodom.pl/pl/oferta/piekny-widokmetro-pod-klatkasgh-naprzeciwko-ID4AjAu
+
+2026-03-24 14:01:06,822 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:01:06,852 [INFO] [P:4 - 40] 💰 599 000 PLN | 📏 48.5m² | 🚪 3 Rooms | 📌 ⭐Słoneczne⭐3pok⭐Balkon⭐PełnaWłasność⭐Komunikacja⭐ | 📍 District ID: 2
+ 🔗 Link: https://www.otodom.pl/pl/oferta/sloneczne3pokbalkonpelnawlasnosckomunikacja-ID4AE0Y
+
+2026-03-24 14:01:07,208 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:01:07,243 [INFO] [P:4 - 41] 💰 1 340 416 PLN | 📏 89.75m² | 🚪 5 Rooms | 📌 5-pokojowe mieszkanie 89m2 + 2 balkony | 📍 District ID: 14
+ 🔗 Link: https://www.otodom.pl/pl/oferta/5-pokojowe-mieszkanie-89m2-2-balkony-ID4zqtt
+
+2026-03-24 14:01:07,575 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:01:07,600 [INFO] [P:4 - 42] 💰 490 100 PLN | 📏 32.0m² | 🚪 2 Rooms | 📌 Kawalerka lub 2 pokoje + Umów DNI OTWARTE + 15min do CENTRUM _ ZOBACZ | 📍 District ID: 12
+ 🔗 Link: https://www.otodom.pl/pl/oferta/kawalerka-lub-2-pokoje-umow-dni-otwarte-15min-do-centrum-zobacz-ID4Ax4s
+
+2026-03-24 14:01:07,942 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:01:07,942 [INFO] ======================================================================
+
+2026-03-24 14:01:07,943 [INFO] INFO: Page 4 completed. Resting for 5 seconds to avoid IP ban...
+2026-03-24 14:01:12,943 [INFO] 
+============================================================
+2026-03-24 14:01:12,943 [INFO] 📄 SCRAPING INITIATED: PAGE 5 [APARTMENT SALE]
+2026-03-24 14:01:12,944 [INFO] ============================================================
+2026-03-24 14:01:15,391 [INFO] INFO: Scanning for real estate listings...
+2026-03-24 14:01:15,484 [INFO] INFO: Scrolling down to trick 'Lazy Loading' (3 times)...
+2026-03-24 14:01:20,213 [INFO] INFO: Hurricane Mode active! Found 33 listings on page 5. Extracting...
+
+2026-03-24 14:01:20,214 [INFO] ======================================================================
+2026-03-24 14:01:20,271 [INFO] [P:5 - 1] 💰 1 190 000 PLN | 📏 54.21m² | 🚪 3 Rooms | 📌 Sprzedam Nowy Apartament dzielnica Włochy Bezpośrednio | 📍 District ID: 14
+ 🔗 Link: https://www.otodom.pl/pl/oferta/sprzedam-nowy-apartament-dzielnica-wlochy-bezposrednio-ID4AnIQ
+
+2026-03-24 14:01:21,762 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:01:21,919 [INFO] [P:5 - 2] 💰 1 200 000 PLN | 📏 50.0m² | 🚪 2 Rooms | 📌 Wyposażone i gotowe do zamieszkania mieszkanie 50m2, 17 piętro | 📍 District ID: 4
+ 🔗 Link: https://www.otodom.pl/pl/oferta/wyposazone-i-gotowe-do-zamieszkania-mieszkanie-50m2-17-pietro-ID4ACfR
+
+2026-03-24 14:01:22,723 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:01:22,782 [INFO] [P:5 - 3] 💰 1 390 000 PLN | 📏 52.0m² | 🚪 2 Rooms | 📌 Nowoczesne 2-pokojowe mieszkanie w Wilanowie, Royal Park Wilanów | 📍 District ID: 15
+ 🔗 Link: https://www.otodom.pl/pl/oferta/nowoczesne-2-pokojowe-mieszkanie-w-wilanowie-royal-park-wilanow-ID4ACd2
+
+2026-03-24 14:01:23,469 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:01:23,517 [INFO] [P:5 - 4] 💰 0 PLN | 📏 56.85m² | 🚪 3 Rooms | 📌 3-pokojowe mieszkanie 56m2 + balkon Bez Prowizji | 📍 District ID: 12
+ 🔗 Link: https://www.otodom.pl/pl/oferta/3-pokojowe-mieszkanie-56m2-balkon-bez-prowizji-ID4u9YM
+
+2026-03-24 14:01:24,157 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:01:24,203 [INFO] [P:5 - 5] 💰 807 978 PLN | 📏 58.54m² | 🚪 3 Rooms | 📌 3-pokojowe mieszkanie 58m2 + loggia | 📍 District ID: 5
+ 🔗 Link: https://www.otodom.pl/pl/oferta/3-pokojowe-mieszkanie-58m2-loggia-ID4umNu
+
+2026-03-24 14:01:24,814 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:01:24,861 [INFO] [P:5 - 6] 💰 1 950 000 PLN | 📏 101.0m² | 🚪 4 Rooms | 📌 M4 w Aninie z widokiem na las – 101 m², 2 Tarasy | 📍 District ID: 10
+ 🔗 Link: https://www.otodom.pl/pl/oferta/m4-w-aninie-z-widokiem-na-las-101-m-2-tarasy-ID4xYVk
+
+2026-03-24 14:01:25,592 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:01:25,649 [INFO] [P:5 - 7] 💰 1 530 000 PLN | 📏 55.18m² | 🚪 2 Rooms | 📌 Stylowe mieszkanie Mińska Soho Factory. | 📍 District ID: 2
+ 🔗 Link: https://www.otodom.pl/pl/oferta/stylowe-mieszkanie-minska-soho-factory-ID4zXk2
+
+2026-03-24 14:01:26,381 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:01:26,431 [INFO] [P:5 - 8] 💰 377 843 PLN | 📏 18.07m² | 🚪 1 Rooms | 📌 Apartament w Holiday Inn Express Sobieskiego | 📍 District ID: 1
+ 🔗 Link: https://www.otodom.pl/pl/oferta/apartament-w-holiday-inn-express-sobieskiego-ID4x1ab
+
+2026-03-24 14:01:27,090 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:01:27,144 [INFO] [P:5 - 9] 💰 530 000 PLN | 📏 27.2m² | 🚪 2 Rooms | 📌 2 pokoje z klimatyzacją przy parku na Woli! | 📍 District ID: 4
+ 🔗 Link: https://www.otodom.pl/pl/oferta/2-pokoje-z-klimatyzacja-przy-parku-na-woli-ID4AE0u
+
+2026-03-24 14:01:27,816 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:01:27,852 [INFO] [P:5 - 10] 💰 1 690 000 PLN | 📏 131.9m² | 🚪 5 Rooms | 📌 Potencjał na 5 pokoi w super lokalizacji | 📍 District ID: 1
+ 🔗 Link: https://www.otodom.pl/pl/oferta/potencjal-na-5-pokoi-w-super-lokalizacji-ID4AE0w
+
+2026-03-24 14:01:28,595 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:01:28,656 [INFO] [P:5 - 11] 💰 1 302 000 PLN | 📏 62.0m² | 🚪 3 Rooms | 📌 3-pokoje w wysokim standardzie ┃taras 19 m2 | 📍 District ID: 3
+ 🔗 Link: https://www.otodom.pl/pl/oferta/3-pokoje-w-wysokim-standardzie-taras-19-m2-ID4Aywf
+
+2026-03-24 14:01:29,380 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:01:29,424 [INFO] [P:5 - 12] 💰 998 000 PLN | 📏 54.5m² | 🚪 3 Rooms | 📌 2-3 pokoje ,Wola-Odolany, tylko 18300m2 --54.5m2 | 📍 District ID: 4
+ 🔗 Link: https://www.otodom.pl/pl/oferta/2-3-pokoje-wola-odolany-tylko-18300m2-54-5m2-ID4yaW2
+
+2026-03-24 14:01:30,088 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:01:30,121 [INFO] [P:5 - 13] 💰 720 000 PLN | 📏 48.4m² | 🚪 3 Rooms | 📌 Mieszkanie 3 pokojowe z potencjałem | 📍 District ID: 17
+ 🔗 Link: https://www.otodom.pl/pl/oferta/mieszkanie-3-pokojowe-z-potencjalem-ID4Aza5
+
+2026-03-24 14:01:30,824 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:01:30,865 [INFO] [P:5 - 14] 💰 1 100 000 PLN | 📏 100.7m² | 🚪 4 Rooms | 📌 Zamknięte osiedle┃2 łazienki┃balkon┃garaż | 📍 District ID: 5
+ 🔗 Link: https://www.otodom.pl/pl/oferta/zamkniete-osiedle2-lazienkibalkongaraz-ID4AAnC
+
+2026-03-24 14:01:31,528 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:01:31,576 [INFO] [P:5 - 15] 💰 3 600 000 PLN | 📏 57.77m² | 🚪 2 Rooms | 📌 Luksusowe mieszkanie w centrum | Cosmopolitan | 📍 District ID: 9
+ 🔗 Link: https://www.otodom.pl/pl/oferta/luksusowe-mieszkanie-w-centrum-cosmopolitan-ID4AE0c
+
+2026-03-24 14:01:32,395 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:01:32,439 [INFO] [P:5 - 16] 💰 817 990 PLN | 📏 38.5m² | 🚪 2 Rooms | 📌 2 pokoje po remoncie + KOMÓRKA W CENIE - ul. Obrzeżna | 📍 District ID: 1
+ 🔗 Link: https://www.otodom.pl/pl/oferta/2-pokoje-po-remoncie-komorka-w-cenie-ul-obrzezna-ID4zW6u
+
+2026-03-24 14:01:33,189 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:01:33,236 [INFO] [P:5 - 17] 💰 669 000 PLN | 📏 44.0m² | 🚪 2 Rooms | 📌 2-pokojowe / 44 m² / Żoliborz / ul. Boguckiego 4 / Metro / Arkadia | 📍 District ID: 17
+ 🔗 Link: https://www.otodom.pl/pl/oferta/2-pokojowe-44-m-zoliborz-ul-boguckiego-4-metro-arkadia-ID4AAnh
+
+2026-03-24 14:01:33,894 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:01:33,969 [INFO] [P:5 - 18] 💰 0 PLN | 📏 46.05m² | 🚪 2 Rooms | 📌 2-pokojowe mieszkanie 46m2 + balkon Bezpośrednio | 📍 District ID: 7
+ 🔗 Link: https://www.otodom.pl/pl/oferta/2-pokojowe-mieszkanie-46m2-balkon-bezposrednio-ID4yEnm
+
+2026-03-24 14:01:34,616 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:01:34,652 [INFO] [P:5 - 19] 💰 419 000 PLN | 📏 25.0m² | 🚪 2 Rooms | 📌 Okęcie 2pok 25m2 , 1 pietro( winda ) po remoncie, bezpośrednio | 📍 District ID: 14
+ 🔗 Link: https://www.otodom.pl/pl/oferta/okecie-2pok-25m2-1-pietro-winda-po-remoncie-bezposrednio-ID4ADZQ
+
+2026-03-24 14:01:35,515 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:01:35,558 [INFO] [P:5 - 20] 💰 1 995 000 PLN | 📏 75.0m² | 🚪 3 Rooms | 📌 Eleganckie 3 pokoje, do wprowadzenia, taras, garaż | 📍 District ID: 15
+ 🔗 Link: https://www.otodom.pl/pl/oferta/eleganckie-3-pokoje-do-wprowadzenia-taras-garaz-ID4AaSD
+
+2026-03-24 14:01:36,385 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:01:36,443 [INFO] [P:5 - 21] 💰 1 800 000 PLN | 📏 185.0m² | 🚪 5 Rooms | 📌 Przestronne 5-pokojowe mieszkanie 185 m², Anin | 📍 District ID: 10
+ 🔗 Link: https://www.otodom.pl/pl/oferta/przestronne-5-pokojowe-mieszkanie-185-m-anin-ID4zFx0
+
+2026-03-24 14:01:37,188 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:01:37,251 [INFO] [P:5 - 22] 💰 1 990 000 PLN | 📏 205.0m² | 🚪 5 Rooms | 📌 Przestronne 5-pokojowe mieszkanie 205 m², Anin | 📍 District ID: 10
+ 🔗 Link: https://www.otodom.pl/pl/oferta/przestronne-5-pokojowe-mieszkanie-205-m-anin-ID4zFvZ
+
+2026-03-24 14:01:38,136 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:01:38,203 [INFO] [P:5 - 23] 💰 3 290 000 PLN | 📏 94.0m² | 🚪 4 Rooms | 📌 Wybitny apartament | Kamienica "Pod Sowami" | 📍 District ID: 13
+ 🔗 Link: https://www.otodom.pl/pl/oferta/wybitny-apartament-kamienica-pod-sowami-ID4ADZF
+
+2026-03-24 14:01:39,033 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:01:39,096 [INFO] [P:5 - 24] 💰 645 000 PLN | 📏 34.0m² | 🚪 2 Rooms | 📌 WIDNE I CICHE TUŻ PRZY PARKU! DUŻY BALKON! | 📍 District ID: 2
+ 🔗 Link: https://www.otodom.pl/pl/oferta/widne-i-ciche-tuz-przy-parku-duzy-balkon-ID4zCW8
+
+2026-03-24 14:01:39,924 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:01:39,988 [INFO] [P:5 - 25] 💰 495 000 PLN | 📏 20.0m² | 🚪 1 Rooms | 📌 Mieszkanie 1-pokojowe na Woli - blisko metra | 📍 District ID: 4
+ 🔗 Link: https://www.otodom.pl/pl/oferta/mieszkanie-1-pokojowe-na-woli-blisko-metra-ID4ADZ7
+
+2026-03-24 14:01:40,789 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:01:40,836 [INFO] [P:5 - 26] 💰 630 000 PLN | 📏 36.9m² | 🚪 2 Rooms | 📌 Wola Redutowa ⭐2 pok. Po Remoncie Lux⭐Metro 700m | 📍 District ID: 4
+ 🔗 Link: https://www.otodom.pl/pl/oferta/wola-redutowa-2-pok-po-remoncie-luxmetro-700m-ID4ACHy
+
+2026-03-24 14:01:41,454 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:01:41,489 [INFO] [P:5 - 27] 💰 883 960 PLN | 📏 40.18m² | 🚪 2 Rooms | 📌 2 pokoje / 40 mkw/ balkon/garaż / Wola / metro Daszyńskiego / ochrona | 📍 District ID: 4
+ 🔗 Link: https://www.otodom.pl/pl/oferta/2-pokoje-40-mkw-balkon-garaz-wola-metro-daszynskiego-ochrona-ID4Atag
+
+2026-03-24 14:01:42,090 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:01:42,154 [INFO] [P:5 - 28] 💰 693 158 PLN | 📏 42.92m² | 🚪 2 Rooms | 📌 2-pokojowe mieszkanie 42m2 + balkon Bez Prowizji | 📍 District ID: 12
+ 🔗 Link: https://www.otodom.pl/pl/oferta/2-pokojowe-mieszkanie-42m2-balkon-bez-prowizji-ID4upn6
+
+2026-03-24 14:01:42,973 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:01:43,038 [INFO] [P:5 - 29] 💰 3 276 880 PLN | 📏 156.0m² | 🚪 5 Rooms | 📌 Apartament 5 pokojowy taras 24m2 Park | 📍 District ID: 6
+ 🔗 Link: https://www.otodom.pl/pl/oferta/apartament-5-pokojowy-taras-24m2-park-ID4zCwD
+
+2026-03-24 14:01:43,741 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:01:43,794 [INFO] [P:5 - 30] 💰 2 800 000 PLN | 📏 87.0m² | 🚪 3 Rooms | 📌 Powiśle Dobra 53 Kamienica dwa balkony | 📍 District ID: 9
+ 🔗 Link: https://www.otodom.pl/pl/oferta/powisle-dobra-53-kamienica-dwa-balkony-ID4Apmx
+
+2026-03-24 14:01:44,458 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:01:44,524 [INFO] [P:5 - 31] 💰 1 808 679 PLN | 📏 109.24m² | 🚪 4 Rooms | 📌 4-pokojowe mieszkanie 109m2 + ogródek | 📍 District ID: 1
+ 🔗 Link: https://www.otodom.pl/pl/oferta/4-pokojowe-mieszkanie-109m2-ogrodek-ID4xorD
+
+2026-03-24 14:01:45,217 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:01:45,283 [INFO] [P:5 - 32] 💰 2 104 960 PLN | 📏 95.68m² | 🚪 4 Rooms | 📌 Apartament 4pokoje Taras 30m2 Park Kellera | 📍 District ID: 6
+ 🔗 Link: https://www.otodom.pl/pl/oferta/apartament-4pokoje-taras-30m2-park-kellera-ID4zCwS
+
+2026-03-24 14:01:45,972 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:01:46,037 [INFO] [P:5 - 33] 💰 644 081 PLN | 📏 42.56m² | 🚪 2 Rooms | 📌 2-pokojowe mieszkanie 42m2 + ogródek | 📍 District ID: 8
+ 🔗 Link: https://www.otodom.pl/pl/oferta/2-pokojowe-mieszkanie-42m2-ogrodek-ID4zJFP
+
+2026-03-24 14:01:46,689 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:01:46,690 [INFO] ======================================================================
+
+2026-03-24 14:01:46,691 [INFO] INFO: Page 5 completed. Resting for 5 seconds to avoid IP ban...
+2026-03-24 14:01:51,693 [INFO] 
+============================================================
+2026-03-24 14:01:51,694 [INFO] 📄 SCRAPING INITIATED: PAGE 6 [APARTMENT SALE]
+2026-03-24 14:01:51,694 [INFO] ============================================================
+2026-03-24 14:01:56,741 [INFO] INFO: Scanning for real estate listings...
+2026-03-24 14:01:56,925 [INFO] INFO: Scrolling down to trick 'Lazy Loading' (3 times)...
+2026-03-24 14:02:01,563 [INFO] INFO: Hurricane Mode active! Found 36 listings on page 6. Extracting...
+
+2026-03-24 14:02:01,564 [INFO] ======================================================================
+2026-03-24 14:02:01,646 [INFO] [P:6 - 1] 💰 639 000 PLN | 📏 31.44m² | 🚪 2 Rooms | 📌 31,44 m² | Jurajska | Klimatyzacja | Garaż | 📍 District ID: 3
+ 🔗 Link: https://www.otodom.pl/pl/oferta/31-44-m-jurajska-klimatyzacja-garaz-ID4AxJy
+
+2026-03-24 14:02:02,585 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:02:02,697 [INFO] [P:6 - 2] 💰 619 000 PLN | 📏 49.33m² | 🚪 2 Rooms | 📌 2 Pokoje I Oddzielna kuchnia I Bez Prowizji | 📍 District ID: 2
+ 🔗 Link: https://www.otodom.pl/pl/oferta/2-pokoje-i-oddzielna-kuchnia-i-bez-prowizji-ID4AB8N
+
+2026-03-24 14:02:03,436 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:02:03,543 [INFO] [P:6 - 3] 💰 550 000 PLN | 📏 30.0m² | 🚪 1 Rooms | 📌 Sprzedam mieszkanie z ogródkiem | 📍 District ID: 5
+ 🔗 Link: https://www.otodom.pl/pl/oferta/sprzedam-mieszkanie-z-ogrodkiem-ID4ACd6
+
+2026-03-24 14:02:04,208 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:02:04,311 [INFO] [P:6 - 4] 💰 731 766 PLN | 📏 53.37m² | 🚪 3 Rooms | 📌 3-pokojowe mieszkanie 53m2 + balkon Bez Prowizji | 📍 District ID: 5
+ 🔗 Link: https://www.otodom.pl/pl/oferta/3-pokojowe-mieszkanie-53m2-balkon-bez-prowizji-ID4updw
+
+2026-03-24 14:02:04,986 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:02:05,051 [INFO] [P:6 - 5] 💰 815 000 PLN | 📏 45.48m² | 🚪 2 Rooms | 📌 Ustawne 2 Pokoje, 3m Wysokości, Nowe Budownictwo | 📍 District ID: 3
+ 🔗 Link: https://www.otodom.pl/pl/oferta/ustawne-2-pokoje-3m-wysokosci-nowe-budownictwo-ID4zWXl
+
+2026-03-24 14:02:05,632 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:02:05,706 [INFO] [P:6 - 6] 💰 753 437 PLN | 📏 37.41m² | 🚪 2 Rooms | 📌 2-pokojowe mieszkanie 37m2 + balkon Bez Prowizji | 📍 District ID: 7
+ 🔗 Link: https://www.otodom.pl/pl/oferta/2-pokojowe-mieszkanie-37m2-balkon-bez-prowizji-ID4ADYe
+
+2026-03-24 14:02:06,325 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:02:06,383 [INFO] [P:6 - 7] 💰 1 480 000 PLN | 📏 69.0m² | 🚪 3 Rooms | 📌 Prestiżowa lokalizacja przy Nowym Świecie, metro. | 📍 District ID: 9
+ 🔗 Link: https://www.otodom.pl/pl/oferta/prestizowa-lokalizacja-przy-nowym-swiecie-metro-ID4ACNO
+
+2026-03-24 14:02:07,007 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:02:07,061 [INFO] [P:6 - 8] 💰 746 712 PLN | 📏 51.8m² | 🚪 3 Rooms | 📌 3-pokojowe mieszkanie 51m2 + ogródek | 📍 District ID: 8
+ 🔗 Link: https://www.otodom.pl/pl/oferta/3-pokojowe-mieszkanie-51m2-ogrodek-ID4zJFM
+
+2026-03-24 14:02:07,661 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:02:07,726 [INFO] [P:6 - 9] 💰 575 000 PLN | 📏 34.0m² | 🚪 1 Rooms | 📌 Kameralny Grochów, ciche! | 📍 District ID: 2
+ 🔗 Link: https://www.otodom.pl/pl/oferta/kameralny-grochow-ciche-ID4Aomq
+
+2026-03-24 14:02:08,430 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:02:08,499 [INFO] [P:6 - 10] 💰 980 000 PLN | 📏 52.0m² | 🚪 3 Rooms | 📌 3 pokoje, garderoba. Centrum Starej Ochoty | 📍 District ID: 11
+ 🔗 Link: https://www.otodom.pl/pl/oferta/3-pokoje-garderoba-centrum-starej-ochoty-ID4A4QT
+
+2026-03-24 14:02:09,107 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:02:09,154 [INFO] [P:6 - 11] 💰 1 370 000 PLN | 📏 59.0m² | 🚪 3 Rooms | 📌 3 pokojowy Apartament z ogrodem Mokotów. | 📍 District ID: 1
+ 🔗 Link: https://www.otodom.pl/pl/oferta/3-pokojowy-apartament-z-ogrodem-mokotow-ID4ADXC
+
+2026-03-24 14:02:09,747 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:02:09,813 [INFO] [P:6 - 12] 💰 799 000 PLN | 📏 64.5m² | 🚪 3 Rooms | 📌 Metro Trocka 200m. Duży balkon | 📍 District ID: 8
+ 🔗 Link: https://www.otodom.pl/pl/oferta/metro-trocka-200m-duzy-balkon-ID4Ahu1
+
+2026-03-24 14:02:10,445 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:02:10,501 [INFO] [P:6 - 13] 💰 870 000 PLN | 📏 35.0m² | 🚪 3 Rooms | 📌 2-pokojowe mieszkanie z balkonem na Woli, Warszawa | 📍 District ID: 4
+ 🔗 Link: https://www.otodom.pl/pl/oferta/2-pokojowe-mieszkanie-z-balkonem-na-woli-warszawa-ID4ADX7
+
+2026-03-24 14:02:11,111 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:02:11,176 [INFO] [P:6 - 14] 💰 675 000 PLN | 📏 35.69m² | 🚪 1 Rooms | 📌 Duży 1 pok. z kuchnią, kamienica Nowolipki. | 📍 District ID: 4
+ 🔗 Link: https://www.otodom.pl/pl/oferta/duzy-1-pok-z-kuchnia-kamienica-nowolipki-ID4zd9u
+
+2026-03-24 14:02:11,748 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:02:11,811 [INFO] [P:6 - 15] 💰 799 000 PLN | 📏 53.31m² | 🚪 2 Rooms | 📌 2 pokoje z balkonem, Wilanów. | 📍 District ID: 15
+ 🔗 Link: https://www.otodom.pl/pl/oferta/2-pokoje-z-balkonem-wilanow-ID4zju0
+
+2026-03-24 14:02:12,470 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:02:12,531 [INFO] [P:6 - 16] 💰 799 000 PLN | 📏 58.0m² | 🚪 5 Rooms | 📌 Bielany 5 pokoi 2 łazienki gotowe pod wynajem | 📍 District ID: 6
+ 🔗 Link: https://www.otodom.pl/pl/oferta/bielany-5-pokoi-2-lazienki-gotowe-pod-wynajem-ID4AAJf
+
+2026-03-24 14:02:13,293 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:02:13,350 [INFO] [P:6 - 17] 💰 830 000 PLN | 📏 46.5m² | 🚪 3 Rooms | 📌 2/3 pokoje Saska Kępa | 📍 District ID: 2
+ 🔗 Link: https://www.otodom.pl/pl/oferta/2-3-pokoje-saska-kepa-ID4xtCH
+
+2026-03-24 14:02:14,074 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:02:14,123 [INFO] [P:6 - 18] 💰 799 000 PLN | 📏 52.0m² | 🚪 2 Rooms | 📌 Cegła | Wysokie | Dwustronne | 📍 District ID: 2
+ 🔗 Link: https://www.otodom.pl/pl/oferta/cegla-wysokie-dwustronne-ID4Avvl
+
+2026-03-24 14:02:14,662 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:02:14,696 [INFO] [P:6 - 19] 💰 500 000 PLN | 📏 21.0m² | 🚪 1 Rooms | 📌 piękne studio Nowe Miasto Warszawa | 📍 District ID: 9
+ 🔗 Link: https://www.otodom.pl/pl/oferta/piekne-studio-nowe-miasto-warszawa-ID4uu3H
+
+2026-03-24 14:02:15,273 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:02:15,329 [INFO] [P:6 - 20] 💰 1 308 000 PLN | 📏 65.4m² | 🚪 3 Rooms | 📌 Apartament w Starych Włochach, gotowy do odbioru | 📍 District ID: 14
+ 🔗 Link: https://www.otodom.pl/pl/oferta/apartament-w-starych-wlochach-gotowy-do-odbioru-ID4ozc2
+
+2026-03-24 14:02:15,899 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:02:15,953 [INFO] [P:6 - 21] 💰 2 099 000 PLN | 📏 78.41m² | 🚪 4 Rooms | 📌 3-4 pokoje, do nowej aranżacji, Plac Zbawiciela 2 | 📍 District ID: 9
+ 🔗 Link: https://www.otodom.pl/pl/oferta/3-4-pokoje-do-nowej-aranzacji-plac-zbawiciela-2-ID4wlra
+
+2026-03-24 14:02:16,634 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:02:16,669 [INFO] [P:6 - 22] 💰 829 000 PLN | 📏 38.5m² | 🚪 2 Rooms | 📌 Przestronne 2 pokoje, loggia, system SMART | 📍 District ID: 1
+ 🔗 Link: https://www.otodom.pl/pl/oferta/przestronne-2-pokoje-loggia-system-smart-ID4ySh6
+
+2026-03-24 14:02:17,177 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:02:17,227 [INFO] [P:6 - 23] 💰 650 000 PLN | 📏 36.9m² | 🚪 2 Rooms | 📌 Stabilna inwestycja na warszawskim rynku | 📍 District ID: 4
+ 🔗 Link: https://www.otodom.pl/pl/oferta/stabilna-inwestycja-na-warszawskim-rynku-ID4AxeR
+
+2026-03-24 14:02:17,745 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:02:17,814 [INFO] [P:6 - 24] 💰 1 299 000 PLN | 📏 62.92m² | 🚪 3 Rooms | 📌 Unikatowe wnętrze na Woli (3 pokoje) | 📍 District ID: 4
+ 🔗 Link: https://www.otodom.pl/pl/oferta/unikatowe-wnetrze-na-woli-3-pokoje-ID4Al6V
+
+2026-03-24 14:02:18,488 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:02:18,551 [INFO] [P:6 - 25] 💰 589 000 PLN | 📏 31.2m² | 🚪 2 Rooms | 📌 Słoneczne, dwa pokoje przy metrze, balkon, piwnica, zieleń | 📍 District ID: 8
+ 🔗 Link: https://www.otodom.pl/pl/oferta/sloneczne-dwa-pokoje-przy-metrze-balkon-piwnica-zielen-ID4Apqr
+
+2026-03-24 14:02:19,192 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:02:19,257 [INFO] [P:6 - 26] 💰 769 000 PLN | 📏 39.53m² | 🚪 2 Rooms | 📌 2 pokoje do wprowadzenia, Mokotów | 📍 District ID: 1
+ 🔗 Link: https://www.otodom.pl/pl/oferta/2-pokoje-do-wprowadzenia-mokotow-ID4zRXy
+
+2026-03-24 14:02:20,008 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:02:20,072 [INFO] [P:6 - 27] 💰 680 000 PLN | 📏 35.0m² | 🚪 2 Rooms | 📌 Świetna lokalizacja! Zamieszkaj lub zainwestuj + piwnica | 📍 District ID: 4
+ 🔗 Link: https://www.otodom.pl/pl/oferta/swietna-lokalizacja-zamieszkaj-lub-zainwestuj-piwnica-ID4Amfm
+
+2026-03-24 14:02:20,845 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:02:20,912 [INFO] [P:6 - 28] 💰 2 499 999 PLN | 📏 136.5m² | 🚪 3 Rooms | 📌 Wyjątkowy apartament na sprzedaż | 📍 District ID: 1
+ 🔗 Link: https://www.otodom.pl/pl/oferta/wyjatkowy-apartament-na-sprzedaz-ID4AjQq
+
+2026-03-24 14:02:21,670 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:02:21,737 [INFO] [P:6 - 29] 💰 535 000 PLN | 📏 46.0m² | 🚪 2 Rooms | 📌 Dwupokojowe mieszkanie na Tarchominie | 📍 District ID: 5
+ 🔗 Link: https://www.otodom.pl/pl/oferta/dwupokojowe-mieszkanie-na-tarchominie-ID4ADEK
+
+2026-03-24 14:02:22,437 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:02:22,504 [INFO] [P:6 - 30] 💰 839 000 PLN | 📏 52.0m² | 🚪 2 Rooms | 📌 Przestronne 2-pok, balkon, piwnica, zieleń, Saska Kępa | 📍 District ID: 2
+ 🔗 Link: https://www.otodom.pl/pl/oferta/przestronne-2-pok-balkon-piwnica-zielen-saska-kepa-ID4Ap7c
+
+2026-03-24 14:02:22,991 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:02:23,058 [INFO] [P:6 - 31] 💰 709 063 PLN | 📏 48.15m² | 🚪 3 Rooms | 📌 PROMOCJA na dni otwarte blisko METRO Karolin_Hala Garażowa GRATIS | 📍 District ID: 12
+ 🔗 Link: https://www.otodom.pl/pl/oferta/promocja-na-dni-otwarte-blisko-metro-karolin-hala-garazowa-gratis-ID4ADVx
+
+2026-03-24 14:02:23,683 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:02:23,739 [INFO] [P:6 - 32] 💰 1 300 000 PLN | 📏 77.0m² | 🚪 3 Rooms | 📌 Słoneczne 3 pokoje 77m2 + garaż -Saska Kępa | 📍 District ID: 2
+ 🔗 Link: https://www.otodom.pl/pl/oferta/sloneczne-3-pokoje-77m2-garaz-saska-kepa-ID4zSSC
+
+2026-03-24 14:02:24,509 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:02:24,575 [INFO] [P:6 - 33] 💰 625 745 PLN | 📏 40.72m² | 🚪 2 Rooms | 📌 PROMOCJA na dni otwarte blisko METRO Karolin_Hala Garażowa GRATIS | 📍 District ID: 12
+ 🔗 Link: https://www.otodom.pl/pl/oferta/promocja-na-dni-otwarte-blisko-metro-karolin-hala-garazowa-gratis-ID4ADVm
+
+2026-03-24 14:02:25,216 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:02:25,291 [INFO] [P:6 - 34] 💰 1 798 000 PLN | 📏 82.15m² | 🚪 3 Rooms | 📌 3 pokoje, 82,15 m2 - w "Porcie Praskim" ul. Kępna | 📍 District ID: 13
+ 🔗 Link: https://www.otodom.pl/pl/oferta/3-pokoje-82-15-m2-w-porcie-praskim-ul-kepna-ID4AjWe
+
+2026-03-24 14:02:25,971 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:02:26,038 [INFO] [P:6 - 35] 💰 687 000 PLN | 📏 45.2m² | 🚪 1 Rooms | 📌 45 m2 | Przytulne | Duży balkon | Miejsce postojowe ☆ SKOROSZE ☆ | 📍 District ID: 12
+ 🔗 Link: https://www.otodom.pl/pl/oferta/45-m2-przytulne-duzy-balkon-miejsce-postojowe-skorosze-ID4ADWr
+
+2026-03-24 14:02:26,907 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:02:26,971 [INFO] [P:6 - 36] 💰 731 766 PLN | 📏 53.37m² | 🚪 3 Rooms | 📌 3-pokojowe mieszkanie 53m2 + balkon Bez Prowizji | 📍 District ID: 5
+ 🔗 Link: https://www.otodom.pl/pl/oferta/3-pokojowe-mieszkanie-53m2-balkon-bez-prowizji-ID4updw
+
+2026-03-24 14:02:27,658 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:02:27,659 [INFO] ======================================================================
+
+2026-03-24 14:02:27,659 [INFO] INFO: Page 6 completed. Resting for 5 seconds to avoid IP ban...
+2026-03-24 14:02:32,660 [INFO] 
+============================================================
+2026-03-24 14:02:32,661 [INFO] 📄 SCRAPING INITIATED: PAGE 7 [APARTMENT SALE]
+2026-03-24 14:02:32,661 [INFO] ============================================================
+2026-03-24 14:02:37,467 [INFO] INFO: Scanning for real estate listings...
+2026-03-24 14:02:37,578 [INFO] INFO: Scrolling down to trick 'Lazy Loading' (3 times)...
+2026-03-24 14:02:42,187 [INFO] INFO: Hurricane Mode active! Found 32 listings on page 7. Extracting...
+
+2026-03-24 14:02:42,187 [INFO] ======================================================================
+2026-03-24 14:02:42,263 [INFO] [P:7 - 1] 💰 640 749 PLN | 📏 42.01m² | 🚪 2 Rooms | 📌 2-pokojowe mieszkanie 42m2 + loggia Bezpośrednio | 📍 District ID: 5
+ 🔗 Link: https://www.otodom.pl/pl/oferta/2-pokojowe-mieszkanie-42m2-loggia-bezposrednio-ID4umLY
+
+2026-03-24 14:02:43,257 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:02:43,360 [INFO] [P:7 - 2] 💰 1 232 000 PLN | 📏 68.44m² | 🚪 3 Rooms | 📌 0% prowizji, 3 pokje, ogródek, Bezpośrednio od właściciela | 📍 District ID: 14
+ 🔗 Link: https://www.otodom.pl/pl/oferta/0-prowizji-3-pokje-ogrodek-bezposrednio-od-wlasciciela-ID4ArUh
+
+2026-03-24 14:02:44,193 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:02:44,338 [INFO] [P:7 - 3] 💰 1 499 000 PLN | 📏 63.0m² | 🚪 3 Rooms | 📌 Ursynów | 63 m² | 3 pokoje | ogród 187 m² | ROBYG | garaż | 📍 District ID: 3
+ 🔗 Link: https://www.otodom.pl/pl/oferta/ursynow-63-m-3-pokoje-ogrod-187-m-robyg-garaz-ID4ACj6
+
+2026-03-24 14:02:45,048 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:02:45,111 [INFO] [P:7 - 4] 💰 879 000 PLN | 📏 151.0m² | 🚪 5 Rooms | 📌 Mieszkanie bezczynszowe - | 5 pok. | garaż | ogródek | 📍 District ID: 5
+ 🔗 Link: https://www.otodom.pl/pl/oferta/mieszkanie-bezczynszowe-5-pok-garaz-ogrodek-ID4zmwR
+
+2026-03-24 14:02:45,737 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:02:45,786 [INFO] [P:7 - 5] 💰 3 499 000 PLN | 📏 209.0m² | 🚪 6 Rooms | 📌 Serce starego Mokotowa - 6 pok - 2 miejsca - 2 poz | 📍 District ID: 1
+ 🔗 Link: https://www.otodom.pl/pl/oferta/serce-starego-mokotowa-6-pok-2-miejsca-2-poz-ID4zXch
+
+2026-03-24 14:02:46,520 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:02:46,582 [INFO] [P:7 - 6] 💰 1 345 000 PLN | 📏 72.0m² | 🚪 3 Rooms | 📌 Narożne z pięknymi dużymi oknami w całym mieszkani | 📍 District ID: 15
+ 🔗 Link: https://www.otodom.pl/pl/oferta/narozne-z-pieknymi-duzymi-oknami-w-calym-mieszkani-ID4zYcU
+
+2026-03-24 14:02:47,154 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:02:47,204 [INFO] [P:7 - 7] 💰 1 399 000 PLN | 📏 85.56m² | 🚪 3 Rooms | 📌 Ogrodzona posesja z ochroną i terenami zielonymi | 📍 District ID: 15
+ 🔗 Link: https://www.otodom.pl/pl/oferta/ogrodzona-posesja-z-ochrona-i-terenami-zielonymi-ID4zYlc
+
+2026-03-24 14:02:47,836 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:02:47,862 [INFO] [P:7 - 8] 💰 865 000 PLN | 📏 60.0m² | 🚪 3 Rooms | 📌 Klucze w tym roku/świetne do życia/Metro,PKP | 📍 District ID: 12
+ 🔗 Link: https://www.otodom.pl/pl/oferta/klucze-w-tym-roku-swietne-do-zycia-metro-pkp-ID4ADWb
+
+2026-03-24 14:02:48,347 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:02:48,388 [INFO] [P:7 - 9] 💰 1 490 000 PLN | 📏 73.0m² | 🚪 4 Rooms | 📌 4 pokoje - 2 ogródki - gotowe do wprowadzenia | 📍 District ID: 15
+ 🔗 Link: https://www.otodom.pl/pl/oferta/4-pokoje-2-ogrodki-gotowe-do-wprowadzenia-ID4AqUJ
+
+2026-03-24 14:02:48,937 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:02:49,005 [INFO] [P:7 - 10] 💰 1 335 000 PLN | 📏 67.0m² | 🚪 3 Rooms | 📌 3 pokojowe z 80 m2 ogródkiem i tarasem + garaż | 📍 District ID: 4
+ 🔗 Link: https://www.otodom.pl/pl/oferta/3-pokojowe-z-80-m2-ogrodkiem-i-tarasem-garaz-ID4Ayee
+
+2026-03-24 14:02:49,616 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:02:49,665 [INFO] [P:7 - 11] 💰 1 671 925 PLN | 📏 43.22m² | 🚪 1 Rooms | 📌 1-pokojowe mieszkanie 43m2 + loggia Bezpośrednio | 📍 District ID: 1
+ 🔗 Link: https://www.otodom.pl/pl/oferta/1-pokojowe-mieszkanie-43m2-loggia-bezposrednio-ID4Aogu
+
+2026-03-24 14:02:50,320 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:02:50,386 [INFO] [P:7 - 12] 💰 1 289 000 PLN | 📏 77.0m² | 🚪 3 Rooms | 📌 obok metra - narożne - widne - duży balkon - 3pok | 📍 District ID: 1
+ 🔗 Link: https://www.otodom.pl/pl/oferta/obok-metra-narozne-widne-duzy-balkon-3pok-ID4Ayhy
+
+2026-03-24 14:02:50,941 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:02:50,972 [INFO] [P:7 - 13] 💰 531 185 PLN | 📏 34.27m² | 🚪 2 Rooms | 📌 Mieszkanie przy Galerii Północnej na Tarchominie | VAT 23% | 📍 District ID: 5
+ 🔗 Link: https://www.otodom.pl/pl/oferta/mieszkanie-przy-galerii-polnocnej-na-tarchominie-vat-23-ID4AxzB
+
+2026-03-24 14:02:51,581 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:02:51,635 [INFO] [P:7 - 14] 💰 935 000 PLN | 📏 48.0m² | 🚪 2 Rooms | 📌 Apartament bliska Wola | 📍 District ID: 4
+ 🔗 Link: https://www.otodom.pl/pl/oferta/apartament-bliska-wola-ID4zq5c
+
+2026-03-24 14:02:52,324 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:02:52,385 [INFO] [P:7 - 15] 💰 885 000 PLN | 📏 62.2m² | 🚪 3 Rooms | 📌 Widok na Park Szczęśliwicki | 3 pokoje | balkon | Dwustronne ! | 📍 District ID: 11
+ 🔗 Link: https://www.otodom.pl/pl/oferta/widok-na-park-szczesliwicki-3-pokoje-balkon-dwustronne-ID4y8AA
+
+2026-03-24 14:02:53,038 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:02:53,103 [INFO] [P:7 - 16] 💰 1 320 000 PLN | 📏 114.3m² | 🚪 5 Rooms | 📌 Mieszkanie, 114,30 m², Warszawa | 📍 District ID: 5
+ 🔗 Link: https://www.otodom.pl/pl/oferta/mieszkanie-114-30-m-warszawa-ID4zq5g
+
+2026-03-24 14:02:53,863 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:02:53,921 [INFO] [P:7 - 17] 💰 599 200 PLN | 📏 38.07m² | 🚪 2 Rooms | 📌 Taras ok 10m2 - 2-pokoje 13min do Metra Promocja! | 📍 District ID: 1
+ 🔗 Link: https://www.otodom.pl/pl/oferta/taras-ok-10m2-2-pokoje-13min-do-metra-promocja-ID4ADUz
+
+2026-03-24 14:02:54,770 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:02:54,832 [INFO] [P:7 - 18] 💰 920 000 PLN | 📏 55.67m² | 🚪 2 Rooms | 📌 Muranów/ Śródmieście/ 2 pokoje | 📍 District ID: 9
+ 🔗 Link: https://www.otodom.pl/pl/oferta/muranow-srodmiescie-2-pokoje-ID4zb69
+
+2026-03-24 14:02:55,396 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:02:55,456 [INFO] [P:7 - 19] 💰 608 000 PLN | 📏 41.0m² | 🚪 2 Rooms | 📌 2pok. Najlepsza lokalizacja na Ursusie | 📍 District ID: 12
+ 🔗 Link: https://www.otodom.pl/pl/oferta/2pok-najlepsza-lokalizacja-na-ursusie-ID4Aim9
+
+2026-03-24 14:02:56,122 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:02:56,183 [INFO] [P:7 - 20] 💰 768 000 PLN | 📏 53.0m² | 🚪 3 Rooms | 📌 3 pok Promocje! | 📍 District ID: 12
+ 🔗 Link: https://www.otodom.pl/pl/oferta/3-pok-promocje-ID4Aykw
+
+2026-03-24 14:02:56,852 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:02:56,916 [INFO] [P:7 - 21] 💰 779 000 PLN | 📏 38.32m² | 🚪 2 Rooms | 📌 Unikalne mieszkanie w kamienicy na Starym Mieście z widok na Barbakan | 📍 District ID: 9
+ 🔗 Link: https://www.otodom.pl/pl/oferta/unikalne-mieszkanie-w-kamienicy-na-starym-miescie-z-widok-na-barbakan-ID4AglX
+
+2026-03-24 14:02:57,523 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:02:57,595 [INFO] [P:7 - 22] 💰 1 080 000 PLN | 📏 58.85m² | 🚪 2 Rooms | 📌 2 pokoje, 58,85m2, al. KEN 50, Ursynów - Natolin | 📍 District ID: 3
+ 🔗 Link: https://www.otodom.pl/pl/oferta/2-pokoje-58-85m2-al-ken-50-ursynow-natolin-ID4zJb4
+
+2026-03-24 14:02:58,263 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:02:58,326 [INFO] [P:7 - 23] 💰 950 000 PLN | 📏 76.0m² | 🚪 4 Rooms | 📌 ~ 4 pokojowe mieszkanie Ursus Gołąbki ~ | 📍 District ID: 12
+ 🔗 Link: https://www.otodom.pl/pl/oferta/4-pokojowe-mieszkanie-ursus-golabki-ID4Awpv
+
+2026-03-24 14:02:59,040 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:02:59,078 [INFO] [P:7 - 24] 💰 649 000 PLN | 📏 38.2m² | 🚪 1 Rooms | 📌 Okazja! Przestronne 38m na Warszawskim Mokotowie | 📍 District ID: 1
+ 🔗 Link: https://www.otodom.pl/pl/oferta/okazja-przestronne-38m-na-warszawskim-mokotowie-ID4ADU1
+
+2026-03-24 14:02:59,710 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:02:59,763 [INFO] [P:7 - 25] 💰 4 825 000 PLN | 📏 112.5m² | 🚪 4 Rooms | 📌 Czteropokojowy apartament w Mennica Residence | 📍 District ID: 4
+ 🔗 Link: https://www.otodom.pl/pl/oferta/czteropokojowy-apartament-w-mennica-residence-ID4Aygk
+
+2026-03-24 14:03:00,440 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:03:00,492 [INFO] [P:7 - 26] 💰 1 855 000 PLN | 📏 53.0m² | 🚪 3 Rooms | 📌 Trzypokojowy apartament w Mennica Residence | 📍 District ID: 4
+ 🔗 Link: https://www.otodom.pl/pl/oferta/trzypokojowy-apartament-w-mennica-residence-ID4AxAT
+
+2026-03-24 14:03:01,200 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:03:01,270 [INFO] [P:7 - 27] 💰 6 651 000 PLN | 📏 150.5m² | 🚪 4 Rooms | 📌 Czteropokojowy apartament w samym centrum stolicy | 📍 District ID: 4
+ 🔗 Link: https://www.otodom.pl/pl/oferta/czteropokojowy-apartament-w-samym-centrum-stolicy-ID4Axzw
+
+2026-03-24 14:03:01,815 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:03:01,864 [INFO] [P:7 - 28] 💰 750 000 PLN | 📏 42.0m² | 🚪 2 Rooms | 📌 Jasne, ustawne dwa pokoje z balkonem | 📍 District ID: 9
+ 🔗 Link: https://www.otodom.pl/pl/oferta/jasne-ustawne-dwa-pokoje-z-balkonem-ID4zmwi
+
+2026-03-24 14:03:02,418 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:03:02,486 [INFO] [P:7 - 29] 💰 314 781 PLN | 📏 29.5m² | 🚪 1 Rooms | 📌 Tylko W Niedzielę! (29.03.2026) | 📍 District ID: 14
+ 🔗 Link: https://www.otodom.pl/pl/oferta/tylko-w-niedziele-29-03-2026-ID4ADTW
+
+2026-03-24 14:03:03,256 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:03:03,318 [INFO] [P:7 - 30] 💰 1 060 000 PLN | 📏 53.1m² | 🚪 2 Rooms | 📌 Duża LOGGIA!Nowe 2pok. Cicha okolica, wykończone! | 📍 District ID: 14
+ 🔗 Link: https://www.otodom.pl/pl/oferta/duza-loggia-nowe-2pok-cicha-okolica-wykonczone-ID4AafO
+
+2026-03-24 14:03:03,972 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:03:04,027 [INFO] [P:7 - 31] 💰 580 000 PLN | 📏 42.9m² | 🚪 2 Rooms | 📌 Ursus Skorosze ul. Tomcia Palucha ⭐2 pok+ balkon Do zamieszkania SKM | 📍 District ID: 12
+ 🔗 Link: https://www.otodom.pl/pl/oferta/ursus-skorosze-ul-tomcia-palucha-2-pok-balkon-do-zamieszkania-skm-ID4ADTH
+
+2026-03-24 14:03:04,668 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:03:04,729 [INFO] [P:7 - 32] 💰 0 PLN | 📏 113.61m² | 🚪 5 Rooms | 📌 Luksusowy apartament na Wilanowie | 📍 District ID: 15
+ 🔗 Link: https://www.otodom.pl/pl/oferta/luksusowy-apartament-na-wilanowie-ID4ADTF
+
+2026-03-24 14:03:05,421 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:03:05,422 [INFO] ======================================================================
+
+2026-03-24 14:03:05,422 [INFO] INFO: Page 7 completed. Resting for 5 seconds to avoid IP ban...
+2026-03-24 14:03:10,423 [INFO] 
+============================================================
+2026-03-24 14:03:10,424 [INFO] 📄 SCRAPING INITIATED: PAGE 8 [APARTMENT SALE]
+2026-03-24 14:03:10,424 [INFO] ============================================================
+2026-03-24 14:03:16,695 [INFO] INFO: Scanning for real estate listings...
+2026-03-24 14:03:16,924 [INFO] INFO: Scrolling down to trick 'Lazy Loading' (3 times)...
+2026-03-24 14:03:21,723 [INFO] INFO: Hurricane Mode active! Found 42 listings on page 8. Extracting...
+
+2026-03-24 14:03:21,724 [INFO] ======================================================================
+2026-03-24 14:03:21,796 [INFO] [P:8 - 1] 💰 1 799 000 PLN | 📏 55.35m² | 🚪 2 Rooms | 📌 2-pokojowe mieszkanie 55m2 + balkon | 📍 District ID: 6
+ 🔗 Link: https://www.otodom.pl/pl/oferta/2-pokojowe-mieszkanie-55m2-balkon-ID4xwgt
+
+2026-03-24 14:03:22,456 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:03:22,544 [INFO] [P:8 - 2] 💰 555 000 PLN | 📏 27.0m² | 🚪 1 Rooms | 📌 BEZPOŚREDNIO kawalerka Anielewicza25 do inwestycji, najmu, zamieszkani | 📍 District ID: 4
+ 🔗 Link: https://www.otodom.pl/pl/oferta/bezposrednio-kawalerka-anielewicza25-do-inwestycji-najmu-zamieszkani-ID4z40F
+
+2026-03-24 14:03:23,289 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:03:23,399 [INFO] [P:8 - 3] 💰 659 999 PLN | 📏 39.0m² | 🚪 2 Rooms | 📌 Nowe 2-pokojowe mieszkanie z loggią | 39m²| Białołęka| bezpośrednio | 📍 District ID: 5
+ 🔗 Link: https://www.otodom.pl/pl/oferta/nowe-2-pokojowe-mieszkanie-z-loggia-39m-bialoleka-bezposrednio-ID4AC4z
+
+2026-03-24 14:03:24,206 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:03:24,275 [INFO] [P:8 - 4] 💰 0 PLN | 📏 50.74m² | 🚪 2 Rooms | 📌 2-pokojowe mieszkanie 50m2 + loggia | 📍 District ID: 12
+ 🔗 Link: https://www.otodom.pl/pl/oferta/2-pokojowe-mieszkanie-50m2-loggia-ID4u9Wt
+
+2026-03-24 14:03:24,981 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:03:25,031 [INFO] [P:8 - 5] 💰 0 PLN | 📏 113.61m² | 🚪 5 Rooms | 📌 Luksusowy apartament na Wilanowie | 📍 District ID: 15
+ 🔗 Link: https://www.otodom.pl/pl/oferta/luksusowy-apartament-na-wilanowie-ID4ADTF
+
+2026-03-24 14:03:25,670 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:03:25,730 [INFO] [P:8 - 6] 💰 875 000 PLN | 📏 65.2m² | 🚪 3 Rooms | 📌 Trójstronne 3-pokojowe na Rakowcu | 📍 District ID: 11
+ 🔗 Link: https://www.otodom.pl/pl/oferta/trojstronne-3-pokojowe-na-rakowcu-ID4ADTG
+
+2026-03-24 14:03:26,493 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:03:26,541 [INFO] [P:8 - 7] 💰 888 300 PLN | 📏 47.05m² | 🚪 2 Rooms | 📌 Szykowna oaza na Mokotowie | 📍 District ID: 1
+ 🔗 Link: https://www.otodom.pl/pl/oferta/szykowna-oaza-na-mokotowie-ID4ADTD
+
+2026-03-24 14:03:27,277 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:03:27,327 [INFO] [P:8 - 8] 💰 1 199 000 PLN | 📏 39.85m² | 🚪 3 Rooms | 📌 Mieszkanie 10 sekund od stacji metra Nowy Świat! | 📍 District ID: 9
+ 🔗 Link: https://www.otodom.pl/pl/oferta/mieszkanie-10-sekund-od-stacji-metra-nowy-swiat-ID4ADTC
+
+2026-03-24 14:03:28,008 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:03:28,068 [INFO] [P:8 - 9] 💰 649 000 PLN | 📏 30.0m² | 🚪 1 Rooms | 📌 Praga. Kawalerka z pięknym widokiem. Balkon. | 📍 District ID: 13
+ 🔗 Link: https://www.otodom.pl/pl/oferta/praga-kawalerka-z-pieknym-widokiem-balkon-ID4ADTz
+
+2026-03-24 14:03:28,730 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:03:28,794 [INFO] [P:8 - 10] 💰 469 000 PLN | 📏 26.0m² | 🚪 1 Rooms | 📌 Atrakcyjna kawalerka na Kabatach blisko metra i Lasu Kabackiego | 📍 District ID: 3
+ 🔗 Link: https://www.otodom.pl/pl/oferta/atrakcyjna-kawalerka-na-kabatach-blisko-metra-i-lasu-kabackiego-ID4ADTd
+
+2026-03-24 14:03:29,563 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:03:29,630 [INFO] [P:8 - 11] 💰 314 781 PLN | 📏 29.5m² | 🚪 2 Rooms | 📌 Tylko W Niedzielę! (29.03.2026) | 📍 District ID: 14
+ 🔗 Link: https://www.otodom.pl/pl/oferta/tylko-w-niedziele-29-03-2026-ID4ADTw
+
+2026-03-24 14:03:30,319 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:03:30,382 [INFO] [P:8 - 12] 💰 821 940 PLN | 📏 43.26m² | 🚪 2 Rooms | 📌 2-pokojowe mieszkanie 43m2 + loggia Bez Prowizji | 📍 District ID: 15
+ 🔗 Link: https://www.otodom.pl/pl/oferta/2-pokojowe-mieszkanie-43m2-loggia-bez-prowizji-ID4uwBX
+
+2026-03-24 14:03:30,983 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:03:31,052 [INFO] [P:8 - 13] 💰 395 000 PLN | 📏 19.0m² | 🚪 1 Rooms | 📌 Kawalerka 19 m.kw. 10. piętro, niski czynsz | 📍 District ID: 11
+ 🔗 Link: https://www.otodom.pl/pl/oferta/kawalerka-19-m-kw-10-pietro-niski-czynsz-ID4AbOg
+
+2026-03-24 14:03:31,726 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:03:31,775 [INFO] [P:8 - 14] 💰 910 000 PLN | 📏 52.64m² | 🚪 2 Rooms | 📌 Funkcjonalne I 2 pokoje (możliwość 3) | 📍 District ID: 3
+ 🔗 Link: https://www.otodom.pl/pl/oferta/funkcjonalne-i-2-pokoje-mozliwosc-3-ID4ArxD
+
+2026-03-24 14:03:32,393 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:03:32,453 [INFO] [P:8 - 15] 💰 510 000 PLN | 📏 48.0m² | 🚪 3 Rooms | 📌 mieszkanie 3 pokoje do remontu 48m2 Warszawa ul. Bracławska | 📍 District ID: 2
+ 🔗 Link: https://www.otodom.pl/pl/oferta/mieszkanie-3-pokoje-do-remontu-48m2-warszawa-ul-braclawska-ID4ADT1
+
+2026-03-24 14:03:33,119 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:03:33,154 [INFO] [P:8 - 16] 💰 1 093 958 PLN | 📏 73.42m² | 🚪 4 Rooms | 📌 Legnicka Ursus | mieszkanie 4-pok. | A_M10 | 📍 District ID: 12
+ 🔗 Link: https://www.otodom.pl/pl/oferta/legnicka-ursus-mieszkanie-4-pok-a-m10-ID4zWz1
+
+2026-03-24 14:03:33,847 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:03:33,889 [INFO] [P:8 - 17] 💰 875 000 PLN | 📏 40.75m² | 🚪 2 Rooms | 📌 Nowoczesne przy Galerii Mokotów | 📍 District ID: 1
+ 🔗 Link: https://www.otodom.pl/pl/oferta/nowoczesne-przy-galerii-mokotow-ID4AphJ
+
+2026-03-24 14:03:34,740 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:03:34,806 [INFO] [P:8 - 18] 💰 989 000 PLN | 📏 52.56m² | 🚪 2 Rooms | 📌 BEZPOŚREDNIO - 2 pokoje, garderoba, taras. MIEJSCE PARKINGOWE W CENIE! | 📍 District ID: 7
+ 🔗 Link: https://www.otodom.pl/pl/oferta/bezposrednio-2-pokoje-garderoba-taras-miejsce-parkingowe-w-cenie-ID4zK0N
+
+2026-03-24 14:03:35,776 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:03:35,834 [INFO] [P:8 - 19] 💰 830 370 PLN | 📏 68.38m² | 🚪 4 Rooms | 📌 4-pok. mieszkanie 68,38m2+ogródek 51m2 | 📍 District ID: 10
+ 🔗 Link: https://www.otodom.pl/pl/oferta/4-pok-mieszkanie-68-38m2-ogrodek-51m2-ID4yttY
+
+2026-03-24 14:03:36,549 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:03:36,609 [INFO] [P:8 - 20] 💰 889 900 PLN | 📏 58.3m² | 🚪 3 Rooms | 📌 Osiedle Hemara-3pok-Widok na Patio-Do wprowadzenia | 📍 District ID: 5
+ 🔗 Link: https://www.otodom.pl/pl/oferta/osiedle-hemara-3pok-widok-na-patio-do-wprowadzenia-ID4ADSn
+
+2026-03-24 14:03:37,243 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:03:37,284 [INFO] [P:8 - 21] 💰 760 000 PLN | 📏 48.1m² | 🚪 2 Rooms | 📌 Mieszkanie dwupokojowe w znakomitej lokalizacji | 📍 District ID: 1
+ 🔗 Link: https://www.otodom.pl/pl/oferta/mieszkanie-dwupokojowe-w-znakomitej-lokalizacji-ID4uNGR
+
+2026-03-24 14:03:37,951 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:03:37,997 [INFO] [P:8 - 22] 💰 820 000 PLN | 📏 52.6m² | 🚪 2 Rooms | 📌 Mieszkanie z pełnym wyposażeniem 52,6 METRO! | 📍 District ID: 6
+ 🔗 Link: https://www.otodom.pl/pl/oferta/mieszkanie-z-pelnym-wyposazeniem-52-6-metro-ID4q9x0
+
+2026-03-24 14:03:38,727 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:03:38,783 [INFO] [P:8 - 23] 💰 967 000 PLN | 📏 88.0m² | 🚪 4 Rooms | 📌 3-4 pokojowe 88mkw, 2 poziomowe, Tramwaj, Park, Garaż 25,3mkw | 📍 District ID: 5
+ 🔗 Link: https://www.otodom.pl/pl/oferta/3-4-pokojowe-88mkw-2-poziomowe-tramwaj-park-garaz-25-3mkw-ID4A7wq
+
+2026-03-24 14:03:39,153 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:03:39,197 [INFO] [P:8 - 24] 💰 1 130 000 PLN | 📏 68.0m² | 🚪 3 Rooms | 📌 Jasne M3 68m2 w zielonej okolicy, PKP | 📍 District ID: 16
+ 🔗 Link: https://www.otodom.pl/pl/oferta/jasne-m3-68m2-w-zielonej-okolicy-pkp-ID4A7sZ
+
+2026-03-24 14:03:39,518 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:03:39,540 [INFO] [P:8 - 25] 💰 742 760 PLN | 📏 47.92m² | 🚪 3 Rooms | 📌 Villa Duninów | 47,92 m2 - TARAS 30 m2 | 800m od Galerii Północnej | 📍 District ID: 5
+ 🔗 Link: https://www.otodom.pl/pl/oferta/villa-duninow-47-92-m2-taras-30-m2-800m-od-galerii-polnocnej-ID4AxwP
+
+2026-03-24 14:03:39,912 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:03:39,951 [INFO] [P:8 - 26] 💰 700 000 PLN | 📏 38.87m² | 🚪 2 Rooms | 📌 2 pokoje po Generalnym Remoncie, Kamienica! | 📍 District ID: 13
+ 🔗 Link: https://www.otodom.pl/pl/oferta/2-pokoje-po-generalnym-remoncie-kamienica-ID4z3vq
+
+2026-03-24 14:03:40,290 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:03:40,346 [INFO] [P:8 - 27] 💰 2 370 000 PLN | 📏 79.3m² | 🚪 3 Rooms | 📌 Okazja! Luksusowy apartament w centrum miasta | 📍 District ID: 4
+ 🔗 Link: https://www.otodom.pl/pl/oferta/okazja-luksusowy-apartament-w-centrum-miasta-ID4ADQM
+
+2026-03-24 14:03:40,681 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:03:40,713 [INFO] [P:8 - 28] 💰 649 000 PLN | 📏 41.8m² | 🚪 2 Rooms | 📌 Nowe 2 pokoje + GARAŻ W CENIE + Umów DNI OTWARTE + 15min do CENTRUM | 📍 District ID: 12
+ 🔗 Link: https://www.otodom.pl/pl/oferta/nowe-2-pokoje-garaz-w-cenie-umow-dni-otwarte-15min-do-centrum-ID4ADPS
+
+2026-03-24 14:03:41,074 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:03:41,121 [INFO] [P:8 - 29] 💰 492 561 PLN | 📏 26.0m² | 🚪 1 Rooms | 📌 ⭐promo | Ostatnie sztuki !!! Gotowe 09.2026 ⭐0% | 📍 District ID: 2
+ 🔗 Link: https://www.otodom.pl/pl/oferta/promo-ostatnie-sztuki-gotowe-09-2026-0-ID4ADPB
+
+2026-03-24 14:03:41,564 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:03:41,591 [INFO] [P:8 - 30] 💰 765 006 PLN | 📏 38.5m² | 🚪 2 Rooms | 📌 2pokoje w PROMOCJI blisko METRO WIerzbno_15min od Centrum_Dni otwarte | 📍 District ID: 1
+ 🔗 Link: https://www.otodom.pl/pl/oferta/2pokoje-w-promocji-blisko-metro-wierzbno-15min-od-centrum-dni-otwarte-ID4ADPs
+
+2026-03-24 14:03:42,004 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:03:42,046 [INFO] [P:8 - 31] 💰 3 520 000 PLN | 📏 143.61m² | 🚪 5 Rooms | 📌 5-pokojowe mieszkanie 143m2 + 3 balkony | 📍 District ID: 1
+ 🔗 Link: https://www.otodom.pl/pl/oferta/5-pokojowe-mieszkanie-143m2-3-balkony-ID4umDH
+
+2026-03-24 14:03:42,494 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:03:42,526 [INFO] [P:8 - 32] 💰 1 799 000 PLN | 📏 55.35m² | 🚪 2 Rooms | 📌 2-pokojowe mieszkanie 55m2 + balkon | 📍 District ID: 6
+ 🔗 Link: https://www.otodom.pl/pl/oferta/2-pokojowe-mieszkanie-55m2-balkon-ID4xwgt
+
+2026-03-24 14:03:42,853 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:03:42,892 [INFO] [P:8 - 33] 💰 1 237 950 PLN | 📏 71.0m² | 🚪 4 Rooms | 📌 Gotowe do odbioru 3/4pok z RABATEM 120tys->zobacz na dni otwarte_METRO | 📍 District ID: 1
+ 🔗 Link: https://www.otodom.pl/pl/oferta/gotowe-do-odbioru-3-4pok-z-rabatem-120tys-zobacz-na-dni-otwarte-metro-ID4ADPm
+
+2026-03-24 14:03:43,286 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:03:43,315 [INFO] [P:8 - 34] 💰 990 000 PLN | 📏 69.5m² | 🚪 4 Rooms | 📌 Okazja przy stacji Metro Trocka | 📍 District ID: 8
+ 🔗 Link: https://www.otodom.pl/pl/oferta/okazja-przy-stacji-metro-trocka-ID4zF33
+
+2026-03-24 14:03:43,689 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:03:43,727 [INFO] [P:8 - 35] 💰 1 091 300 PLN | 📏 62.8m² | 🚪 3 Rooms | 📌 Gotowe do odbioru 3pok z RABATEM 185tys ->zobacz na dni otwarte_METRO | 📍 District ID: 1
+ 🔗 Link: https://www.otodom.pl/pl/oferta/gotowe-do-odbioru-3pok-z-rabatem-185tys-zobacz-na-dni-otwarte-metro-ID4ADPi
+
+2026-03-24 14:03:44,077 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:03:44,108 [INFO] [P:8 - 36] 💰 1 581 450 PLN | 📏 86.55m² | 🚪 4 Rooms | 📌 4pok z RABATEM 120tys ->zobacz osiedle na dni otwarte_METRO_Garaż !! | 📍 District ID: 1
+ 🔗 Link: https://www.otodom.pl/pl/oferta/4pok-z-rabatem-120tys-zobacz-osiedle-na-dni-otwarte-metro-garaz-ID4ADPe
+
+2026-03-24 14:03:44,455 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:03:44,498 [INFO] [P:8 - 37] 💰 1 026 300 PLN | 📏 61.55m² | 🚪 3 Rooms | 📌 2/3pok z RABATEM 90tys -> zobacz osiedle na dni otwarte_METRO_Garaż | 📍 District ID: 1
+ 🔗 Link: https://www.otodom.pl/pl/oferta/2-3pok-z-rabatem-90tys-zobacz-osiedle-na-dni-otwarte-metro-garaz-ID4ADOU
+
+2026-03-24 14:03:44,855 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:03:44,898 [INFO] [P:8 - 38] 💰 896 860 PLN | 📏 48.15m² | 🚪 2 Rooms | 📌 2pok z RABATEM 70 tys -> zobacz osiedle na dni otwarte_METRO Karolin | 📍 District ID: 1
+ 🔗 Link: https://www.otodom.pl/pl/oferta/2pok-z-rabatem-70-tys-zobacz-osiedle-na-dni-otwarte-metro-karolin-ID4ADOP
+
+2026-03-24 14:03:45,228 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:03:45,265 [INFO] [P:8 - 39] 💰 730 000 PLN | 📏 32.7m² | 🚪 2 Rooms | 📌 Gotowe do odbioru 2pok z RABATEM 100tys ->zobacz na dni otwarte_METRO | 📍 District ID: 1
+ 🔗 Link: https://www.otodom.pl/pl/oferta/gotowe-do-odbioru-2pok-z-rabatem-100tys-zobacz-na-dni-otwarte-metro-ID4ADOK
+
+2026-03-24 14:03:45,603 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:03:45,650 [INFO] [P:8 - 40] 💰 475 000 PLN | 📏 25.0m² | 🚪 1 Rooms | 📌 Kawalerka 25m2 w pełni wyposażona ul. Kokoryczki 5 | 📍 District ID: 2
+ 🔗 Link: https://www.otodom.pl/pl/oferta/kawalerka-25m2-w-pelni-wyposazona-ul-kokoryczki-5-ID4ADOJ
+
+2026-03-24 14:03:46,038 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:03:46,076 [INFO] [P:8 - 41] 💰 949 000 PLN | 📏 51.24m² | 🚪 3 Rooms | 📌 3 Pokoje *Świetny rozkład *Harmony Park | 📍 District ID: 3
+ 🔗 Link: https://www.otodom.pl/pl/oferta/3-pokoje-swietny-rozklad-harmony-park-ID4ApiQ
+
+2026-03-24 14:03:46,449 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:03:46,490 [INFO] [P:8 - 42] 💰 0 PLN | 📏 50.74m² | 🚪 2 Rooms | 📌 2-pokojowe mieszkanie 50m2 + loggia | 📍 District ID: 12
+ 🔗 Link: https://www.otodom.pl/pl/oferta/2-pokojowe-mieszkanie-50m2-loggia-ID4u9Wt
+
+2026-03-24 14:03:46,902 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:03:46,903 [INFO] ======================================================================
+
+2026-03-24 14:03:46,903 [INFO] INFO: Page 8 completed. Resting for 5 seconds to avoid IP ban...
+2026-03-24 14:03:51,904 [INFO] 
+============================================================
+2026-03-24 14:03:51,905 [INFO] 📄 SCRAPING INITIATED: PAGE 9 [APARTMENT SALE]
+2026-03-24 14:03:51,905 [INFO] ============================================================
+2026-03-24 14:03:54,954 [INFO] INFO: Scanning for real estate listings...
+2026-03-24 14:03:55,054 [INFO] INFO: Scrolling down to trick 'Lazy Loading' (3 times)...
+2026-03-24 14:03:59,653 [INFO] INFO: Hurricane Mode active! Found 37 listings on page 9. Extracting...
+
+2026-03-24 14:03:59,654 [INFO] ======================================================================
+2026-03-24 14:03:59,709 [INFO] [P:9 - 1] 💰 960 564 PLN | 📏 34.1m² | 🚪 2 Rooms | 📌 Vonder UpTown | apartament 2-pok. | 27 | 📍 District ID: 9
+ 🔗 Link: https://www.otodom.pl/pl/oferta/vonder-uptown-apartament-2-pok-27-ID4sev5
+
+2026-03-24 14:04:00,278 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:04:00,353 [INFO] [P:9 - 2] 💰 1 100 000 PLN | 📏 54.0m² | 🚪 2 Rooms | 📌 Zamieszkaj na Mokotowie! 54 m², 2 pokoje, balkon – Cybernetyki | 📍 District ID: 1
+ 🔗 Link: https://www.otodom.pl/pl/oferta/zamieszkaj-na-mokotowie-54-m-2-pokoje-balkon-cybernetyki-ID4zCEr
+
+2026-03-24 14:04:00,758 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:04:00,837 [INFO] [P:9 - 3] 💰 789 000 PLN | 📏 38.03m² | 🚪 2 Rooms | 📌 Bez Prowizji, 2 oddzielne pokoje, Umeblowane, Słoneczne, Bezpośrednio | 📍 District ID: 14
+ 🔗 Link: https://www.otodom.pl/pl/oferta/bez-prowizji-2-oddzielne-pokoje-umeblowane-sloneczne-bezposrednio-ID4A074
+
+2026-03-24 14:04:01,195 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:04:01,276 [INFO] [P:9 - 4] 💰 550 000 PLN | 📏 25.2m² | 🚪 1 Rooms | 📌 Gotowa do odbioru Kawalerka w PROMOCJI ->zobacz na dni otwarte_METRO | 📍 District ID: 1
+ 🔗 Link: https://www.otodom.pl/pl/oferta/gotowa-do-odbioru-kawalerka-w-promocji-zobacz-na-dni-otwarte-metro-ID4ADOH
+
+2026-03-24 14:04:01,862 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:04:01,905 [INFO] [P:9 - 5] 💰 1 850 000 PLN | 📏 85.0m² | 🚪 4 Rooms | 📌 Kameralny budynek. Dwustronne. Duży balkon Ciche | 📍 District ID: 9
+ 🔗 Link: https://www.otodom.pl/pl/oferta/kameralny-budynek-dwustronne-duzy-balkon-ciche-ID4Amci
+
+2026-03-24 14:04:02,260 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:04:02,299 [INFO] [P:9 - 6] 💰 804 154 PLN | 📏 59.78m² | 🚪 3 Rooms | 📌 Idealne dla rodziny blisko METRO Karolin_15min SKM Centrum_Garaż | 📍 District ID: 12
+ 🔗 Link: https://www.otodom.pl/pl/oferta/idealne-dla-rodziny-blisko-metro-karolin-15min-skm-centrum-garaz-ID4ADOy
+
+2026-03-24 14:04:02,627 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:04:02,671 [INFO] [P:9 - 7] 💰 709 054 PLN | 📏 48.05m² | 🚪 3 Rooms | 📌 Idealne pod inwestycję/dla pary blisko METRO Karolin_15min SKM Centrum | 📍 District ID: 12
+ 🔗 Link: https://www.otodom.pl/pl/oferta/idealne-pod-inwestycje-dla-pary-blisko-metro-karolin-15min-skm-centrum-ID4ADOv
+
+2026-03-24 14:04:02,992 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:04:03,040 [INFO] [P:9 - 8] 💰 625 736 PLN | 📏 40.67m² | 🚪 2 Rooms | 📌 Idealne pod inwestycję/dla pary blisko METRO Karolin_15min SKM Centrum | 📍 District ID: 12
+ 🔗 Link: https://www.otodom.pl/pl/oferta/idealne-pod-inwestycje-dla-pary-blisko-metro-karolin-15min-skm-centrum-ID4ADOt
+
+2026-03-24 14:04:03,390 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:04:03,425 [INFO] [P:9 - 9] 💰 537 894 PLN | 📏 34.1m² | 🚪 2 Rooms | 📌 Idealne pod inwestycję/dla pary blisko METRO Karolin_15min SKM Centrum | 📍 District ID: 12
+ 🔗 Link: https://www.otodom.pl/pl/oferta/idealne-pod-inwestycje-dla-pary-blisko-metro-karolin-15min-skm-centrum-ID4ADOm
+
+2026-03-24 14:04:03,748 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:04:03,797 [INFO] [P:9 - 10] 💰 890 000 PLN | 📏 38.0m² | 🚪 2 Rooms | 📌 Bezpośrednio 2 pokoje 38m2 w nowym apartamentowcu przy Szczęśliwickiej | 📍 District ID: 11
+ 🔗 Link: https://www.otodom.pl/pl/oferta/bezposrednio-2-pokoje-38m2-w-nowym-apartamentowcu-przy-szczesliwickiej-ID4Aq2W
+
+2026-03-24 14:04:04,158 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:04:04,195 [INFO] [P:9 - 11] 💰 686 000 PLN | 📏 50.2m² | 🚪 2 Rooms | 📌 Mieszkanie Bemowe ul. Czumy - 5 minut od metra | 📍 District ID: 7
+ 🔗 Link: https://www.otodom.pl/pl/oferta/mieszkanie-bemowe-ul-czumy-5-minut-od-metra-ID4ADdC
+
+2026-03-24 14:04:04,531 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:04:04,568 [INFO] [P:9 - 12] 💰 0 PLN | 📏 58.18m² | 🚪 3 Rooms | 📌 3-pokojowe mieszkanie 58m2 + balkon Bezpośrednio | 📍 District ID: 12
+ 🔗 Link: https://www.otodom.pl/pl/oferta/3-pokojowe-mieszkanie-58m2-balkon-bezposrednio-ID4ua0g
+
+2026-03-24 14:04:04,916 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:04:04,961 [INFO] [P:9 - 13] 💰 0 PLN | 📏 78.73m² | 🚪 4 Rooms | 📌 4-pokojowe mieszkanie 78m2 + balkon | 📍 District ID: 2
+ 🔗 Link: https://www.otodom.pl/pl/oferta/4-pokojowe-mieszkanie-78m2-balkon-ID4umAM
+
+2026-03-24 14:04:05,367 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:04:05,404 [INFO] [P:9 - 14] 💰 489 834 PLN | 📏 25.38m² | 🚪 2 Rooms | 📌 Idealne pod najem, blisko SKM Ofert promocyjna 11min do Metra Służew | 📍 District ID: 1
+ 🔗 Link: https://www.otodom.pl/pl/oferta/idealne-pod-najem-blisko-skm-ofert-promocyjna-11min-do-metra-sluzew-ID4ADOk
+
+2026-03-24 14:04:05,759 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:04:05,800 [INFO] [P:9 - 15] 💰 454 939 PLN | 📏 26.7m² | 🚪 1 Rooms | 📌 Kawalerka idealna pod Inwestycję blisko nowego METRA Karolin i Factory | 📍 District ID: 12
+ 🔗 Link: https://www.otodom.pl/pl/oferta/kawalerka-idealna-pod-inwestycje-blisko-nowego-metra-karolin-i-factory-ID4ADOh
+
+2026-03-24 14:04:06,166 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:04:06,209 [INFO] [P:9 - 16] 💰 485 105 PLN | 📏 34.69m² | 🚪 2 Rooms | 📌 Nowe Wykończone 2-pok 7min do CH Targówek 12min do Metra Bez Wkladu | 📍 District ID: 5
+ 🔗 Link: https://www.otodom.pl/pl/oferta/nowe-wykonczone-2-pok-7min-do-ch-targowek-12min-do-metra-bez-wkladu-ID4ADOf
+
+2026-03-24 14:04:06,517 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:04:06,554 [INFO] [P:9 - 17] 💰 1 320 000 PLN | 📏 80.0m² | 🚪 3 Rooms | 📌 Nowoczesne * 3-pokojowe * drewniany parkiet | 📍 District ID: 8
+ 🔗 Link: https://www.otodom.pl/pl/oferta/nowoczesne-3-pokojowe-drewniany-parkiet-ID4zYyy
+
+2026-03-24 14:04:06,884 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:04:06,927 [INFO] [P:9 - 18] 💰 0 PLN | 📏 43.04m² | 🚪 2 Rooms | 📌 2-pokojowe mieszkanie 43m2 + balkon Bezpośrednio | 📍 District ID: 8
+ 🔗 Link: https://www.otodom.pl/pl/oferta/2-pokojowe-mieszkanie-43m2-balkon-bezposrednio-ID4uGYk
+
+2026-03-24 14:04:07,290 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:04:07,330 [INFO] [P:9 - 19] 💰 847 574 PLN | 📏 51.04m² | 🚪 2 Rooms | 📌 2-pokojowe mieszkanie 51m2 + ogródek Bez Prowizji | 📍 District ID: 2
+ 🔗 Link: https://www.otodom.pl/pl/oferta/2-pokojowe-mieszkanie-51m2-ogrodek-bez-prowizji-ID4up5L
+
+2026-03-24 14:04:07,638 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:04:07,675 [INFO] [P:9 - 20] 💰 1 050 000 PLN | 📏 59.96m² | 🚪 3 Rooms | 📌 Mieszkanie na Chomiczówce | 📍 District ID: 6
+ 🔗 Link: https://www.otodom.pl/pl/oferta/mieszkanie-na-chomiczowce-ID4zPCp
+
+2026-03-24 14:04:08,070 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:04:08,114 [INFO] [P:9 - 21] 💰 710 215 PLN | 📏 38.39m² | 🚪 2 Rooms | 📌 2-pokojowe mieszkanie 38m2 + ogródek Bezpośrednio | 📍 District ID: 13
+ 🔗 Link: https://www.otodom.pl/pl/oferta/2-pokojowe-mieszkanie-38m2-ogrodek-bezposrednio-ID4upUh
+
+2026-03-24 14:04:08,469 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:04:08,503 [INFO] [P:9 - 22] 💰 737 544 PLN | 📏 46.68m² | 🚪 2 Rooms | 📌 2-pokojowe mieszkanie 46m2 + balkon Bez Prowizji | 📍 District ID: 12
+ 🔗 Link: https://www.otodom.pl/pl/oferta/2-pokojowe-mieszkanie-46m2-balkon-bez-prowizji-ID4upnq
+
+2026-03-24 14:04:08,827 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:04:08,864 [INFO] [P:9 - 23] 💰 900 138 PLN | 📏 55.65m² | 🚪 2 Rooms | 📌 2-pokojowe mieszkanie 55m2 + 2 ogródki | 📍 District ID: 14
+ 🔗 Link: https://www.otodom.pl/pl/oferta/2-pokojowe-mieszkanie-55m2-2-ogrodki-ID4upF8
+
+2026-03-24 14:04:09,191 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:04:09,232 [INFO] [P:9 - 24] 💰 601 244 PLN | 📏 27.58m² | 🚪 1 Rooms | 📌 1-pokojowe mieszkanie 27m2 + balkon | 📍 District ID: 13
+ 🔗 Link: https://www.otodom.pl/pl/oferta/1-pokojowe-mieszkanie-27m2-balkon-ID4uSj6
+
+2026-03-24 14:04:09,579 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:04:09,614 [INFO] [P:9 - 25] 💰 862 051 PLN | 📏 56.08m² | 🚪 3 Rooms | 📌 3-pokojowe mieszkanie 56m2 + balkon Bezpośrednio | 📍 District ID: 14
+ 🔗 Link: https://www.otodom.pl/pl/oferta/3-pokojowe-mieszkanie-56m2-balkon-bezposrednio-ID4up3m
+
+2026-03-24 14:04:09,971 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:04:10,014 [INFO] [P:9 - 26] 💰 701 898 PLN | 📏 52.29m² | 🚪 3 Rooms | 📌 3-pokojowe mieszkanie 52m2 + balkon | 📍 District ID: 5
+ 🔗 Link: https://www.otodom.pl/pl/oferta/3-pokojowe-mieszkanie-52m2-balkon-ID4upd3
+
+2026-03-24 14:04:10,444 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:04:10,478 [INFO] [P:9 - 27] 💰 5 904 438 PLN | 📏 255.43m² | 🚪 2 Rooms | 📌 2-pokojowe mieszkanie 255m2 + 2 tarasy | 📍 District ID: 13
+ 🔗 Link: https://www.otodom.pl/pl/oferta/2-pokojowe-mieszkanie-255m2-2-tarasy-ID4AzSv
+
+2026-03-24 14:04:10,845 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:04:10,879 [INFO] [P:9 - 28] 💰 786 630 PLN | 📏 60.51m² | 🚪 4 Rooms | 📌 4-pokojowe mieszkanie 60m2 + balkon | 📍 District ID: 12
+ 🔗 Link: https://www.otodom.pl/pl/oferta/4-pokojowe-mieszkanie-60m2-balkon-ID4x4NL
+
+2026-03-24 14:04:11,209 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:04:11,254 [INFO] [P:9 - 29] 💰 1 658 751 PLN | 📏 88.43m² | 🚪 4 Rooms | 📌 Mieszkanie w promocyjnej cenie | Mokotów | 0% Pcc | 📍 District ID: 1
+ 🔗 Link: https://www.otodom.pl/pl/oferta/mieszkanie-w-promocyjnej-cenie-mokotow-0-pcc-ID4AwTX
+
+2026-03-24 14:04:11,607 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:04:11,648 [INFO] [P:9 - 30] 💰 1 000 000 PLN | 📏 60.0m² | 🚪 2 Rooms | 📌 Dwa pokoje, 60 m² , duży balkon, Fort Bema, garaż podziemny. | 📍 District ID: 7
+ 🔗 Link: https://www.otodom.pl/pl/oferta/dwa-pokoje-60-m-duzy-balkon-fort-bema-garaz-podziemny-ID4ADER
+
+2026-03-24 14:04:11,995 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:04:12,034 [INFO] [P:9 - 31] 💰 650 000 PLN | 📏 48.6m² | 🚪 2 Rooms | 📌 NOWA CENA Słoneczne mieszkanie na warszawskim Okęciu | 📍 District ID: 14
+ 🔗 Link: https://www.otodom.pl/pl/oferta/nowa-cena-sloneczne-mieszkanie-na-warszawskim-okeciu-ID4zNuq
+
+2026-03-24 14:04:12,355 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:04:12,391 [INFO] [P:9 - 32] 💰 0 PLN | 📏 84.89m² | 🚪 4 Rooms | 📌 Super cena! 4 pokoje z dużym salonem na Mokotowie! | 📍 District ID: 1
+ 🔗 Link: https://www.otodom.pl/pl/oferta/super-cena-4-pokoje-z-duzym-salonem-na-mokotowie-ID4AuJL
+
+2026-03-24 14:04:12,826 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:04:12,870 [INFO] [P:9 - 33] 💰 665 000 PLN | 📏 61.0m² | 🚪 3 Rooms | 📌 Okazja-Przestronne i jasne 3 pok!⭐Blisko Koneser | 📍 District ID: 13
+ 🔗 Link: https://www.otodom.pl/pl/oferta/okazja-przestronne-i-jasne-3-pok-blisko-koneser-ID4yVfy
+
+2026-03-24 14:04:13,268 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:04:13,314 [INFO] [P:9 - 34] 💰 759 000 PLN | 📏 63.5m² | 🚪 4 Rooms | 📌 Mieszkanie, 63,50 m², Warszawa | 📍 District ID: 6
+ 🔗 Link: https://www.otodom.pl/pl/oferta/mieszkanie-63-50-m-warszawa-ID4soTh
+
+2026-03-24 14:04:13,667 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:04:13,709 [INFO] [P:9 - 35] 💰 729 000 PLN | 📏 38.5m² | 🚪 2 Rooms | 📌 2 pokoje, ul. Chłodna 15,wysokie 3.10!Piwnica | 📍 District ID: 4
+ 🔗 Link: https://www.otodom.pl/pl/oferta/2-pokoje-ul-chlodna-15-wysokie-3-10-piwnica-ID4rGi3
+
+2026-03-24 14:04:14,154 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:04:14,193 [INFO] [P:9 - 36] 💰 1 250 000 PLN | 📏 64.0m² | 🚪 2 Rooms | 📌 Z widokiem na Park | do remontu | Stare Miasto  | 📍 District ID: 9
+ 🔗 Link: https://www.otodom.pl/pl/oferta/z-widokiem-na-park-do-remontu-stare-miasto-ID4zEsz
+
+2026-03-24 14:04:14,535 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:04:14,567 [INFO] [P:9 - 37] 💰 550 000 PLN | 📏 25.2m² | 🚪 1 Rooms | 📌 Gotowa do odbioru Kawalerka w PROMOCJI ->zobacz na dni otwarte_METRO | 📍 District ID: 1
+ 🔗 Link: https://www.otodom.pl/pl/oferta/gotowa-do-odbioru-kawalerka-w-promocji-zobacz-na-dni-otwarte-metro-ID4ADOH
+
+2026-03-24 14:04:14,966 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:04:14,967 [INFO] ======================================================================
+
+2026-03-24 14:04:14,967 [INFO] INFO: Page 9 completed. Resting for 5 seconds to avoid IP ban...
+2026-03-24 14:04:19,969 [INFO] 
+============================================================
+2026-03-24 14:04:19,970 [INFO] 📄 SCRAPING INITIATED: PAGE 10 [APARTMENT SALE]
+2026-03-24 14:04:19,970 [INFO] ============================================================
+2026-03-24 14:04:22,959 [INFO] INFO: Scanning for real estate listings...
+2026-03-24 14:04:23,006 [INFO] INFO: Scrolling down to trick 'Lazy Loading' (3 times)...
+2026-03-24 14:04:27,657 [INFO] INFO: Hurricane Mode active! Found 30 listings on page 10. Extracting...
+
+2026-03-24 14:04:27,658 [INFO] ======================================================================
+2026-03-24 14:04:27,718 [INFO] [P:10 - 1] 💰 1 353 280 PLN | 📏 84.58m² | 🚪 4 Rooms | 📌 4-pokojowe mieszkanie 84m2 + balkon Bez Prowizji | 📍 District ID: 2
+ 🔗 Link: https://www.otodom.pl/pl/oferta/4-pokojowe-mieszkanie-84m2-balkon-bez-prowizji-ID4zGK6
+
+2026-03-24 14:04:28,264 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:04:28,451 [INFO] [P:10 - 2] 💰 493 000 PLN | 📏 25.33m² | 🚪 1 Rooms | 📌 Doświetlowa kawalerka, WKD RAKÓW, WUM | 📍 District ID: 11
+ 🔗 Link: https://www.otodom.pl/pl/oferta/doswietlowa-kawalerka-wkd-rakow-wum-ID4AxsC
+
+2026-03-24 14:04:28,858 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:04:28,909 [INFO] [P:10 - 3] 💰 3 632 800 PLN | 📏 152.0m² | 🚪 5 Rooms | 📌 Prestiż, przestrzeń i swoboda aranżacji, Mokotów | 📍 District ID: 1
+ 🔗 Link: https://www.otodom.pl/pl/oferta/prestiz-przestrzen-i-swoboda-aranzacji-mokotow-ID4A2ra
+
+2026-03-24 14:04:29,267 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:04:29,311 [INFO] [P:10 - 4] 💰 477 000 PLN | 📏 20.67m² | 🚪 1 Rooms | 📌 Metro Racławicka kawalerka do wprowadzenia widok klimatyz. garderoba | 📍 District ID: 1
+ 🔗 Link: https://www.otodom.pl/pl/oferta/metro-raclawicka-kawalerka-do-wprowadzenia-widok-klimatyz-garderoba-ID4Atjk
+
+2026-03-24 14:04:29,643 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:04:29,674 [INFO] [P:10 - 5] 💰 1 300 000 PLN | 📏 71.0m² | 🚪 3 Rooms | 📌 Przestronne 3 pokojowe mieszkanie na Ursynowie | 📍 District ID: 3
+ 🔗 Link: https://www.otodom.pl/pl/oferta/przestronne-3-pokojowe-mieszkanie-na-ursynowie-ID4zWEy
+
+2026-03-24 14:04:30,007 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:04:30,050 [INFO] [P:10 - 6] 💰 475 000 PLN | 📏 25.0m² | 🚪 1 Rooms | 📌 Mieszkanie 25m2 z balkonem, Kokoryczki 5 | 📍 District ID: 2
+ 🔗 Link: https://www.otodom.pl/pl/oferta/mieszkanie-25m2-z-balkonem-kokoryczki-5-ID4ADNy
+
+2026-03-24 14:04:30,424 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:04:30,476 [INFO] [P:10 - 7] 💰 795 200 PLN | 📏 56.0m² | 🚪 2 Rooms | 📌 Kamienica z 1915r, po remontach | 📍 District ID: 4
+ 🔗 Link: https://www.otodom.pl/pl/oferta/kamienica-z-1915r-po-remontach-ID4Akj3
+
+2026-03-24 14:04:30,871 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:04:30,918 [INFO] [P:10 - 8] 💰 1 699 000 PLN | 📏 90.2m² | 🚪 4 Rooms | 📌 4 pokoje - Miasteczko Wilanów - dwa balkony | 📍 District ID: 15
+ 🔗 Link: https://www.otodom.pl/pl/oferta/4-pokoje-miasteczko-wilanow-dwa-balkony-ID4AgGT
+
+2026-03-24 14:04:31,325 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:04:31,369 [INFO] [P:10 - 9] 💰 1 599 000 PLN | 📏 77.0m² | 🚪 3 Rooms | 📌 Stylowe 3-pokojowe 76,2m mieszkanie na STARYM MIEŚCIE ul. KOZIA | 📍 District ID: 9
+ 🔗 Link: https://www.otodom.pl/pl/oferta/stylowe-3-pokojowe-76-2m-mieszkanie-na-starym-miescie-ul-kozia-ID4AsI2
+
+2026-03-24 14:04:31,765 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:04:31,803 [INFO] [P:10 - 10] 💰 860 000 PLN | 📏 50.0m² | 🚪 2 Rooms | 📌 Apartament 2 POKOJE 50m2 Z GARAŻEM w pobliżu C.H. PROMENADA | 📍 District ID: 2
+ 🔗 Link: https://www.otodom.pl/pl/oferta/apartament-2-pokoje-50m2-z-garazem-w-poblizu-c-h-promenada-ID4ACvU
+
+2026-03-24 14:04:32,204 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:04:32,241 [INFO] [P:10 - 11] 💰 409 000 PLN | 📏 18.0m² | 🚪 1 Rooms | 📌 Kawalerka - Bielany - metro Słodowiec | 📍 District ID: 6
+ 🔗 Link: https://www.otodom.pl/pl/oferta/kawalerka-bielany-metro-slodowiec-ID4zSFr
+
+2026-03-24 14:04:32,651 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:04:32,691 [INFO] [P:10 - 12] 💰 769 000 PLN | 📏 62.0m² | 🚪 3 Rooms | 📌 3 pokoje, Metro, Park Górczewska | 📍 District ID: 7
+ 🔗 Link: https://www.otodom.pl/pl/oferta/3-pokoje-metro-park-gorczewska-ID4z6Xy
+
+2026-03-24 14:04:33,093 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:04:33,131 [INFO] [P:10 - 13] 💰 1 040 022 PLN | 📏 70.51m² | 🚪 3 Rooms | 📌 3-pokojowe mieszkanie 70m2 + balkon | 📍 District ID: 14
+ 🔗 Link: https://www.otodom.pl/pl/oferta/3-pokojowe-mieszkanie-70m2-balkon-ID4upFo
+
+2026-03-24 14:04:33,520 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:04:33,568 [INFO] [P:10 - 14] 💰 850 764 PLN | 📏 45.74m² | 🚪 2 Rooms | 📌 2-pokojowe mieszkanie 45m2 + balkon Bezpośrednio | 📍 District ID: 13
+ 🔗 Link: https://www.otodom.pl/pl/oferta/2-pokojowe-mieszkanie-45m2-balkon-bezposrednio-ID4uUke
+
+2026-03-24 14:04:33,937 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:04:33,983 [INFO] [P:10 - 15] 💰 630 000 PLN | 📏 32.54m² | 🚪 2 Rooms | 📌 Przestronna kawalerka z balkonem | możliwość 2 pokoi | bez pcc | 📍 District ID: 14
+ 🔗 Link: https://www.otodom.pl/pl/oferta/przestronna-kawalerka-z-balkonem-mozliwosc-2-pokoi-bez-pcc-ID4ADpf
+
+2026-03-24 14:04:34,378 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:04:34,405 [INFO] [P:10 - 16] 💰 649 836 PLN | 📏 45.0m² | 🚪 2 Rooms | 📌 ⭐Negocjuj !!! Metro | 0% | Zielona okolica ⭐ | 📍 District ID: 8
+ 🔗 Link: https://www.otodom.pl/pl/oferta/negocjuj-metro-0-zielona-okolica-ID4ADL5
+
+2026-03-24 14:04:34,863 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:04:34,903 [INFO] [P:10 - 17] 💰 899 584 PLN | 📏 55.0m² | 🚪 3 Rooms | 📌 ⭐2 tarasy 15m | Metro | Centrum-20min ⭐0% | 📍 District ID: 2
+ 🔗 Link: https://www.otodom.pl/pl/oferta/2-tarasy-15m-metro-centrum-20min-0-ID4ADL2
+
+2026-03-24 14:04:35,300 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:04:35,333 [INFO] [P:10 - 18] 💰 887 556 PLN | 📏 60.0m² | 🚪 3 Rooms | 📌 ⭐ogród 185m !!! Metro | Zobacz na żywo | 0% ⭐ | 📍 District ID: 8
+ 🔗 Link: https://www.otodom.pl/pl/oferta/ogrod-185m-metro-zobacz-na-zywo-0-ID4ADL4
+
+2026-03-24 14:04:35,690 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:04:35,726 [INFO] [P:10 - 19] 💰 615 000 PLN | 📏 40.0m² | 🚪 1 Rooms | 📌 Mieszkanie 40 m2 z balkonem i garażem na Pradze Południe (Gocław) | 📍 District ID: 2
+ 🔗 Link: https://www.otodom.pl/pl/oferta/mieszkanie-40-m2-z-balkonem-i-garazem-na-pradze-poludnie-goclaw-ID4AbL4
+
+2026-03-24 14:04:36,066 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:04:36,105 [INFO] [P:10 - 20] 💰 990 000 PLN | 📏 132.0m² | 🚪 3 Rooms | 📌 3 pokoje + taras 132 m² | kameralnie i cicho | gotowe do aranżacji | 📍 District ID: 14
+ 🔗 Link: https://www.otodom.pl/pl/oferta/3-pokoje-taras-132-m-kameralnie-i-cicho-gotowe-do-aranzacji-ID4ADnp
+
+2026-03-24 14:04:36,502 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:04:36,533 [INFO] [P:10 - 21] 💰 2 450 000 PLN | 📏 125.2m² | 🚪 4 Rooms | 📌 Dwupoziomowe 4 pok. | 3 przestronne tarasy | ostatnie piętro | widok | 📍 District ID: 14
+ 🔗 Link: https://www.otodom.pl/pl/oferta/dwupoziomowe-4-pok-3-przestronne-tarasy-ostatnie-pietro-widok-ID4ADpU
+
+2026-03-24 14:04:36,959 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:04:37,008 [INFO] [P:10 - 22] 💰 840 000 PLN | 📏 66.3m² | 🚪 3 Rooms | 📌 3 pokojowe_ komórka_garaż- po remoncie w 2022 | 📍 District ID: 5
+ 🔗 Link: https://www.otodom.pl/pl/oferta/3-pokojowe-komorka-garaz-po-remoncie-w-2022-ID4AnRA
+
+2026-03-24 14:04:37,452 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:04:37,492 [INFO] [P:10 - 23] 💰 2 400 000 PLN | 📏 86.36m² | 🚪 3 Rooms | 📌 Wykończone | 3 Pokoje | 2 łazienki | Mokotów | 📍 District ID: 1
+ 🔗 Link: https://www.otodom.pl/pl/oferta/wykonczone-3-pokoje-2-lazienki-mokotow-ID4zs3H
+
+2026-03-24 14:04:37,868 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:04:37,915 [INFO] [P:10 - 24] 💰 599 000 PLN | 📏 49.0m² | 🚪 2 Rooms | 📌 Ciche | 2pok. | Miejsce Postojowe | 49m2 | ul. Gościniec | 📍 District ID: 16
+ 🔗 Link: https://www.otodom.pl/pl/oferta/ciche-2pok-miejsce-postojowe-49m2-ul-gosciniec-ID4zW1C
+
+2026-03-24 14:04:38,316 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:04:38,355 [INFO] [P:10 - 25] 💰 1 299 000 PLN | 📏 60.0m² | 🚪 3 Rooms | 📌 Komfortowe/nowe/3 pokoje/pralnia/garaż/Mokotów | 📍 District ID: 1
+ 🔗 Link: https://www.otodom.pl/pl/oferta/komfortowe-nowe-3-pokoje-pralnia-garaz-mokotow-ID4Avf8
+
+2026-03-24 14:04:38,689 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:04:38,727 [INFO] [P:10 - 26] 💰 698 000 PLN | 📏 49.86m² | 🚪 2 Rooms | 📌 Okazja 50M2/2 Pok/Ul.Ciołka/Metro/ | 📍 District ID: 4
+ 🔗 Link: https://www.otodom.pl/pl/oferta/okazja-50m2-2-pok-ul-ciolka-metro-ID4ACCS
+
+2026-03-24 14:04:39,067 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:04:39,101 [INFO] [P:10 - 27] 💰 580 000 PLN | 📏 31.62m² | 🚪 1 Rooms | 📌 Stara Ochota. Kawalerka. Kamienica. | 📍 District ID: 11
+ 🔗 Link: https://www.otodom.pl/pl/oferta/stara-ochota-kawalerka-kamienica-ID4Anvm
+
+2026-03-24 14:04:39,484 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:04:39,515 [INFO] [P:10 - 28] 💰 575 000 PLN | 📏 38.0m² | 🚪 2 Rooms | 📌 2-pokojowe mieszkanie | Sadyba | ul. Konstancińska | 📍 District ID: 1
+ 🔗 Link: https://www.otodom.pl/pl/oferta/2-pokojowe-mieszkanie-sadyba-ul-konstancinska-ID4zKt8
+
+2026-03-24 14:04:39,859 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:04:39,880 [INFO] [P:10 - 29] 💰 9 000 000 PLN | 📏 155.0m² | 🚪 3 Rooms | 📌 Apartament z widokiem na Park Saski | 📍 District ID: 9
+ 🔗 Link: https://www.otodom.pl/pl/oferta/apartament-z-widokiem-na-park-saski-ID4zl77
+
+2026-03-24 14:04:40,357 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:04:40,388 [INFO] [P:10 - 30] 💰 477 000 PLN | 📏 20.67m² | 🚪 1 Rooms | 📌 Metro Racławicka kawalerka do wprowadzenia widok klimatyz. garderoba | 📍 District ID: 1
+ 🔗 Link: https://www.otodom.pl/pl/oferta/metro-raclawicka-kawalerka-do-wprowadzenia-widok-klimatyz-garderoba-ID4Atjk
+
+2026-03-24 14:04:40,765 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:04:40,765 [INFO] ======================================================================
+
+2026-03-24 14:04:40,766 [INFO] INFO: Page 10 completed. Resting for 5 seconds to avoid IP ban...
