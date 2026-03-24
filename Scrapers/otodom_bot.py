@@ -1,7 +1,18 @@
 import os
 import time
 import requests
+import logging
 from playwright.sync_api import sync_playwright
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(message)s",
+    handlers=[
+        logging.FileHandler("app.log", encoding="utf-8"),
+        logging.StreamHandler()
+    ]
+)
+logger = logging.getLogger(__name__)
 
 SUPABASE_URL = "https://mvappdsdacsamgvkrcmb.supabase.co"
 SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im12YXBwZHNkYWNzYW1ndmtyY21iIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQxMjcyOTQsImV4cCI6MjA4OTcwMzI5NH0.jJ4G_l21Njm-aNPoqJ9LijnsotQCsoEpiJHS4uzIzK8"
@@ -31,7 +42,7 @@ SCRAPE_TARGETS = [
     {"url_part": "sprzedaz/lokal", "trans_id": 1, "type_id": 3, "label": "COMMERCIAL SALE"},
     {"url_part": "wynajem/lokal", "trans_id": 2, "type_id": 3, "label": "COMMERCIAL RENT"},
 
-    # --- Garaże (Garages) type_id: 4 ---gıt 
+    # --- Garaże (Garages) type_id: 4 --- 
     {"url_part": "sprzedaz/garaz", "trans_id": 1, "type_id": 4, "label": "GARAGE SALE"},
     {"url_part": "wynajem/garaz", "trans_id": 2, "type_id": 4, "label": "GARAGE RENT"},
 
@@ -59,63 +70,66 @@ def save_to_supabase(data):
         "Prefer": "return=minimal"
     }
 
-    try:
-        response = requests.post(table_url, json=data, headers=headers, timeout=10)
-        if response.status_code == 400:
-            print(f"      ❌ SERVER REJECTED (400): {response.text}")
+    max_retries = 3
+    for attempt in range(max_retries):
+        try:
+            response = requests.post(table_url, json=data, headers=headers, timeout=10)
+            if response.status_code == 400:
+                logger.error(f"      ❌ SERVER REJECTED (400): {response.text}")
 
-        return response.status_code
-    except Exception as e:
-        print(f"      ❌ CONNECTION ERROR: {e}")
-        return None
+            return response.status_code
+        except Exception as e:
+            logger.warning(f"      ❌ CONNECTION ERROR (Attempt {attempt + 1}/{max_retries}): {e}")
+            time.sleep(2) 
+
+    return None 
 
 def test_scraper():
-    print("INFO: Bot is waking up and launching the browser...")
+    logger.info("INFO: Bot is waking up and launching the browser...")
 
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=False)
         page = browser.new_page()
 
-        print("INFO: Navigating to Otodom to clear cookies...")
+        logger.info("INFO: Navigating to Otodom to clear cookies...")
         page.goto("https://www.otodom.pl/pl/wyniki/sprzedaz/mieszkanie/mazowieckie/warszawa/warszawa/warszawa")
 
-        print("INFO: Looking for the Cookie banner...")
+        logger.info("INFO: Looking for the Cookie banner...")
         try:
             cookie_button = page.locator("#onetrust-accept-btn-handler")
             cookie_button.wait_for(timeout=5000)
             cookie_button.click()
-            print("SUCCESS: Cookie banner destroyed! The view is clear.")
+            logger.info("SUCCESS: Cookie banner destroyed! The view is clear.")
         except Exception:
-            print("INFO: No Cookie banner found, moving on.")
+            logger.info("INFO: No Cookie banner found, moving on.")
 
         for target in SCRAPE_TARGETS:
-            print(f"\n{'='*70}")
-            print(f"🚀 INITIATING MEGA MISSION: {target['label']}")
-            print(f"{'='*70}")
+            logger.info(f"\n{'='*70}")
+            logger.info(f"🚀 INITIATING MEGA MISSION: {target['label']}")
+            logger.info(f"{'='*70}")
 
             for page_num in range(1, 16):
-                print(f"\n============================================================")
-                print(f"📄 SCRAPING INITIATED: PAGE {page_num} [{target['label']}]")
-                print(f"============================================================")
+                logger.info(f"\n============================================================")
+                logger.info(f"📄 SCRAPING INITIATED: PAGE {page_num} [{target['label']}]")
+                logger.info(f"============================================================")
 
-              
                 target_url = f"https://www.otodom.pl/pl/wyniki/{target['url_part']}/mazowieckie/warszawa/warszawa/warszawa?direction=ASC&sorting=PRICE&page={page_num}"
                 page.goto(target_url)
 
-                print("INFO: Scanning for real estate listings...")
+                logger.info("INFO: Scanning for real estate listings...")
 
                 try:
                     page.wait_for_selector('[data-sentry-component="AdvertCard"]', timeout=10000)
 
-                    print("INFO: Scrolling down to trick 'Lazy Loading' (3 times)...")
+                    logger.info("INFO: Scrolling down to trick 'Lazy Loading' (3 times)...")
                     for _ in range(3):
                         page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
                         time.sleep(1.5)
 
                     all_listing = page.locator('[data-sentry-component="AdvertCard"]').all()
 
-                    print(f"INFO: Hurricane Mode active! Found {len(all_listing)} listings on page {page_num}. Extracting...\n")
-                    print("="*70)
+                    logger.info(f"INFO: Hurricane Mode active! Found {len(all_listing)} listings on page {page_num}. Extracting...\n")
+                    logger.info("="*70)
 
                     for index, listing in enumerate(all_listing):
                         try:
@@ -143,9 +157,8 @@ def test_scraper():
 
                             matched_loc_id = find_loc_id(location)
 
-                            print(f"[P:{page_num} - {index + 1}] 💰 {display_price} PLN | 📌 {title} | 📍 District ID: {matched_loc_id}\n 🔗 Link: {full_url}\n")
+                            logger.info(f"[P:{page_num} - {index + 1}] 💰 {display_price} PLN | 📌 {title} | 📍 District ID: {matched_loc_id}\n 🔗 Link: {full_url}\n")
 
-                            # DÜZELTME 2: type_id artık listeden dinamik olarak çekiliyor!
                             payload = {
                                 "price_pln": clean_price,
                                 "url_link": full_url,
@@ -161,28 +174,44 @@ def test_scraper():
                             db_status = save_to_supabase(payload)
 
                             if db_status in [200, 201, 204]:
-                                print(f"      ✅ DB SYNC SUCCESS (New Listing Added)")
+                                logger.info(f"      ✅ DB SYNC SUCCESS (New Listing Added)")
                             elif db_status == 409:
-                                print(f"      🔄 ALREADY EXISTS (Skipped)")
+                                logger.info(f"      🔄 ALREADY EXISTS (Skipped)")
                             else:
-                                print(f"      ❌ DB ERROR (Code: {db_status})")
+                                logger.error(f"      ❌ DB ERROR (Code: {db_status})")
 
                         except Exception:
-                            print(f"[{index + 1}] ⚠ WARNING: Missing data skipped (likely a hidden sponsored ad).")
+                            logger.warning(f"[{index + 1}] ⚠ WARNING: Missing data skipped (likely a hidden sponsored ad).")
                             continue
 
-                    print("="*70 + "\n")
+                    logger.info("="*70 + "\n")
 
                 except Exception as e:
-                    print(f"ERROR: Failed to extract listing data for Page {page_num}. Details: {e}")
+                    logger.error(f"ERROR: Failed to extract listing data for Page {page_num}. Details: {e}")
 
-                print(f"INFO: Page {page_num} completed. Resting for 5 seconds to avoid IP ban...")
+                logger.info(f"INFO: Page {page_num} completed. Resting for 5 seconds to avoid IP ban...")
                 time.sleep(5)
 
         time.sleep(3)
         browser.close()
-        print("INFO: ALL MISSIONS COMPLETE! Operation complete, browser closed safely.")
+        logger.info("INFO: ALL MISSIONS COMPLETE! Operation complete, browser closed safely.")
+
+
+def start_endless_bot():
+    """Runs your exact test_scraper() function in a 24/7 continuous loop."""
+    logger.info("🔥 ENDLESS DATA BEAST MODE ACTIVATED! 🔥")
+    cycle_count = 1
+
+    while True:
+        logger.info(f"\n{'*'*50}\nSTARTING CYCLE #{cycle_count}\n{'*'*50}")
+
+        test_scraper()
+
+        logger.info("INFO: Cycle finished. System is cooling down for 10 minutes to avoid bans...")
+        time.sleep(600)
+
+        cycle_count += 1
 
 if __name__ == "__main__":
-    print("INFO: System initializing...")
-    test_scraper()
+    logger.info("INFO: System initializing...")
+    start_endless_bot()
