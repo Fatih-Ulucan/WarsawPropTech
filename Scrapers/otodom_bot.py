@@ -4,7 +4,7 @@ import requests
 from playwright.sync_api import sync_playwright
 
 SUPABASE_URL = "https://mvappdsdacsamgvkrcmb.supabase.co"
-SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im12YXBwZHNkYWNzYW1ndmtyY21iIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQxMjcyOTQsImV4cCI6MjA4OTcwMzI5NH0.jJ4G_l21Njm-aNPoqJ9LijnsotQCsoEpiJHS4uzIzK8" 
+SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im12YXBwZHNkYWNzYW1ndmtyY21iIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQxMjcyOTQsImV4cCI6MjA4OTcwMzI5NH0.jJ4G_l21Njm-aNPoqJ9LijnsotQCsoEpiJHS4uzIzK8"
 
 LOCATION_MAP = {
     'Mokotów': 1, 'Praga-Południe': 2, 'Ursynów': 3, 'Wola': 4,
@@ -15,8 +15,28 @@ LOCATION_MAP = {
 }
 
 SCRAPE_TARGETS = [
-    {"url_part": "sprzedaz", "trans_id": 1, "label": "FOR SALE (Sprzedaż)"},
-    {"url_part": "wynajem", "trans_id": 2, "label": "FOR RENT (Wynajem)"}
+    # --- Mieszkania (Apartments) type_id: 1 ---
+    {"url_part": "sprzedaz/mieszkanie", "trans_id": 1, "type_id": 1, "label": "APARTMENT SALE"},
+    {"url_part": "wynajem/mieszkanie", "trans_id": 2, "type_id": 1, "label": "APARTMENT RENT"},
+
+    # --- Kawalerki (Studios) type_id: 1 (Still Apartments) ---
+    {"url_part": "sprzedaz/kawalerka", "trans_id": 1, "type_id": 1, "label": "STUDIO SALE"},
+    {"url_part": "wynajem/kawalerka", "trans_id": 2, "type_id": 1, "label": "STUDIO RENT"},
+
+    # --- Domy (Houses) type_id: 2 ---
+    {"url_part": "sprzedaz/dom", "trans_id": 1, "type_id": 2, "label": "HOUSE SALE"},
+    {"url_part": "wynajem/dom", "trans_id": 2, "type_id": 2, "label": "HOUSE RENT"},
+
+    # --- Lokale użytkowe (Commercial) type_id: 3 ---
+    {"url_part": "sprzedaz/lokal", "trans_id": 1, "type_id": 3, "label": "COMMERCIAL SALE"},
+    {"url_part": "wynajem/lokal", "trans_id": 2, "type_id": 3, "label": "COMMERCIAL RENT"},
+
+    # --- Garaże (Garages) type_id: 4 ---gıt 
+    {"url_part": "sprzedaz/garaz", "trans_id": 1, "type_id": 4, "label": "GARAGE SALE"},
+    {"url_part": "wynajem/garaz", "trans_id": 2, "type_id": 4, "label": "GARAGE RENT"},
+
+    # --- Działki (Plots) type_id: 5 (Assuming type_id 5 for plots) ---
+    {"url_part": "sprzedaz/dzialka", "trans_id": 1, "type_id": 5, "label": "PLOT SALE"}
 ]
 
 def find_loc_id(location_text):
@@ -70,7 +90,7 @@ def test_scraper():
 
         for target in SCRAPE_TARGETS:
             print(f"\n{'='*70}")
-            print(f"🚀 INITIATING MISSION: {target['label']}")
+            print(f"🚀 INITIATING MEGA MISSION: {target['label']}")
             print(f"{'='*70}")
 
             for page_num in range(1, 16):
@@ -78,7 +98,8 @@ def test_scraper():
                 print(f"📄 SCRAPING INITIATED: PAGE {page_num} [{target['label']}]")
                 print(f"============================================================")
 
-                target_url = f"https://www.otodom.pl/pl/wyniki/{target['url_part']}/mieszkanie/mazowieckie/warszawa/warszawa/warszawa?direction=ASC&sorting=PRICE&page={page_num}"
+              
+                target_url = f"https://www.otodom.pl/pl/wyniki/{target['url_part']}/mazowieckie/warszawa/warszawa/warszawa?direction=ASC&sorting=PRICE&page={page_num}"
                 page.goto(target_url)
 
                 print("INFO: Scanning for real estate listings...")
@@ -124,13 +145,14 @@ def test_scraper():
 
                             print(f"[P:{page_num} - {index + 1}] 💰 {display_price} PLN | 📌 {title} | 📍 District ID: {matched_loc_id}\n 🔗 Link: {full_url}\n")
 
+                            # DÜZELTME 2: type_id artık listeden dinamik olarak çekiliyor!
                             payload = {
                                 "price_pln": clean_price,
                                 "url_link": full_url,
                                 "source_platform": "Otodom",
                                 "is_active": True,
-                                "trans_id": target['trans_id'],  
-                                "type_id": 1
+                                "trans_id": target['trans_id'],
+                                "type_id": target['type_id']
                             }
 
                             if matched_loc_id is not None:
