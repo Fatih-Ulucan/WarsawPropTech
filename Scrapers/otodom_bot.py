@@ -5,7 +5,7 @@ import logging
 import re
 import random
 import sys
-from io import StringIO 
+from io import StringIO
 from datetime import datetime
 from pathlib import Path
 from dotenv import load_dotenv
@@ -29,7 +29,7 @@ try:
         clean_content = f.read()
     load_dotenv(stream=StringIO(clean_content), override=True)
 except Exception as e:
-    logger.error(f"❌ .env dosyası okunamadı: {e}")
+    logger.error(f"❌ Failed to read .env file: {e}")
 
 SUPABASE_URL = os.getenv("SUPABASE_URL")
 SUPABASE_KEY = os.getenv("SUPABASE_KEY")
@@ -37,7 +37,7 @@ TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN")
 TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
 
 if not SUPABASE_URL or not TELEGRAM_TOKEN:
-    logger.error(f"❌ KRİTİK HATA: Değişkenler eksik! URL: {SUPABASE_URL}")
+    logger.error(f"❌ CRITICAL ERROR: Missing environment variables! URL: {SUPABASE_URL}")
     sys.exit()
 
 THRESHOLDS = {
