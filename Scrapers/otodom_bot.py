@@ -3,11 +3,13 @@ import time
 import requests
 import logging
 import re
-import random 
-from dotenv import load_dotenv 
+import random
+import sys
+from io import StringIO 
+from datetime import datetime
+from pathlib import Path
+from dotenv import load_dotenv
 from playwright.sync_api import sync_playwright
-
-load_dotenv()
 
 logging.basicConfig(
     level=logging.INFO,
@@ -19,8 +21,32 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-SUPABASE_URL = "https://mvappdsdacsamgvkrcmb.supabase.co"
-SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im12YXBwZHNkYWNzYW1ndmtyY21iIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQxMjcyOTQsImV4cCI6MjA4OTcwMzI5NH0.jJ4G_l21Njm-aNPoqJ9LijnsotQCsoEpiJHS4uzIzK8"
+BASE_DIR = Path(__file__).resolve().parent.parent
+ENV_PATH = BASE_DIR / ".env"
+
+try:
+    with open(ENV_PATH, "r", encoding="utf-8-sig") as f:
+        clean_content = f.read()
+    load_dotenv(stream=StringIO(clean_content), override=True)
+except Exception as e:
+    logger.error(f"❌ .env dosyası okunamadı: {e}")
+
+SUPABASE_URL = os.getenv("SUPABASE_URL")
+SUPABASE_KEY = os.getenv("SUPABASE_KEY")
+TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN")
+TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
+
+if not SUPABASE_URL or not TELEGRAM_TOKEN:
+    logger.error(f"❌ KRİTİK HATA: Değişkenler eksik! URL: {SUPABASE_URL}")
+    sys.exit()
+
+THRESHOLDS = {
+    "SALE_APARTMENT": 14500,
+    "SALE_HOUSE": 10500,
+    "RENT_ALL": 85
+}
+
+stats = {"scanned": 0, "added": 0, "bargains": 0, "start_time": datetime.now()}
 
 LOCATION_MAP = {
     'Mokotów': 1, 'Praga-Południe': 2, 'Ursynów': 3, 'Wola': 4,
@@ -31,43 +57,39 @@ LOCATION_MAP = {
 }
 
 SCRAPE_TARGETS = [
-    # --- Mieszkania (Apartments) type_id: 1 ---
-    {"url_part": "sprzedaz/mieszkanie", "trans_id": 1, "type_id": 1, "label": "APARTMENT SALE"},
-    {"url_part": "wynajem/mieszkanie", "trans_id": 2, "type_id": 1, "label": "APARTMENT RENT"},
-
-    # --- Kawalerki (Studios) type_id: 1 (Still Apartments) ---
-    {"url_part": "sprzedaz/kawalerka", "trans_id": 1, "type_id": 1, "label": "STUDIO SALE"},
-    {"url_part": "wynajem/kawalerka", "trans_id": 2, "type_id": 1, "label": "STUDIO RENT"},
-
-    # --- Domy (Houses) type_id: 2 ---
-    {"url_part": "sprzedaz/dom", "trans_id": 1, "type_id": 2, "label": "HOUSE SALE"},
-    {"url_part": "wynajem/dom", "trans_id": 2, "type_id": 2, "label": "HOUSE RENT"},
-
-    # --- Lokale użytkowe (Commercial) type_id: 3 ---
-    {"url_part": "sprzedaz/lokal", "trans_id": 1, "type_id": 3, "label": "COMMERCIAL SALE"},
-    {"url_part": "wynajem/lokal", "trans_id": 2, "type_id": 3, "label": "COMMERCIAL RENT"},
-
-    # --- Garaże (Garages) type_id: 4 --- 
-    {"url_part": "sprzedaz/garaz", "trans_id": 1, "type_id": 4, "label": "GARAGE SALE"},
-    {"url_part": "wynajem/garaz", "trans_id": 2, "type_id": 4, "label": "GARAGE RENT"},
-
-    # --- Działki (Plots) type_id: 5 (Assuming type_id 5 for plots) ---
-    {"url_part": "sprzedaz/dzialka", "trans_id": 1, "type_id": 5, "label": "PLOT SALE"}
+    {"url_part": "sprzedaz/mieszkanie", "trans_id": 1, "type_id": 1, "label": "🏠 APARTMENT SALE"},
+    {"url_part": "wynajem/mieszkanie", "trans_id": 2, "type_id": 1, "label": "🔑 APARTMENT RENT"},
+    {"url_part": "sprzedaz/kawalerka", "trans_id": 1, "type_id": 1, "label": "🛋️ STUDIO SALE"},
+    {"url_part": "wynajem/kawalerka", "trans_id": 2, "type_id": 1, "label": "🛌 STUDIO RENT"},
+    {"url_part": "sprzedaz/dom", "trans_id": 1, "type_id": 2, "label": "🏡 HOUSE SALE"},
+    {"url_part": "wynajem/dom", "trans_id": 2, "type_id": 2, "label": "🏠 HOUSE RENT"},
+    {"url_part": "sprzedaz/lokal", "trans_id": 1, "type_id": 3, "label": "🏢 COMMERCIAL SALE"},
+    {"url_part": "wynajem/lokal", "trans_id": 2, "type_id": 3, "label": "🏬 COMMERCIAL RENT"},
+    {"url_part": "sprzedaz/garaz", "trans_id": 1, "type_id": 4, "label": "🚗 GARAGE SALE"},
+    {"url_part": "wynajem/garaz", "trans_id": 2, "type_id": 4, "label": "🅿️ GARAGE RENT"},
+    {"url_part": "sprzedaz/dzialka", "trans_id": 1, "type_id": 5, "label": "🌳 PLOT SALE"}
 ]
 
 SEEN_URLS = set()
 
+def send_telegram(message):
+    url = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage"
+    try:
+        response = requests.post(url, json={"chat_id": TELEGRAM_CHAT_ID, "text": message, "parse_mode": "HTML"}, timeout=10)
+        if response.status_code != 200:
+            logger.error(f"❌ TELEGRAM API ERROR: {response.text}")
+        else:
+            logger.info("✅ TELEGRAM MESSAGE SENT SUCCESSFULLY!")
+    except Exception as e:
+        logger.error(f"❌ Telegram Network Failed: {e}")
+
 def find_loc_id(location_text):
-    """Check the address text, finds the district, and returns its ID."""
-    if not location_text:
-        return None
+    if not location_text: return None
     for district, loc_id in LOCATION_MAP.items():
-        if district in location_text:
-            return loc_id
+        if district in location_text: return loc_id
     return None
 
 def save_to_supabase(data):
-    """Sends extracted data to the 'listings' table."""
     clean_url = SUPABASE_URL.strip("/")
     table_url = f"{clean_url}/rest/v1/listings"
     headers = {
@@ -76,95 +98,72 @@ def save_to_supabase(data):
         "Content-Type": "application/json",
         "Prefer": "return=minimal"
     }
-
     max_retries = 3
     for attempt in range(max_retries):
         try:
             response = requests.post(table_url, json=data, headers=headers, timeout=10)
-            if response.status_code == 400:
-                logger.error(f"      ❌ SERVER REJECTED (400): {response.text}")
-
             return response.status_code
         except Exception as e:
-            logger.warning(f"      ❌ CONNECTION ERROR (Attempt {attempt + 1}/{max_retries}): {e}")
             time.sleep(2)
-
     return None
 
 def test_scraper():
+    global stats
     logger.info("INFO: Bot is waking up and launching the browser...")
 
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=False)
         page = browser.new_page()
 
-        logger.info("INFO: Navigating to Otodom to clear cookies...")
+        logger.info("INFO: Navigating to Otodom...")
         page.goto("https://www.otodom.pl/pl/wyniki/sprzedaz/mieszkanie/mazowieckie/warszawa/warszawa/warszawa")
 
-        logger.info("INFO: Looking for the Cookie banner...")
         try:
             cookie_button = page.locator("#onetrust-accept-btn-handler")
             cookie_button.wait_for(timeout=5000)
             cookie_button.click()
-            logger.info("SUCCESS: Cookie banner destroyed! The view is clear.")
-        except Exception:
-            logger.info("INFO: No Cookie banner found, moving on.")
+            logger.info("SUCCESS: Cookie banner destroyed!")
+        except: pass
 
         for target in SCRAPE_TARGETS:
-            logger.info(f"\n{'='*70}")
-            logger.info(f"🚀 INITIATING MEGA MISSION: {target['label']}")
-            logger.info(f"{'='*70}")
+            logger.info(f"\n🚀 MISSION: {target['label']}")
 
-            for page_num in range(1, 16):
-                logger.info(f"\n============================================================")
-                logger.info(f"📄 SCRAPING INITIATED: PAGE {page_num} [{target['label']}]")
-                logger.info(f"============================================================")
-
+            for page_num in range(1, 101):
                 target_url = f"https://www.otodom.pl/pl/wyniki/{target['url_part']}/mazowieckie/warszawa/warszawa/warszawa?direction=ASC&sorting=PRICE&page={page_num}"
                 page.goto(target_url)
 
-                logger.info("INFO: Scanning for real estate listings...")
-
                 try:
-                    page.wait_for_selector('[data-sentry-component="AdvertCard"]', timeout=10000)
+                    try:
+                        page.wait_for_selector('[data-sentry-component="AdvertCard"]', timeout=10000)
+                    except:
+                        logger.info(f"🛑 END OF CATEGORY: {target['label']}")
+                        break
 
-                    logger.info("INFO: Scrolling down to trick 'Lazy Loading' (3 times)...")
                     for _ in range(3):
                         page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
                         time.sleep(1.5)
 
                     all_listing = page.locator('[data-sentry-component="AdvertCard"]').all()
 
-                    logger.info(f"INFO: Hurricane Mode active! Found {len(all_listing)} listings on page {page_num}. Extracting...\n")
-                    logger.info("="*70)
-
                     for index, listing in enumerate(all_listing):
+                        stats["scanned"] += 1
                         try:
                             raw_url = listing.locator('[data-cy="listing-item-link"]').first.get_attribute('href')
-                            if not raw_url:
-                                continue
-                            if raw_url.startswith("/hpr"):
-                                raw_url = raw_url.replace("/hpr", "")
-                            if raw_url.startswith("http"):
-                                full_url = raw_url
-                            else:
-                                full_url = f"https://www.otodom.pl{raw_url}"
+                            if not raw_url: continue
+                            full_url = raw_url if raw_url.startswith("http") else f"https://www.otodom.pl{raw_url.replace('/hpr','')}"
 
                             if full_url in SEEN_URLS:
-                                logger.info(f"[{index + 1}] ⏭️ SKIPPED (In-Memory Cache)")
+                                logger.info(f"[{index + 1}] ⏭️ SKIPPED")
                                 continue
 
                             card_text = listing.inner_text()
-
                             title = listing.locator('[data-cy="listing-item-link"]').first.inner_text()
                             location = listing.locator('[data-sentry-component="Address"]').first.inner_text()
                             raw_price = listing.locator('[data-sentry-element="MainPrice"]').first.inner_text()
 
                             try:
-                                clean_price = int(raw_price.replace("zł","").replace(" ","").replace("\xa0",""))
-                            except ValueError:
-                                clean_price = 0
-
+                                clean_price = int(re.sub(r'[^\d]', '', raw_price))
+                            except: clean_price = 0
 
                             sqm_match = re.search(r'(\d+(?:[.,]\d+)?)\s*m²', card_text)
                             sqm = float(sqm_match.group(1).replace(',', '.')) if sqm_match else None
@@ -172,83 +171,80 @@ def test_scraper():
                             rooms_match = re.search(r'(\d+)\s*pok', card_text)
                             rooms = int(rooms_match.group(1)) if rooms_match else None
 
-                            price_per_sqm = None
-                            display_price_per_sqm = "None"
-                            if sqm and sqm > 0 and clean_price > 0:
-                                price_per_sqm = round(clean_price / sqm, 2)
-                                display_price_per_sqm = f"{price_per_sqm:,.2f}".replace(",", " ")
-
-                            display_price = f"{clean_price:,}".replace(","," ")
+                            price_per_sqm = round(clean_price / sqm, 2) if sqm and sqm > 0 else None
                             matched_loc_id = find_loc_id(location)
 
-                            logger.info(f"[P:{page_num} - {index + 1}] 💰 {display_price} PLN | 📏 {sqm}m² | 📊 {display_price_per_sqm} PLN/m² | 🚪 {rooms} Rooms | 📌 {title} | 📍 ID: {matched_loc_id}")
+                            display_p_m2 = f"{price_per_sqm:,.2f}".replace(",", " ") if price_per_sqm else "None"
+                            logger.info(f"[P:{page_num} - {index + 1}] 💰 {clean_price:,} PLN | 📏 {sqm}m² | 📊 {display_p_m2} PLN/m² | 🚪 {rooms} Rooms | 📍 ID: {matched_loc_id}")
 
                             payload = {
-                                "price_pln": clean_price,
-                                "url_link": full_url,
-                                "source_platform": "Otodom",
-                                "is_active": True,
-                                "trans_id": target['trans_id'],
-                                "type_id": target['type_id']
+                                "price_pln": clean_price, "url_link": full_url, "source_platform": "Otodom",
+                                "is_active": True, "trans_id": target['trans_id'], "type_id": target['type_id'],
+                                "sqm": sqm, "rooms": rooms, "price_per_sqm": price_per_sqm, "loc_id": matched_loc_id
                             }
-
-                            if matched_loc_id is not None: payload["loc_id"] = matched_loc_id
-                            if sqm is not None: payload["sqm"] = sqm
-                            if rooms is not None: payload["rooms"] = rooms
-                            if price_per_sqm is not None: payload["price_per_sqm"] = price_per_sqm 
 
                             db_status = save_to_supabase(payload)
 
                             if db_status in [200, 201, 204]:
-                                logger.info(f"      ✅ DB SYNC SUCCESS (New Listing Added)")
-                                SEEN_URLS.add(full_url) 
+                                stats["added"] += 1
+                                SEEN_URLS.add(full_url)
+                                logger.info("      ✅ DB SYNC SUCCESS")
+
+                                is_bargain = False
+                                if target['trans_id'] == 1:
+                                    if target['type_id'] == 1 and price_per_sqm and price_per_sqm < THRESHOLDS["SALE_APARTMENT"]: is_bargain = True
+                                    elif target['type_id'] == 2 and price_per_sqm and price_per_sqm < THRESHOLDS["SALE_HOUSE"]: is_bargain = True
+                                elif target['trans_id'] == 2 and price_per_sqm and price_per_sqm < THRESHOLDS["RENT_ALL"]: is_bargain = True
+
+                                if is_bargain:
+                                    stats["bargains"] += 1
+                                    alert = f"💎 <b>INVESTMENT OPPORTUNITY</b>\n" \
+                                            f"━━━━━━━━━━━━━━━━━━━━\n" \
+                                            f"📍 <b>District:</b> {location}\n" \
+                                            f"🏢 <b>Category:</b> {target['label']}\n" \
+                                            f"💰 <b>Price:</b> {clean_price:,} PLN\n" \
+                                            f"📐 <b>Size:</b> {sqm} m²\n" \
+                                            f"📊 <b>m² Rate:</b> {price_per_sqm:,} PLN/m²\n" \
+                                            f"━━━━━━━━━━━━━━━━━━━━\n" \
+                                            f"🔗 <a href='{full_url}'>View Listing</a>"
+                                    send_telegram(alert)
+
                             elif db_status == 409:
-                                logger.info(f"      🔄 ALREADY EXISTS (Skipped)")
-                                SEEN_URLS.add(full_url) 
-                            else:
-                                logger.error(f"      ❌ DB ERROR (Code: {db_status})")
+                                SEEN_URLS.add(full_url)
 
-                        except Exception:
-                            logger.warning(f"[{index + 1}] ⚠ WARNING: Missing data skipped (likely a hidden sponsored ad).")
-                            continue
-
-                    logger.info("="*70 + "\n")
+                        except Exception: continue
 
                 except Exception as e:
-                    logger.error(f"ERROR: Failed to extract listing data for Page {page_num}. Details: {e}")
+                    logger.error(f"ERROR: Page {page_num} failed: {e}")
 
-                sleep_time = random.uniform(3, 7)
-                logger.info(f"INFO: Page {page_num} completed. Resting for {sleep_time:.2f} seconds to avoid IP ban...")
-                time.sleep(sleep_time)
+                time.sleep(random.uniform(3, 7))
 
-        time.sleep(3)
         browser.close()
-        logger.info("INFO: ALL MISSIONS COMPLETE! Operation complete, browser closed safely.")
 
+def send_daily_report():
+    uptime = datetime.now() - stats['start_time']
+    report = f"📊 <b>WARSAW MARKET REPORT</b>\n" \
+             f"━━━━━━━━━━━━━━━━━━━━\n" \
+             f"⏱ <b>Uptime:</b> {str(uptime).split('.')[0]}\n" \
+             f"🧐 <b>Ads Scanned:</b> {stats['scanned']}\n" \
+             f"✅ <b>New Entries:</b> {stats['added']}\n" \
+             f"🔥 <b>Bargains Found:</b> {stats['bargains']}\n" \
+             f"━━━━━━━━━━━━━━━━━━━━"
+    send_telegram(report)
+    for k in ["scanned", "added", "bargains"]: stats[k] = 0
 
 def start_endless_bot():
-    """Runs your exact test_scraper() function in a 24/7 continuous loop."""
-    logger.info("🔥 ENDLESS DATA BEAST MODE ACTIVATED! 🔥")
-    cycle_count = 1
-    max_cycles = 1000 
-
-    while cycle_count <= max_cycles:
+    send_telegram("🚀 <b>System Boot:</b> Warsaw PropTech Radar is LIVE!")
+    while True:
         try:
-            logger.info(f"\n{'*'*50}\nSTARTING CYCLE #{cycle_count}\n{'*'*50}")
-
             test_scraper()
-
-            logger.info("INFO: Cycle finished. System is cooling down for 10 minutes to avoid bans...")
+            send_daily_report()
             time.sleep(600)
-
         except Exception as e:
-            logger.error(f"CRITICAL ERROR IN CYCLE {cycle_count}: {e}")
-            logger.info("System will attempt to restart the cycle in 60 seconds...")
-            time.sleep(60) 
-
-        finally:
-            cycle_count += 1
+            logger.error(f"CRITICAL: {e}")
+            time.sleep(60)
 
 if __name__ == "__main__":
     logger.info("INFO: System initializing...")
+    send_telegram("🔔 <b>TEST MESSAGE:</b> Connection is OK. Hunting for bargains now!")
     start_endless_bot()
