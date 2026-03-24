@@ -2,9 +2,12 @@ import os
 import time
 import requests
 import logging
-import re 
+import re
+import random 
+from dotenv import load_dotenv 
 from playwright.sync_api import sync_playwright
 
+load_dotenv()
 
 logging.basicConfig(
     level=logging.INFO,
@@ -52,6 +55,8 @@ SCRAPE_TARGETS = [
     {"url_part": "sprzedaz/dzialka", "trans_id": 1, "type_id": 5, "label": "PLOT SALE"}
 ]
 
+SEEN_URLS = set()
+
 def find_loc_id(location_text):
     """Check the address text, finds the district, and returns its ID."""
     if not location_text:
@@ -82,9 +87,9 @@ def save_to_supabase(data):
             return response.status_code
         except Exception as e:
             logger.warning(f"      ❌ CONNECTION ERROR (Attempt {attempt + 1}/{max_retries}): {e}")
-            time.sleep(2) 
+            time.sleep(2)
 
-    return None 
+    return None
 
 def test_scraper():
     logger.info("INFO: Bot is waking up and launching the browser...")
@@ -135,27 +140,7 @@ def test_scraper():
 
                     for index, listing in enumerate(all_listing):
                         try:
-                            card_text = listing.inner_text()
-                            
-                            title = listing.locator('[data-cy="listing-item-link"]').first.inner_text()
-                            location = listing.locator('[data-sentry-component="Address"]').first.inner_text()
-                            raw_price = listing.locator('[data-sentry-element="MainPrice"]').first.inner_text()
-
-                            try:
-                                clean_price = int(raw_price.replace("zł","").replace(" ","").replace("\xa0",""))
-                            except ValueError:
-                                clean_price = 0
-
-                         
-                            sqm_match = re.search(r'(\d+(?:[.,]\d+)?)\s*m²', card_text)
-                            sqm = float(sqm_match.group(1).replace(',', '.')) if sqm_match else None
-
-                            rooms_match = re.search(r'(\d+)\s*pok', card_text)
-                            rooms = int(rooms_match.group(1)) if rooms_match else None
-                         
-                            
                             raw_url = listing.locator('[data-cy="listing-item-link"]').first.get_attribute('href')
-
                             if not raw_url:
                                 continue
                             if raw_url.startswith("/hpr"):
@@ -165,11 +150,38 @@ def test_scraper():
                             else:
                                 full_url = f"https://www.otodom.pl{raw_url}"
 
-                            display_price = f"{clean_price:,}".replace(","," ")
+                            if full_url in SEEN_URLS:
+                                logger.info(f"[{index + 1}] ⏭️ SKIPPED (In-Memory Cache)")
+                                continue
 
+                            card_text = listing.inner_text()
+
+                            title = listing.locator('[data-cy="listing-item-link"]').first.inner_text()
+                            location = listing.locator('[data-sentry-component="Address"]').first.inner_text()
+                            raw_price = listing.locator('[data-sentry-element="MainPrice"]').first.inner_text()
+
+                            try:
+                                clean_price = int(raw_price.replace("zł","").replace(" ","").replace("\xa0",""))
+                            except ValueError:
+                                clean_price = 0
+
+
+                            sqm_match = re.search(r'(\d+(?:[.,]\d+)?)\s*m²', card_text)
+                            sqm = float(sqm_match.group(1).replace(',', '.')) if sqm_match else None
+
+                            rooms_match = re.search(r'(\d+)\s*pok', card_text)
+                            rooms = int(rooms_match.group(1)) if rooms_match else None
+
+                            price_per_sqm = None
+                            display_price_per_sqm = "None"
+                            if sqm and sqm > 0 and clean_price > 0:
+                                price_per_sqm = round(clean_price / sqm, 2)
+                                display_price_per_sqm = f"{price_per_sqm:,.2f}".replace(",", " ")
+
+                            display_price = f"{clean_price:,}".replace(","," ")
                             matched_loc_id = find_loc_id(location)
 
-                            logger.info(f"[P:{page_num} - {index + 1}] 💰 {display_price} PLN | 📏 {sqm}m² | 🚪 {rooms} Rooms | 📌 {title} | 📍 District ID: {matched_loc_id}\n 🔗 Link: {full_url}\n")
+                            logger.info(f"[P:{page_num} - {index + 1}] 💰 {display_price} PLN | 📏 {sqm}m² | 📊 {display_price_per_sqm} PLN/m² | 🚪 {rooms} Rooms | 📌 {title} | 📍 ID: {matched_loc_id}")
 
                             payload = {
                                 "price_pln": clean_price,
@@ -180,19 +192,19 @@ def test_scraper():
                                 "type_id": target['type_id']
                             }
 
-                            if matched_loc_id is not None:
-                                payload["loc_id"] = matched_loc_id
-                            if sqm is not None:
-                                payload["sqm"] = sqm
-                            if rooms is not None:
-                                payload["rooms"] = rooms
+                            if matched_loc_id is not None: payload["loc_id"] = matched_loc_id
+                            if sqm is not None: payload["sqm"] = sqm
+                            if rooms is not None: payload["rooms"] = rooms
+                            if price_per_sqm is not None: payload["price_per_sqm"] = price_per_sqm 
 
                             db_status = save_to_supabase(payload)
 
                             if db_status in [200, 201, 204]:
                                 logger.info(f"      ✅ DB SYNC SUCCESS (New Listing Added)")
+                                SEEN_URLS.add(full_url) 
                             elif db_status == 409:
                                 logger.info(f"      🔄 ALREADY EXISTS (Skipped)")
+                                SEEN_URLS.add(full_url) 
                             else:
                                 logger.error(f"      ❌ DB ERROR (Code: {db_status})")
 
@@ -205,8 +217,9 @@ def test_scraper():
                 except Exception as e:
                     logger.error(f"ERROR: Failed to extract listing data for Page {page_num}. Details: {e}")
 
-                logger.info(f"INFO: Page {page_num} completed. Resting for 5 seconds to avoid IP ban...")
-                time.sleep(5)
+                sleep_time = random.uniform(3, 7)
+                logger.info(f"INFO: Page {page_num} completed. Resting for {sleep_time:.2f} seconds to avoid IP ban...")
+                time.sleep(sleep_time)
 
         time.sleep(3)
         browser.close()
@@ -217,16 +230,24 @@ def start_endless_bot():
     """Runs your exact test_scraper() function in a 24/7 continuous loop."""
     logger.info("🔥 ENDLESS DATA BEAST MODE ACTIVATED! 🔥")
     cycle_count = 1
+    max_cycles = 1000 
 
-    while True:
-        logger.info(f"\n{'*'*50}\nSTARTING CYCLE #{cycle_count}\n{'*'*50}")
+    while cycle_count <= max_cycles:
+        try:
+            logger.info(f"\n{'*'*50}\nSTARTING CYCLE #{cycle_count}\n{'*'*50}")
 
-        test_scraper()
+            test_scraper()
 
-        logger.info("INFO: Cycle finished. System is cooling down for 10 minutes to avoid bans...")
-        time.sleep(600)
+            logger.info("INFO: Cycle finished. System is cooling down for 10 minutes to avoid bans...")
+            time.sleep(600)
 
-        cycle_count += 1
+        except Exception as e:
+            logger.error(f"CRITICAL ERROR IN CYCLE {cycle_count}: {e}")
+            logger.info("System will attempt to restart the cycle in 60 seconds...")
+            time.sleep(60) 
+
+        finally:
+            cycle_count += 1
 
 if __name__ == "__main__":
     logger.info("INFO: System initializing...")

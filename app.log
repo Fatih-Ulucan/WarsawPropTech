@@ -2139,3 +2139,712 @@ STARTING CYCLE #1
 2026-03-24 14:04:40,765 [INFO] ======================================================================
 
 2026-03-24 14:04:40,766 [INFO] INFO: Page 10 completed. Resting for 5 seconds to avoid IP ban...
+2026-03-24 14:18:15,489 [INFO] INFO: System initializing...
+2026-03-24 14:18:15,489 [INFO] 🔥 ENDLESS DATA BEAST MODE ACTIVATED! 🔥
+2026-03-24 14:18:15,490 [INFO] 
+**************************************************
+STARTING CYCLE #1
+**************************************************
+2026-03-24 14:18:15,490 [INFO] INFO: Bot is waking up and launching the browser...
+2026-03-24 14:18:16,256 [INFO] INFO: Navigating to Otodom to clear cookies...
+2026-03-24 14:18:19,042 [INFO] INFO: Looking for the Cookie banner...
+2026-03-24 14:18:19,154 [INFO] SUCCESS: Cookie banner destroyed! The view is clear.
+2026-03-24 14:18:19,154 [INFO] 
+======================================================================
+2026-03-24 14:18:19,155 [INFO] 🚀 INITIATING MEGA MISSION: APARTMENT SALE
+2026-03-24 14:18:19,155 [INFO] ======================================================================
+2026-03-24 14:18:19,155 [INFO] 
+============================================================
+2026-03-24 14:18:19,155 [INFO] 📄 SCRAPING INITIATED: PAGE 1 [APARTMENT SALE]
+2026-03-24 14:18:19,155 [INFO] ============================================================
+2026-03-24 14:18:22,121 [INFO] INFO: Scanning for real estate listings...
+2026-03-24 14:18:22,238 [INFO] INFO: Scrolling down to trick 'Lazy Loading' (3 times)...
+2026-03-24 14:18:26,964 [INFO] INFO: Hurricane Mode active! Found 30 listings on page 1. Extracting...
+
+2026-03-24 14:18:26,964 [INFO] ======================================================================
+2026-03-24 14:18:27,098 [INFO] [P:1 - 1] 💰 1 365 000 PLN | 📏 68.46m² | 📊 19938.65 PLN/m² | 🚪 3 Rooms | 📌 Bez Prowizji 0%, OD właściciela, Umeblowane, 3 pokoje | 📍 ID: 1
+2026-03-24 14:18:27,099 [WARNING] [1] ⚠ WARNING: Missing data skipped (likely a hidden sponsored ad).
+2026-03-24 14:18:27,150 [INFO] [P:1 - 2] 💰 5 299 000 PLN | 📏 171.31m² | 📊 30932.23 PLN/m² | 🚪 6 Rooms | 📌 6-pokojowe mieszkanie 171m2 + taras Bez Prowizji | 📍 ID: 6
+2026-03-24 14:18:27,150 [WARNING] [2] ⚠ WARNING: Missing data skipped (likely a hidden sponsored ad).
+2026-03-24 14:18:27,197 [INFO] [P:1 - 3] 💰 746 924 PLN | 📏 39.73m² | 📊 18800.0 PLN/m² | 🚪 2 Rooms | 📌 2-pokojowe mieszkanie 39m2 + ogródek Bez Prowizji | 📍 ID: 13
+2026-03-24 14:18:27,197 [WARNING] [3] ⚠ WARNING: Missing data skipped (likely a hidden sponsored ad).
+2026-03-24 14:18:27,224 [INFO] [P:1 - 4] 💰 1 449 000 PLN | 📏 65.6m² | 📊 22088.41 PLN/m² | 🚪 3 Rooms | 📌 Bez Prowizji Bez Pcc2% Apartament 3 pokoje Mokotów | 📍 ID: 1
+2026-03-24 14:18:27,224 [WARNING] [4] ⚠ WARNING: Missing data skipped (likely a hidden sponsored ad).
+2026-03-24 14:18:27,248 [INFO] [P:1 - 5] 💰 984 000 PLN | 📏 44.0m² | 📊 22363.64 PLN/m² | 🚪 2 Rooms | 📌 Bez Prowizji, 0%pcc, Mieszkanie 2 pokojowe Mokotów | 📍 ID: 1
+2026-03-24 14:18:27,249 [WARNING] [5] ⚠ WARNING: Missing data skipped (likely a hidden sponsored ad).
+2026-03-24 14:18:27,275 [INFO] [P:1 - 6] 💰 1 087 700 PLN | 📏 72.0m² | 📊 15106.94 PLN/m² | 🚪 4 Rooms | 📌 Atrakcyjne mieszkanie 4 pokojowe na Mokotowie | 📍 ID: 1
+2026-03-24 14:18:27,275 [WARNING] [6] ⚠ WARNING: Missing data skipped (likely a hidden sponsored ad).
+2026-03-24 14:18:27,320 [INFO] [P:1 - 7] 💰 973 145 PLN | 📏 40.42m² | 📊 24075.83 PLN/m² | 🚪 2 Rooms | 📌 Mieszkanie 2 pokojowe Mokotów, 0%pcc, Bez Prowizji | 📍 ID: 1
+2026-03-24 14:18:27,321 [WARNING] [7] ⚠ WARNING: Missing data skipped (likely a hidden sponsored ad).
+2026-03-24 14:18:27,372 [INFO] [P:1 - 8] 💰 1 476 000 PLN | 📏 70.7m² | 📊 20876.94 PLN/m² | 🚪 3 Rooms | 📌 Apartament 3 pokoje, Wołoska, 0%pcc, Bez Prowizji | 📍 ID: 1
+2026-03-24 14:18:27,373 [WARNING] [8] ⚠ WARNING: Missing data skipped (likely a hidden sponsored ad).
+2026-03-24 14:18:27,429 [INFO] [P:1 - 9] 💰 810 000 PLN | 📏 47.0m² | 📊 17234.04 PLN/m² | 🚪 3 Rooms | 📌 Bez Prowizji, 0%pcc, Mieszkanie 3 pokojowe Mokotów | 📍 ID: 1
+2026-03-24 14:18:27,430 [WARNING] [9] ⚠ WARNING: Missing data skipped (likely a hidden sponsored ad).
+2026-03-24 14:18:27,473 [INFO] [P:1 - 10] 💰 450 000 PLN | 📏 26.0m² | 📊 17307.69 PLN/m² | 🚪 1 Rooms | 📌 Kawalerka | Po remoncie | Metro | Bielany | 📍 ID: 6
+2026-03-24 14:18:27,473 [WARNING] [10] ⚠ WARNING: Missing data skipped (likely a hidden sponsored ad).
+2026-03-24 14:18:27,521 [INFO] [P:1 - 11] 💰 635 000 PLN | 📏 34.69m² | 📊 18304.99 PLN/m² | 🚪 2 Rooms | 📌 2 pokoje | Wola | Metro Młynów | po remoncie | 3H wysokości | 📍 ID: 4
+2026-03-24 14:18:27,521 [WARNING] [11] ⚠ WARNING: Missing data skipped (likely a hidden sponsored ad).
+2026-03-24 14:18:27,557 [INFO] [P:1 - 12] 💰 715 000 PLN | 📏 50.7m² | 📊 14102.56 PLN/m² | 🚪 3 Rooms | 📌 3 pok | oddzielna kuchnia | balkon | piwnica | Bielany | Wawrzyszew | 📍 ID: 6
+2026-03-24 14:18:27,558 [WARNING] [12] ⚠ WARNING: Missing data skipped (likely a hidden sponsored ad).
+2026-03-24 14:18:27,589 [INFO] [P:1 - 13] 💰 2 849 000 PLN | 📏 100.72m² | 📊 28286.34 PLN/m² | 🚪 4 Rooms | 📌 4-pokojowy apartament na Zielonym Żoliborzu | 📍 ID: 17
+2026-03-24 14:18:27,590 [WARNING] [13] ⚠ WARNING: Missing data skipped (likely a hidden sponsored ad).
+2026-03-24 14:18:27,645 [INFO] [P:1 - 14] 💰 1 697 000 PLN | 📏 138.0m² | 📊 12297.1 PLN/m² | 🚪 4 Rooms | 📌 BEZ PROWIZJI |KLUCZE U NAS|PIĘKNIE WYKOŃCZONY | wejście prosto z windy | 📍 ID: 15
+2026-03-24 14:18:27,646 [WARNING] [14] ⚠ WARNING: Missing data skipped (likely a hidden sponsored ad).
+2026-03-24 14:18:27,689 [INFO] [P:1 - 15] 💰 2 250 000 PLN | 📏 89.0m² | 📊 25280.9 PLN/m² | 🚪 3 Rooms | 📌 Poznańska | Rewitalizacja Kamienicy w 2026 | 📍 ID: 9
+2026-03-24 14:18:27,690 [WARNING] [15] ⚠ WARNING: Missing data skipped (likely a hidden sponsored ad).
+2026-03-24 14:18:27,743 [INFO] [P:1 - 16] 💰 599 000 PLN | 📏 33.48m² | 📊 17891.28 PLN/m² | 🚪 1 Rooms | 📌 Kawalerka | Niski czynsz | strefa wypoczynku dla mieszkańców | Mokotów | 📍 ID: 1
+2026-03-24 14:18:27,743 [WARNING] [16] ⚠ WARNING: Missing data skipped (likely a hidden sponsored ad).
+2026-03-24 14:18:27,797 [INFO] [P:1 - 17] 💰 880 000 PLN | 📏 92.0m² | 📊 9565.22 PLN/m² | 🚪 5 Rooms | 📌 2-poziomwoe, M-5/ w cenie: m. postojowe, podłogówka/ zamknięte osiedle | 📍 ID: 12
+2026-03-24 14:18:27,798 [WARNING] [17] ⚠ WARNING: Missing data skipped (likely a hidden sponsored ad).
+2026-03-24 14:18:27,854 [INFO] [P:1 - 18] 💰 1 199 000 PLN | 📏 69.02m² | 📊 17371.78 PLN/m² | 🚪 4 Rooms | 📌 4 pokoje | 2 łazienki | METRO | Balkon | Winda | Garaż | Targówek | 📍 ID: 8
+2026-03-24 14:18:27,855 [WARNING] [18] ⚠ WARNING: Missing data skipped (likely a hidden sponsored ad).
+2026-03-24 14:18:27,912 [INFO] [P:1 - 19] 💰 807 978 PLN | 📏 58.54m² | 📊 13802.15 PLN/m² | 🚪 3 Rooms | 📌 3-pokojowe mieszkanie 58m2 + loggia | 📍 ID: 5
+2026-03-24 14:18:27,912 [WARNING] [19] ⚠ WARNING: Missing data skipped (likely a hidden sponsored ad).
+2026-03-24 14:18:27,966 [INFO] [P:1 - 20] 💰 699 000 PLN | 📏 41.31m² | 📊 16920.84 PLN/m² | 🚪 2 Rooms | 📌 Mieszkanie, Rytm Mokotowa, ul Antoniewska | 📍 ID: 1
+2026-03-24 14:18:27,967 [WARNING] [20] ⚠ WARNING: Missing data skipped (likely a hidden sponsored ad).
+2026-03-24 14:18:28,021 [INFO] [P:1 - 21] 💰 0 PLN | 📏 46.05m² | 📊 None PLN/m² | 🚪 2 Rooms | 📌 2-pokojowe mieszkanie 46m2 + balkon Bezpośrednio | 📍 ID: 7
+2026-03-24 14:18:28,022 [WARNING] [21] ⚠ WARNING: Missing data skipped (likely a hidden sponsored ad).
+2026-03-24 14:18:28,080 [INFO] [P:1 - 22] 💰 1 265 000 PLN | 📏 66.98m² | 📊 18886.23 PLN/m² | 🚪 3 Rooms | 📌 3-pokojowe Royal Residence Wilanów | 📍 ID: 15
+2026-03-24 14:18:28,081 [WARNING] [22] ⚠ WARNING: Missing data skipped (likely a hidden sponsored ad).
+2026-03-24 14:18:28,133 [INFO] [P:1 - 23] 💰 1 100 000 PLN | 📏 60.4m² | 📊 18211.92 PLN/m² | 🚪 3 Rooms | 📌 Włodarzewska, 3 pokoje z balkonem, zieleń | 📍 ID: 11
+2026-03-24 14:18:28,133 [WARNING] [23] ⚠ WARNING: Missing data skipped (likely a hidden sponsored ad).
+2026-03-24 14:18:28,186 [INFO] [P:1 - 24] 💰 1 170 000 PLN | 📏 58.4m² | 📊 20034.25 PLN/m² | 🚪 2 Rooms | 📌 Przestronny 2 pokojowy apartament w Miasteczku Wilanów | 📍 ID: 15
+2026-03-24 14:18:28,187 [WARNING] [24] ⚠ WARNING: Missing data skipped (likely a hidden sponsored ad).
+2026-03-24 14:18:28,240 [INFO] [P:1 - 25] 💰 0 PLN | 📏 34.69m² | 📊 None PLN/m² | 🚪 2 Rooms | 📌 2-pokojowe z balkonem, ENG, bez PCC i prowizji | 📍 ID: 5
+2026-03-24 14:18:28,241 [WARNING] [25] ⚠ WARNING: Missing data skipped (likely a hidden sponsored ad).
+2026-03-24 14:18:28,297 [INFO] [P:1 - 26] 💰 412 300 PLN | 📏 26.6m² | 📊 15500.0 PLN/m² | 🚪 1 Rooms | 📌 Ostatnia kawalerka w bloku, cicha okolica, obok lasu | 📍 ID: 5
+2026-03-24 14:18:28,298 [WARNING] [26] ⚠ WARNING: Missing data skipped (likely a hidden sponsored ad).
+2026-03-24 14:18:28,359 [INFO] [P:1 - 27] 💰 1 100 000 PLN | 📏 89.01m² | 📊 12358.16 PLN/m² | 🚪 3 Rooms | 📌 | 3pok. | spokojna okolica | balkon | dobry rozkład | | 📍 ID: 1
+2026-03-24 14:18:28,360 [WARNING] [27] ⚠ WARNING: Missing data skipped (likely a hidden sponsored ad).
+2026-03-24 14:18:28,425 [INFO] [P:1 - 28] 💰 620 000 PLN | 📏 32.8m² | 📊 18902.44 PLN/m² | 🚪 1 Rooms | 📌 kawalerka | taras | gotowe do wprowadzenia | Mokotów | 📍 ID: 1
+2026-03-24 14:18:28,426 [WARNING] [28] ⚠ WARNING: Missing data skipped (likely a hidden sponsored ad).
+2026-03-24 14:18:28,487 [INFO] [P:1 - 29] 💰 3 590 000 PLN | 📏 115.0m² | 📊 31217.39 PLN/m² | 🚪 3 Rooms | 📌 **3pokojowy Apartament z Dwoma Miejscami Postojowymi w sercu Powiśla** | 📍 ID: 9
+2026-03-24 14:18:28,488 [WARNING] [29] ⚠ WARNING: Missing data skipped (likely a hidden sponsored ad).
+2026-03-24 14:18:28,544 [INFO] [P:1 - 30] 💰 3 290 000 PLN | 📏 140.0m² | 📊 23500.0 PLN/m² | 🚪 5 Rooms | 📌 Redukcja ceny, penthouse przy Pałacu w Wilanowie | 📍 ID: 15
+2026-03-24 14:18:28,545 [WARNING] [30] ⚠ WARNING: Missing data skipped (likely a hidden sponsored ad).
+2026-03-24 14:18:28,546 [INFO] ======================================================================
+
+2026-03-24 14:18:28,546 [INFO] INFO: Page 1 completed. Resting for 4.08 seconds to avoid IP ban...
+2026-03-24 14:18:32,629 [INFO] 
+============================================================
+2026-03-24 14:18:32,630 [INFO] 📄 SCRAPING INITIATED: PAGE 2 [APARTMENT SALE]
+2026-03-24 14:18:32,630 [INFO] ============================================================
+2026-03-24 14:18:40,905 [INFO] INFO: Scanning for real estate listings...
+2026-03-24 14:18:40,977 [INFO] INFO: Scrolling down to trick 'Lazy Loading' (3 times)...
+2026-03-24 14:19:09,758 [INFO] INFO: System initializing...
+2026-03-24 14:19:09,759 [INFO] 🔥 ENDLESS DATA BEAST MODE ACTIVATED! 🔥
+2026-03-24 14:19:09,759 [INFO] 
+**************************************************
+STARTING CYCLE #1
+**************************************************
+2026-03-24 14:19:09,759 [INFO] INFO: Bot is waking up and launching the browser...
+2026-03-24 14:19:10,532 [INFO] INFO: Navigating to Otodom to clear cookies...
+2026-03-24 14:19:12,545 [INFO] INFO: Looking for the Cookie banner...
+2026-03-24 14:19:12,707 [INFO] SUCCESS: Cookie banner destroyed! The view is clear.
+2026-03-24 14:19:12,707 [INFO] 
+======================================================================
+2026-03-24 14:19:12,707 [INFO] 🚀 INITIATING MEGA MISSION: APARTMENT SALE
+2026-03-24 14:19:12,708 [INFO] ======================================================================
+2026-03-24 14:19:12,708 [INFO] 
+============================================================
+2026-03-24 14:19:12,708 [INFO] 📄 SCRAPING INITIATED: PAGE 1 [APARTMENT SALE]
+2026-03-24 14:19:12,708 [INFO] ============================================================
+2026-03-24 14:19:16,459 [INFO] INFO: Scanning for real estate listings...
+2026-03-24 14:19:16,553 [INFO] INFO: Scrolling down to trick 'Lazy Loading' (3 times)...
+2026-03-24 14:19:21,206 [INFO] INFO: Hurricane Mode active! Found 38 listings on page 1. Extracting...
+
+2026-03-24 14:19:21,207 [INFO] ======================================================================
+2026-03-24 14:19:21,351 [INFO] [P:1 - 1] 💰 1 930 000 PLN | 📏 71.47m² | 📊 27004.34 PLN/m² | 🚪 3 Rooms | 📌 Apartament przy parku┃standard Premium | 📍 ID: 2
+2026-03-24 14:19:24,304 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:19:24,551 [INFO] [P:1 - 2] 💰 1 206 900 PLN | 📏 40.5m² | 📊 29800.0 PLN/m² | 🚪 2 Rooms | 📌 Apartament 2 pok. Barska 26 I Stara Ochota | 📍 ID: 11
+2026-03-24 14:19:30,738 [WARNING]       ❌ CONNECTION ERROR (Attempt 1/3): ('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))
+2026-03-24 14:19:49,118 [WARNING]       ❌ CONNECTION ERROR (Attempt 2/3): HTTPSConnectionPool(host='mvappdsdacsamgvkrcmb.supabase.co', port=443): Read timed out. (read timeout=10)
+2026-03-24 14:19:51,945 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:19:52,406 [INFO] [P:1 - 3] 💰 789 000 PLN | 📏 38.03m² | 📊 20746.78 PLN/m² | 🚪 2 Rooms | 📌 Bez Prowizji, 2 oddzielne pokoje, Umeblowane, Słoneczne, Bezpośrednio | 📍 ID: 14
+2026-03-24 14:19:56,956 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:19:57,203 [INFO] [P:1 - 4] 💰 1 449 000 PLN | 📏 65.6m² | 📊 22088.41 PLN/m² | 🚪 3 Rooms | 📌 Bez Prowizji Bez Pcc2% Apartament 3 pokoje Mokotów | 📍 ID: 1
+2026-03-24 14:20:00,251 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:20:00,335 [INFO] [P:1 - 5] 💰 984 000 PLN | 📏 44.0m² | 📊 22363.64 PLN/m² | 🚪 2 Rooms | 📌 Bez Prowizji, 0%pcc, Mieszkanie 2 pokojowe Mokotów | 📍 ID: 1
+2026-03-24 14:20:01,740 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:20:01,856 [INFO] [P:1 - 6] 💰 1 087 700 PLN | 📏 72.0m² | 📊 15106.94 PLN/m² | 🚪 4 Rooms | 📌 Atrakcyjne mieszkanie 4 pokojowe na Mokotowie | 📍 ID: 1
+2026-03-24 14:20:02,717 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:20:02,787 [INFO] [P:1 - 7] 💰 973 145 PLN | 📏 40.42m² | 📊 24075.83 PLN/m² | 🚪 2 Rooms | 📌 Mieszkanie 2 pokojowe Mokotów, 0%pcc, Bez Prowizji | 📍 ID: 1
+2026-03-24 14:20:03,320 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:20:03,378 [INFO] [P:1 - 8] 💰 1 476 000 PLN | 📏 70.7m² | 📊 20876.94 PLN/m² | 🚪 3 Rooms | 📌 Apartament 3 pokoje, Wołoska, 0%pcc, Bez Prowizji | 📍 ID: 1
+2026-03-24 14:20:03,967 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:20:04,015 [INFO] [P:1 - 9] 💰 810 000 PLN | 📏 47.0m² | 📊 17234.04 PLN/m² | 🚪 3 Rooms | 📌 Bez Prowizji, 0%pcc, Mieszkanie 3 pokojowe Mokotów | 📍 ID: 1
+2026-03-24 14:20:04,523 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:20:04,569 [INFO] [P:1 - 10] 💰 450 000 PLN | 📏 26.0m² | 📊 17307.69 PLN/m² | 🚪 1 Rooms | 📌 Kawalerka | Po remoncie | Metro | Bielany | 📍 ID: 6
+2026-03-24 14:20:05,048 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:20:05,105 [INFO] [P:1 - 11] 💰 635 000 PLN | 📏 34.69m² | 📊 18304.99 PLN/m² | 🚪 2 Rooms | 📌 2 pokoje | Wola | Metro Młynów | po remoncie | 3H wysokości | 📍 ID: 4
+2026-03-24 14:20:05,586 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:20:05,630 [INFO] [P:1 - 12] 💰 715 000 PLN | 📏 50.7m² | 📊 14102.56 PLN/m² | 🚪 3 Rooms | 📌 3 pok | oddzielna kuchnia | balkon | piwnica | Bielany | Wawrzyszew | 📍 ID: 6
+2026-03-24 14:20:06,018 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:20:06,072 [INFO] [P:1 - 13] 💰 2 849 000 PLN | 📏 100.72m² | 📊 28286.34 PLN/m² | 🚪 4 Rooms | 📌 4-pokojowy apartament na Zielonym Żoliborzu | 📍 ID: 17
+2026-03-24 14:20:06,580 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:20:06,623 [INFO] [P:1 - 14] 💰 1 697 000 PLN | 📏 138.0m² | 📊 12297.1 PLN/m² | 🚪 4 Rooms | 📌 BEZ PROWIZJI |KLUCZE U NAS|PIĘKNIE WYKOŃCZONY | wejście prosto z windy | 📍 ID: 15
+2026-03-24 14:20:07,453 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:20:07,505 [INFO] [P:1 - 15] 💰 2 250 000 PLN | 📏 89.0m² | 📊 25280.9 PLN/m² | 🚪 3 Rooms | 📌 Poznańska | Rewitalizacja Kamienicy w 2026 | 📍 ID: 9
+2026-03-24 14:20:07,949 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:20:07,996 [INFO] [P:1 - 16] 💰 599 000 PLN | 📏 33.48m² | 📊 17891.28 PLN/m² | 🚪 1 Rooms | 📌 Kawalerka | Niski czynsz | strefa wypoczynku dla mieszkańców | Mokotów | 📍 ID: 1
+2026-03-24 14:20:08,605 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:20:08,658 [INFO] [P:1 - 17] 💰 880 000 PLN | 📏 92.0m² | 📊 9565.22 PLN/m² | 🚪 5 Rooms | 📌 2-poziomwoe, M-5/ w cenie: m. postojowe, podłogówka/ zamknięte osiedle | 📍 ID: 12
+2026-03-24 14:20:09,085 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:20:09,138 [INFO] [P:1 - 18] 💰 1 199 000 PLN | 📏 69.02m² | 📊 17371.78 PLN/m² | 🚪 4 Rooms | 📌 4 pokoje | 2 łazienki | METRO | Balkon | Winda | Garaż | Targówek | 📍 ID: 8
+2026-03-24 14:20:09,568 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:20:09,621 [INFO] [P:1 - 19] 💰 807 978 PLN | 📏 58.54m² | 📊 13802.15 PLN/m² | 🚪 3 Rooms | 📌 3-pokojowe mieszkanie 58m2 + loggia | 📍 ID: 5
+2026-03-24 14:20:10,112 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:20:10,159 [INFO] [P:1 - 20] 💰 699 000 PLN | 📏 41.31m² | 📊 16920.84 PLN/m² | 🚪 2 Rooms | 📌 Mieszkanie, Rytm Mokotowa, ul Antoniewska | 📍 ID: 1
+2026-03-24 14:20:10,555 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:20:10,612 [INFO] [P:1 - 21] 💰 0 PLN | 📏 46.05m² | 📊 None PLN/m² | 🚪 2 Rooms | 📌 2-pokojowe mieszkanie 46m2 + balkon Bezpośrednio | 📍 ID: 7
+2026-03-24 14:20:11,064 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:20:11,103 [INFO] [P:1 - 22] 💰 1 265 000 PLN | 📏 66.98m² | 📊 18886.23 PLN/m² | 🚪 3 Rooms | 📌 3-pokojowe Royal Residence Wilanów | 📍 ID: 15
+2026-03-24 14:20:11,507 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:20:11,549 [INFO] [P:1 - 23] 💰 1 100 000 PLN | 📏 60.4m² | 📊 18211.92 PLN/m² | 🚪 3 Rooms | 📌 Włodarzewska, 3 pokoje z balkonem, zieleń | 📍 ID: 11
+2026-03-24 14:20:12,016 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:20:12,075 [INFO] [P:1 - 24] 💰 1 170 000 PLN | 📏 58.4m² | 📊 20034.25 PLN/m² | 🚪 2 Rooms | 📌 Przestronny 2 pokojowy apartament w Miasteczku Wilanów | 📍 ID: 15
+2026-03-24 14:20:12,526 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:20:12,570 [INFO] [P:1 - 25] 💰 0 PLN | 📏 34.69m² | 📊 None PLN/m² | 🚪 2 Rooms | 📌 2-pokojowe z balkonem, ENG, bez PCC i prowizji | 📍 ID: 5
+2026-03-24 14:20:13,022 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:20:13,070 [INFO] [P:1 - 26] 💰 412 300 PLN | 📏 26.6m² | 📊 15500.0 PLN/m² | 🚪 1 Rooms | 📌 Ostatnia kawalerka w bloku, cicha okolica, obok lasu | 📍 ID: 5
+2026-03-24 14:20:13,505 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:20:13,540 [INFO] [P:1 - 27] 💰 1 100 000 PLN | 📏 89.01m² | 📊 12358.16 PLN/m² | 🚪 3 Rooms | 📌 | 3pok. | spokojna okolica | balkon | dobry rozkład | | 📍 ID: 1
+2026-03-24 14:20:14,032 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:20:14,107 [INFO] [P:1 - 28] 💰 620 000 PLN | 📏 32.8m² | 📊 18902.44 PLN/m² | 🚪 1 Rooms | 📌 kawalerka | taras | gotowe do wprowadzenia | Mokotów | 📍 ID: 1
+2026-03-24 14:20:14,564 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:20:14,605 [INFO] [P:1 - 29] 💰 3 590 000 PLN | 📏 115.0m² | 📊 31217.39 PLN/m² | 🚪 3 Rooms | 📌 **3pokojowy Apartament z Dwoma Miejscami Postojowymi w sercu Powiśla** | 📍 ID: 9
+2026-03-24 14:20:15,151 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:20:15,202 [INFO] [P:1 - 30] 💰 3 290 000 PLN | 📏 140.0m² | 📊 23500.0 PLN/m² | 🚪 5 Rooms | 📌 Redukcja ceny, penthouse przy Pałacu w Wilanowie | 📍 ID: 15
+2026-03-24 14:20:15,666 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:20:15,701 [INFO] [P:1 - 31] 💰 1 300 000 PLN | 📏 50.0m² | 📊 26000.0 PLN/m² | 🚪 2 Rooms | 📌 Apartament z fenomenalnym widokiem na panoramę nad Wisłą | 📍 ID: 9
+2026-03-24 14:20:16,203 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:20:16,256 [INFO] [P:1 - 32] 💰 549 000 PLN | 📏 44.6m² | 📊 12309.42 PLN/m² | 🚪 2 Rooms | 📌 Mieszkanie, 44,60 m², Warszawa | 📍 ID: 5
+2026-03-24 14:20:16,672 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:20:16,708 [INFO] [P:1 - 33] 💰 485 000 PLN | 📏 28.84m² | 📊 16816.92 PLN/m² | 🚪 1 Rooms | 📌 Nowa kawalerka w kamienicy po rewitalizacji | bez prowizji | 📍 ID: 2
+2026-03-24 14:20:17,147 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:20:17,197 [INFO] [P:1 - 34] 💰 820 000 PLN | 📏 57.0m² | 📊 14385.96 PLN/m² | 🚪 3 Rooms | 📌 3 pokoje, jasne | parking | odświeżone | 📍 ID: 1
+2026-03-24 14:20:17,672 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:20:17,728 [INFO] [P:1 - 35] 💰 620 000 PLN | 📏 25.1m² | 📊 24701.2 PLN/m² | 🚪 1 Rooms | 📌 1pok. Saska Kępa |po remoncie |balkon|klimatyzacja | 📍 ID: 2
+2026-03-24 14:20:18,137 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:20:18,182 [INFO] [P:1 - 36] 💰 715 000 PLN | 📏 60.0m² | 📊 11916.67 PLN/m² | 🚪 3 Rooms | 📌 Przestronne mieszkanie na Bielanach – gotowe do wp | 📍 ID: 6
+2026-03-24 14:20:18,588 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:20:18,637 [INFO] [P:1 - 37] 💰 890 000 PLN | 📏 49.33m² | 📊 18041.76 PLN/m² | 🚪 2 Rooms | 📌 Wyjątkowe mieszkanie z garażem przy Metrze | 📍 ID: 4
+2026-03-24 14:20:19,090 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:20:19,119 [INFO] [P:1 - 38] 💰 974 974 PLN | 📏 47.9m² | 📊 20354.36 PLN/m² | 🚪 3 Rooms | 📌 Nowe, niezamieszkałe, 3 pokoje, blisko Norblin i Browary! | 📍 ID: 4
+2026-03-24 14:20:19,604 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:20:19,604 [INFO] ======================================================================
+
+2026-03-24 14:20:19,605 [INFO] INFO: Page 1 completed. Resting for 6.76 seconds to avoid IP ban...
+2026-03-24 14:21:40,499 [INFO] INFO: System initializing...
+2026-03-24 14:21:40,499 [INFO] 🔥 ENDLESS DATA BEAST MODE ACTIVATED! 🔥
+2026-03-24 14:21:40,499 [INFO] 
+**************************************************
+STARTING CYCLE #1
+**************************************************
+2026-03-24 14:21:40,499 [INFO] INFO: Bot is waking up and launching the browser...
+2026-03-24 14:21:41,255 [INFO] INFO: Navigating to Otodom to clear cookies...
+2026-03-24 14:21:44,023 [INFO] INFO: Looking for the Cookie banner...
+2026-03-24 14:21:44,156 [INFO] SUCCESS: Cookie banner destroyed! The view is clear.
+2026-03-24 14:21:44,157 [INFO] 
+======================================================================
+2026-03-24 14:21:44,157 [INFO] 🚀 INITIATING MEGA MISSION: APARTMENT SALE
+2026-03-24 14:21:44,157 [INFO] ======================================================================
+2026-03-24 14:21:44,157 [INFO] 
+============================================================
+2026-03-24 14:21:44,157 [INFO] 📄 SCRAPING INITIATED: PAGE 1 [APARTMENT SALE]
+2026-03-24 14:21:44,158 [INFO] ============================================================
+2026-03-24 14:21:48,930 [INFO] INFO: Scanning for real estate listings...
+2026-03-24 14:21:49,013 [INFO] INFO: Scrolling down to trick 'Lazy Loading' (3 times)...
+2026-03-24 14:21:53,756 [INFO] INFO: Hurricane Mode active! Found 43 listings on page 1. Extracting...
+
+2026-03-24 14:21:53,756 [INFO] ======================================================================
+2026-03-24 14:21:53,925 [INFO] [P:1 - 1] 💰 786 630 PLN | 📏 60.51m² | 📊 13000.0 PLN/m² | 🚪 4 Rooms | 📌 4-pokojowe mieszkanie 60m2 + balkon | 📍 ID: 12
+2026-03-24 14:21:59,265 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:21:59,442 [INFO] [P:1 - 2] 💰 610 000 PLN | 📏 38.0m² | 📊 16052.63 PLN/m² | 🚪 2 Rooms | 📌 Sprzedam 2 pokoje przy ul. Chodeckiej, do zamieszkania | 📍 ID: 8
+2026-03-24 14:22:07,393 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:22:07,531 [INFO] [P:1 - 3] 💰 550 000 PLN | 📏 38.0m² | 📊 14473.68 PLN/m² | 🚪 2 Rooms | 📌 Dwupokojowe mieszkanie na Sadybie z balkonem | 📍 ID: 1
+2026-03-24 14:22:19,374 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:22:19,815 [INFO] [P:1 - 4] 💰 1 099 000 PLN | 📏 65.54m² | 📊 16768.39 PLN/m² | 🚪 2 Rooms | 📌 Przestronne 2 pok.| loggia+msc. post. | od zaraz | Wilanów|nowa cena| | 📍 ID: 1
+2026-03-24 14:22:30,776 [WARNING]       ❌ CONNECTION ERROR (Attempt 1/3): HTTPSConnectionPool(host='mvappdsdacsamgvkrcmb.supabase.co', port=443): Read timed out. (read timeout=10)
+2026-03-24 14:22:36,237 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:22:36,594 [INFO] [P:1 - 5] 💰 805 000 PLN | 📏 36.7m² | 📊 21934.6 PLN/m² | 🚪 2 Rooms | 📌 2 pok. | 11 piętro | do wprowadzenia | klimatyzacja | Triton Park | 📍 ID: 11
+2026-03-24 14:22:48,359 [WARNING]       ❌ CONNECTION ERROR (Attempt 1/3): HTTPSConnectionPool(host='mvappdsdacsamgvkrcmb.supabase.co', port=443): Read timed out. (read timeout=10)
+2026-03-24 14:22:50,914 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:22:51,030 [INFO] [P:1 - 6] 💰 468 000 PLN | 📏 32.0m² | 📊 14625.0 PLN/m² | 🚪 2 Rooms | 📌 Nowe > Mieszkanie 31.66 m2 > Warszawa > Rembertów | 📍 ID: 18
+2026-03-24 14:22:51,514 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:22:51,551 [INFO] [P:1 - 7] 💰 1 470 000 PLN | 📏 67.06m² | 📊 21920.67 PLN/m² | 🚪 2 Rooms | 📌 Przestronne 2 pok. | klimatyzacja | 67 m2 | Kępa Potocka | od zaraz | 📍 ID: 17
+2026-03-24 14:22:52,028 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:22:52,069 [INFO] [P:1 - 8] 💰 759 000 PLN | 📏 63.3m² | 📊 11990.52 PLN/m² | 🚪 2 Rooms | 📌 2 pok. | oddzielna kuchnia | balkon + piwnica | Ursus | 📍 ID: 12
+2026-03-24 14:22:52,571 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:22:52,605 [INFO] [P:1 - 9] 💰 920 000 PLN | 📏 53.0m² | 📊 17358.49 PLN/m² | 🚪 2 Rooms | 📌 Doskonała inwestycja! Piękny widok! J.P. Woronicza 15. | 📍 ID: 1
+2026-03-24 14:22:53,084 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:22:53,124 [INFO] [P:1 - 10] 💰 1 950 000 PLN | 📏 118.0m² | 📊 16525.42 PLN/m² | 🚪 3 Rooms | 📌 2 sypialnie | 2 łazienki | Świetnie skomunikowane | 📍 ID: 9
+2026-03-24 14:22:53,695 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:22:53,742 [INFO] [P:1 - 11] 💰 800 000 PLN | 📏 39.2m² | 📊 20408.16 PLN/m² | 🚪 2 Rooms | 📌 Nowoczesne 2-pokojowe mieszkanie z tarasem i ogrodem 70 m2!!!! | 📍 ID: 7
+2026-03-24 14:22:54,229 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:22:54,269 [INFO] [P:1 - 12] 💰 765 000 PLN | 📏 46.32m² | 📊 16515.54 PLN/m² | 🚪 2 Rooms | 📌 bardzo ładny rozkład w idealnym stanie | 📍 ID: 2
+2026-03-24 14:22:54,755 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:22:54,792 [INFO] [P:1 - 13] 💰 920 000 PLN | 📏 50.5m² | 📊 18217.82 PLN/m² | 🚪 2 Rooms | 📌 Klimatyczne 2 pokojowe mieszkanie w kamienicy na Starej Ochocie. | 📍 ID: 11
+2026-03-24 14:22:55,324 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:22:55,357 [INFO] [P:1 - 14] 💰 895 000 PLN | 📏 52.24m² | 📊 17132.47 PLN/m² | 🚪 2 Rooms | 📌 Wola ul. Ogrodowa⭐️52 ,24m2 / 2 pok + kuchnia / Centrum / Winda PARK | 📍 ID: 4
+2026-03-24 14:22:55,855 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:22:55,885 [INFO] [P:1 - 15] 💰 820 000 PLN | 📏 60.92m² | 📊 13460.28 PLN/m² | 🚪 4 Rooms | 📌 4 pokoje | Studio nagraniowe | Klimatyzacja | Piwnica | Bemowo | 📍 ID: 7
+2026-03-24 14:22:56,434 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:22:56,462 [INFO] [P:1 - 16] 💰 680 000 PLN | 📏 51.48m² | 📊 13209.01 PLN/m² | 🚪 3 Rooms | 📌 3 pokoje | funkcjonalny rozkład | 51,5m2 | balkon | piwnica | 📍 ID: 7
+2026-03-24 14:22:56,962 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:22:57,001 [INFO] [P:1 - 17] 💰 1 449 000 PLN | 📏 65.6m² | 📊 22088.41 PLN/m² | 🚪 3 Rooms | 📌 Bez Prowizji Bez Pcc2% Apartament 3 pokoje Mokotów | 📍 ID: 1
+2026-03-24 14:22:57,479 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:22:57,516 [INFO] [P:1 - 18] 💰 984 000 PLN | 📏 44.0m² | 📊 22363.64 PLN/m² | 🚪 2 Rooms | 📌 Bez Prowizji, 0%pcc, Mieszkanie 2 pokojowe Mokotów | 📍 ID: 1
+2026-03-24 14:22:58,079 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:22:58,134 [INFO] [P:1 - 19] 💰 1 087 700 PLN | 📏 72.0m² | 📊 15106.94 PLN/m² | 🚪 4 Rooms | 📌 Atrakcyjne mieszkanie 4 pokojowe na Mokotowie | 📍 ID: 1
+2026-03-24 14:22:58,575 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:22:58,608 [INFO] [P:1 - 20] 💰 973 145 PLN | 📏 40.42m² | 📊 24075.83 PLN/m² | 🚪 2 Rooms | 📌 Mieszkanie 2 pokojowe Mokotów, 0%pcc, Bez Prowizji | 📍 ID: 1
+2026-03-24 14:22:59,080 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:22:59,113 [INFO] [P:1 - 21] 💰 1 476 000 PLN | 📏 70.7m² | 📊 20876.94 PLN/m² | 🚪 3 Rooms | 📌 Apartament 3 pokoje, Wołoska, 0%pcc, Bez Prowizji | 📍 ID: 1
+2026-03-24 14:22:59,646 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:22:59,697 [INFO] [P:1 - 22] 💰 810 000 PLN | 📏 47.0m² | 📊 17234.04 PLN/m² | 🚪 3 Rooms | 📌 Bez Prowizji, 0%pcc, Mieszkanie 3 pokojowe Mokotów | 📍 ID: 1
+2026-03-24 14:23:00,288 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:23:00,323 [INFO] [P:1 - 23] 💰 450 000 PLN | 📏 26.0m² | 📊 17307.69 PLN/m² | 🚪 1 Rooms | 📌 Kawalerka | Po remoncie | Metro | Bielany | 📍 ID: 6
+2026-03-24 14:23:00,797 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:23:00,834 [INFO] [P:1 - 24] 💰 635 000 PLN | 📏 34.69m² | 📊 18304.99 PLN/m² | 🚪 2 Rooms | 📌 2 pokoje | Wola | Metro Młynów | po remoncie | 3H wysokości | 📍 ID: 4
+2026-03-24 14:23:01,262 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:23:01,289 [INFO] [P:1 - 25] 💰 715 000 PLN | 📏 50.7m² | 📊 14102.56 PLN/m² | 🚪 3 Rooms | 📌 3 pok | oddzielna kuchnia | balkon | piwnica | Bielany | Wawrzyszew | 📍 ID: 6
+2026-03-24 14:23:01,721 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:23:01,758 [INFO] [P:1 - 26] 💰 2 849 000 PLN | 📏 100.72m² | 📊 28286.34 PLN/m² | 🚪 4 Rooms | 📌 4-pokojowy apartament na Zielonym Żoliborzu | 📍 ID: 17
+2026-03-24 14:23:02,139 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:23:02,172 [INFO] [P:1 - 27] 💰 1 697 000 PLN | 📏 138.0m² | 📊 12297.1 PLN/m² | 🚪 4 Rooms | 📌 BEZ PROWIZJI |KLUCZE U NAS|PIĘKNIE WYKOŃCZONY | wejście prosto z windy | 📍 ID: 15
+2026-03-24 14:23:02,573 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:23:02,615 [INFO] [P:1 - 28] 💰 2 250 000 PLN | 📏 89.0m² | 📊 25280.9 PLN/m² | 🚪 3 Rooms | 📌 Poznańska | Rewitalizacja Kamienicy w 2026 | 📍 ID: 9
+2026-03-24 14:23:03,011 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:23:03,050 [INFO] [P:1 - 29] 💰 599 000 PLN | 📏 33.48m² | 📊 17891.28 PLN/m² | 🚪 1 Rooms | 📌 Kawalerka | Niski czynsz | strefa wypoczynku dla mieszkańców | Mokotów | 📍 ID: 1
+2026-03-24 14:23:03,492 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:23:03,521 [INFO] [P:1 - 30] 💰 880 000 PLN | 📏 92.0m² | 📊 9565.22 PLN/m² | 🚪 5 Rooms | 📌 2-poziomwoe, M-5/ w cenie: m. postojowe, podłogówka/ zamknięte osiedle | 📍 ID: 12
+2026-03-24 14:23:03,893 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:23:03,928 [INFO] [P:1 - 31] 💰 1 199 000 PLN | 📏 69.02m² | 📊 17371.78 PLN/m² | 🚪 4 Rooms | 📌 4 pokoje | 2 łazienki | METRO | Balkon | Winda | Garaż | Targówek | 📍 ID: 8
+2026-03-24 14:23:04,344 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:23:04,384 [INFO] [P:1 - 32] 💰 807 978 PLN | 📏 58.54m² | 📊 13802.15 PLN/m² | 🚪 3 Rooms | 📌 3-pokojowe mieszkanie 58m2 + loggia | 📍 ID: 5
+2026-03-24 14:23:04,787 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:23:04,840 [INFO] [P:1 - 33] 💰 699 000 PLN | 📏 41.31m² | 📊 16920.84 PLN/m² | 🚪 2 Rooms | 📌 Mieszkanie, Rytm Mokotowa, ul Antoniewska | 📍 ID: 1
+2026-03-24 14:23:05,203 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:23:05,235 [INFO] [P:1 - 34] 💰 0 PLN | 📏 46.05m² | 📊 None PLN/m² | 🚪 2 Rooms | 📌 2-pokojowe mieszkanie 46m2 + balkon Bezpośrednio | 📍 ID: 7
+2026-03-24 14:23:05,746 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:23:05,784 [INFO] [P:1 - 35] 💰 1 265 000 PLN | 📏 66.98m² | 📊 18886.23 PLN/m² | 🚪 3 Rooms | 📌 3-pokojowe Royal Residence Wilanów | 📍 ID: 15
+2026-03-24 14:23:06,194 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:23:06,227 [INFO] [P:1 - 36] 💰 1 100 000 PLN | 📏 60.4m² | 📊 18211.92 PLN/m² | 🚪 3 Rooms | 📌 Włodarzewska, 3 pokoje z balkonem, zieleń | 📍 ID: 11
+2026-03-24 14:23:06,611 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:23:06,639 [INFO] [P:1 - 37] 💰 1 170 000 PLN | 📏 58.4m² | 📊 20034.25 PLN/m² | 🚪 2 Rooms | 📌 Przestronny 2 pokojowy apartament w Miasteczku Wilanów | 📍 ID: 15
+2026-03-24 14:23:07,037 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:23:07,069 [INFO] [P:1 - 38] 💰 0 PLN | 📏 34.69m² | 📊 None PLN/m² | 🚪 2 Rooms | 📌 2-pokojowe z balkonem, ENG, bez PCC i prowizji | 📍 ID: 5
+2026-03-24 14:23:07,448 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:23:07,484 [INFO] [P:1 - 39] 💰 412 300 PLN | 📏 26.6m² | 📊 15500.0 PLN/m² | 🚪 1 Rooms | 📌 Ostatnia kawalerka w bloku, cicha okolica, obok lasu | 📍 ID: 5
+2026-03-24 14:23:08,010 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:23:08,041 [INFO] [P:1 - 40] 💰 1 100 000 PLN | 📏 89.01m² | 📊 12358.16 PLN/m² | 🚪 3 Rooms | 📌 | 3pok. | spokojna okolica | balkon | dobry rozkład | | 📍 ID: 1
+2026-03-24 14:23:08,461 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:23:08,498 [INFO] [P:1 - 41] 💰 620 000 PLN | 📏 32.8m² | 📊 18902.44 PLN/m² | 🚪 1 Rooms | 📌 kawalerka | taras | gotowe do wprowadzenia | Mokotów | 📍 ID: 1
+2026-03-24 14:23:08,867 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:23:08,901 [INFO] [P:1 - 42] 💰 3 590 000 PLN | 📏 115.0m² | 📊 31217.39 PLN/m² | 🚪 3 Rooms | 📌 **3pokojowy Apartament z Dwoma Miejscami Postojowymi w sercu Powiśla** | 📍 ID: 9
+2026-03-24 14:23:09,318 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:23:09,331 [INFO] [43] ⏭️ SKIPPED (In-Memory Cache)
+2026-03-24 14:23:09,331 [INFO] ======================================================================
+
+2026-03-24 14:23:09,332 [INFO] INFO: Page 1 completed. Resting for 5.91 seconds to avoid IP ban...
+2026-03-24 14:23:15,242 [INFO] 
+============================================================
+2026-03-24 14:23:15,243 [INFO] 📄 SCRAPING INITIATED: PAGE 2 [APARTMENT SALE]
+2026-03-24 14:23:15,244 [INFO] ============================================================
+2026-03-24 14:23:21,062 [INFO] INFO: Scanning for real estate listings...
+2026-03-24 14:23:21,136 [INFO] INFO: Scrolling down to trick 'Lazy Loading' (3 times)...
+2026-03-24 14:23:25,848 [INFO] INFO: Hurricane Mode active! Found 44 listings on page 2. Extracting...
+
+2026-03-24 14:23:25,848 [INFO] ======================================================================
+2026-03-24 14:23:25,937 [INFO] [P:2 - 1] 💰 2 025 926 PLN | 📏 69.4m² | 📊 29192.02 PLN/m² | 🚪 3 Rooms | 📌 Vonder UpTown | apartament 3-pok. | 51 | 📍 ID: 9
+2026-03-24 14:23:27,741 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:23:28,213 [INFO] [P:2 - 2] 💰 357 000 PLN | 📏 24.0m² | 📊 14875.0 PLN/m² | 🚪 1 Rooms | 📌 Nowy lokal! Świetna inwestycja! | 📍 ID: 14
+2026-03-24 14:23:29,764 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:23:29,870 [INFO] [P:2 - 3] 💰 560 000 PLN | 📏 40.36m² | 📊 13875.12 PLN/m² | 🚪 2 Rooms | 📌 BEZPOŚREDNIO | 40,36 m2 - 2 pok. mieszkanie | blisko Metro | Białołęka | 📍 ID: 5
+2026-03-24 14:23:30,504 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:23:30,572 [INFO] [P:2 - 4] 💰 3 290 000 PLN | 📏 140.0m² | 📊 23500.0 PLN/m² | 🚪 5 Rooms | 📌 Redukcja ceny, penthouse przy Pałacu w Wilanowie | 📍 ID: 15
+2026-03-24 14:23:30,999 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:23:31,068 [INFO] [P:2 - 5] 💰 1 300 000 PLN | 📏 50.0m² | 📊 26000.0 PLN/m² | 🚪 2 Rooms | 📌 Apartament z fenomenalnym widokiem na panoramę nad Wisłą | 📍 ID: 9
+2026-03-24 14:23:31,517 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:23:31,592 [INFO] [P:2 - 6] 💰 549 000 PLN | 📏 44.6m² | 📊 12309.42 PLN/m² | 🚪 2 Rooms | 📌 Mieszkanie, 44,60 m², Warszawa | 📍 ID: 5
+2026-03-24 14:23:32,002 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:23:32,065 [INFO] [P:2 - 7] 💰 485 000 PLN | 📏 28.84m² | 📊 16816.92 PLN/m² | 🚪 1 Rooms | 📌 Nowa kawalerka w kamienicy po rewitalizacji | bez prowizji | 📍 ID: 2
+2026-03-24 14:23:32,498 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:23:32,554 [INFO] [P:2 - 8] 💰 820 000 PLN | 📏 57.0m² | 📊 14385.96 PLN/m² | 🚪 3 Rooms | 📌 3 pokoje, jasne | parking | odświeżone | 📍 ID: 1
+2026-03-24 14:23:32,973 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:23:33,036 [INFO] [P:2 - 9] 💰 620 000 PLN | 📏 25.1m² | 📊 24701.2 PLN/m² | 🚪 1 Rooms | 📌 1pok. Saska Kępa |po remoncie |balkon|klimatyzacja | 📍 ID: 2
+2026-03-24 14:23:33,433 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:23:33,494 [INFO] [P:2 - 10] 💰 715 000 PLN | 📏 60.0m² | 📊 11916.67 PLN/m² | 🚪 3 Rooms | 📌 Przestronne mieszkanie na Bielanach – gotowe do wp | 📍 ID: 6
+2026-03-24 14:23:33,896 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:23:34,329 [ERROR] Future exception was never retrieved
+future: <Future finished exception=TargetClosedError('Target page, context or browser has been closed')>
+playwright._impl._errors.TargetClosedError: Target page, context or browser has been closed
+2026-03-24 14:26:04,701 [INFO] INFO: System initializing...
+2026-03-24 14:26:04,701 [INFO] 🔥 ENDLESS DATA BEAST MODE ACTIVATED! 🔥
+2026-03-24 14:26:04,702 [INFO] 
+**************************************************
+STARTING CYCLE #1
+**************************************************
+2026-03-24 14:26:04,702 [INFO] INFO: Bot is waking up and launching the browser...
+2026-03-24 14:26:05,502 [INFO] INFO: Navigating to Otodom to clear cookies...
+2026-03-24 14:26:08,634 [INFO] INFO: Looking for the Cookie banner...
+2026-03-24 14:26:08,798 [INFO] SUCCESS: Cookie banner destroyed! The view is clear.
+2026-03-24 14:26:08,799 [INFO] 
+======================================================================
+2026-03-24 14:26:08,799 [INFO] 🚀 INITIATING MEGA MISSION: APARTMENT SALE
+2026-03-24 14:26:08,799 [INFO] ======================================================================
+2026-03-24 14:26:08,799 [INFO] 
+============================================================
+2026-03-24 14:26:08,799 [INFO] 📄 SCRAPING INITIATED: PAGE 1 [APARTMENT SALE]
+2026-03-24 14:26:08,800 [INFO] ============================================================
+2026-03-24 14:26:12,244 [INFO] INFO: Scanning for real estate listings...
+2026-03-24 14:26:12,384 [INFO] INFO: Scrolling down to trick 'Lazy Loading' (3 times)...
+2026-03-24 14:26:17,045 [INFO] INFO: Hurricane Mode active! Found 40 listings on page 1. Extracting...
+
+2026-03-24 14:26:17,045 [INFO] ======================================================================
+2026-03-24 14:26:17,202 [INFO] [P:1 - 1] 💰 740 000 PLN | 📏 52.0m² | 📊 14 230.77 PLN/m² | 🚪 3 Rooms | 📌 3 oddzielne pokoje blisko metra | 📍 ID: 4
+2026-03-24 14:26:19,454 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:26:19,761 [INFO] [P:1 - 2] 💰 1 370 000 PLN | 📏 73.49m² | 📊 18 641.99 PLN/m² | 🚪 3 Rooms | 📌 Trzypokojowe mieszanie na Starej Ochocie | 📍 ID: 11
+2026-03-24 14:26:22,036 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:26:22,322 [INFO] [P:1 - 3] 💰 599 000 PLN | 📏 28.0m² | 📊 21 392.86 PLN/m² | 🚪 1 Rooms | 📌 Kawalerka po generalnym remoncie | Balkon | Mokotów – ul. Orzycka | 📍 ID: 1
+2026-03-24 14:26:35,547 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:26:35,816 [INFO] [P:1 - 4] 💰 1 099 000 PLN | 📏 65.54m² | 📊 16 768.39 PLN/m² | 🚪 2 Rooms | 📌 Przestronne 2 pok.| loggia+msc. post. | od zaraz | Wilanów|nowa cena| | 📍 ID: 1
+2026-03-24 14:26:43,173 [WARNING]       ❌ CONNECTION ERROR (Attempt 1/3): ('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))
+2026-03-24 14:26:53,545 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:26:53,873 [INFO] [P:1 - 5] 💰 805 000 PLN | 📏 36.7m² | 📊 21 934.60 PLN/m² | 🚪 2 Rooms | 📌 2 pok. | 11 piętro | do wprowadzenia | klimatyzacja | Triton Park | 📍 ID: 11
+2026-03-24 14:26:57,952 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:26:58,201 [INFO] [P:1 - 6] 💰 468 000 PLN | 📏 32.0m² | 📊 14 625.00 PLN/m² | 🚪 2 Rooms | 📌 Nowe > Mieszkanie 31.66 m2 > Warszawa > Rembertów | 📍 ID: 18
+2026-03-24 14:27:01,873 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:27:01,969 [INFO] [P:1 - 7] 💰 1 470 000 PLN | 📏 67.06m² | 📊 21 920.67 PLN/m² | 🚪 2 Rooms | 📌 Przestronne 2 pok. | klimatyzacja | 67 m2 | Kępa Potocka | od zaraz | 📍 ID: 17
+2026-03-24 14:27:02,653 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:27:02,710 [INFO] [P:1 - 8] 💰 759 000 PLN | 📏 63.3m² | 📊 11 990.52 PLN/m² | 🚪 2 Rooms | 📌 2 pok. | oddzielna kuchnia | balkon + piwnica | Ursus | 📍 ID: 12
+2026-03-24 14:27:03,265 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:27:03,297 [INFO] [P:1 - 9] 💰 920 000 PLN | 📏 53.0m² | 📊 17 358.49 PLN/m² | 🚪 2 Rooms | 📌 Doskonała inwestycja! Piękny widok! J.P. Woronicza 15. | 📍 ID: 1
+2026-03-24 14:27:03,782 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:27:03,828 [INFO] [P:1 - 10] 💰 1 950 000 PLN | 📏 118.0m² | 📊 16 525.42 PLN/m² | 🚪 3 Rooms | 📌 2 sypialnie | 2 łazienki | Świetnie skomunikowane | 📍 ID: 9
+2026-03-24 14:27:04,323 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:27:04,359 [INFO] [P:1 - 11] 💰 800 000 PLN | 📏 39.2m² | 📊 20 408.16 PLN/m² | 🚪 2 Rooms | 📌 Nowoczesne 2-pokojowe mieszkanie z tarasem i ogrodem 70 m2!!!! | 📍 ID: 7
+2026-03-24 14:27:04,797 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:27:04,842 [INFO] [P:1 - 12] 💰 765 000 PLN | 📏 46.32m² | 📊 16 515.54 PLN/m² | 🚪 2 Rooms | 📌 bardzo ładny rozkład w idealnym stanie | 📍 ID: 2
+2026-03-24 14:27:05,287 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:27:05,335 [INFO] [P:1 - 13] 💰 920 000 PLN | 📏 50.5m² | 📊 18 217.82 PLN/m² | 🚪 2 Rooms | 📌 Klimatyczne 2 pokojowe mieszkanie w kamienicy na Starej Ochocie. | 📍 ID: 11
+2026-03-24 14:27:05,739 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:27:05,776 [INFO] [P:1 - 14] 💰 895 000 PLN | 📏 52.24m² | 📊 17 132.47 PLN/m² | 🚪 2 Rooms | 📌 Wola ul. Ogrodowa⭐️52 ,24m2 / 2 pok + kuchnia / Centrum / Winda PARK | 📍 ID: 4
+2026-03-24 14:27:06,230 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:27:06,258 [INFO] [P:1 - 15] 💰 820 000 PLN | 📏 60.92m² | 📊 13 460.28 PLN/m² | 🚪 4 Rooms | 📌 4 pokoje | Studio nagraniowe | Klimatyzacja | Piwnica | Bemowo | 📍 ID: 7
+2026-03-24 14:27:06,745 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:27:06,777 [INFO] [P:1 - 16] 💰 680 000 PLN | 📏 51.48m² | 📊 13 209.01 PLN/m² | 🚪 3 Rooms | 📌 3 pokoje | funkcjonalny rozkład | 51,5m2 | balkon | piwnica | 📍 ID: 7
+2026-03-24 14:27:07,226 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:27:07,257 [INFO] [P:1 - 17] 💰 1 449 000 PLN | 📏 65.6m² | 📊 22 088.41 PLN/m² | 🚪 3 Rooms | 📌 Bez Prowizji Bez Pcc2% Apartament 3 pokoje Mokotów | 📍 ID: 1
+2026-03-24 14:27:07,692 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:27:07,728 [INFO] [P:1 - 18] 💰 984 000 PLN | 📏 44.0m² | 📊 22 363.64 PLN/m² | 🚪 2 Rooms | 📌 Bez Prowizji, 0%pcc, Mieszkanie 2 pokojowe Mokotów | 📍 ID: 1
+2026-03-24 14:27:08,483 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:27:08,532 [INFO] [P:1 - 19] 💰 1 087 700 PLN | 📏 72.0m² | 📊 15 106.94 PLN/m² | 🚪 4 Rooms | 📌 Atrakcyjne mieszkanie 4 pokojowe na Mokotowie | 📍 ID: 1
+2026-03-24 14:27:09,145 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:27:09,187 [INFO] [P:1 - 20] 💰 973 145 PLN | 📏 40.42m² | 📊 24 075.83 PLN/m² | 🚪 2 Rooms | 📌 Mieszkanie 2 pokojowe Mokotów, 0%pcc, Bez Prowizji | 📍 ID: 1
+2026-03-24 14:27:09,651 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:27:09,685 [INFO] [P:1 - 21] 💰 1 476 000 PLN | 📏 70.7m² | 📊 20 876.94 PLN/m² | 🚪 3 Rooms | 📌 Apartament 3 pokoje, Wołoska, 0%pcc, Bez Prowizji | 📍 ID: 1
+2026-03-24 14:27:10,111 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:27:10,141 [INFO] [P:1 - 22] 💰 810 000 PLN | 📏 47.0m² | 📊 17 234.04 PLN/m² | 🚪 3 Rooms | 📌 Bez Prowizji, 0%pcc, Mieszkanie 3 pokojowe Mokotów | 📍 ID: 1
+2026-03-24 14:27:10,555 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:27:10,584 [INFO] [P:1 - 23] 💰 450 000 PLN | 📏 26.0m² | 📊 17 307.69 PLN/m² | 🚪 1 Rooms | 📌 Kawalerka | Po remoncie | Metro | Bielany | 📍 ID: 6
+2026-03-24 14:27:10,992 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:27:11,021 [INFO] [P:1 - 24] 💰 635 000 PLN | 📏 34.69m² | 📊 18 304.99 PLN/m² | 🚪 2 Rooms | 📌 2 pokoje | Wola | Metro Młynów | po remoncie | 3H wysokości | 📍 ID: 4
+2026-03-24 14:27:11,419 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:27:11,461 [INFO] [P:1 - 25] 💰 715 000 PLN | 📏 50.7m² | 📊 14 102.56 PLN/m² | 🚪 3 Rooms | 📌 3 pok | oddzielna kuchnia | balkon | piwnica | Bielany | Wawrzyszew | 📍 ID: 6
+2026-03-24 14:27:11,850 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:27:11,907 [INFO] [P:1 - 26] 💰 2 849 000 PLN | 📏 100.72m² | 📊 28 286.34 PLN/m² | 🚪 4 Rooms | 📌 4-pokojowy apartament na Zielonym Żoliborzu | 📍 ID: 17
+2026-03-24 14:27:12,395 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:27:12,448 [INFO] [P:1 - 27] 💰 1 697 000 PLN | 📏 138.0m² | 📊 12 297.10 PLN/m² | 🚪 4 Rooms | 📌 BEZ PROWIZJI |KLUCZE U NAS|PIĘKNIE WYKOŃCZONY | wejście prosto z windy | 📍 ID: 15
+2026-03-24 14:27:12,825 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:27:12,884 [INFO] [P:1 - 28] 💰 2 250 000 PLN | 📏 89.0m² | 📊 25 280.90 PLN/m² | 🚪 3 Rooms | 📌 Poznańska | Rewitalizacja Kamienicy w 2026 | 📍 ID: 9
+2026-03-24 14:27:13,274 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:27:13,321 [INFO] [P:1 - 29] 💰 599 000 PLN | 📏 33.48m² | 📊 17 891.28 PLN/m² | 🚪 1 Rooms | 📌 Kawalerka | Niski czynsz | strefa wypoczynku dla mieszkańców | Mokotów | 📍 ID: 1
+2026-03-24 14:27:13,738 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:27:13,796 [INFO] [P:1 - 30] 💰 880 000 PLN | 📏 92.0m² | 📊 9 565.22 PLN/m² | 🚪 5 Rooms | 📌 2-poziomwoe, M-5/ w cenie: m. postojowe, podłogówka/ zamknięte osiedle | 📍 ID: 12
+2026-03-24 14:27:14,217 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:27:14,274 [INFO] [P:1 - 31] 💰 1 199 000 PLN | 📏 69.02m² | 📊 17 371.78 PLN/m² | 🚪 4 Rooms | 📌 4 pokoje | 2 łazienki | METRO | Balkon | Winda | Garaż | Targówek | 📍 ID: 8
+2026-03-24 14:27:14,675 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:27:14,728 [INFO] [P:1 - 32] 💰 807 978 PLN | 📏 58.54m² | 📊 13 802.15 PLN/m² | 🚪 3 Rooms | 📌 3-pokojowe mieszkanie 58m2 + loggia | 📍 ID: 5
+2026-03-24 14:27:15,120 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:27:15,176 [INFO] [P:1 - 33] 💰 699 000 PLN | 📏 41.31m² | 📊 16 920.84 PLN/m² | 🚪 2 Rooms | 📌 Mieszkanie, Rytm Mokotowa, ul Antoniewska | 📍 ID: 1
+2026-03-24 14:27:15,568 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:27:15,623 [INFO] [P:1 - 34] 💰 0 PLN | 📏 46.05m² | 📊 None PLN/m² | 🚪 2 Rooms | 📌 2-pokojowe mieszkanie 46m2 + balkon Bezpośrednio | 📍 ID: 7
+2026-03-24 14:27:15,971 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:27:16,025 [INFO] [P:1 - 35] 💰 1 265 000 PLN | 📏 66.98m² | 📊 18 886.23 PLN/m² | 🚪 3 Rooms | 📌 3-pokojowe Royal Residence Wilanów | 📍 ID: 15
+2026-03-24 14:27:16,390 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:27:16,433 [INFO] [P:1 - 36] 💰 1 100 000 PLN | 📏 60.4m² | 📊 18 211.92 PLN/m² | 🚪 3 Rooms | 📌 Włodarzewska, 3 pokoje z balkonem, zieleń | 📍 ID: 11
+2026-03-24 14:27:16,829 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:27:16,882 [INFO] [P:1 - 37] 💰 1 170 000 PLN | 📏 58.4m² | 📊 20 034.25 PLN/m² | 🚪 2 Rooms | 📌 Przestronny 2 pokojowy apartament w Miasteczku Wilanów | 📍 ID: 15
+2026-03-24 14:27:17,447 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:27:17,502 [INFO] [P:1 - 38] 💰 0 PLN | 📏 34.69m² | 📊 None PLN/m² | 🚪 2 Rooms | 📌 2-pokojowe z balkonem, ENG, bez PCC i prowizji | 📍 ID: 5
+2026-03-24 14:27:17,958 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:27:18,015 [INFO] [P:1 - 39] 💰 412 300 PLN | 📏 26.6m² | 📊 15 500.00 PLN/m² | 🚪 1 Rooms | 📌 Ostatnia kawalerka w bloku, cicha okolica, obok lasu | 📍 ID: 5
+2026-03-24 14:27:18,391 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:27:18,438 [INFO] [P:1 - 40] 💰 1 100 000 PLN | 📏 89.01m² | 📊 12 358.16 PLN/m² | 🚪 3 Rooms | 📌 | 3pok. | spokojna okolica | balkon | dobry rozkład | | 📍 ID: 1
+2026-03-24 14:27:18,798 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:27:18,798 [INFO] ======================================================================
+
+2026-03-24 14:27:18,799 [INFO] INFO: Page 1 completed. Resting for 6.16 seconds to avoid IP ban...
+2026-03-24 14:27:24,957 [INFO] 
+============================================================
+2026-03-24 14:27:24,957 [INFO] 📄 SCRAPING INITIATED: PAGE 2 [APARTMENT SALE]
+2026-03-24 14:27:24,958 [INFO] ============================================================
+2026-03-24 14:27:29,223 [INFO] INFO: Scanning for real estate listings...
+2026-03-24 14:27:29,273 [INFO] INFO: Scrolling down to trick 'Lazy Loading' (3 times)...
+2026-03-24 14:27:33,870 [INFO] INFO: Hurricane Mode active! Found 43 listings on page 2. Extracting...
+
+2026-03-24 14:27:33,871 [INFO] ======================================================================
+2026-03-24 14:27:33,947 [INFO] [P:2 - 1] 💰 419 000 PLN | 📏 25.0m² | 📊 16 760.00 PLN/m² | 🚪 2 Rooms | 📌 Okęcie 2pok 25m2 , 1 pietro( winda ) po remoncie, bezpośrednio | 📍 ID: 14
+2026-03-24 14:27:34,746 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:27:34,989 [INFO] [P:2 - 2] 💰 860 000 PLN | 📏 50.0m² | 📊 17 200.00 PLN/m² | 🚪 2 Rooms | 📌 Apartament 2 POKOJE 50m2 Z GARAŻEM w pobliżu C.H. PROMENADA | 📍 ID: 2
+2026-03-24 14:27:36,606 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:27:36,817 [INFO] [P:2 - 3] 💰 544 160 PLN | 📏 28.64m² | 📊 19 000.00 PLN/m² | 🚪 1 Rooms | 📌 1-pokojowe mieszkanie 28m2 + loggia | 📍 ID: 13
+2026-03-24 14:27:38,426 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:27:38,477 [INFO] [4] ⏭️ SKIPPED (In-Memory Cache)
+2026-03-24 14:27:38,496 [INFO] [5] ⏭️ SKIPPED (In-Memory Cache)
+2026-03-24 14:27:38,508 [INFO] [6] ⏭️ SKIPPED (In-Memory Cache)
+2026-03-24 14:27:38,570 [INFO] [P:2 - 7] 💰 620 000 PLN | 📏 32.8m² | 📊 18 902.44 PLN/m² | 🚪 1 Rooms | 📌 kawalerka | taras | gotowe do wprowadzenia | Mokotów | 📍 ID: 1
+2026-03-24 14:27:38,975 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:27:39,030 [INFO] [P:2 - 8] 💰 3 590 000 PLN | 📏 115.0m² | 📊 31 217.39 PLN/m² | 🚪 3 Rooms | 📌 **3pokojowy Apartament z Dwoma Miejscami Postojowymi w sercu Powiśla** | 📍 ID: 9
+2026-03-24 14:27:39,549 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:27:39,595 [INFO] [P:2 - 9] 💰 3 290 000 PLN | 📏 140.0m² | 📊 23 500.00 PLN/m² | 🚪 5 Rooms | 📌 Redukcja ceny, penthouse przy Pałacu w Wilanowie | 📍 ID: 15
+2026-03-24 14:27:40,021 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:27:40,075 [INFO] [P:2 - 10] 💰 1 300 000 PLN | 📏 50.0m² | 📊 26 000.00 PLN/m² | 🚪 2 Rooms | 📌 Apartament z fenomenalnym widokiem na panoramę nad Wisłą | 📍 ID: 9
+2026-03-24 14:27:40,494 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:27:40,538 [INFO] [P:2 - 11] 💰 549 000 PLN | 📏 44.6m² | 📊 12 309.42 PLN/m² | 🚪 2 Rooms | 📌 Mieszkanie, 44,60 m², Warszawa | 📍 ID: 5
+2026-03-24 14:27:40,883 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:27:40,927 [INFO] [P:2 - 12] 💰 485 000 PLN | 📏 28.84m² | 📊 16 816.92 PLN/m² | 🚪 1 Rooms | 📌 Nowa kawalerka w kamienicy po rewitalizacji | bez prowizji | 📍 ID: 2
+2026-03-24 14:27:41,265 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:27:41,300 [INFO] [P:2 - 13] 💰 820 000 PLN | 📏 57.0m² | 📊 14 385.96 PLN/m² | 🚪 3 Rooms | 📌 3 pokoje, jasne | parking | odświeżone | 📍 ID: 1
+2026-03-24 14:27:41,679 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:27:41,737 [INFO] [P:2 - 14] 💰 620 000 PLN | 📏 25.1m² | 📊 24 701.20 PLN/m² | 🚪 1 Rooms | 📌 1pok. Saska Kępa |po remoncie |balkon|klimatyzacja | 📍 ID: 2
+2026-03-24 14:27:42,115 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:27:42,163 [INFO] [P:2 - 15] 💰 715 000 PLN | 📏 60.0m² | 📊 11 916.67 PLN/m² | 🚪 3 Rooms | 📌 Przestronne mieszkanie na Bielanach – gotowe do wp | 📍 ID: 6
+2026-03-24 14:27:42,577 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:27:42,627 [INFO] [P:2 - 16] 💰 890 000 PLN | 📏 49.33m² | 📊 18 041.76 PLN/m² | 🚪 2 Rooms | 📌 Wyjątkowe mieszkanie z garażem przy Metrze | 📍 ID: 4
+2026-03-24 14:27:43,019 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:27:43,068 [INFO] [P:2 - 17] 💰 974 974 PLN | 📏 47.9m² | 📊 20 354.36 PLN/m² | 🚪 3 Rooms | 📌 Nowe, niezamieszkałe, 3 pokoje, blisko Norblin i Browary! | 📍 ID: 4
+2026-03-24 14:27:43,435 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:27:43,476 [INFO] [P:2 - 18] 💰 775 000 PLN | 📏 41.17m² | 📊 18 824.39 PLN/m² | 🚪 2 Rooms | 📌 Najlepiej usytuowane w budynku | możliwość 2 pokoi | 📍 ID: 9
+2026-03-24 14:27:43,886 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:27:43,940 [INFO] [P:2 - 19] 💰 0 PLN | 📏 58.28m² | 📊 None PLN/m² | 🚪 3 Rooms | 📌 3-pokojowe mieszkanie 58m2 + taras Bezpośrednio | 📍 ID: 1
+2026-03-24 14:27:44,336 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:27:44,385 [INFO] [P:2 - 20] 💰 699 000 PLN | 📏 38.0m² | 📊 18 394.74 PLN/m² | 🚪 1 Rooms | 📌 1 pok. 38 m² | Metro Lazurowa | Bemowo | 📍 ID: 7
+2026-03-24 14:27:44,759 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:27:44,806 [INFO] [P:2 - 21] 💰 889 000 PLN | 📏 44.72m² | 📊 19 879.25 PLN/m² | 🚪 2 Rooms | 📌 Mieszkanie 2 pok, 44 m2, Wola ul. Sławińska | 📍 ID: 4
+2026-03-24 14:27:45,201 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:27:45,252 [INFO] [P:2 - 22] 💰 1 300 000 PLN | 📏 60.5m² | 📊 21 487.60 PLN/m² | 🚪 3 Rooms | 📌 Zakup BEZ PROWIZJI i PODATKU PCC, 3 pokoje,wysoki standard,ost. piętro | 📍 ID: 14
+2026-03-24 14:27:45,697 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:27:45,757 [INFO] [P:2 - 23] 💰 1 190 000 PLN | 📏 59.97m² | 📊 19 843.25 PLN/m² | 🚪 2 Rooms | 📌 Mieszkanie inwestycyjne | 📍 ID: 9
+2026-03-24 14:27:46,184 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:27:46,222 [INFO] [P:2 - 24] 💰 2 090 000 PLN | 📏 98.0m² | 📊 21 326.53 PLN/m² | 🚪 4 Rooms | 📌 ✨ Jasny Apartament Z Tarasem I Widokiem Na Zieleń✨ | 📍 ID: 11
+2026-03-24 14:27:46,609 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:27:46,658 [INFO] [P:2 - 25] 💰 604 000 PLN | 📏 39.0m² | 📊 15 487.18 PLN/m² | 🚪 2 Rooms | 📌 Warszawa, Fasolowa: 39m² - 2 pokoje z balkonem | 📍 ID: 14
+2026-03-24 14:27:47,025 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:27:47,069 [INFO] [P:2 - 26] 💰 2 190 000 PLN | 📏 74.0m² | 📊 29 594.59 PLN/m² | 🚪 2 Rooms | 📌 Apartament Piękna Nova | 📍 ID: 9
+2026-03-24 14:27:47,476 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:27:47,525 [INFO] [P:2 - 27] 💰 1 550 000 PLN | 📏 88.25m² | 📊 17 563.74 PLN/m² | 🚪 3 Rooms | 📌 3pok. | Metro | loggia | b.dobra lokalizacja | | 📍 ID: 4
+2026-03-24 14:27:47,905 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:27:47,936 [INFO] [P:2 - 28] 💰 2 449 000 PLN | 📏 66.6m² | 📊 36 771.77 PLN/m² | 🚪 3 Rooms | 📌 Unikalny apartament w Śródmieściu Południowym - Plac Konstytucji 6 | 📍 ID: 9
+2026-03-24 14:27:48,317 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:27:48,358 [INFO] [P:2 - 29] 💰 499 000 PLN | 📏 40.5m² | 📊 12 320.99 PLN/m² | 🚪 2 Rooms | 📌 2 pokoje do remontu| ul. Walerego Sławka | 📍 ID: 12
+2026-03-24 14:27:48,828 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:27:48,873 [INFO] [P:2 - 30] 💰 479 000 PLN | 📏 32.0m² | 📊 14 968.75 PLN/m² | 🚪 2 Rooms | 📌 Mieszkanie 2 Pok. Bezpośrednio ul.Batumi | 📍 ID: 1
+2026-03-24 14:27:49,261 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:27:49,297 [INFO] [P:2 - 31] 💰 659 000 PLN | 📏 36.5m² | 📊 18 054.79 PLN/m² | 🚪 2 Rooms | 📌 2-pokojowe mieszkanie Włochy !Gotowe! | 📍 ID: 14
+2026-03-24 14:27:49,694 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:27:49,736 [INFO] [P:2 - 32] 💰 2 995 000 PLN | 📏 114.43m² | 📊 26 173.21 PLN/m² | 🚪 4 Rooms | 📌 Premium | sauna | siłownia | 📍 ID: 1
+2026-03-24 14:27:50,131 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:27:50,189 [INFO] [P:2 - 33] 💰 749 000 PLN | 📏 51.6m² | 📊 14 515.50 PLN/m² | 🚪 2 Rooms | 📌 Rozkładowe, cicha okolica, metro | 📍 ID: 8
+2026-03-24 14:27:50,547 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:27:50,596 [INFO] [P:2 - 34] 💰 620 000 PLN | 📏 42.4m² | 📊 14 622.64 PLN/m² | 🚪 2 Rooms | 📌 2 pokoje | Ursynów | 7 min spacerem do metra | 📍 ID: 3
+2026-03-24 14:27:50,973 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:27:51,022 [INFO] [P:2 - 35] 💰 735 000 PLN | 📏 35.14m² | 📊 20 916.33 PLN/m² | 🚪 1 Rooms | 📌 Duża loggia / nowe budownictwo / Top lokalizacja | 📍 ID: 2
+2026-03-24 14:27:51,364 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:27:51,409 [INFO] [P:2 - 36] 💰 1 760 000 PLN | 📏 71.0m² | 📊 24 788.73 PLN/m² | 🚪 3 Rooms | 📌 Kamienica Ogrodzona 2 Balkony | 📍 ID: 9
+2026-03-24 14:27:51,769 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:27:51,823 [INFO] [P:2 - 37] 💰 599 000 PLN | 📏 72.0m² | 📊 8 319.44 PLN/m² | 🚪 4 Rooms | 📌 Okazja! Mieszkanie do aranżacji na 14 piętrze! | 📍 ID: 2
+2026-03-24 14:27:52,269 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:27:52,301 [INFO] [P:2 - 38] 💰 899 000 PLN | 📏 55.0m² | 📊 16 345.45 PLN/m² | 🚪 3 Rooms | 📌 200 m2 ogród / do wejścia / podwyższony standard | 📍 ID: 5
+2026-03-24 14:27:52,847 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:27:52,880 [INFO] [P:2 - 39] 💰 1 188 000 PLN | 📏 74.3m² | 📊 15 989.23 PLN/m² | 🚪 4 Rooms | 📌 4 pokoje | gotowe do wejścia | Kępa Potocka | 📍 ID: 6
+2026-03-24 14:27:53,382 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:27:53,413 [INFO] [P:2 - 40] 💰 1 200 000 PLN | 📏 44.5m² | 📊 26 966.29 PLN/m² | 🚪 2 Rooms | 📌 Wilanów | gotowe do wejścia z ogródkiem i garażem | 📍 ID: 15
+2026-03-24 14:27:53,805 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:27:53,847 [INFO] [P:2 - 41] 💰 625 000 PLN | 📏 42.05m² | 📊 14 863.26 PLN/m² | 🚪 3 Rooms | 📌 Taras 17 m2 / możliwość 3 pokoi /parking podziemny | 📍 ID: 5
+2026-03-24 14:27:54,271 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:27:54,301 [INFO] [P:2 - 42] 💰 729 000 PLN | 📏 54.65m² | 📊 13 339.43 PLN/m² | 🚪 2 Rooms | 📌 Doskonała lokalizacja | kamienica | 📍 ID: 14
+2026-03-24 14:27:54,740 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:27:54,748 [INFO] [43] ⏭️ SKIPPED (In-Memory Cache)
+2026-03-24 14:27:54,749 [INFO] ======================================================================
+
+2026-03-24 14:27:54,749 [INFO] INFO: Page 2 completed. Resting for 6.18 seconds to avoid IP ban...
+2026-03-24 14:28:00,928 [INFO] 
+============================================================
+2026-03-24 14:28:00,928 [INFO] 📄 SCRAPING INITIATED: PAGE 3 [APARTMENT SALE]
+2026-03-24 14:28:00,928 [INFO] ============================================================
+2026-03-24 14:28:04,780 [INFO] INFO: Scanning for real estate listings...
+2026-03-24 14:28:04,854 [INFO] INFO: Scrolling down to trick 'Lazy Loading' (3 times)...
+2026-03-24 14:28:09,557 [INFO] INFO: Hurricane Mode active! Found 36 listings on page 3. Extracting...
+
+2026-03-24 14:28:09,558 [INFO] ======================================================================
+2026-03-24 14:28:09,599 [INFO] [1] ⏭️ SKIPPED (In-Memory Cache)
+2026-03-24 14:28:09,660 [INFO] [P:3 - 2] 💰 5 904 438 PLN | 📏 255.43m² | 📊 23 115.68 PLN/m² | 🚪 2 Rooms | 📌 2-pokojowe mieszkanie 255m2 + 2 tarasy | 📍 ID: 13
+2026-03-24 14:28:10,539 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:28:10,978 [INFO] [P:3 - 3] 💰 1 149 000 PLN | 📏 57.36m² | 📊 20 031.38 PLN/m² | 🚪 2 Rooms | 📌 Żoliborz/Kępa Potocka/2pok/57m2/garaż/komórka | 📍 ID: 17
+2026-03-24 14:28:11,597 [INFO]       ✅ DB SYNC SUCCESS (New Listing Added)
+2026-03-24 14:28:11,623 [INFO] [4] ⏭️ SKIPPED (In-Memory Cache)
+2026-03-24 14:28:11,634 [INFO] [5] ⏭️ SKIPPED (In-Memory Cache)
+2026-03-24 14:28:11,643 [INFO] [6] ⏭️ SKIPPED (In-Memory Cache)
+2026-03-24 14:28:11,676 [INFO] [P:3 - 7] 💰 648 800 PLN | 📏 42.0m² | 📊 15 447.62 PLN/m² | 🚪 2 Rooms | 📌 Najtańsze 2 pokoje Z GARAŻEM W CENIE + Umów DNI OTWARTE +15min CENTRUM | 📍 ID: 12
+2026-03-24 14:28:12,063 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:28:12,099 [INFO] [P:3 - 8] 💰 542 300 PLN | 📏 37.5m² | 📊 14 461.33 PLN/m² | 🚪 2 Rooms | 📌 Ostatnie w tej CENIE + Umów DNI OTWARTE _ 15min do CENTUM _ METRO | 📍 ID: 12
+2026-03-24 14:28:12,484 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:28:12,513 [INFO] [P:3 - 9] 💰 979 030 PLN | 📏 57.82m² | 📊 16 932.38 PLN/m² | 🚪 3 Rooms | 📌 3-pokojowe mieszkanie 57m2 + ogródek | 📍 ID: 13
+2026-03-24 14:28:12,945 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:28:12,976 [INFO] [P:3 - 10] 💰 1 777 000 PLN | 📏 74.51m² | 📊 23 849.15 PLN/m² | 🚪 3 Rooms | 📌 Eleganckie mieszkanie na Mokotowie | 📍 ID: 1
+2026-03-24 14:28:13,361 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:28:13,386 [INFO] [P:3 - 11] 💰 495 000 PLN | 📏 27.7m² | 📊 17 870.04 PLN/m² | 🚪 1 Rooms | 📌 Widok | lokalizacja | kawalerka | 📍 ID: 1
+2026-03-24 14:28:13,773 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:28:13,799 [INFO] [P:3 - 12] 💰 1 150 000 PLN | 📏 46.83m² | 📊 24 556.91 PLN/m² | 🚪 2 Rooms | 📌 APARTAMENT KLASY PREMIUM | ART DÉCO | JEMS | ORB | 46,83 m² | | 📍 ID: 1
+2026-03-24 14:28:14,191 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:28:14,218 [INFO] [P:3 - 13] 💰 804 200 PLN | 📏 60.0m² | 📊 13 403.33 PLN/m² | 🚪 2 Rooms | 📌 Nowe 2 pokoje z GARAŻEM W CENIE ! + Umów Dziś DNI OTWARTE Z Rabatami ! | 📍 ID: 12
+2026-03-24 14:28:14,637 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:28:14,668 [INFO] [P:3 - 14] 💰 799 000 PLN | 📏 53.32m² | 📊 14 985.00 PLN/m² | 🚪 2 Rooms | 📌 Słoneczne 2 pok, Osiedle Wilno, kolejką do Centrum | 📍 ID: 8
+2026-03-24 14:28:15,093 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:28:15,125 [INFO] [P:3 - 15] 💰 513 040 PLN | 📏 38.43m² | 📊 13 349.99 PLN/m² | 🚪 2 Rooms | 📌 PROMOCJA! Dojazd 4 minuty do tramwaju, 10 min METRO! Galeria Północna! | 📍 ID: 5
+2026-03-24 14:28:15,528 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:28:15,557 [INFO] [P:3 - 16] 💰 779 999 PLN | 📏 64.8m² | 📊 12 037.02 PLN/m² | 🚪 3 Rooms | 📌 3 Pokoje I Białołęka I Cicha okolica | 📍 ID: 5
+2026-03-24 14:28:15,939 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:28:15,970 [INFO] [P:3 - 17] 💰 804 169 PLN | 📏 60.0m² | 📊 13 402.82 PLN/m² | 🚪 3 Rooms | 📌 Dni otwarte do soboty -> GARAŻ GRATIS !! -> METRO Karolin + SKM | 📍 ID: 12
+2026-03-24 14:28:16,364 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:28:16,393 [INFO] [P:3 - 18] 💰 3 900 000 PLN | 📏 125.0m² | 📊 31 200.00 PLN/m² | 🚪 4 Rooms | 📌 Apartament po generalnym remoncie Marina Mokotów | 📍 ID: 1
+2026-03-24 14:28:16,802 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:28:16,838 [INFO] [P:3 - 19] 💰 506 428 PLN | 📏 32.0m² | 📊 15 825.88 PLN/m² | 🚪 1 Rooms | 📌 Dni otwarte do soboty -> Ostatnie terminy -> METRO Karolin + SKM | 📍 ID: 12
+2026-03-24 14:28:17,292 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:28:17,317 [INFO] [P:3 - 20] 💰 869 000 PLN | 📏 56.0m² | 📊 15 517.86 PLN/m² | 🚪 3 Rooms | 📌 3 pokoje | 56 m² | Ciche| jasna kuchnia | piwnica! | 📍 ID: 17
+2026-03-24 14:28:17,683 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:28:17,709 [INFO] [P:3 - 21] 💰 519 000 PLN | 📏 32.0m² | 📊 16 218.75 PLN/m² | 🚪 1 Rooms | 📌 Kawalerka przy metrze. | 📍 ID: 12
+2026-03-24 14:28:18,075 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:28:18,106 [INFO] [P:3 - 22] 💰 690 000 PLN | 📏 37.0m² | 📊 18 648.65 PLN/m² | 🚪 2 Rooms | 📌 Bez kredytu | Wola | 2 pok | po remoncie | metro Księcia Janusza | 📍 ID: 4
+2026-03-24 14:28:18,490 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:28:18,514 [INFO] [P:3 - 23] 💰 775 000 PLN | 📏 60.0m² | 📊 12 916.67 PLN/m² | 🚪 4 Rooms | 📌 3-4 pok. Najlepsza lokalizacja na Ursusie | 📍 ID: 12
+2026-03-24 14:28:18,910 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:28:18,940 [INFO] [P:3 - 24] 💰 629 000 PLN | 📏 42.0m² | 📊 14 976.19 PLN/m² | 🚪 2 Rooms | 📌 2Pok 42m²Balkon 2 Windy Bezpośrednio Soczi | 📍 ID: 1
+2026-03-24 14:28:19,345 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:28:19,443 [INFO] [P:3 - 25] 💰 1 350 000 PLN | 📏 62.25m² | 📊 21 686.75 PLN/m² | 🚪 3 Rooms | 📌 3 pokoje |Mokotów| Wykończone| 0% Prowizji| RABAT! | 📍 ID: 1
+2026-03-24 14:28:19,831 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:28:19,849 [INFO] [P:3 - 26] 💰 1 643 429 PLN | 📏 43.31m² | 📊 37 945.72 PLN/m² | 🚪 1 Rooms | 📌 1-pokojowe mieszkanie 43m2 + loggia Bez Prowizji | 📍 ID: 1
+2026-03-24 14:28:20,264 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:28:20,286 [INFO] [P:3 - 27] 💰 799 000 PLN | 📏 43.0m² | 📊 18 581.40 PLN/m² | 🚪 2 Rooms | 📌 Mieszkanie na Nowosieleckiej - Bez Prowizji | 📍 ID: 9
+2026-03-24 14:28:20,704 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:28:20,728 [INFO] [P:3 - 28] 💰 740 000 PLN | 📏 48.36m² | 📊 15 301.90 PLN/m² | 🚪 3 Rooms | 📌 Mieszkanie na Saskiej Kępie| Zielona okolica 48m2 | 📍 ID: 2
+2026-03-24 14:28:21,154 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:28:21,186 [INFO] [P:3 - 29] 💰 745 000 PLN | 📏 52.0m² | 📊 14 326.92 PLN/m² | 🚪 2 Rooms | 📌 Z Widokiem | Funkcjonalny układ | Balkon | 📍 ID: 12
+2026-03-24 14:28:21,646 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:28:21,683 [INFO] [P:3 - 30] 💰 699 000 PLN | 📏 56.72m² | 📊 12 323.70 PLN/m² | 🚪 2 Rooms | 📌 Klimatyczne mieszkanie na Bielanach | 📍 ID: 6
+2026-03-24 14:28:22,049 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:28:22,070 [INFO] [P:3 - 31] 💰 569 860 PLN | 📏 40.82m² | 📊 13 960.31 PLN/m² | 🚪 2 Rooms | 📌 2 pokojowe mieszkanie na Skoroszach | 📍 ID: 12
+2026-03-24 14:28:22,472 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:28:22,499 [INFO] [P:3 - 32] 💰 805 000 PLN | 📏 60.0m² | 📊 13 416.67 PLN/m² | 🚪 4 Rooms | 📌 Najtańsze 4 pokoje + GARAŻ W CENIE MIESZKANIA +Umów DNI OTWARTE ZOBACZ | 📍 ID: 12
+2026-03-24 14:28:22,865 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:28:22,901 [INFO] [P:3 - 33] 💰 759 900 PLN | 📏 39.0m² | 📊 19 484.62 PLN/m² | 🚪 2 Rooms | 📌 Bezpośrednio Metro - 2 pokoje Wola- wysoki standard!!! | 📍 ID: 4
+2026-03-24 14:28:23,311 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:28:23,349 [INFO] [P:3 - 34] 💰 319 000 PLN | 📏 22.4m² | 📊 14 241.07 PLN/m² | 🚪 1 Rooms | 📌 Blisko do metra | Zielona okolica | Do wejścia | 📍 ID: 8
+2026-03-24 14:28:23,743 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:28:23,777 [INFO] [P:3 - 35] 💰 1 990 000 PLN | 📏 86.97m² | 📊 22 881.45 PLN/m² | 🚪 3 Rooms | 📌 Wyjątkowy apartament na sprzedaż – Mokotów 3 pokoje 86,97 m2 | 📍 ID: 1
+2026-03-24 14:28:24,309 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:28:24,315 [INFO] [36] ⏭️ SKIPPED (In-Memory Cache)
+2026-03-24 14:28:24,315 [INFO] ======================================================================
+
+2026-03-24 14:28:24,316 [INFO] INFO: Page 3 completed. Resting for 4.44 seconds to avoid IP ban...
+2026-03-24 14:28:28,753 [INFO] 
+============================================================
+2026-03-24 14:28:28,754 [INFO] 📄 SCRAPING INITIATED: PAGE 4 [APARTMENT SALE]
+2026-03-24 14:28:28,754 [INFO] ============================================================
+2026-03-24 14:28:32,409 [INFO] INFO: Scanning for real estate listings...
+2026-03-24 14:28:32,500 [INFO] INFO: Scrolling down to trick 'Lazy Loading' (3 times)...
+2026-03-24 14:28:37,069 [INFO] INFO: Hurricane Mode active! Found 47 listings on page 4. Extracting...
+
+2026-03-24 14:28:37,069 [INFO] ======================================================================
+2026-03-24 14:28:37,111 [INFO] [P:4 - 1] 💰 997 620 PLN | 📏 38.37m² | 📊 26 000.00 PLN/m² | 🚪 2 Rooms | 📌 2-pokojowe mieszkanie 38m2 + taras Bezpośrednio | 📍 ID: 17
+2026-03-24 14:28:37,615 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:28:37,682 [INFO] [P:4 - 2] 💰 995 000 PLN | 📏 48.07m² | 📊 20 698.98 PLN/m² | 🚪 2 Rooms | 📌 Apartamenty Mokotów Park | 2 pokoje | 2 balkony | klimatyzacja | 📍 ID: 1
+2026-03-24 14:28:38,034 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:28:38,116 [INFO] [P:4 - 3] 💰 1 200 000 PLN | 📏 50.0m² | 📊 24 000.00 PLN/m² | 🚪 2 Rooms | 📌 Wyposażone i gotowe do zamieszkania mieszkanie 50m2, 17 piętro | 📍 ID: 4
+2026-03-24 14:28:38,543 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:28:38,584 [INFO] [P:4 - 4] 💰 974 000 PLN | 📏 43.26m² | 📊 22 515.03 PLN/m² | 🚪 2 Rooms | 📌 2-pokojowe mieszkanie 43m2 + balkon Bezpośrednio | 📍 ID: 4
+2026-03-24 14:28:38,915 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:28:38,939 [INFO] [P:4 - 5] 💰 1 320 000 PLN | 📏 75.46m² | 📊 17 492.71 PLN/m² | 🚪 3 Rooms | 📌 Designerski apartament | Żoliborz | 3 min do Metra | 📍 ID: 17
+2026-03-24 14:28:39,350 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:28:39,372 [INFO] [P:4 - 6] 💰 0 PLN | 📏 59.4m² | 📊 None PLN/m² | 🚪 3 Rooms | 📌 3-pokojowe mieszkanie 59m2 + loggia Bezpośrednio | 📍 ID: 1
+2026-03-24 14:28:39,768 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:28:39,789 [INFO] [P:4 - 7] 💰 819 900 PLN | 📏 54.0m² | 📊 15 183.33 PLN/m² | 🚪 3 Rooms | 📌 Świetna lokalizacja/do odświeżenia/parking | 📍 ID: 1
+2026-03-24 14:28:40,182 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:28:40,213 [INFO] [P:4 - 8] 💰 625 747 PLN | 📏 40.8m² | 📊 15 336.94 PLN/m² | 🚪 2 Rooms | 📌 2pokoje z Halą Garażową GRATIS blisko METRO Karolin, Factory i SKM ! | 📍 ID: 12
+2026-03-24 14:28:40,638 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:28:40,680 [INFO] [P:4 - 9] 💰 804 145 PLN | 📏 60.0m² | 📊 13 402.42 PLN/m² | 🚪 4 Rooms | 📌 3/4pokoje z Halą Garażową GRATIS blisko METRO Karolin, Factory i SKM ! | 📍 ID: 12
+2026-03-24 14:28:41,033 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:28:41,056 [INFO] [P:4 - 10] 💰 537 905 PLN | 📏 34.4m² | 📊 15 636.77 PLN/m² | 🚪 2 Rooms | 📌 2pokoje z Halą Garażową GRATIS blisko METRO Karolin, Factory i SKM ! | 📍 ID: 12
+2026-03-24 14:28:41,463 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:28:41,493 [INFO] [P:4 - 11] 💰 579 000 PLN | 📏 37.57m² | 📊 15 411.23 PLN/m² | 🚪 2 Rooms | 📌 2 pokoje do generalnego remontu | Saska Kępa | 📍 ID: 2
+2026-03-24 14:28:41,906 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:28:41,940 [INFO] [P:4 - 12] 💰 745 000 PLN | 📏 55.0m² | 📊 13 545.45 PLN/m² | 🚪 3 Rooms | 📌 Przestronne 3 pok. w zielonej części Bielan — do własnej aranżacji | 📍 ID: 6
+2026-03-24 14:28:42,313 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:28:42,352 [INFO] [P:4 - 13] 💰 1 019 000 PLN | 📏 42.85m² | 📊 23 780.63 PLN/m² | 🚪 2 Rooms | 📌 2pk | Do wejścia | Miasteczko Wilanów | 📍 ID: 15
+2026-03-24 14:28:42,690 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:28:42,725 [INFO] [P:4 - 14] 💰 3 550 000 PLN | 📏 135.83m² | 📊 26 135.61 PLN/m² | 🚪 5 Rooms | 📌 Za chwilę gotowy PENTHOUSE z TARASEM ponad 100m2, salon ponad 40m2! | 📍 ID: 1
+2026-03-24 14:28:43,128 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:28:43,157 [INFO] [P:4 - 15] 💰 990 662 PLN | 📏 56.4m² | 📊 17 564.93 PLN/m² | 🚪 3 Rooms | 📌 3-pokojowe mieszkanie 56m2 + balkon | 📍 ID: 1
+2026-03-24 14:28:43,634 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:28:43,680 [INFO] [P:4 - 16] 💰 1 740 000 PLN | 📏 88.0m² | 📊 19 772.73 PLN/m² | 🚪 3 Rooms | 📌 Dla rodziny | Komfortowe | 2 miejsca postojowe | 📍 ID: 15
+2026-03-24 14:28:44,108 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:28:44,159 [INFO] [P:4 - 17] 💰 780 800 PLN | 📏 61.5m² | 📊 12 695.93 PLN/m² | 🚪 3 Rooms | 📌 Zaraz Gotowe 3 pokoje + Hala Garażowa + Obok SKL/METRO + DNI OTWARTE | 📍 ID: 12
+2026-03-24 14:28:44,596 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:28:44,640 [INFO] [P:4 - 18] 💰 850 000 PLN | 📏 59.23m² | 📊 14 350.84 PLN/m² | 🚪 4 Rooms | 📌 Balkon 27m2 | 3 stronne | 2 miejsca w garażu | 📍 ID: 5
+2026-03-24 14:28:45,096 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:28:45,129 [INFO] [P:4 - 19] 💰 1 249 000 PLN | 📏 57.38m² | 📊 21 767.17 PLN/m² | 🚪 3 Rooms | 📌 Dopracowane | Do wprowadzenia | Wysoki standard | 📍 ID: 1
+2026-03-24 14:28:45,475 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:28:45,500 [INFO] [P:4 - 20] 💰 525 000 PLN | 📏 35.07m² | 📊 14 970.06 PLN/m² | 🚪 1 Rooms | 📌 Kawalerka, metro Dw. Wileński, ul. Wileńska 12 | 📍 ID: 13
+2026-03-24 14:28:45,833 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:28:45,863 [INFO] [P:4 - 21] 💰 1 985 000 PLN | 📏 96.6m² | 📊 20 548.65 PLN/m² | 🚪 4 Rooms | 📌 Dwustronne mieszkanie 97 m2 | 4 Pokoje | 2 tarasy | 📍 ID: 11
+2026-03-24 14:28:46,232 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:28:46,290 [INFO] [P:4 - 22] 💰 490 028 PLN | 📏 31.82m² | 📊 15 400.00 PLN/m² | 🚪 2 Rooms | 📌 kameralne 3pietrowe budynki⚡cisza i zieleń⚡PKP | 📍 ID: 12
+2026-03-24 14:28:46,836 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:28:46,875 [INFO] [P:4 - 23] 💰 849 000 PLN | 📏 63.4m² | 📊 13 391.17 PLN/m² | 🚪 4 Rooms | 📌 Rozkładowe | Przestronne | Jasne | Do urządzenia | 📍 ID: 1
+2026-03-24 14:28:47,299 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:28:47,361 [INFO] [P:4 - 24] 💰 1 781 000 PLN | 📏 92.53m² | 📊 19 247.81 PLN/m² | 🚪 4 Rooms | 📌 4-pokojowe mieszkanie 92m2 + balkon | 📍 ID: 4
+2026-03-24 14:28:47,702 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:28:47,729 [INFO] [P:4 - 25] 💰 853 200 PLN | 📏 58.32m² | 📊 14 629.63 PLN/m² | 🚪 3 Rooms | 📌 3-pokojowe mieszkanie 58m2 + balkon Bezpośrednio | 📍 ID: 2
+2026-03-24 14:28:48,126 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:28:48,161 [INFO] [P:4 - 26] 💰 490 200 PLN | 📏 32.0m² | 📊 15 318.75 PLN/m² | 🚪 2 Rooms | 📌 Zaraz Gotowe Najtańsze 2 Pokoje + 15min Centrum+ Umów Dziś Dni Otwarte | 📍 ID: 12
+2026-03-24 14:28:48,593 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:28:48,640 [INFO] [P:4 - 27] 💰 1 757 580 PLN | 📏 53.26m² | 📊 33 000.00 PLN/m² | 🚪 3 Rooms | 📌 3-pokojowe mieszkanie 53m2 + balkon Bezpośrednio | 📍 ID: 4
+2026-03-24 14:28:49,066 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:28:49,121 [INFO] [P:4 - 28] 💰 1 182 384 PLN | 📏 64.4m² | 📊 18 360.00 PLN/m² | 🚪 3 Rooms | 📌 3-pokojowe mieszkanie 64m2 + ogródek Bez Prowizji | 📍 ID: 1
+2026-03-24 14:28:49,452 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:28:49,489 [INFO] [P:4 - 29] 💰 606 760 PLN | 📏 27.58m² | 📊 22 000.00 PLN/m² | 🚪 1 Rooms | 📌 1-pokojowe mieszkanie 27m2 + balkon Bez Prowizji | 📍 ID: 13
+2026-03-24 14:28:49,895 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:28:49,937 [INFO] [P:4 - 30] 💰 1 800 093 PLN | 📏 71.86m² | 📊 25 050.00 PLN/m² | 🚪 3 Rooms | 📌 3-pokojowe mieszkanie 71m2 + balkon Bezpośrednio | 📍 ID: 14
+2026-03-24 14:28:50,275 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:28:50,337 [INFO] [P:4 - 31] 💰 1 054 050 PLN | 📏 70.27m² | 📊 15 000.00 PLN/m² | 🚪 3 Rooms | 📌 3-pokojowe mieszkanie 70m2 + balkon Bezpośrednio | 📍 ID: 14
+2026-03-24 14:28:50,704 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:28:50,765 [INFO] [P:4 - 32] 💰 696 226 PLN | 📏 43.11m² | 📊 16 149.99 PLN/m² | 🚪 2 Rooms | 📌 2-pokojowe mieszkanie 43m2 + balkon | 📍 ID: 12
+2026-03-24 14:28:51,151 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:28:51,209 [INFO] [P:4 - 33] 💰 757 020 PLN | 📏 40.92m² | 📊 18 500.00 PLN/m² | 🚪 2 Rooms | 📌 2-pokojowe mieszkanie 40m2 + ogródek | 📍 ID: 13
+2026-03-24 14:28:51,564 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:28:51,617 [INFO] [P:4 - 34] 💰 1 036 445 PLN | 📏 56.63m² | 📊 18 302.05 PLN/m² | 🚪 3 Rooms | 📌 3-pokojowe mieszkanie 56m2 + balkon Bez Prowizji | 📍 ID: 14
+2026-03-24 14:28:51,999 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:28:52,038 [INFO] [P:4 - 35] 💰 568 900 PLN | 📏 40.0m² | 📊 14 222.50 PLN/m² | 🚪 2 Rooms | 📌 Zaraz Gotowe 2 pokoje + Hala Garażowa + Obok SKM/METRO + DNI OTWARTE | 📍 ID: 12
+2026-03-24 14:28:52,419 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:28:52,486 [INFO] [P:4 - 36] 💰 804 156 PLN | 📏 59.89m² | 📊 13 427.22 PLN/m² | 🚪 3 Rooms | 📌 3pokoje +GARAŻ za 0 PLN_ blisko METRO Karolin -> Dni otwarte do soboty | 📍 ID: 12
+2026-03-24 14:28:52,859 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:28:52,914 [INFO] [P:4 - 37] 💰 1 081 000 PLN | 📏 47.68m² | 📊 22 671.98 PLN/m² | 🚪 2 Rooms | 📌 Doskonała inwestycja | Gotowe | Garaż | 📍 ID: 4
+2026-03-24 14:28:53,281 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:28:53,342 [INFO] [P:4 - 38] 💰 506 408 PLN | 📏 32.0m² | 📊 15 825.25 PLN/m² | 🚪 1 Rooms | 📌 Kawalerka z Ogrodem blisko METRO Karolin -> Dni otwarte do soboty | 📍 ID: 12
+2026-03-24 14:28:53,769 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:28:53,832 [INFO] [P:4 - 39] 💰 625 738 PLN | 📏 40.74m² | 📊 15 359.30 PLN/m² | 🚪 2 Rooms | 📌 2pokoje +GARAŻ za 0 PLN_ blisko METRO Karolin -> Dni otwarte do soboty | 📍 ID: 12
+2026-03-24 14:28:54,176 [INFO]       🔄 ALREADY EXISTS (Skipped)
+2026-03-24 14:28:54,223 [INFO] [P:4 - 40] 💰 1 095 000 PLN | 📏 53.5m² | 📊 20 467.29 PLN/m² | 🚪 2 Rooms | 📌 Ciche i słoneczne mieszkanie na Mokotowie! Nowy Apartamentowiec! | 📍 ID: 1
