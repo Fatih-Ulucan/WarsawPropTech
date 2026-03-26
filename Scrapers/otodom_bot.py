@@ -219,8 +219,9 @@ def test_scraper():
 
                                     if avg_sqm_price and avg_sqm_price > 0:
                                         if price_per_sqm <= (avg_sqm_price * 0.85):
-                                            is_bargain = True
-                                            profit_margin = round(((avg_sqm_price - price_per_sqm) / avg_sqm_price) * 100, 1)
+                                            if sqm and sqm >= 25 and clean_price > 100000:
+                                                is_bargain = True
+                                                profit_margin = round(((avg_sqm_price - price_per_sqm) / avg_sqm_price) * 100, 1)
 
                                 if is_bargain:
                                     stats["bargains"] += 1
