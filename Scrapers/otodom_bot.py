@@ -40,11 +40,6 @@ if not SUPABASE_URL or not TELEGRAM_TOKEN:
     logger.error(f"❌ CRITICAL ERROR: Missing environment variables! URL: {SUPABASE_URL}")
     sys.exit()
 
-THRESHOLDS = {
-    "SALE_APARTMENT": 14500,
-    "SALE_HOUSE": 10500,
-    "RENT_ALL": 85
-}
 
 stats = {"scanned": 0, "added": 0, "bargains": 0, "start_time": datetime.now()}
 
@@ -71,6 +66,28 @@ SCRAPE_TARGETS = [
 ]
 
 SEEN_URLS = set()
+
+def get_market_average():
+    logger.info("🧠 AI ENGINE: Fetching real-time market averages from Supabase...")
+    clean_url = SUPABASE_URL.strip("/")
+    table_url = f"{clean_url}/rest/v1/district_market_stats"
+    headers = {
+        "apikey": SUPABASE_KEY,
+        "Authorization": f"Bearer {SUPABASE_KEY}",
+    }
+    try:
+        response = requests.get(table_url, headers=headers, timeout=10)
+        if response.status_code == 200:
+            data = response.json()
+            market_dict = {}
+            for row in data:
+                if row.get('avg_price_per_sqm'):
+                    market_dict[(row['loc_id'], row['trans_id'], row['type_id'])] = row['avg_price_per_sqm']
+            logger.info(f"✅ AI ENGINE: Successfully loaded {len(market_dict)} market categories!")
+            return market_dict
+    except Exception as e:
+        logger.error(f"❌ AI ENGINE ERROR: Failed to fetch market stats: {e}")
+    return{}
 
 def send_telegram(message):
     url = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage"
@@ -109,6 +126,9 @@ def save_to_supabase(data):
 
 def test_scraper():
     global stats
+    
+    market_stats = get_market_average()
+    
     logger.info("INFO: Bot is waking up and launching the browser...")
 
     with sync_playwright() as p:
@@ -191,20 +211,28 @@ def test_scraper():
                                 logger.info("      ✅ DB SYNC SUCCESS")
 
                                 is_bargain = False
-                                if target['trans_id'] == 1:
-                                    if target['type_id'] == 1 and price_per_sqm and price_per_sqm < THRESHOLDS["SALE_APARTMENT"]: is_bargain = True
-                                    elif target['type_id'] == 2 and price_per_sqm and price_per_sqm < THRESHOLDS["SALE_HOUSE"]: is_bargain = True
-                                elif target['trans_id'] == 2 and price_per_sqm and price_per_sqm < THRESHOLDS["RENT_ALL"]: is_bargain = True
+                                profit_margin = 0
+                                avg_sqm_price = 0
+
+                                if matched_loc_id and price_per_sqm:
+                                    avg_sqm_price = market_stats.get((matched_loc_id, target['trans_id'], target['type_id']))
+
+                                    if avg_sqm_price and avg_sqm_price > 0:
+                                        if price_per_sqm <= (avg_sqm_price * 0.85):
+                                            is_bargain = True
+                                            profit_margin = round(((avg_sqm_price - price_per_sqm) / avg_sqm_price) * 100, 1)
 
                                 if is_bargain:
                                     stats["bargains"] += 1
-                                    alert = f"💎 <b>INVESTMENT OPPORTUNITY</b>\n" \
+                                    alert = f"🤖 <b>AI DEAL DETECTED!</b> 💎\n" \
                                             f"━━━━━━━━━━━━━━━━━━━━\n" \
                                             f"📍 <b>District:</b> {location}\n" \
                                             f"🏢 <b>Category:</b> {target['label']}\n" \
-                                            f"💰 <b>Price:</b> {clean_price:,} PLN\n" \
+                                            f"💰 <b>Total Price:</b> {clean_price:,} PLN\n" \
                                             f"📐 <b>Size:</b> {sqm} m²\n" \
-                                            f"📊 <b>m² Rate:</b> {price_per_sqm:,} PLN/m²\n" \
+                                            f"📊 <b>This Listing:</b> {price_per_sqm:,.0f} PLN/m²\n" \
+                                            f"📈 <b>District Avg:</b> {avg_sqm_price:,.0f} PLN/m²\n" \
+                                            f"🔥 <b>PROFIT MARGIN:</b> %{profit_margin} (Under Market)\n" \
                                             f"━━━━━━━━━━━━━━━━━━━━\n" \
                                             f"🔗 <a href='{full_url}'>View Listing</a>"
                                     send_telegram(alert)
