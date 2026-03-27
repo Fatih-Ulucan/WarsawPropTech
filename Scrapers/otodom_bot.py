@@ -237,26 +237,32 @@ def test_scraper():
                                                 is_bargain = True
                                                 profit_margin = round(((avg_sqm_price - price_per_sqm) / avg_sqm_price) * 100, 1)
 
-                                                deal_score += min(profit_margin * 2.0, 40)
+                                               
+                                                profit_score = min(profit_margin * 3.33, 100)
 
-                                                if sqm >= 50: deal_score += 20
-                                                elif sqm >= 35: deal_score += 10
+                                                size_score = 100 if sqm >= 50 else (75 if sqm >= 35 else 50)
 
-                                                if rooms and rooms >= 3: deal_score += 15
-                                                elif rooms and rooms == 2: deal_score += 10
+                                                room_score = 100 if (rooms and rooms >= 3) else (75 if (rooms and rooms == 2) else 50)
 
-                                                if clean_price <= 750000: deal_score += 15
-                                                elif clean_price <= 1200000: deal_score += 5
+                                                price_score = 100 if clean_price <= 600000 else (75 if clean_price <= 900000 else (50 if clean_price <= 1200000 else 25))
 
                                                 lower_card_text = card_text.lower()
+                                                keywords_negative = ["do remontu", "do odświeżenia", "ruina", "stary", "wymaga", "stan surowy"]
+                                                keywords_positive = ["po remoncie", "wysoki standard", "premium", "nowe", "luksusow", "zaprojektowane", "gotowe do"]
 
-                                                if "do remontu" in lower_card_text or "do odświeżenia" in lower_card_text:
-                                                    deal_score -= 20
+                                                base_text_score = 50 
+                                                base_text_score += sum([15 for k in keywords_positive if k in lower_card_text])
+                                                base_text_score -= sum([20 for k in keywords_negative if k in lower_card_text])
+                                                text_score = max(0, min(base_text_score, 100))
 
-                                                if "po remoncie" in lower_card_text or "wysoki standard" in lower_card_text or "luksusow" in lower_card_text or "premium" in lower_card_text:
-                                                    deal_score += 10
-
-                                                deal_score = max(0, min(int(deal_score), 100))
+                                                deal_score = (
+                                                        (profit_score * 0.40) +
+                                                        (size_score * 0.20) +
+                                                        (room_score * 0.15) +
+                                                        (price_score * 0.15) +
+                                                        (text_score * 0.10)
+                                                )
+                                                deal_score = min(int(deal_score), 100)
 
                                 if is_bargain:
                                     stats["bargains"] += 1
