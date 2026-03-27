@@ -5,6 +5,7 @@ import logging
 import re
 import random
 import sys
+import unicodedata
 from io import StringIO
 from datetime import datetime
 from pathlib import Path
@@ -67,6 +68,10 @@ SCRAPE_TARGETS = [
 
 SEEN_URLS = set()
 
+# 🧠 PRO LEVEL: Lehçe karakterleri (ł, ś, ń vb.) temizleyen fonksiyon
+def normalize(text):
+    return unicodedata.normalize('NFKD', text).encode('ascii', 'ignore').decode('utf-8').lower()
+
 def get_market_average():
     global last_fetch_time, market_stats_cache
 
@@ -108,10 +113,13 @@ def send_telegram(message):
     except Exception as e:
         logger.error(f"❌ Telegram Network Failed: {e}")
 
+# 🧠 PRO LEVEL: Gelişmiş İlçe Bulucu (Büyük/Küçük harf ve Lehçe karakter hatası yapmaz)
 def find_loc_id(location_text):
     if not location_text: return None
+    normalized_location = normalize(location_text)
     for district, loc_id in LOCATION_MAP.items():
-        if district.lower() in location_text.lower():  return loc_id
+        if normalize(district) in normalized_location:
+            return loc_id
     return None
 
 def save_to_supabase(data):
@@ -277,12 +285,14 @@ def test_scraper():
 
                                     if target['trans_id'] == 1 and matched_loc_id and sqm:
                                         avg_rent_sqm = market_stats.get((matched_loc_id, 2, target['type_id']))
-                                        if avg_rent_sqm and avg_rent_sqm > 0:
+                                        # 🧠 PRO LEVEL: Sıfıra bölünme hatasını engellemek için güvenlik kilidi
+                                        if avg_rent_sqm and avg_rent_sqm > 0 and clean_price > 0:
                                             est_monthly_rent = sqm * avg_rent_sqm
                                             annual_rent = est_monthly_rent * 12
                                             net_annual = annual_rent * 0.8
-                                            roi_percent = round((net_annual / clean_price) * 100, 1)
-                                            amortization_years = round(clean_price / net_annual, 1)
+                                            if net_annual > 0:
+                                                roi_percent = round((net_annual / clean_price) * 100, 1)
+                                                amortization_years = round(clean_price / net_annual, 1)
 
                                     alert = f"{score_icon} <b>INVESTMENT SCORE: {deal_score}/100</b>\n" \
                                             f"━━━━━━━━━━━━━━━━━━━━\n" \
