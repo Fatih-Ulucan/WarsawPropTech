@@ -247,10 +247,21 @@ def test_scraper():
                                                 price_score = 100 if clean_price <= 600000 else (75 if clean_price <= 900000 else (50 if clean_price <= 1200000 else 25))
 
                                                 lower_card_text = card_text.lower()
-                                                keywords_negative = ["do remontu", "do odświeżenia", "ruina", "stary", "wymaga", "stan surowy"]
-                                                keywords_positive = ["po remoncie", "wysoki standard", "premium", "nowe", "luksusow", "zaprojektowane", "gotowe do"]
 
-                                                base_text_score = 50 
+                                                keywords_negative = [
+                                                    "do remontu", "do odświeżenia", "ruina",
+                                                    "stary", "wymaga", "stan surowy",
+                                                    "bez windy"  
+                                                ]
+
+                                                keywords_positive = [
+                                                    "po remoncie", "wysoki standard", "premium", "nowe",
+                                                    "luksusow", "zaprojektowane", "gotowe do",
+                                                    "balkon", "winda", "piwnica", "metro", "tramwaj",
+                                                    "kamienica", "blok"  
+                                                ]
+
+                                                base_text_score = 50
                                                 base_text_score += sum([15 for k in keywords_positive if k in lower_card_text])
                                                 base_text_score -= sum([20 for k in keywords_negative if k in lower_card_text])
                                                 text_score = max(0, min(base_text_score, 100))
@@ -266,9 +277,23 @@ def test_scraper():
 
                                 if is_bargain:
                                     stats["bargains"] += 1
-
+    
                                     score_icon = "🔥" if deal_score >= 80 else ("⚡" if deal_score >= 60 else "📊")
+    
+                                    est_monthly_rent = 0
+                                    roi_percent = 0
+                                    amortization_years = 0
+    
+                                    if target['trans_id'] == 1 and matched_loc_id and sqm:
+                                        avg_rent_sqm = market_stats.get((matched_loc_id, 2, target['type_id']))
+    
+                                        if avg_rent_sqm and avg_rent_sqm > 0:
+                                            est_monthly_rent = sqm * avg_rent_sqm
+                                            annual_rent = est_monthly_rent * 12
 
+                                            roi_percent = ((annual_rent * 0.8) / clean_price) * 100
+                                            amortization_years = round(clean_price / annual_rent, 1)
+    
                                     alert = f"{score_icon} <b>INVESTMENT SCORE: {deal_score}/100</b>\n" \
                                             f"━━━━━━━━━━━━━━━━━━━━\n" \
                                             f"📍 <b>District:</b> {location}\n" \
@@ -277,9 +302,18 @@ def test_scraper():
                                             f"📐 <b>Size:</b> {sqm} m² | 🚪 <b>Rooms:</b> {rooms}\n" \
                                             f"💵 <b>Price/m²:</b> {price_per_sqm:,.0f} PLN\n" \
                                             f"📈 <b>Market Avg:</b> {avg_sqm_price:,.0f} PLN\n" \
-                                            f"💎 <b>PROFIT MARGIN:</b> %{profit_margin}\n" \
-                                            f"━━━━━━━━━━━━━━━━━━━━\n" \
-                                            f"🔗 <a href='{full_url}'>View Listing</a>"
+                                            f"💎 <b>PROFIT MARGIN:</b> %{profit_margin}\n"
+    
+                                    if roi_percent > 0:
+                                        alert += f"━━━━━━━━━━━━━━━━━━━━\n" \
+                                                 f"🔮 <b>AI PREDICTIONS (ROI)</b>\n" \
+                                                 f"💶 <b>Est. Monthly Rent:</b> ~{est_monthly_rent:,.0f} PLN\n" \
+                                                 f"📈 <b>Gross Yield (ROI):</b> %{roi_percent} / Year\n" \
+                                                 f"⏳ <b>Amortization:</b> {amortization_years} Years\n"
+    
+                                    alert += f"━━━━━━━━━━━━━━━━━━━━\n" \
+                                             f"🔗 <a href='{full_url}'>View Listing</a>"
+    
                                     send_telegram(alert)
 
                             elif db_status == 409:
