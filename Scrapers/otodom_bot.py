@@ -237,7 +237,7 @@ def test_scraper():
                                                 is_bargain = True
                                                 profit_margin = round(((avg_sqm_price - price_per_sqm) / avg_sqm_price) * 100, 1)
 
-                                                deal_score += min(profit_margin * 2.5, 50)
+                                                deal_score += min(profit_margin * 2.0, 40)
 
                                                 if sqm >= 50: deal_score += 20
                                                 elif sqm >= 35: deal_score += 10
@@ -248,7 +248,15 @@ def test_scraper():
                                                 if clean_price <= 750000: deal_score += 15
                                                 elif clean_price <= 1200000: deal_score += 5
 
-                                                deal_score = min(int(deal_score), 100)
+                                                lower_card_text = card_text.lower()
+
+                                                if "do remontu" in lower_card_text or "do odświeżenia" in lower_card_text:
+                                                    deal_score -= 20
+
+                                                if "po remoncie" in lower_card_text or "wysoki standard" in lower_card_text or "luksusow" in lower_card_text or "premium" in lower_card_text:
+                                                    deal_score += 10
+
+                                                deal_score = max(0, min(int(deal_score), 100))
 
                                 if is_bargain:
                                     stats["bargains"] += 1
