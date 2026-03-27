@@ -68,7 +68,7 @@ SCRAPE_TARGETS = [
 SEEN_URLS = set()
 
 def get_market_average():
-    global last_fetch_time, market_stats_cache 
+    global last_fetch_time, market_stats_cache
 
     if time.time() - last_fetch_time < CACHE_TTL and market_stats_cache:
         logger.info("⚡ CACHE: Using saved market data (No API call needed).")
@@ -175,7 +175,7 @@ def test_scraper():
 
                     for _ in range(4):
                         scroll_amount = random.randint(300,800)
-                        page.mouse.wheel(0, scroll_amount) 
+                        page.mouse.wheel(0, scroll_amount)
                         time.sleep(random.uniform(0.5,1.5))
 
                     all_listing = page.locator('[data-sentry-component="AdvertCard"]').all()
@@ -226,7 +226,7 @@ def test_scraper():
                                 is_bargain = False
                                 profit_margin = 0
                                 avg_sqm_price = 0
-                                deal_score = 0 
+                                deal_score = 0
 
                                 if matched_loc_id and price_per_sqm:
                                     avg_sqm_price = market_stats.get((matched_loc_id, target['trans_id'], target['type_id']))
@@ -237,29 +237,22 @@ def test_scraper():
                                                 is_bargain = True
                                                 profit_margin = round(((avg_sqm_price - price_per_sqm) / avg_sqm_price) * 100, 1)
 
-                                               
                                                 profit_score = min(profit_margin * 3.33, 100)
-
                                                 size_score = 100 if sqm >= 50 else (75 if sqm >= 35 else 50)
-
                                                 room_score = 100 if (rooms and rooms >= 3) else (75 if (rooms and rooms == 2) else 50)
-
                                                 price_score = 100 if clean_price <= 600000 else (75 if clean_price <= 900000 else (50 if clean_price <= 1200000 else 25))
 
                                                 lower_card_text = card_text.lower()
+                                                keywords_negative = ["do remontu", "do odświeżenia", "ruina", "stary", "wymaga", "stan surowy"]
+                                                keywords_positive = ["po remoncie", "wysoki standard", "premium", "nowe", "luksusow", "zaprojektowane", "gotowe do"]
 
-                                                keywords_negative = [
-                                                    "do remontu", "do odświeżenia", "ruina",
-                                                    "stary", "wymaga", "stan surowy",
-                                                    "bez windy"  
-                                                ]
-
-                                                keywords_positive = [
-                                                    "po remoncie", "wysoki standard", "premium", "nowe",
-                                                    "luksusow", "zaprojektowane", "gotowe do",
-                                                    "balkon", "winda", "piwnica", "metro", "tramwaj",
-                                                    "kamienica", "blok"  
-                                                ]
+                                                if target['type_id'] == 1:
+                                                    keywords_negative.append("bez windy")
+                                                    keywords_positive.extend(["balkon", "winda", "piwnica", "metro", "tramwaj", "kamienica", "blok"])
+                                                elif target['type_id'] == 2:
+                                                    keywords_positive.extend(["ogród", "garaż", "taras", "spokojna okolica"])
+                                                elif target['type_id'] == 3:
+                                                    keywords_positive.extend(["witryna", "klimatyzacja", "parking", "parter", "ciąg pieszych"])
 
                                                 base_text_score = 50
                                                 base_text_score += sum([15 for k in keywords_positive if k in lower_card_text])
@@ -277,23 +270,20 @@ def test_scraper():
 
                                 if is_bargain:
                                     stats["bargains"] += 1
-    
                                     score_icon = "🔥" if deal_score >= 80 else ("⚡" if deal_score >= 60 else "📊")
-    
                                     est_monthly_rent = 0
                                     roi_percent = 0
                                     amortization_years = 0
-    
+
                                     if target['trans_id'] == 1 and matched_loc_id and sqm:
                                         avg_rent_sqm = market_stats.get((matched_loc_id, 2, target['type_id']))
-    
                                         if avg_rent_sqm and avg_rent_sqm > 0:
                                             est_monthly_rent = sqm * avg_rent_sqm
                                             annual_rent = est_monthly_rent * 12
 
-                                            roi_percent = ((annual_rent * 0.8) / clean_price) * 100
+                                            roi_percent = round((((annual_rent * 0.8) / clean_price) * 100), 1)
                                             amortization_years = round(clean_price / annual_rent, 1)
-    
+
                                     alert = f"{score_icon} <b>INVESTMENT SCORE: {deal_score}/100</b>\n" \
                                             f"━━━━━━━━━━━━━━━━━━━━\n" \
                                             f"📍 <b>District:</b> {location}\n" \
@@ -303,17 +293,16 @@ def test_scraper():
                                             f"💵 <b>Price/m²:</b> {price_per_sqm:,.0f} PLN\n" \
                                             f"📈 <b>Market Avg:</b> {avg_sqm_price:,.0f} PLN\n" \
                                             f"💎 <b>PROFIT MARGIN:</b> %{profit_margin}\n"
-    
+
                                     if roi_percent > 0:
                                         alert += f"━━━━━━━━━━━━━━━━━━━━\n" \
                                                  f"🔮 <b>AI PREDICTIONS (ROI)</b>\n" \
                                                  f"💶 <b>Est. Monthly Rent:</b> ~{est_monthly_rent:,.0f} PLN\n" \
                                                  f"📈 <b>Gross Yield (ROI):</b> %{roi_percent} / Year\n" \
                                                  f"⏳ <b>Amortization:</b> {amortization_years} Years\n"
-    
+
                                     alert += f"━━━━━━━━━━━━━━━━━━━━\n" \
                                              f"🔗 <a href='{full_url}'>View Listing</a>"
-    
                                     send_telegram(alert)
 
                             elif db_status == 409:
