@@ -40,6 +40,9 @@ if not SUPABASE_URL or not TELEGRAM_TOKEN:
     logger.error(f"❌ CRITICAL ERROR: Missing environment variables! URL: {SUPABASE_URL}")
     sys.exit()
 
+last_fetch_time = 0
+CACHE_TTL = 600
+market_stats_cache = {}
 
 stats = {"scanned": 0, "added": 0, "bargains": 0, "start_time": datetime.now()}
 
@@ -59,15 +62,18 @@ SCRAPE_TARGETS = [
     {"url_part": "sprzedaz/dom", "trans_id": 1, "type_id": 2, "label": "🏡 HOUSE SALE"},
     {"url_part": "wynajem/dom", "trans_id": 2, "type_id": 2, "label": "🏠 HOUSE RENT"},
     {"url_part": "sprzedaz/lokal", "trans_id": 1, "type_id": 3, "label": "🏢 COMMERCIAL SALE"},
-    {"url_part": "wynajem/lokal", "trans_id": 2, "type_id": 3, "label": "🏬 COMMERCIAL RENT"},
-    {"url_part": "sprzedaz/garaz", "trans_id": 1, "type_id": 4, "label": "🚗 GARAGE SALE"},
-    {"url_part": "wynajem/garaz", "trans_id": 2, "type_id": 4, "label": "🅿️ GARAGE RENT"},
-    {"url_part": "sprzedaz/dzialka", "trans_id": 1, "type_id": 5, "label": "🌳 PLOT SALE"}
+    {"url_part": "wynajem/lokal", "trans_id": 2, "type_id": 3, "label": "🏬 COMMERCIAL RENT"}
 ]
 
 SEEN_URLS = set()
 
 def get_market_average():
+    global last_fetch_time, market_stats_cache 
+
+    if time.time() - last_fetch_time < CACHE_TTL and market_stats_cache:
+        logger.info("⚡ CACHE: Using saved market data (No API call needed).")
+        return market_stats_cache
+
     logger.info("🧠 AI ENGINE: Fetching real-time market averages from Supabase...")
     clean_url = SUPABASE_URL.strip("/")
     table_url = f"{clean_url}/rest/v1/district_market_stats"
@@ -83,11 +89,13 @@ def get_market_average():
             for row in data:
                 if row.get('avg_price_per_sqm'):
                     market_dict[(row['loc_id'], row['trans_id'], row['type_id'])] = row['avg_price_per_sqm']
+            market_stats_cache = market_dict
+            last_fetch_time = time.time()
             logger.info(f"✅ AI ENGINE: Successfully loaded {len(market_dict)} market categories!")
             return market_dict
     except Exception as e:
         logger.error(f"❌ AI ENGINE ERROR: Failed to fetch market stats: {e}")
-    return{}
+    return market_stats_cache
 
 def send_telegram(message):
     url = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage"
@@ -126,14 +134,20 @@ def save_to_supabase(data):
 
 def test_scraper():
     global stats
-    
+
     market_stats = get_market_average()
-    
-    logger.info("INFO: Bot is waking up and launching the browser...")
+
+    logger.info("INFO: Bot is waking up in STEALTH MODE...")
 
     with sync_playwright() as p:
-        browser = p.chromium.launch(headless=False)
-        page = browser.new_page()
+        browser = p.chromium.launch(
+            headless=True,
+            args=["--disable-blink-features=AutomationControlled"]
+        )
+        context = browser.new_context(
+            user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+        )
+        page = context.new_page()
 
         logger.info("INFO: Navigating to Otodom...")
         page.goto("https://www.otodom.pl/pl/wyniki/sprzedaz/mieszkanie/mazowieckie/warszawa/warszawa/warszawa")
@@ -159,9 +173,10 @@ def test_scraper():
                         logger.info(f"🛑 END OF CATEGORY: {target['label']}")
                         break
 
-                    for _ in range(3):
-                        page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
-                        time.sleep(1.5)
+                    for _ in range(4):
+                        scroll_amount = random.randint(300,800)
+                        page.mouse.wheel(0, scroll_amount) 
+                        time.sleep(random.uniform(0.5,1.5))
 
                     all_listing = page.locator('[data-sentry-component="AdvertCard"]').all()
 
@@ -177,7 +192,6 @@ def test_scraper():
                                 continue
 
                             card_text = listing.inner_text()
-                            title = listing.locator('[data-cy="listing-item-link"]').first.inner_text()
                             location = listing.locator('[data-sentry-component="Address"]').first.inner_text()
                             raw_price = listing.locator('[data-sentry-element="MainPrice"]').first.inner_text()
 
@@ -195,7 +209,7 @@ def test_scraper():
                             matched_loc_id = find_loc_id(location)
 
                             display_p_m2 = f"{price_per_sqm:,.2f}".replace(",", " ") if price_per_sqm else "None"
-                            logger.info(f"[P:{page_num} - {index + 1}] 💰 {clean_price:,} PLN | 📏 {sqm}m² | 📊 {display_p_m2} PLN/m² | 🚪 {rooms} Rooms | 📍 ID: {matched_loc_id}")
+                            logger.info(f"[P:{page_num} - {index + 1}] 💰 {clean_price:,} PLN | 📏 {sqm}m² | 🚪 {rooms} P | 📍 ID: {matched_loc_id}")
 
                             payload = {
                                 "price_pln": clean_price, "url_link": full_url, "source_platform": "Otodom",
@@ -208,11 +222,11 @@ def test_scraper():
                             if db_status in [200, 201, 204]:
                                 stats["added"] += 1
                                 SEEN_URLS.add(full_url)
-                                logger.info("      ✅ DB SYNC SUCCESS")
 
                                 is_bargain = False
                                 profit_margin = 0
                                 avg_sqm_price = 0
+                                deal_score = 0 
 
                                 if matched_loc_id and price_per_sqm:
                                     avg_sqm_price = market_stats.get((matched_loc_id, target['trans_id'], target['type_id']))
@@ -223,17 +237,33 @@ def test_scraper():
                                                 is_bargain = True
                                                 profit_margin = round(((avg_sqm_price - price_per_sqm) / avg_sqm_price) * 100, 1)
 
+                                                deal_score += min(profit_margin * 2.5, 50)
+
+                                                if sqm >= 50: deal_score += 20
+                                                elif sqm >= 35: deal_score += 10
+
+                                                if rooms and rooms >= 3: deal_score += 15
+                                                elif rooms and rooms == 2: deal_score += 10
+
+                                                if clean_price <= 750000: deal_score += 15
+                                                elif clean_price <= 1200000: deal_score += 5
+
+                                                deal_score = min(int(deal_score), 100)
+
                                 if is_bargain:
                                     stats["bargains"] += 1
-                                    alert = f"🤖 <b>AI DEAL DETECTED!</b> 💎\n" \
+
+                                    score_icon = "🔥" if deal_score >= 80 else ("⚡" if deal_score >= 60 else "📊")
+
+                                    alert = f"{score_icon} <b>INVESTMENT SCORE: {deal_score}/100</b>\n" \
                                             f"━━━━━━━━━━━━━━━━━━━━\n" \
                                             f"📍 <b>District:</b> {location}\n" \
                                             f"🏢 <b>Category:</b> {target['label']}\n" \
                                             f"💰 <b>Total Price:</b> {clean_price:,} PLN\n" \
-                                            f"📐 <b>Size:</b> {sqm} m²\n" \
-                                            f"📊 <b>This Listing:</b> {price_per_sqm:,.0f} PLN/m²\n" \
-                                            f"📈 <b>District Avg:</b> {avg_sqm_price:,.0f} PLN/m²\n" \
-                                            f"🔥 <b>PROFIT MARGIN:</b> %{profit_margin} (Under Market)\n" \
+                                            f"📐 <b>Size:</b> {sqm} m² | 🚪 <b>Rooms:</b> {rooms}\n" \
+                                            f"💵 <b>Price/m²:</b> {price_per_sqm:,.0f} PLN\n" \
+                                            f"📈 <b>Market Avg:</b> {avg_sqm_price:,.0f} PLN\n" \
+                                            f"💎 <b>PROFIT MARGIN:</b> %{profit_margin}\n" \
                                             f"━━━━━━━━━━━━━━━━━━━━\n" \
                                             f"🔗 <a href='{full_url}'>View Listing</a>"
                                     send_telegram(alert)
@@ -257,13 +287,13 @@ def send_daily_report():
              f"⏱ <b>Uptime:</b> {str(uptime).split('.')[0]}\n" \
              f"🧐 <b>Ads Scanned:</b> {stats['scanned']}\n" \
              f"✅ <b>New Entries:</b> {stats['added']}\n" \
-             f"🔥 <b>Bargains Found:</b> {stats['bargains']}\n" \
+             f"🔥 <b>AI Deals Found:</b> {stats['bargains']}\n" \
              f"━━━━━━━━━━━━━━━━━━━━"
     send_telegram(report)
     for k in ["scanned", "added", "bargains"]: stats[k] = 0
 
 def start_endless_bot():
-    send_telegram("🚀 <b>System Boot:</b> Warsaw PropTech Radar is LIVE!")
+    send_telegram("🚀 <b>System Boot:</b> Warsaw AI PropTech Radar is LIVE!")
     while True:
         try:
             test_scraper()
@@ -275,5 +305,5 @@ def start_endless_bot():
 
 if __name__ == "__main__":
     logger.info("INFO: System initializing...")
-    send_telegram("🔔 <b>TEST MESSAGE:</b> Connection is OK. Hunting for bargains now!")
+    send_telegram("🤖 <b>AI WAKING UP:</b> Connection is OK. Stealth mode activated.")
     start_endless_bot()
