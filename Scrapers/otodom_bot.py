@@ -111,7 +111,7 @@ def send_telegram(message):
 def find_loc_id(location_text):
     if not location_text: return None
     for district, loc_id in LOCATION_MAP.items():
-        if district in location_text: return loc_id
+        if district.lower() in location_text.lower():  return loc_id
     return None
 
 def save_to_supabase(data):
@@ -280,9 +280,9 @@ def test_scraper():
                                         if avg_rent_sqm and avg_rent_sqm > 0:
                                             est_monthly_rent = sqm * avg_rent_sqm
                                             annual_rent = est_monthly_rent * 12
-
-                                            roi_percent = round((((annual_rent * 0.8) / clean_price) * 100), 1)
-                                            amortization_years = round(clean_price / annual_rent, 1)
+                                            net_annual = annual_rent * 0.8
+                                            roi_percent = round((net_annual / clean_price) * 100, 1)
+                                            amortization_years = round(clean_price / net_annual, 1)
 
                                     alert = f"{score_icon} <b>INVESTMENT SCORE: {deal_score}/100</b>\n" \
                                             f"━━━━━━━━━━━━━━━━━━━━\n" \
