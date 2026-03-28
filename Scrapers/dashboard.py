@@ -40,11 +40,9 @@ LOCATION_MAP = {
     17: 'Żoliborz', 18: 'Rembertów'
 }
 
-
-@st.cache_data(ttl=60)
+@st.cache_data(ttl=300)
 def load_data(t_id):
     clean_url = SUPABASE_URL.strip("/")
-    table_url = f"{clean_url}/rest/v1/listings?trans_id=eq.{t_id}&select=*&limit=2000"
 
     headers = {
         "apikey": SUPABASE_KEY,
@@ -52,29 +50,48 @@ def load_data(t_id):
         "Range-Unit": "items"
     }
 
+    all_data = []  
+    limit = 1000   
+    offset = 0     
+
     try:
-        response = requests.get(table_url, headers=headers, timeout=10)
-        if response.status_code == 200:
-            data = response.json()
-            if not data:
-                return pd.DataFrame()
+        while True:
+            table_url = f"{clean_url}/rest/v1/listings?trans_id=eq.{t_id}&select=*&limit={limit}&offset={offset}"
 
-            df = pd.DataFrame(data)
-            df['district'] = df['loc_id'].map(LOCATION_MAP)
+            response = requests.get(table_url, headers=headers, timeout=15)
 
-            df['price_pln'] = pd.to_numeric(df['price_pln'], errors='coerce')
-            df['sqm'] = pd.to_numeric(df['sqm'], errors='coerce')
-            df['price_per_sqm'] = pd.to_numeric(df['price_per_sqm'], errors='coerce')
+            if response.status_code == 200:
+                chunk = response.json()
 
-            
-            df = df.dropna(subset=['price_pln'])
+                if not chunk: 
+                    break
 
-            df['url_link_html'] = df['url_link'].apply(lambda x: f'<a href="{x}" target="_blank" style="color:#1E90FF; font-weight:bold;">View Listing 🔗</a>')
+                all_data.extend(chunk) 
 
-            return df
-        else:
-            st.error(f"API Error: {response.text}")
+                if len(chunk) < limit: 
+                    break
+
+                offset += limit 
+            else:
+                st.error(f"API Error: {response.text}")
+                break
+
+        if not all_data:
             return pd.DataFrame()
+
+        df = pd.DataFrame(all_data)
+        df['district'] = df['loc_id'].map(LOCATION_MAP)
+
+        df['price_pln'] = pd.to_numeric(df['price_pln'], errors='coerce')
+        df['sqm'] = pd.to_numeric(df['sqm'], errors='coerce')
+        df['price_per_sqm'] = pd.to_numeric(df['price_per_sqm'], errors='coerce')
+
+        df = df.dropna(subset=['price_pln'])
+
+        df['url_link_html'] = df['url_link'].apply(lambda x: f'<a href="{x}" target="_blank" style="color:#1E90FF; font-weight:bold;">View Listing 🔗</a>')
+
+        return df
+
     except Exception as e:
         st.error(f"Connection Error: {e}")
         return pd.DataFrame()
