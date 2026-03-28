@@ -4,7 +4,9 @@ import requests
 import os
 from pathlib import Path
 from dotenv import load_dotenv
-import io 
+import io
+
+st.set_page_config(page_title="Warsaw AI PropTech", page_icon="🏢", layout="wide")
 
 current_dir = Path(__file__).resolve().parent
 base_dir = current_dir.parent
@@ -29,6 +31,7 @@ if SUPABASE_URL and SUPABASE_KEY:
 else:
     st.error(f"❌ CRITICAL ERROR: Supabase keys are empty! Check your .env file content.")
     st.stop()
+
 LOCATION_MAP = {
     1: 'Mokotów', 2: 'Praga-Południe', 3: 'Ursynów', 4: 'Wola',
     5: 'Białołęka', 6: 'Bielany', 7: 'Bemowo', 8: 'Targówek',
@@ -37,10 +40,11 @@ LOCATION_MAP = {
     17: 'Żoliborz', 18: 'Rembertów'
 }
 
-@st.cache_data(ttl=300) 
-def load_data():
+
+@st.cache_data(ttl=60)
+def load_data(t_id):
     clean_url = SUPABASE_URL.strip("/")
-    table_url = f"{clean_url}/rest/v1/listings?is_active=eq.true&trans_id=eq.1&select=*"
+    table_url = f"{clean_url}/rest/v1/listings?trans_id=eq.{t_id}&select=*&limit=2000"
 
     headers = {
         "apikey": SUPABASE_KEY,
@@ -51,10 +55,22 @@ def load_data():
     try:
         response = requests.get(table_url, headers=headers, timeout=10)
         if response.status_code == 200:
-            df = pd.DataFrame(response.json())
-            if not df.empty:
-                df['district'] = df['loc_id'].map(LOCATION_MAP)
-                df['url_link'] = df['url_link'].apply(lambda x: f'<a href="{x}" target="_blank" style="color:#1E90FF; font-weight:bold;">View Listing 🔗</a>')
+            data = response.json()
+            if not data:
+                return pd.DataFrame()
+
+            df = pd.DataFrame(data)
+            df['district'] = df['loc_id'].map(LOCATION_MAP)
+
+            df['price_pln'] = pd.to_numeric(df['price_pln'], errors='coerce')
+            df['sqm'] = pd.to_numeric(df['sqm'], errors='coerce')
+            df['price_per_sqm'] = pd.to_numeric(df['price_per_sqm'], errors='coerce')
+
+            
+            df = df.dropna(subset=['price_pln'])
+
+            df['url_link_html'] = df['url_link'].apply(lambda x: f'<a href="{x}" target="_blank" style="color:#1E90FF; font-weight:bold;">View Listing 🔗</a>')
+
             return df
         else:
             st.error(f"API Error: {response.text}")
@@ -63,21 +79,34 @@ def load_data():
         st.error(f"Connection Error: {e}")
         return pd.DataFrame()
 
-st.title("🏢 Warsaw AI PropTech Radar")
-st.markdown("The most recent **For Sale** real estate opportunities found by our AI bot.")
+st.sidebar.header("🎯 Main Selection")
+transaction_type = st.sidebar.selectbox(
+    "Transaction Type",
+    options=[("Sale", 1), ("Rent", 2)],
+    format_func=lambda x: x[0]
+)
+selected_id = transaction_type[1]
 
-with st.spinner('Fetching current listings from Supabase database...'):
-    df = load_data()
+label = "Sale" if selected_id == 1 else "Rent"
+
+st.title(f"🏢 Warsaw AI PropTech - {label} Radar")
+st.markdown(f"The most recent **{label}** real estate opportunities found by our AI bot.")
+
+with st.spinner(f'Fetching current {label} listings from Supabase...'):
+    df = load_data(selected_id)
 
 if not df.empty:
     st.sidebar.header("🔍 Investor Filters")
 
+    max_val = int(df['price_pln'].max())
+    min_val = int(df['price_pln'].min())
+
     max_price = st.sidebar.slider(
         "Maximum Budget (PLN)",
-        min_value=int(df['price_pln'].min()),
-        max_value=int(df['price_pln'].max()),
-        value=int(df['price_pln'].max()),
-        step=50000
+        min_value=min_val,
+        max_value=max_val,
+        value=max_val,
+        step=5000 if selected_id == 2 else 50000
     )
 
     districts = st.sidebar.multiselect(
@@ -86,9 +115,11 @@ if not df.empty:
         default=[]
     )
 
-    filtered_df = df[df['price_pln'] <= max_price]
+    filtered_df = df[df['price_pln'] <= max_price].copy()
     if districts:
         filtered_df = filtered_df[filtered_df['district'].isin(districts)]
+
+    filtered_df = filtered_df.sort_values(by='price_per_sqm', ascending=True)
 
     st.markdown("---")
     col1, col2, col3 = st.columns(3)
@@ -97,12 +128,21 @@ if not df.empty:
     col3.metric("Average Price / m²", f"{filtered_df['price_per_sqm'].mean():,.0f} PLN")
     st.markdown("---")
 
-    st.subheader("📋 Current Listings")
+    
+    st.subheader("📊 Market Overview")
+    c1, c2 = st.columns(2)
+    with c1:
+        st.bar_chart(filtered_df['district'].value_counts())
+    with c2:
+        chart_data = filtered_df.groupby('district')['price_per_sqm'].mean().sort_values()
+        st.area_chart(chart_data)
 
-    display_df = filtered_df[['district', 'price_pln', 'sqm', 'rooms', 'price_per_sqm', 'url_link']].copy()
+    st.subheader(f"📋 Current {label} Listings")
+
+    display_df = filtered_df[['district', 'price_pln', 'sqm', 'rooms', 'price_per_sqm', 'url_link_html']].copy()
     display_df.columns = ['District', 'Price (PLN)', 'm²', 'Rooms', 'Price/m²', 'Otodom Link']
 
     st.write(display_df.to_html(escape=False, index=False, classes='stTable'), unsafe_allow_html=True)
 
 else:
-    st.info("There are currently no active listings in the system. The bot might be running in the background.")
+    st.info(f"There are currently no active {label.lower()} listings in the system. The bot might be running in the background.")

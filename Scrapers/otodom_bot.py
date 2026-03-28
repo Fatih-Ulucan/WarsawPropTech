@@ -68,7 +68,6 @@ SCRAPE_TARGETS = [
 
 SEEN_URLS = set()
 
-# 🧠 PRO LEVEL: Lehçe karakterleri (ł, ś, ń vb.) temizleyen fonksiyon
 def normalize(text):
     return unicodedata.normalize('NFKD', text).encode('ascii', 'ignore').decode('utf-8').lower()
 
@@ -113,7 +112,6 @@ def send_telegram(message):
     except Exception as e:
         logger.error(f"❌ Telegram Network Failed: {e}")
 
-# 🧠 PRO LEVEL: Gelişmiş İlçe Bulucu (Büyük/Küçük harf ve Lehçe karakter hatası yapmaz)
 def find_loc_id(location_text):
     if not location_text: return None
     normalized_location = normalize(location_text)
@@ -285,7 +283,6 @@ def test_scraper():
 
                                     if target['trans_id'] == 1 and matched_loc_id and sqm:
                                         avg_rent_sqm = market_stats.get((matched_loc_id, 2, target['type_id']))
-                                        # 🧠 PRO LEVEL: Sıfıra bölünme hatasını engellemek için güvenlik kilidi
                                         if avg_rent_sqm and avg_rent_sqm > 0 and clean_price > 0:
                                             est_monthly_rent = sqm * avg_rent_sqm
                                             annual_rent = est_monthly_rent * 12
