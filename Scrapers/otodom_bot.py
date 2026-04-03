@@ -6,6 +6,7 @@ import re
 import random
 import sys
 import unicodedata
+import urllib.parse
 from io import StringIO
 from datetime import datetime
 from pathlib import Path
@@ -45,7 +46,7 @@ last_fetch_time = 0
 CACHE_TTL = 600
 market_stats_cache = {}
 
-stats = {"scanned": 0, "added": 0, "bargains": 0, "start_time": datetime.now()}
+stats = {"scanned": 0, "added": 0, "bargains": 0, "price_drops": 0, "start_time": datetime.now()}
 
 LOCATION_MAP = {
     'Mokotów': 1, 'Praga-Południe': 2, 'Ursynów': 3, 'Wola': 4,
@@ -138,6 +139,142 @@ def save_to_supabase(data):
             time.sleep(2)
     return None
 
+
+
+def log_price_history(property_id, price_pln):
+    if not property_id or not price_pln: return
+    clean_url = SUPABASE_URL.strip("/")
+    table_url = f"{clean_url}/rest/v1/price_history"
+    headers = {"apikey": SUPABASE_KEY, "Authorization": f"Bearer {SUPABASE_KEY}", "Content-Type": "application/json"}
+    try: requests.post(table_url, json={"property_id": property_id, "price_pln": price_pln}, headers=headers, timeout=5)
+    except: pass
+
+def check_and_update_price(property_id, current_price, price_per_sqm, full_url, location, sqm, rooms, card_text, matched_loc_id, target, market_stats, agency_id):
+    global stats
+    if not current_price: return
+    clean_url = SUPABASE_URL.strip("/")
+    safe_url = urllib.parse.quote(full_url)
+
+    get_url = f"{clean_url}/rest/v1/listings?url_link=eq.{safe_url}&select=id,price_pln,property_id,agency_id"
+    headers = {"apikey": SUPABASE_KEY, "Authorization": f"Bearer {SUPABASE_KEY}"}
+
+    try:
+        resp = requests.get(get_url, headers=headers, timeout=5)
+        if resp.status_code == 200:
+            data = resp.json()
+            if data:
+                db_price = data[0].get('price_pln')
+                row_id = data[0].get('id')
+                db_prop_id = data[0].get('property_id')
+                db_agency_id = data[0].get('agency_id')
+
+                update_payload = {}
+
+                if not db_prop_id and property_id:
+                    update_payload["property_id"] = property_id
+
+                if not db_agency_id and agency_id:
+                    update_payload["agency_id"] = agency_id
+
+                if db_price and current_price != db_price:
+                    update_payload["price_pln"] = current_price
+                    update_payload["price_per_sqm"] = price_per_sqm
+                    log_price_history(property_id, current_price)
+
+                    if current_price < db_price:
+                        stats["price_drops"] += 1
+                        drop_amount = db_price - current_price
+
+                        profit_margin = 0
+                        avg_sqm_price = 0
+                        deal_score = 0
+
+                        if matched_loc_id and price_per_sqm:
+                            avg_sqm_price = market_stats.get((matched_loc_id, target['trans_id'], target['type_id']))
+                            if avg_sqm_price and avg_sqm_price > 0:
+                                profit_margin = round(((avg_sqm_price - price_per_sqm) / avg_sqm_price) * 100, 1)
+
+                                profit_score = min(profit_margin * 3.33, 100)
+                                size_score = 100 if sqm and sqm >= 50 else (75 if sqm and sqm >= 35 else 50)
+                                room_score = 100 if (rooms and rooms >= 3) else (75 if (rooms and rooms == 2) else 50)
+                                price_score = 100 if current_price <= 600000 else (75 if current_price <= 900000 else (50 if current_price <= 1200000 else 25))
+
+                                lower_card_text = card_text.lower()
+                                keywords_negative = ["do remontu", "do odświeżenia", "ruina", "stary", "wymaga", "stan surowy"]
+                                keywords_positive = ["po remoncie", "wysoki standard", "premium", "nowe", "luksusow", "zaprojektowane", "gotowe do"]
+
+                                if target['type_id'] == 1:
+                                    keywords_negative.append("bez windy")
+                                    keywords_positive.extend(["balkon", "winda", "piwnica", "metro", "tramwaj", "kamienica", "blok"])
+                                elif target['type_id'] == 2:
+                                    keywords_positive.extend(["ogród", "garaż", "taras", "spokojna okolica"])
+                                elif target['type_id'] == 3:
+                                    keywords_positive.extend(["witryna", "klimatyzacja", "parking", "parter", "ciąg pieszych"])
+
+                                base_text_score = 50
+                                base_text_score += sum([15 for k in keywords_positive if k in lower_card_text])
+                                base_text_score -= sum([20 for k in keywords_negative if k in lower_card_text])
+                                text_score = max(0, min(base_text_score, 100))
+
+                                deal_score = (
+                                        (profit_score * 0.40) +
+                                        (size_score * 0.20) +
+                                        (room_score * 0.15) +
+                                        (price_score * 0.15) +
+                                        (text_score * 0.10)
+                                )
+                                deal_score = min(int(deal_score), 100)
+
+                        score_icon = "🔥" if deal_score >= 80 else ("⚡" if deal_score >= 60 else "📊")
+                        est_monthly_rent = 0
+                        roi_percent = 0
+                        amortization_years = 0
+
+                        if target['trans_id'] == 1 and matched_loc_id and sqm:
+                            avg_rent_sqm = market_stats.get((matched_loc_id, 2, target['type_id']))
+                            if avg_rent_sqm and avg_rent_sqm > 0 and current_price > 0:
+                                est_monthly_rent = sqm * avg_rent_sqm
+                                annual_rent = est_monthly_rent * 12
+                                net_annual = annual_rent * 0.8
+                                if net_annual > 0:
+                                    roi_percent = round((net_annual / current_price) * 100, 1)
+                                    amortization_years = round(current_price / net_annual, 1)
+
+                        alert = f"🚨 <b>PRICE DROP ALERT!</b> 🚨\n" \
+                                f"━━━━━━━━━━━━━━━━━━━━\n" \
+                                f"🔻 <b>Discount:</b> -{drop_amount:,} PLN\n" \
+                                f"📉 <b>Old Price:</b> {db_price:,} PLN\n" \
+                                f"━━━━━━━━━━━━━━━━━━━━\n" \
+                                f"{score_icon} <b>INVESTMENT SCORE: {deal_score}/100</b>\n" \
+                                f"━━━━━━━━━━━━━━━━━━━━\n" \
+                                f"📍 <b>District:</b> {location}\n" \
+                                f"🏢 <b>Category:</b> {target['label']}\n" \
+                                f"💰 <b>Total Price:</b> {current_price:,} PLN\n" \
+                                f"📐 <b>Size:</b> {sqm} m² | 🚪 <b>Rooms:</b> {rooms}\n" \
+                                f"💵 <b>Price/m²:</b> {price_per_sqm:,.0f} PLN\n" \
+                                f"📈 <b>Market Avg:</b> {avg_sqm_price:,.0f} PLN\n" \
+                                f"💎 <b>PROFIT MARGIN:</b> %{profit_margin}\n"
+
+                        if roi_percent > 0:
+                            alert += f"━━━━━━━━━━━━━━━━━━━━\n" \
+                                     f"🔮 <b>AI PREDICTIONS (ROI)</b>\n" \
+                                     f"💶 <b>Est. Monthly Rent:</b> ~{est_monthly_rent:,.0f} PLN\n" \
+                                     f"📈 <b>Gross Yield (ROI):</b> %{roi_percent} / Year\n" \
+                                     f"⏳ <b>Amortization:</b> {amortization_years} Years\n"
+
+                        alert += f"━━━━━━━━━━━━━━━━━━━━\n" \
+                                 f"🔗 <a href='{full_url}'>View Listing</a>"
+
+                        send_telegram(alert)
+                        logger.info(f"🚨 PRICE DROP DETECTED: -{drop_amount} PLN for ID {property_id}")
+
+                if update_payload:
+                    patch_url = f"{clean_url}/rest/v1/listings?id=eq.{row_id}"
+                    requests.patch(patch_url, json=update_payload, headers={"apikey": SUPABASE_KEY, "Authorization": f"Bearer {SUPABASE_KEY}", "Content-Type": "application/json"})
+    except Exception as e:
+        logger.error(f"Price Update Check Error: {e}")
+
+
 def test_scraper():
     global stats
 
@@ -170,7 +307,8 @@ def test_scraper():
 
             for page_num in range(1, 101):
                 target_url = f"https://www.otodom.pl/pl/wyniki/{target['url_part']}/mazowieckie/warszawa/warszawa/warszawa?direction=ASC&sorting=PRICE&page={page_num}"
-                page.goto(target_url)
+
+                page.goto(target_url, timeout=60000, wait_until="domcontentloaded")
 
                 try:
                     try:
@@ -193,6 +331,9 @@ def test_scraper():
                             if not raw_url: continue
                             full_url = raw_url if raw_url.startswith("http") else f"https://www.otodom.pl{raw_url.replace('/hpr','')}"
 
+                            prop_id_match = re.search(r'ID([^./?]+)', full_url)
+                            property_id = prop_id_match.group(1) if prop_id_match else None
+
                             if full_url in SEEN_URLS:
                                 logger.info(f"[{index + 1}] ⏭️ SKIPPED")
                                 continue
@@ -214,13 +355,26 @@ def test_scraper():
                             price_per_sqm = round(clean_price / sqm, 2) if sqm and sqm > 0 else None
                             matched_loc_id = find_loc_id(location)
 
+
+                            agency_id = "Private/Unknown"
+                            try:
+                                seller_info = listing.locator('[data-sentry-element="SellerInfoWrapper"]')
+                                if seller_info.count() > 0:
+                                    raw_agency = seller_info.first.inner_text().strip()
+                                    if raw_agency:
+                                        agency_id = raw_agency.replace('\n', ' - ')
+                            except Exception:
+                                pass
+
                             display_p_m2 = f"{price_per_sqm:,.2f}".replace(",", " ") if price_per_sqm else "None"
-                            logger.info(f"[P:{page_num} - {index + 1}] 💰 {clean_price:,} PLN | 📏 {sqm}m² | 🚪 {rooms} P | 📍 ID: {matched_loc_id}")
+                            logger.info(f"[P:{page_num} - {index + 1}] 💰 {clean_price:,} PLN | 📏 {sqm}m² | 🚪 {rooms} P | 📍 ID: {matched_loc_id} | 🏢 Agency: {agency_id}")
 
                             payload = {
                                 "price_pln": clean_price, "url_link": full_url, "source_platform": "Otodom",
                                 "is_active": True, "trans_id": target['trans_id'], "type_id": target['type_id'],
-                                "sqm": sqm, "rooms": rooms, "price_per_sqm": price_per_sqm, "loc_id": matched_loc_id
+                                "sqm": sqm, "rooms": rooms, "price_per_sqm": price_per_sqm, "loc_id": matched_loc_id,
+                                "property_id": property_id,
+                                "agency_id": agency_id
                             }
 
                             db_status = save_to_supabase(payload)
@@ -228,6 +382,8 @@ def test_scraper():
                             if db_status in [200, 201, 204]:
                                 stats["added"] += 1
                                 SEEN_URLS.add(full_url)
+
+                                log_price_history(property_id, clean_price)
 
                                 is_bargain = False
                                 profit_margin = 0
@@ -314,6 +470,7 @@ def test_scraper():
 
                             elif db_status == 409:
                                 SEEN_URLS.add(full_url)
+                                check_and_update_price(property_id, clean_price, price_per_sqm, full_url, location, sqm, rooms, card_text, matched_loc_id, target, market_stats, agency_id)
 
                         except Exception: continue
 
@@ -332,9 +489,10 @@ def send_daily_report():
              f"🧐 <b>Ads Scanned:</b> {stats['scanned']}\n" \
              f"✅ <b>New Entries:</b> {stats['added']}\n" \
              f"🔥 <b>AI Deals Found:</b> {stats['bargains']}\n" \
+             f"📉 <b>Price Drops Detected:</b> {stats['price_drops']}\n" \
              f"━━━━━━━━━━━━━━━━━━━━"
     send_telegram(report)
-    for k in ["scanned", "added", "bargains"]: stats[k] = 0
+    for k in ["scanned", "added", "bargains", "price_drops"]: stats[k] = 0
 
 def start_endless_bot():
     send_telegram("🚀 <b>System Boot:</b> Warsaw AI PropTech Radar is LIVE!")
