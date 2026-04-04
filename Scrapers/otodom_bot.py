@@ -280,7 +280,7 @@ def test_scraper():
 
     market_stats = get_market_average()
 
-    logger.info("INFO: Bot is waking up in STEALTH MODE...")
+    logger.info("INFO: Bot is waking up in FORCE ALERT MODE...")
 
     with sync_playwright() as p:
         browser = p.chromium.launch(
@@ -334,10 +334,7 @@ def test_scraper():
                             prop_id_match = re.search(r'ID([^./?]+)', full_url)
                             property_id = prop_id_match.group(1) if prop_id_match else None
 
-                            if full_url in SEEN_URLS:
-                                logger.info(f"[{index + 1}] ⏭️ SKIPPED")
-                                continue
-
+                          
                             card_text = listing.inner_text()
                             location = listing.locator('[data-sentry-component="Address"]').first.inner_text()
                             raw_price = listing.locator('[data-sentry-element="MainPrice"]').first.inner_text()
@@ -346,15 +343,28 @@ def test_scraper():
                                 clean_price = int(re.sub(r'[^\d]', '', raw_price))
                             except: clean_price = 0
 
-                            sqm_match = re.search(r'(\d+(?:[.,]\d+)?)\s*m²', card_text)
-                            sqm = float(sqm_match.group(1).replace(',', '.')) if sqm_match else None
+                            sqm = None
+                            try:
+                                clean_text_for_area = re.sub(r'(\d)\s+(\d)', r'\1\2', card_text.replace('\xa0', ' ').lower())
+
+                                sqm_match = re.search(r'(\d+(?:[.,]\d+)?)\s*(?:m²|m2|m\s*kw|mkw)', clean_text_for_area)
+                                ha_match = re.search(r'(\d+(?:[.,]\d+)?)\s*ha\b', clean_text_for_area)
+                                ar_match = re.search(r'(\d+(?:[.,]\d+)?)\s*(?:ar|a)\b', clean_text_for_area)
+
+                                if sqm_match:
+                                    sqm = float(sqm_match.group(1).replace(',', '.'))
+                                elif ha_match:
+                                    sqm = float(ha_match.group(1).replace(',', '.')) * 10000
+                                elif ar_match:
+                                    sqm = float(ar_match.group(1).replace(',', '.')) * 100
+                            except Exception:
+                                pass
 
                             rooms_match = re.search(r'(\d+)\s*pok', card_text)
                             rooms = int(rooms_match.group(1)) if rooms_match else None
 
                             price_per_sqm = round(clean_price / sqm, 2) if sqm and sqm > 0 else None
                             matched_loc_id = find_loc_id(location)
-
 
                             agency_id = "Private/Unknown"
                             try:
@@ -381,96 +391,92 @@ def test_scraper():
 
                             if db_status in [200, 201, 204]:
                                 stats["added"] += 1
-                                SEEN_URLS.add(full_url)
-
                                 log_price_history(property_id, clean_price)
-
-                                is_bargain = False
-                                profit_margin = 0
-                                avg_sqm_price = 0
-                                deal_score = 0
-
-                                if matched_loc_id and price_per_sqm:
-                                    avg_sqm_price = market_stats.get((matched_loc_id, target['trans_id'], target['type_id']))
-
-                                    if avg_sqm_price and avg_sqm_price > 0:
-                                        if price_per_sqm <= (avg_sqm_price * 0.85):
-                                            if sqm and sqm >= 25 and clean_price > 100000:
-                                                is_bargain = True
-                                                profit_margin = round(((avg_sqm_price - price_per_sqm) / avg_sqm_price) * 100, 1)
-
-                                                profit_score = min(profit_margin * 3.33, 100)
-                                                size_score = 100 if sqm >= 50 else (75 if sqm >= 35 else 50)
-                                                room_score = 100 if (rooms and rooms >= 3) else (75 if (rooms and rooms == 2) else 50)
-                                                price_score = 100 if clean_price <= 600000 else (75 if clean_price <= 900000 else (50 if clean_price <= 1200000 else 25))
-
-                                                lower_card_text = card_text.lower()
-                                                keywords_negative = ["do remontu", "do odświeżenia", "ruina", "stary", "wymaga", "stan surowy"]
-                                                keywords_positive = ["po remoncie", "wysoki standard", "premium", "nowe", "luksusow", "zaprojektowane", "gotowe do"]
-
-                                                if target['type_id'] == 1:
-                                                    keywords_negative.append("bez windy")
-                                                    keywords_positive.extend(["balkon", "winda", "piwnica", "metro", "tramwaj", "kamienica", "blok"])
-                                                elif target['type_id'] == 2:
-                                                    keywords_positive.extend(["ogród", "garaż", "taras", "spokojna okolica"])
-                                                elif target['type_id'] == 3:
-                                                    keywords_positive.extend(["witryna", "klimatyzacja", "parking", "parter", "ciąg pieszych"])
-
-                                                base_text_score = 50
-                                                base_text_score += sum([15 for k in keywords_positive if k in lower_card_text])
-                                                base_text_score -= sum([20 for k in keywords_negative if k in lower_card_text])
-                                                text_score = max(0, min(base_text_score, 100))
-
-                                                deal_score = (
-                                                        (profit_score * 0.40) +
-                                                        (size_score * 0.20) +
-                                                        (room_score * 0.15) +
-                                                        (price_score * 0.15) +
-                                                        (text_score * 0.10)
-                                                )
-                                                deal_score = min(int(deal_score), 100)
-
-                                if is_bargain:
-                                    stats["bargains"] += 1
-                                    score_icon = "🔥" if deal_score >= 80 else ("⚡" if deal_score >= 60 else "📊")
-                                    est_monthly_rent = 0
-                                    roi_percent = 0
-                                    amortization_years = 0
-
-                                    if target['trans_id'] == 1 and matched_loc_id and sqm:
-                                        avg_rent_sqm = market_stats.get((matched_loc_id, 2, target['type_id']))
-                                        if avg_rent_sqm and avg_rent_sqm > 0 and clean_price > 0:
-                                            est_monthly_rent = sqm * avg_rent_sqm
-                                            annual_rent = est_monthly_rent * 12
-                                            net_annual = annual_rent * 0.8
-                                            if net_annual > 0:
-                                                roi_percent = round((net_annual / clean_price) * 100, 1)
-                                                amortization_years = round(clean_price / net_annual, 1)
-
-                                    alert = f"{score_icon} <b>INVESTMENT SCORE: {deal_score}/100</b>\n" \
-                                            f"━━━━━━━━━━━━━━━━━━━━\n" \
-                                            f"📍 <b>District:</b> {location}\n" \
-                                            f"🏢 <b>Category:</b> {target['label']}\n" \
-                                            f"💰 <b>Total Price:</b> {clean_price:,} PLN\n" \
-                                            f"📐 <b>Size:</b> {sqm} m² | 🚪 <b>Rooms:</b> {rooms}\n" \
-                                            f"💵 <b>Price/m²:</b> {price_per_sqm:,.0f} PLN\n" \
-                                            f"📈 <b>Market Avg:</b> {avg_sqm_price:,.0f} PLN\n" \
-                                            f"💎 <b>PROFIT MARGIN:</b> %{profit_margin}\n"
-
-                                    if roi_percent > 0:
-                                        alert += f"━━━━━━━━━━━━━━━━━━━━\n" \
-                                                 f"🔮 <b>AI PREDICTIONS (ROI)</b>\n" \
-                                                 f"💶 <b>Est. Monthly Rent:</b> ~{est_monthly_rent:,.0f} PLN\n" \
-                                                 f"📈 <b>Gross Yield (ROI):</b> %{roi_percent} / Year\n" \
-                                                 f"⏳ <b>Amortization:</b> {amortization_years} Years\n"
-
-                                    alert += f"━━━━━━━━━━━━━━━━━━━━\n" \
-                                             f"🔗 <a href='{full_url}'>View Listing</a>"
-                                    send_telegram(alert)
-
                             elif db_status == 409:
-                                SEEN_URLS.add(full_url)
                                 check_and_update_price(property_id, clean_price, price_per_sqm, full_url, location, sqm, rooms, card_text, matched_loc_id, target, market_stats, agency_id)
+
+                            is_bargain = False
+                            profit_margin = 0
+                            avg_sqm_price = 0
+                            deal_score = 0
+
+                            if matched_loc_id and price_per_sqm:
+                                avg_sqm_price = market_stats.get((matched_loc_id, target['trans_id'], target['type_id']))
+
+                                if avg_sqm_price and avg_sqm_price > 0:
+                                    if price_per_sqm <= (avg_sqm_price * 0.85):
+                                        if sqm and sqm >= 25 and clean_price > 100000:
+                                            is_bargain = True
+                                            profit_margin = round(((avg_sqm_price - price_per_sqm) / avg_sqm_price) * 100, 1)
+
+                                            profit_score = min(profit_margin * 3.33, 100)
+                                            size_score = 100 if sqm >= 50 else (75 if sqm >= 35 else 50)
+                                            room_score = 100 if (rooms and rooms >= 3) else (75 if (rooms and rooms == 2) else 50)
+                                            price_score = 100 if clean_price <= 600000 else (75 if clean_price <= 900000 else (50 if clean_price <= 1200000 else 25))
+
+                                            lower_card_text = card_text.lower()
+                                            keywords_negative = ["do remontu", "do odświeżenia", "ruina", "stary", "wymaga", "stan surowy"]
+                                            keywords_positive = ["po remoncie", "wysoki standard", "premium", "nowe", "luksusow", "zaprojektowane", "gotowe do"]
+
+                                            if target['type_id'] == 1:
+                                                keywords_negative.append("bez windy")
+                                                keywords_positive.extend(["balkon", "winda", "piwnica", "metro", "tramwaj", "kamienica", "blok"])
+                                            elif target['type_id'] == 2:
+                                                keywords_positive.extend(["ogród", "garaż", "taras", "spokojna okolica"])
+                                            elif target['type_id'] == 3:
+                                                keywords_positive.extend(["witryna", "klimatyzacja", "parking", "parter", "ciąg pieszych"])
+
+                                            base_text_score = 50
+                                            base_text_score += sum([15 for k in keywords_positive if k in lower_card_text])
+                                            base_text_score -= sum([20 for k in keywords_negative if k in lower_card_text])
+                                            text_score = max(0, min(base_text_score, 100))
+
+                                            deal_score = (
+                                                    (profit_score * 0.40) +
+                                                    (size_score * 0.20) +
+                                                    (room_score * 0.15) +
+                                                    (price_score * 0.15) +
+                                                    (text_score * 0.10)
+                                            )
+                                            deal_score = min(int(deal_score), 100)
+
+                            if is_bargain:
+                                stats["bargains"] += 1
+                                score_icon = "🔥" if deal_score >= 80 else ("⚡" if deal_score >= 60 else "📊")
+                                est_monthly_rent = 0
+                                roi_percent = 0
+                                amortization_years = 0
+
+                                if target['trans_id'] == 1 and matched_loc_id and sqm:
+                                    avg_rent_sqm = market_stats.get((matched_loc_id, 2, target['type_id']))
+                                    if avg_rent_sqm and avg_rent_sqm > 0 and clean_price > 0:
+                                        est_monthly_rent = sqm * avg_rent_sqm
+                                        annual_rent = est_monthly_rent * 12
+                                        net_annual = annual_rent * 0.8
+                                        if net_annual > 0:
+                                            roi_percent = round((net_annual / clean_price) * 100, 1)
+                                            amortization_years = round(clean_price / net_annual, 1)
+
+                                alert = f"{score_icon} <b>INVESTMENT SCORE: {deal_score}/100</b>\n" \
+                                        f"━━━━━━━━━━━━━━━━━━━━\n" \
+                                        f"📍 <b>District:</b> {location}\n" \
+                                        f"🏢 <b>Category:</b> {target['label']}\n" \
+                                        f"💰 <b>Total Price:</b> {clean_price:,} PLN\n" \
+                                        f"📐 <b>Size:</b> {sqm} m² | 🚪 <b>Rooms:</b> {rooms}\n" \
+                                        f"💵 <b>Price/m²:</b> {price_per_sqm:,.0f} PLN\n" \
+                                        f"📈 <b>Market Avg:</b> {avg_sqm_price:,.0f} PLN\n" \
+                                        f"💎 <b>PROFIT MARGIN:</b> %{profit_margin}\n"
+
+                                if roi_percent > 0:
+                                    alert += f"━━━━━━━━━━━━━━━━━━━━\n" \
+                                             f"🔮 <b>AI PREDICTIONS (ROI)</b>\n" \
+                                             f"💶 <b>Est. Monthly Rent:</b> ~{est_monthly_rent:,.0f} PLN\n" \
+                                             f"📈 <b>Gross Yield (ROI):</b> %{roi_percent} / Year\n" \
+                                             f"⏳ <b>Amortization:</b> {amortization_years} Years\n"
+
+                                alert += f"━━━━━━━━━━━━━━━━━━━━\n" \
+                                         f"🔗 <a href='{full_url}'>View Listing</a>"
+                                send_telegram(alert)
 
                         except Exception: continue
 
