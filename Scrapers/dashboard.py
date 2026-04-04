@@ -5,6 +5,7 @@ import os
 from pathlib import Path
 from dotenv import load_dotenv
 import io
+import plotly.express as px
 
 st.set_page_config(page_title="Warsaw AI PropTech", page_icon="🏢", layout="wide")
 
@@ -38,6 +39,27 @@ LOCATION_MAP = {
     9: 'Śródmieście', 10: 'Wawer', 11: 'Ochota', 12: 'Ursus',
     13: 'Praga-Północ', 14: 'Włochy', 15: 'Wilanów', 16: 'Wesoła',
     17: 'Żoliborz', 18: 'Rembertów'
+}
+
+DISTRICT_COORDS = {
+    'Mokotów': {'lat': 52.1939, 'lon': 21.0211},
+    'Praga-Południe': {'lat': 52.2393, 'lon': 21.0820},
+    'Ursynów': {'lat': 52.1410, 'lon': 21.0326},
+    'Wola': {'lat': 52.2361, 'lon': 20.9575},
+    'Białołęka': {'lat': 52.3168, 'lon': 20.9634},
+    'Bielany': {'lat': 52.2854, 'lon': 20.9416},
+    'Bemowo': {'lat': 52.2536, 'lon': 20.9080},
+    'Targówek': {'lat': 52.2778, 'lon': 21.0506},
+    'Śródmieście': {'lat': 52.2297, 'lon': 21.0122},
+    'Wawer': {'lat': 52.2036, 'lon': 21.1663},
+    'Ochota': {'lat': 52.2132, 'lon': 20.9786},
+    'Ursus': {'lat': 52.1933, 'lon': 20.8872},
+    'Praga-Północ': {'lat': 52.2644, 'lon': 21.0264},
+    'Włochy': {'lat': 52.1931, 'lon': 20.9388},
+    'Wilanów': {'lat': 52.1645, 'lon': 21.0837},
+    'Wesoła': {'lat': 52.2335, 'lon': 21.2163},
+    'Żoliborz': {'lat': 52.2683, 'lon': 20.9822},
+    'Rembertów': {'lat': 52.2600, 'lon': 21.1500}
 }
 
 PROPERTY_TYPES = {
@@ -184,7 +206,7 @@ if not df.empty:
 
     st.markdown("---")
 
-    tab1, tab2, tab3 = st.tabs(["📊 Market Overview", "🧠 ROI & Amortization Map", "🚨 Price Drop Radar"])
+    tab1, tab2, tab3, tab4 = st.tabs(["📊 Market Overview", "🗺️ Interactive Heatmap", "🧠 ROI & Amortization Map", "🚨 Price Drop Radar"])
 
     with tab1:
         st.subheader("📊 Market Overview")
@@ -204,6 +226,47 @@ if not df.empty:
         st.write(display_df.to_html(escape=False, index=False, classes='stTable'), unsafe_allow_html=True)
 
     with tab2:
+        st.subheader("🗺️ Geographic Market Heatmap")
+        st.markdown(f"Visual representation of **{prop_type_label}** {label.lower()} market in Warsaw. Bubble size represents the number of listings, color represents the average price per square meter.")
+
+        map_data = []
+        for district, group in filtered_df.groupby('district'):
+            if district in DISTRICT_COORDS:
+                avg_sqm = group['price_per_sqm'].mean()
+                if pd.notna(avg_sqm):
+                    map_data.append({
+                        'District': district,
+                        'Listings Count': len(group),
+                        'Avg Price/m²': round(avg_sqm, 0),
+                        'Avg Total Price': round(group['price_pln'].mean(), 0),
+                        'lat': DISTRICT_COORDS[district]['lat'],
+                        'lon': DISTRICT_COORDS[district]['lon']
+                    })
+
+        map_df = pd.DataFrame(map_data)
+
+        if not map_df.empty:
+            fig = px.scatter_mapbox(
+                map_df,
+                lat="lat",
+                lon="lon",
+                size="Listings Count",
+                color="Avg Price/m²",
+                hover_name="District",
+                hover_data={"lat": False, "lon": False, "Avg Total Price": True, "Listings Count": True},
+                color_continuous_scale=px.colors.sequential.Plasma,
+                size_max=50,
+                zoom=10,
+                mapbox_style="carto-positron",
+                title=f"Warsaw {prop_type_label} Density & Price Heatmap"
+            )
+            fig.update_layout(margin={"r":0,"t":40,"l":0,"b":0}, height=600)
+            st.plotly_chart(fig, use_container_width=True)
+        else:
+            st.warning("Insufficient geographic data to render the map based on your current filters.")
+
+
+    with tab3:
         st.subheader("🧠 ROI & Investment Analysis")
 
         if selected_trans_id == 1:
@@ -219,7 +282,7 @@ if not df.empty:
                     st.warning(f"⚠️ Live rental data is missing from the database. Using an estimated fallback average ({city_avg_rent} PLN/m²) to generate ROI projections.")
 
                 if roi_df.empty:
-                    st.info(f"ℹ️ **Data Note:** ROI calculation requires property size (m²). Listings in the **{prop_type_label}** category currently lack parsed m² data (common for lands/garages sold in ares/hectares), or this category is not suitable for standard yield metrics.")
+                    st.info(f"ℹ️ **Data Note:** ROI calculation requires property size (m²). Listings in the **{prop_type_label}** category currently lack parsed m² data, or this category is not suitable for standard yield metrics.")
                 else:
                     roi_df['avg_rent_sqm'] = roi_df['loc_id'].map(rent_averages).fillna(city_avg_rent)
 
