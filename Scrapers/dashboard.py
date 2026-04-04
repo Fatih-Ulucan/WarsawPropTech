@@ -296,6 +296,10 @@ if not df.empty:
                         roi_df['roi_percent'] = (roi_df['net_annual'] / roi_df['price_pln']) * 100
                         roi_df['amortization_years'] = roi_df['price_pln'] / roi_df['net_annual']
 
+                        
+                        roi_df = roi_df[roi_df['price_pln'] >= 50000]
+                        roi_df = roi_df[roi_df['roi_percent'] <= 30.0]
+
                         c1, c2 = st.columns(2)
                         with c1:
                             st.write("**Average ROI (%) by District**")
@@ -323,7 +327,7 @@ if not df.empty:
         else:
             st.info("ROI and Amortization metrics are only available for the 'Sale (Investment)' market mode. Please switch modes from the sidebar.")
 
-    with tab3:
+    with tab4:
         st.subheader("📉 Largest Price Drops")
         st.markdown("Listings where the seller recently reduced the asking price.")
 
