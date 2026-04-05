@@ -76,6 +76,13 @@ SCRAPE_TARGETS = [
     {"url_part": "wynajem/lokal", "trans_id": 2, "type_id": 3, "label": "🏬 COMMERCIAL RENT"}
 ]
 
+USER_AGENTS = [
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36",
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:123.0) Gecko/20100101 Firefox/123.0",
+    "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+]
+
 def analyze_description_with_ai(description):
     if not GEMINI_API_KEY:
         return "AI Analysis unavailable."
@@ -90,8 +97,9 @@ def analyze_description_with_ai(description):
         2. FLIP POTENTIAL: (High, Med, or Low?)
         3. MARKET SPEED: (Estimate: <7 days, 2 weeks, or 1+ month?)
         4. INVESTMENT STRATEGY: (Buy-to-let or Quick Flip?)
+        5. URGENCY: (Motivated seller? Mentions quick sale, leaving country, or open to negotiation?)
 
-        Provide 4 short bullet points in English. Max 500 chars.
+        Provide 5 short bullet points in English. Max 600 chars.
         Description: {description[:3500]}
         """
         response = model.generate_content(prompt)
@@ -263,10 +271,94 @@ def test_scraper():
             args=["--disable-blink-features=AutomationControlled"]
         )
         context = browser.new_context(
-            user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+            user_agent=random.choice(USER_AGENTS),
+            viewport={'width': random.randint(1366, 1920), 'height': random.randint(768, 1080)}
         )
-        page = context.new_page()
 
+        def flush_queue():
+            global AI_QUEUE
+            if not AI_QUEUE: return
+
+            logger.info(f"🧠 AI QUEUE FLUSHING: Processing {len(AI_QUEUE)} items to clear RAM...")
+            detail_page = context.new_page()
+            ai_calls_made = 0
+
+            for item in AI_QUEUE:
+                full_url = item['url']
+                safe_url = urllib.parse.quote(full_url)
+                headers = {"apikey": SUPABASE_KEY, "Authorization": f"Bearer {SUPABASE_KEY}", "Content-Type": "application/json"}
+
+                is_analyzed = False
+                alert_sent = False
+                try:
+                    check_url = f"{SUPABASE_URL.strip('/')}/rest/v1/listings?url_link=eq.{safe_url}&select=ai_analyzed,alert_sent"
+                    resp = requests.get(check_url, headers=headers, timeout=5)
+                    if resp.status_code == 200 and resp.json():
+                        is_analyzed = resp.json()[0].get('ai_analyzed', False)
+                        alert_sent = resp.json()[0].get('alert_sent', False)
+                except Exception: pass
+
+                ai_report = ""
+                contact_phone = "Not Available / Hidden"
+
+                if is_analyzed or alert_sent:
+                    logger.info(f"⏭️ Skipping {full_url} (Spam Protection: Already analyzed or sent!).")
+                    continue
+                else:
+                    description = ""
+                    try:
+                        detail_page.goto(full_url, timeout=30000, wait_until="domcontentloaded")
+
+                        try:
+                            phone_button = detail_page.locator(
+                                'button[data-cy="ad-contact-phone"], '
+                                'button:has-text("Pokaż numer"), '
+                                'button:has-text("Pokaż"), '
+                                'button:has-text("pokaż"), '
+                                'div[data-cy="ad-contact-phone"] button'
+                            ).first
+
+                            if phone_button.is_visible(timeout=5000):
+                                phone_button.click(force=True)
+                                logger.info(f"📞 Force-Clicked 'Show Number' button for: {full_url}")
+                                detail_page.wait_for_timeout(2000)
+                                try:
+                                    phone_links = detail_page.locator('a[href^="tel:"]').all()
+                                    if phone_links:
+                                        contact_phone = phone_links[0].inner_text().strip()
+                                except Exception:
+                                    logger.debug("⚠️ Phone API timeout/hidden.")
+
+                        except Exception as e:
+                            logger.debug(f"⚠️ Phone extraction failed: {e}")
+
+                        try:
+                            detail_page.wait_for_selector('[data-cy="adPageAdDescription"]', timeout=5000)
+                            description = detail_page.locator('[data-cy="adPageAdDescription"]').inner_text()
+                        except:
+                            description = detail_page.locator('body').inner_text()
+                    except Exception as e:
+                        logger.error(f"Failed to fetch full description: {e}")
+
+                    if description:
+                        ai_report = analyze_description_with_ai(description)
+                        ai_calls_made += 1
+
+                        try:
+                            patch_url = f"{SUPABASE_URL.strip('/')}/rest/v1/listings?url_link=eq.{safe_url}"
+                            requests.patch(patch_url, json={"ai_analyzed": True, "alert_sent": True}, headers=headers, timeout=5)
+                        except: pass
+                    else:
+                        ai_report = "AI Analysis unavailable (Could not fetch full description)."
+
+                alert = item['alert_template'].format(ai_report=ai_report, contact_phone=contact_phone)
+                send_telegram(alert)
+                time.sleep(4)
+
+            detail_page.close()
+            AI_QUEUE.clear()
+
+        page = context.new_page()
         logger.info("INFO: Navigating to Otodom...")
         page.goto("https://www.otodom.pl/pl/wyniki/sprzedaz/mieszkanie/mazowieckie/warszawa/warszawa/warszawa")
 
@@ -291,10 +383,10 @@ def test_scraper():
                         logger.info(f"🛑 END OF CATEGORY: {target['label']}")
                         break
 
-                    for _ in range(4):
+                    for _ in range(3):
                         scroll_amount = random.randint(300,800)
                         page.mouse.wheel(0, scroll_amount)
-                        time.sleep(random.uniform(0.5,1.5))
+                        time.sleep(random.uniform(0.2, 0.6))
 
                     all_listing = page.locator('[data-sentry-component="AdvertCard"]').all()
 
@@ -369,10 +461,18 @@ def test_scraper():
                             avg_sqm_price = 0
                             deal_score = 0
 
+                            lower_card_text = card_text.lower()
+                            flip_flag_text = ""
+                            if "remontu" in lower_card_text or "odświeżenia" in lower_card_text:
+                                flip_flag_text = "🛠️ <b>FLIP POTENTIAL DETECTED!</b>\n━━━━━━━━━━━━━━━━━━━━\n"
+
                             if matched_loc_id and price_per_sqm:
                                 avg_sqm_price = market_stats.get((matched_loc_id, target['trans_id'], target['type_id']))
                                 if avg_sqm_price and avg_sqm_price > 0:
-                                    if price_per_sqm <= (avg_sqm_price * 0.75):
+
+                                    threshold = 0.80 if target['trans_id'] == 1 else 0.70
+
+                                    if price_per_sqm <= (avg_sqm_price * threshold):
 
                                         if sqm and sqm >= 25 and clean_price > 100000:
                                             is_bargain = True
@@ -384,11 +484,14 @@ def test_scraper():
                                             price_score = 100 if clean_price <= 600000 else (75 if clean_price <= 900000 else 50)
 
                                             text_score = 50
-                                            lower_card_text = card_text.lower()
                                             if any(k in lower_card_text for k in ["remoncie", "standard", "nowe"]): text_score += 20
                                             if any(k in lower_card_text for k in ["remontu", "stary"]): text_score -= 20
 
-                                            deal_score = min(int((profit_score * 0.40) + (size_score * 0.20) + (room_score * 0.15) + (price_score * 0.15) + (text_score * 0.10)), 100)
+                                            urgency_bonus = 0
+                                            if any(k in lower_card_text for k in ["pilna", "natychmiast", "wyjazd", "okazja", "szybko"]):
+                                                urgency_bonus = 15
+
+                                            deal_score = min(int((profit_score * 0.40) + (size_score * 0.20) + (room_score * 0.15) + (price_score * 0.15) + (text_score * 0.10) + urgency_bonus), 100)
 
                             if is_bargain:
                                 stats["bargains"] += 1
@@ -396,13 +499,20 @@ def test_scraper():
 
                                 est_monthly_rent = 0
                                 roi_percent = 0
+                                true_profit = 0
+
                                 if target['trans_id'] == 1 and matched_loc_id and sqm:
                                     avg_rent_sqm = market_stats.get((matched_loc_id, 2, target['type_id']))
                                     if avg_rent_sqm and avg_rent_sqm > 0:
                                         est_monthly_rent = sqm * avg_rent_sqm
                                         roi_percent = round(((est_monthly_rent * 12 * 0.8) / clean_price) * 100, 1)
 
-                                alert_template = f"{score_icon} <b>INVESTMENT SCORE: {deal_score}/100</b>\n" \
+                                    renovation_cost = sqm * 1000 
+                                    market_value = avg_sqm_price * sqm
+                                    true_profit = market_value - clean_price - renovation_cost
+
+                                alert_template = f"{flip_flag_text}" \
+                                                 f"{score_icon} <b>INVESTMENT SCORE: {deal_score}/100</b>\n" \
                                                  f"━━━━━━━━━━━━━━━━━━━━\n" \
                                                  f"📍 <b>District:</b> {location}\n" \
                                                  f"🏢 <b>Category:</b> {target['label']}\n" \
@@ -410,15 +520,18 @@ def test_scraper():
                                                  f"📐 <b>Size:</b> {sqm} m² | 🚪 <b>Rooms:</b> {rooms}\n" \
                                                  f"📈 <b>Market Avg:</b> {avg_sqm_price:,.0f} PLN\n" \
                                                  f"💎 <b>PROFIT MARGIN:</b> %{profit_margin}\n" \
-                                                 f"━━━━━━━━━━━━━━━━━━━━\n" \
-                                                 f"🧠 <b>AI ANALYSIS (Gemini):</b>\n" \
-                                                 f"{{ai_report}}\n"
+                                                 f"━━━━━━━━━━━━━━━━━━━━\n"
+
+                                if target['trans_id'] == 1 and true_profit > 0:
+                                    alert_template += f"💸 <b>TRUE NET PROFIT:</b> ~{true_profit:,.0f} PLN (after reno)\n"
 
                                 if roi_percent > 0:
-                                    alert_template += f"━━━━━━━━━━━━━━━━━━━━\n" \
-                                                      f"🔮 <b>Est. ROI:</b> %{roi_percent} / Year\n"
+                                    alert_template += f"🔮 <b>Est. ROI:</b> %{roi_percent} / Year\n"
 
                                 alert_template += f"━━━━━━━━━━━━━━━━━━━━\n" \
+                                                  f"🧠 <b>AI ANALYSIS (Gemini):</b>\n" \
+                                                  f"{{ai_report}}\n" \
+                                                  f"━━━━━━━━━━━━━━━━━━━━\n" \
                                                   f"📞 <b>Contact:</b> {{contact_phone}}\n" \
                                                   f"🔗 <a href='{full_url}'>View Listing</a>"
 
@@ -428,91 +541,16 @@ def test_scraper():
                                 })
                                 logger.info(f"💎 DEAL DETECTED! Added to AI Queue: {full_url}")
 
+                            if len(AI_QUEUE) >= 100:
+                                flush_queue()
+
                         except Exception: continue
                 except Exception as e:
                     logger.error(f"ERROR: Page {page_num} failed: {e}")
-                time.sleep(random.uniform(3, 7))
 
-            if AI_QUEUE:
-                logger.info(f"🧠 AI QUEUE Processing {len(AI_QUEUE)} alerts for {target['label']} (Max 5 AI calls)...")
-                detail_page = context.new_page()
-                ai_calls_made = 0
+                time.sleep(random.uniform(1.5, 3.0))
 
-                for item in AI_QUEUE:
-                    full_url = item['url']
-                    safe_url = urllib.parse.quote(full_url)
-                    headers = {"apikey": SUPABASE_KEY, "Authorization": f"Bearer {SUPABASE_KEY}"}
-
-                    is_analyzed = False
-                    try:
-                        check_url = f"{SUPABASE_URL.strip('/')}/rest/v1/listings?url_link=eq.{safe_url}&select=ai_analyzed"
-                        resp = requests.get(check_url, headers=headers, timeout=5)
-                        if resp.status_code == 200 and resp.json():
-                            is_analyzed = resp.json()[0].get('ai_analyzed', False)
-                    except Exception: pass
-
-                    ai_report = ""
-                    contact_phone = "Not Available / Hidden"
-
-                    if is_analyzed:
-                        logger.info(f"⏭️ Skipping AI for {full_url} (Already analyzed).")
-                        ai_report = "AI skipped (Already analyzed previously)."
-                    elif ai_calls_made >= 5:
-                        ai_report = "AI skipped (Queue Limit Reached)."
-                    else:
-                        description = ""
-                        try:
-                            detail_page.goto(full_url, timeout=30000, wait_until="domcontentloaded")
-
-                            try:
-                                phone_button = detail_page.locator(
-                                    'button[data-cy="ad-contact-phone"], '
-                                    'button:has-text("Pokaż numer"), '
-                                    'button:has-text("Pokaż"), '
-                                    'button:has-text("pokaż"), '
-                                    'div[data-cy="ad-contact-phone"] button'
-                                ).first
-
-                                if phone_button.is_visible(timeout=5000):
-                                    phone_button.click(force=True)
-                                    logger.info(f"📞 Force-Clicked 'Show Number' button for: {full_url}")
-
-                                    try:
-                                        detail_page.wait_for_selector('a[href^="tel:"]', timeout=4000)
-                                        phone_link = detail_page.locator('a[href^="tel:"]').first
-                                        contact_phone = phone_link.inner_text().strip()
-                                    except Exception:
-                                        logger.debug("⚠️ Button clicked, but API did not return the number (or it's hidden).")
-
-                            except Exception as e:
-                                logger.debug(f"⚠️ Phone extraction failed: {e}")
-
-                            try:
-                                detail_page.wait_for_selector('[data-cy="adPageAdDescription"]', timeout=5000)
-                                description = detail_page.locator('[data-cy="adPageAdDescription"]').inner_text()
-                            except:
-                                description = detail_page.locator('body').inner_text() # Yedek plan
-                        except Exception as e:
-                            logger.error(f"Failed to fetch full description: {e}")
-
-                        if description:
-                            ai_report = analyze_description_with_ai(description)
-                            ai_calls_made += 1
-
-                            try:
-                                patch_url = f"{SUPABASE_URL.strip('/')}/rest/v1/listings?url_link=eq.{safe_url}"
-                                requests.patch(patch_url, json={"ai_analyzed": True}, headers=headers, timeout=5)
-                            except: pass
-                        else:
-                            ai_report = "AI Analysis unavailable (Could not fetch full description)."
-
-                    alert = item['alert_template'].format(ai_report=ai_report, contact_phone=contact_phone)
-                    send_telegram(alert)
-                    time.sleep(4)
-
-                detail_page.close()
-                AI_QUEUE.clear()
-
+        flush_queue()
         browser.close()
 
 def send_daily_report():
@@ -529,7 +567,7 @@ def send_daily_report():
     for k in ["scanned", "added", "bargains", "price_drops"]: stats[k] = 0
 
 def start_endless_bot():
-    send_telegram("🚀 <b>System Boot:</b> Warsaw AI PropTech Radar is LIVE with Queue & Sniper Mode!")
+    send_telegram("🚀 <b>System Boot:</b> Warsaw AI PropTech Radar is LIVE with Arbitrage Engine!")
     while True:
         try:
             test_scraper()
@@ -540,6 +578,6 @@ def start_endless_bot():
             time.sleep(60)
 
 if __name__ == "__main__":
-    logger.info("INFO: System initializing with AI Sniper Mode...")
-    send_telegram("🤖 <b>AI WAKING UP:</b> Connection is OK. Async Queue & Gemini Mode enabled.")
+    logger.info("INFO: System initializing with AI Arbitrage Engine...")
+    send_telegram("🤖 <b>AI WAKING UP:</b> Connection is OK. Anti-Bot & Arbitrage Engine enabled.")
     start_endless_bot()
