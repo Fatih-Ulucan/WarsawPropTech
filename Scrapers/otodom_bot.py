@@ -82,7 +82,7 @@ def analyze_description_with_ai(description):
 
     try:
         time.sleep(1)
-        model = genai.GenerativeModel('gemini-1.5-flash')
+        model = genai.GenerativeModel('models/gemini-2.5-flash')
 
         prompt = f"""
         You are a Warsaw Real Estate Investment Expert. Analyze this Polish description:
@@ -468,20 +468,24 @@ def test_scraper():
                                 phone_button = detail_page.locator(
                                     'button[data-cy="ad-contact-phone"], '
                                     'button:has-text("Pokaż numer"), '
+                                    'button:has-text("Pokaż"), '
                                     'button:has-text("pokaż"), '
-                                    '[aria-label="Pokaż numer telefonu"]'
+                                    'div[data-cy="ad-contact-phone"] button'
                                 ).first
 
-                                if phone_button.is_visible(timeout=3000):
-                                    phone_button.click()
-                                    logger.info(f"📞 Clicked 'Show Number' button for: {full_url}")
-                                    time.sleep(random.uniform(1.5, 2.5))
+                                if phone_button.is_visible(timeout=5000):
+                                    phone_button.click(force=True)
+                                    logger.info(f"📞 Force-Clicked 'Show Number' button for: {full_url}")
 
-                                    phone_link = detail_page.locator('a[href^="tel:"]').first
-                                    if phone_link.is_visible(timeout=3000):
+                                    try:
+                                        detail_page.wait_for_selector('a[href^="tel:"]', timeout=4000)
+                                        phone_link = detail_page.locator('a[href^="tel:"]').first
                                         contact_phone = phone_link.inner_text().strip()
+                                    except Exception:
+                                        logger.debug("⚠️ Button clicked, but API did not return the number (or it's hidden).")
+
                             except Exception as e:
-                                logger.debug(f"⚠️ Could not extract phone number: {e}")
+                                logger.debug(f"⚠️ Phone extraction failed: {e}")
 
                             try:
                                 detail_page.wait_for_selector('[data-cy="adPageAdDescription"]', timeout=5000)
@@ -504,9 +508,10 @@ def test_scraper():
 
                     alert = item['alert_template'].format(ai_report=ai_report, contact_phone=contact_phone)
                     send_telegram(alert)
+                    time.sleep(4)
 
                 detail_page.close()
-                AI_QUEUE.clear() 
+                AI_QUEUE.clear()
 
         browser.close()
 
