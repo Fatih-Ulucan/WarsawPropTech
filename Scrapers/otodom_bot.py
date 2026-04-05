@@ -55,6 +55,8 @@ market_stats_cache = {}
 
 stats = {"scanned": 0, "added": 0, "bargains": 0, "price_drops": 0, "start_time": datetime.now()}
 
+AI_QUEUE = []
+
 LOCATION_MAP = {
     'Mokotów': 1, 'Praga-Południe': 2, 'Ursynów': 3, 'Wola': 4,
     'Białołęka': 5, 'Bielany': 6, 'Bemowo': 7, 'Targówek': 8,
@@ -75,28 +77,29 @@ SCRAPE_TARGETS = [
 ]
 
 def analyze_description_with_ai(description):
-
     if not GEMINI_API_KEY:
-        return "AI Analysis unavailable (No Key)."
+        return "AI Analysis unavailable."
 
     try:
-        time.sleep(2)
-        model = genai.GenerativeModel('models/gemini-flash-lite-latest')
+        time.sleep(1)
+        model = genai.GenerativeModel('gemini-1.5-flash')
 
         prompt = f"""
-        Analyze this Polish real estate description. Provide 3 short bullet points in English:
-        1. Condition (Renovated? New? Needs work?)
-        2. Seller Motivation (Is it urgent? Any room for negotiation?)
-        3. Risks/Notes (Legal issues, lack of elevator, or noisy area?)
+        You are a Warsaw Real Estate Investment Expert. Analyze this Polish description:
+        1. CONDITION: (Renovated, New, or Needs Work?)
+        2. FLIP POTENTIAL: (High, Med, or Low?)
+        3. MARKET SPEED: (Estimate: <7 days, 2 weeks, or 1+ month?)
+        4. INVESTMENT STRATEGY: (Buy-to-let or Quick Flip?)
 
-        Description:
-        {description[:1500]}
+        Provide 4 short bullet points in English. Max 500 chars.
+        Description: {description[:3500]}
         """
         response = model.generate_content(prompt)
-        return response.text.strip()
+        text = response.text.strip()
+        return text[:600] if text else "AI summary unavailable."
     except Exception as e:
         logger.error(f"AI Error: {e}")
-        return "AI Analysis failed to generate for this listing."
+        return "AI Analysis failed."
 
 def normalize(text):
     return unicodedata.normalize('NFKD', text).encode('ascii', 'ignore').decode('utf-8').lower()
@@ -177,7 +180,7 @@ def log_price_history(property_id, price_pln):
     except: pass
 
 def check_and_update_price(property_id, current_price, price_per_sqm, full_url, location, sqm, rooms, card_text, matched_loc_id, target, market_stats, agency_id):
-    global stats
+    global stats, AI_QUEUE
     if not current_price: return
     clean_url = SUPABASE_URL.strip("/")
     safe_url = urllib.parse.quote(full_url)
@@ -219,25 +222,28 @@ def check_and_update_price(property_id, current_price, price_per_sqm, full_url, 
                             if avg_sqm_price and avg_sqm_price > 0:
                                 profit_margin = round(((avg_sqm_price - price_per_sqm) / avg_sqm_price) * 100, 1)
 
-                        ai_report = analyze_description_with_ai(card_text) if current_price < db_price else "AI skipped."
+                        alert_template = f"🚨 <b>PRICE DROP ALERT!</b> 🚨\n" \
+                                         f"━━━━━━━━━━━━━━━━━━━━\n" \
+                                         f"🔻 <b>Discount:</b> -{drop_amount:,} PLN\n" \
+                                         f"📉 <b>Old Price:</b> {db_price:,} PLN\n" \
+                                         f"━━━━━━━━━━━━━━━━━━━━\n" \
+                                         f"📍 <b>District:</b> {location}\n" \
+                                         f"💰 <b>Total Price:</b> {current_price:,} PLN\n" \
+                                         f"📐 <b>Size:</b> {sqm} m² | 🚪 <b>Rooms:</b> {rooms}\n" \
+                                         f"📈 <b>Margin vs Avg:</b> %{profit_margin}\n" \
+                                         f"━━━━━━━━━━━━━━━━━━━━\n" \
+                                         f"🧠 <b>AI ANALYSIS (Gemini):</b>\n" \
+                                         f"{{ai_report}}\n" \
+                                         f"━━━━━━━━━━━━━━━━━━━━\n" \
+                                         f"📞 <b>Contact:</b> {{contact_phone}}\n" \
+                                         f"🔗 <a href='{full_url}'>View Listing</a>"
 
-                        alert = f"🚨 <b>PRICE DROP ALERT!</b> 🚨\n" \
-                                f"━━━━━━━━━━━━━━━━━━━━\n" \
-                                f"🔻 <b>Discount:</b> -{drop_amount:,} PLN\n" \
-                                f"📉 <b>Old Price:</b> {db_price:,} PLN\n" \
-                                f"━━━━━━━━━━━━━━━━━━━━\n" \
-                                f"📍 <b>District:</b> {location}\n" \
-                                f"💰 <b>Total Price:</b> {current_price:,} PLN\n" \
-                                f"📐 <b>Size:</b> {sqm} m² | 🚪 <b>Rooms:</b> {rooms}\n" \
-                                f"📈 <b>Margin vs Avg:</b> %{profit_margin}\n" \
-                                f"━━━━━━━━━━━━━━━━━━━━\n" \
-                                f"🧠 <b>AI ANALYSIS (Gemini):</b>\n" \
-                                f"{ai_report}\n" \
-                                f"━━━━━━━━━━━━━━━━━━━━\n" \
-                                f"🔗 <a href='{full_url}'>View Listing</a>"
-
-                        send_telegram(alert)
-                        logger.info(f"🚨 PRICE DROP DETECTED: -{drop_amount} PLN for ID {property_id}")
+                        AI_QUEUE.append({
+                            'url': full_url,
+                            'alert_template': alert_template
+                        })
+                        logger.info(f"💎 DEAL DETECTED! Added to AI Queue: {full_url}")
+                        logger.info(f"🚨 PRICE DROP QUEUED: -{drop_amount} PLN for ID {property_id}")
 
                 if update_payload:
                     patch_url = f"{clean_url}/rest/v1/listings?id=eq.{row_id}"
@@ -246,8 +252,8 @@ def check_and_update_price(property_id, current_price, price_per_sqm, full_url, 
         logger.error(f"Price Update Check Error: {e}")
 
 def test_scraper():
-    global stats
-
+    global stats, AI_QUEUE
+    AI_QUEUE.clear()
     market_stats = get_market_average()
     logger.info("INFO: Bot is waking up in AI-POWERED SNIPER MODE...")
 
@@ -346,7 +352,8 @@ def test_scraper():
                                 "price_pln": clean_price, "url_link": full_url, "source_platform": "Otodom",
                                 "is_active": True, "trans_id": target['trans_id'], "type_id": target['type_id'],
                                 "sqm": sqm, "rooms": rooms, "price_per_sqm": price_per_sqm, "loc_id": matched_loc_id,
-                                "property_id": property_id, "agency_id": agency_id
+                                "property_id": property_id, "agency_id": agency_id,
+                                "ai_analyzed": False
                             }
 
                             db_status = save_to_supabase(payload)
@@ -366,6 +373,7 @@ def test_scraper():
                                 avg_sqm_price = market_stats.get((matched_loc_id, target['trans_id'], target['type_id']))
                                 if avg_sqm_price and avg_sqm_price > 0:
                                     if price_per_sqm <= (avg_sqm_price * 0.75):
+
                                         if sqm and sqm >= 25 and clean_price > 100000:
                                             is_bargain = True
                                             profit_margin = round(((avg_sqm_price - price_per_sqm) / avg_sqm_price) * 100, 1)
@@ -386,8 +394,6 @@ def test_scraper():
                                 stats["bargains"] += 1
                                 score_icon = "🔥" if deal_score >= 80 else ("⚡" if deal_score >= 60 else "📊")
 
-                                ai_report = analyze_description_with_ai(card_text)
-
                                 est_monthly_rent = 0
                                 roi_percent = 0
                                 if target['trans_id'] == 1 and matched_loc_id and sqm:
@@ -396,30 +402,112 @@ def test_scraper():
                                         est_monthly_rent = sqm * avg_rent_sqm
                                         roi_percent = round(((est_monthly_rent * 12 * 0.8) / clean_price) * 100, 1)
 
-                                alert = f"{score_icon} <b>INVESTMENT SCORE: {deal_score}/100</b>\n" \
-                                        f"━━━━━━━━━━━━━━━━━━━━\n" \
-                                        f"📍 <b>District:</b> {location}\n" \
-                                        f"🏢 <b>Category:</b> {target['label']}\n" \
-                                        f"💰 <b>Total Price:</b> {clean_price:,} PLN\n" \
-                                        f"📐 <b>Size:</b> {sqm} m² | 🚪 <b>Rooms:</b> {rooms}\n" \
-                                        f"📈 <b>Market Avg:</b> {avg_sqm_price:,.0f} PLN\n" \
-                                        f"💎 <b>PROFIT MARGIN:</b> %{profit_margin}\n" \
-                                        f"━━━━━━━━━━━━━━━━━━━━\n" \
-                                        f"🧠 <b>AI ANALYSIS (Gemini):</b>\n" \
-                                        f"{ai_report}\n"
+                                alert_template = f"{score_icon} <b>INVESTMENT SCORE: {deal_score}/100</b>\n" \
+                                                 f"━━━━━━━━━━━━━━━━━━━━\n" \
+                                                 f"📍 <b>District:</b> {location}\n" \
+                                                 f"🏢 <b>Category:</b> {target['label']}\n" \
+                                                 f"💰 <b>Total Price:</b> {clean_price:,} PLN\n" \
+                                                 f"📐 <b>Size:</b> {sqm} m² | 🚪 <b>Rooms:</b> {rooms}\n" \
+                                                 f"📈 <b>Market Avg:</b> {avg_sqm_price:,.0f} PLN\n" \
+                                                 f"💎 <b>PROFIT MARGIN:</b> %{profit_margin}\n" \
+                                                 f"━━━━━━━━━━━━━━━━━━━━\n" \
+                                                 f"🧠 <b>AI ANALYSIS (Gemini):</b>\n" \
+                                                 f"{{ai_report}}\n"
 
                                 if roi_percent > 0:
-                                    alert += f"━━━━━━━━━━━━━━━━━━━━\n" \
-                                             f"🔮 <b>Est. ROI:</b> %{roi_percent} / Year\n"
+                                    alert_template += f"━━━━━━━━━━━━━━━━━━━━\n" \
+                                                      f"🔮 <b>Est. ROI:</b> %{roi_percent} / Year\n"
 
-                                alert += f"━━━━━━━━━━━━━━━━━━━━\n" \
-                                         f"🔗 <a href='{full_url}'>View Listing</a>"
-                                send_telegram(alert)
+                                alert_template += f"━━━━━━━━━━━━━━━━━━━━\n" \
+                                                  f"📞 <b>Contact:</b> {{contact_phone}}\n" \
+                                                  f"🔗 <a href='{full_url}'>View Listing</a>"
+
+                                AI_QUEUE.append({
+                                    'url': full_url,
+                                    'alert_template': alert_template
+                                })
+                                logger.info(f"💎 DEAL DETECTED! Added to AI Queue: {full_url}")
 
                         except Exception: continue
                 except Exception as e:
                     logger.error(f"ERROR: Page {page_num} failed: {e}")
                 time.sleep(random.uniform(3, 7))
+
+            if AI_QUEUE:
+                logger.info(f"🧠 AI QUEUE Processing {len(AI_QUEUE)} alerts for {target['label']} (Max 5 AI calls)...")
+                detail_page = context.new_page()
+                ai_calls_made = 0
+
+                for item in AI_QUEUE:
+                    full_url = item['url']
+                    safe_url = urllib.parse.quote(full_url)
+                    headers = {"apikey": SUPABASE_KEY, "Authorization": f"Bearer {SUPABASE_KEY}"}
+
+                    is_analyzed = False
+                    try:
+                        check_url = f"{SUPABASE_URL.strip('/')}/rest/v1/listings?url_link=eq.{safe_url}&select=ai_analyzed"
+                        resp = requests.get(check_url, headers=headers, timeout=5)
+                        if resp.status_code == 200 and resp.json():
+                            is_analyzed = resp.json()[0].get('ai_analyzed', False)
+                    except Exception: pass
+
+                    ai_report = ""
+                    contact_phone = "Not Available / Hidden"
+
+                    if is_analyzed:
+                        logger.info(f"⏭️ Skipping AI for {full_url} (Already analyzed).")
+                        ai_report = "AI skipped (Already analyzed previously)."
+                    elif ai_calls_made >= 5:
+                        ai_report = "AI skipped (Queue Limit Reached)."
+                    else:
+                        description = ""
+                        try:
+                            detail_page.goto(full_url, timeout=30000, wait_until="domcontentloaded")
+
+                            try:
+                                phone_button = detail_page.locator(
+                                    'button[data-cy="ad-contact-phone"], '
+                                    'button:has-text("Pokaż numer"), '
+                                    'button:has-text("pokaż"), '
+                                    '[aria-label="Pokaż numer telefonu"]'
+                                ).first
+
+                                if phone_button.is_visible(timeout=3000):
+                                    phone_button.click()
+                                    logger.info(f"📞 Clicked 'Show Number' button for: {full_url}")
+                                    time.sleep(random.uniform(1.5, 2.5))
+
+                                    phone_link = detail_page.locator('a[href^="tel:"]').first
+                                    if phone_link.is_visible(timeout=3000):
+                                        contact_phone = phone_link.inner_text().strip()
+                            except Exception as e:
+                                logger.debug(f"⚠️ Could not extract phone number: {e}")
+
+                            try:
+                                detail_page.wait_for_selector('[data-cy="adPageAdDescription"]', timeout=5000)
+                                description = detail_page.locator('[data-cy="adPageAdDescription"]').inner_text()
+                            except:
+                                description = detail_page.locator('body').inner_text() # Yedek plan
+                        except Exception as e:
+                            logger.error(f"Failed to fetch full description: {e}")
+
+                        if description:
+                            ai_report = analyze_description_with_ai(description)
+                            ai_calls_made += 1
+
+                            try:
+                                patch_url = f"{SUPABASE_URL.strip('/')}/rest/v1/listings?url_link=eq.{safe_url}"
+                                requests.patch(patch_url, json={"ai_analyzed": True}, headers=headers, timeout=5)
+                            except: pass
+                        else:
+                            ai_report = "AI Analysis unavailable (Could not fetch full description)."
+
+                    alert = item['alert_template'].format(ai_report=ai_report, contact_phone=contact_phone)
+                    send_telegram(alert)
+
+                detail_page.close()
+                AI_QUEUE.clear() 
+
         browser.close()
 
 def send_daily_report():
@@ -436,7 +524,7 @@ def send_daily_report():
     for k in ["scanned", "added", "bargains", "price_drops"]: stats[k] = 0
 
 def start_endless_bot():
-    send_telegram("🚀 <b>System Boot:</b> Warsaw AI PropTech Radar is LIVE with Sniper AI Mode!")
+    send_telegram("🚀 <b>System Boot:</b> Warsaw AI PropTech Radar is LIVE with Queue & Sniper Mode!")
     while True:
         try:
             test_scraper()
@@ -448,5 +536,5 @@ def start_endless_bot():
 
 if __name__ == "__main__":
     logger.info("INFO: System initializing with AI Sniper Mode...")
-    send_telegram("🤖 <b>AI WAKING UP:</b> Connection is OK. Gemini Sniper Mode enabled.")
+    send_telegram("🤖 <b>AI WAKING UP:</b> Connection is OK. Async Queue & Gemini Mode enabled.")
     start_endless_bot()
