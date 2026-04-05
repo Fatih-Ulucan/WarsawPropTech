@@ -304,6 +304,9 @@ def test_scraper():
                 if is_analyzed or alert_sent:
                     logger.info(f"⏭️ Skipping {full_url} (Spam Protection: Already analyzed or sent!).")
                     continue
+                elif ai_calls_made >= 10:
+                    logger.warning("⚠️ AI Skip: Limit (10) reached for this batch. Saving API costs.")
+                    ai_report = "AI skipped (Batch Limit Reached to save costs)."
                 else:
                     description = ""
                     try:
@@ -507,7 +510,8 @@ def test_scraper():
                                         est_monthly_rent = sqm * avg_rent_sqm
                                         roi_percent = round(((est_monthly_rent * 12 * 0.8) / clean_price) * 100, 1)
 
-                                    renovation_cost = sqm * 1000 
+                                    reno_cost_per_sqm = random.randint(1500, 2500) if flip_flag_text else random.randint(500, 1000)
+                                    renovation_cost = sqm * reno_cost_per_sqm
                                     market_value = avg_sqm_price * sqm
                                     true_profit = market_value - clean_price - renovation_cost
 
@@ -544,7 +548,9 @@ def test_scraper():
                             if len(AI_QUEUE) >= 100:
                                 flush_queue()
 
-                        except Exception: continue
+                        except Exception as e:
+                            logger.debug(f"⚠️ Listing processing skipped: {e}")
+                            continue
                 except Exception as e:
                     logger.error(f"ERROR: Page {page_num} failed: {e}")
 
@@ -572,6 +578,12 @@ def start_endless_bot():
         try:
             test_scraper()
             send_daily_report()
+
+            if stats.get("scanned", 0) > 10000:
+                logger.warning("♻️ 10,000+ ads scanned. Hard restarting to prevent memory leak...")
+                send_telegram("♻️ <b>Auto-Restart:</b> Flushing RAM after 10k scans.")
+                os.execv(sys.executable, ['python'] + sys.argv)
+
             time.sleep(600)
         except Exception as e:
             logger.error(f"CRITICAL: {e}")
