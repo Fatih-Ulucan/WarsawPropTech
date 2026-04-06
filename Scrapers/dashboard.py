@@ -83,7 +83,6 @@ PROPERTY_TYPES = {
 }
 
 STRIPE_LINK = "https://buy.stripe.com/test_your_link_here"
-CALENDLY_LINK = "https://calendly.com/your-name/30min"
 
 @st.cache_data(ttl=300)
 def load_data(trans_id, type_id):
@@ -416,12 +415,24 @@ if not df.empty:
                         with col_a:
                             if not is_premium:
                                 st.warning("🔒 **PREMIUM LOCK:** Sale Price and exact links are hidden. Upgrade to snipe deals.")
-                                st.link_button("🔓 Unlock Premium (99 PLN/mo)", STRIPE_LINK, type="primary")
+                                st.link_button("🔓 Unlock Premium (199 PLN/mo)", STRIPE_LINK, type="primary")
                             else:
                                 st.success("👑 Premium Unlocked! Viewing all data.")
                         with col_b:
                             st.info("💡 Want a completely passive investment?")
-                            st.link_button("🤵 Let us negotiate & inspect for you (Book Call)", CALENDLY_LINK)
+                            with st.expander("🤵 Let us negotiate & inspect for you (Contact Us)"):
+                                with st.form(key="vip_form_roi"):
+                                    st.write("Leave your details and we will reach out with a VIP offer.")
+                                    c_name = st.text_input("Name & Surname")
+                                    c_email = st.text_input("Email Address")
+                                    c_phone = st.text_input("Phone Number")
+                                    c_message = st.text_area("Which property/district are you interested in?")
+                                    submitted = st.form_submit_button("Request VIP Consulting")
+                                    if submitted:
+                                        if c_name and c_email:
+                                            st.success("✅ Thank you! Your request has been sent. We will contact you shortly.")
+                                        else:
+                                            st.error("Please fill in your name and email.")
                         st.markdown("---")
 
                         roi_df = roi_df.sort_values(by='roi_percent', ascending=False)
@@ -471,12 +482,24 @@ if not df.empty:
                     with col_x:
                         if not is_premium:
                             st.warning("🔒 **PREMIUM LOCK:** Exact prices and links are hidden. Upgrade to access.")
-                            st.link_button("🔓 Unlock Premium (99 PLN/mo)", STRIPE_LINK, type="primary")
+                            st.link_button("🔓 Unlock Premium (199 PLN/mo)", STRIPE_LINK, type="primary")
                         else:
                             st.success("👑 Premium Unlocked! Viewing all data.")
                     with col_y:
                         st.info("💡 Want a completely passive investment?")
-                        st.link_button("🤵 Let us negotiate & inspect for you (Book Call)", CALENDLY_LINK)
+                        with st.expander("🤵 Let us negotiate & inspect for you (Contact Us)"):
+                            with st.form(key="vip_form_drops"):
+                                st.write("Leave your details and we will reach out with a VIP offer.")
+                                c_name = st.text_input("Name & Surname")
+                                c_email = st.text_input("Email Address")
+                                c_phone = st.text_input("Phone Number")
+                                c_message = st.text_area("Which property/district are you interested in?")
+                                submitted = st.form_submit_button("Request VIP Consulting")
+                                if submitted:
+                                    if c_name and c_email:
+                                        st.success("✅ Thank you! Your request has been sent. We will contact you shortly.")
+                                    else:
+                                        st.error("Please fill in your name and email.")
                     st.markdown("---")
 
                     radar_df = radar_df.sort_values(by='Discount (%)', ascending=False)
