@@ -18,10 +18,13 @@ except ImportError:
     try:
         from config import LOCATION_MAP
     except ImportError as e:
-        st.error(f"❌ CONFIG DOSYASI BULUNAMADI! Hata: {e}")
+        st.error(f"❌ CONFIG FILE NOT FOUND! Error: {e}")
         st.stop()
 
 st.set_page_config(page_title="Warsaw AI PropTech", page_icon="🏢", layout="wide")
+
+if 'user_tier' not in st.session_state:
+    st.session_state['user_tier'] = 'Free'
 
 base_dir = current_dir.parent
 env_path = base_dir / ".env"
@@ -78,6 +81,9 @@ PROPERTY_TYPES = {
     "WareHouse": 5,
     "Garage": 6
 }
+
+STRIPE_LINK = "https://buy.stripe.com/test_your_link_here"
+CALENDLY_LINK = "https://calendly.com/your-name/30min"
 
 @st.cache_data(ttl=300)
 def load_data(trans_id, type_id):
@@ -153,6 +159,39 @@ def load_price_history():
         return pd.DataFrame(all_history)
     except Exception: return pd.DataFrame()
 
+is_premium = st.session_state['user_tier'] == 'Premium'
+
+if is_premium:
+    badge_bg = "linear-gradient(135deg, #FFD700 0%, #FDB931 100%)"
+    badge_color = "#000000"
+    badge_icon = "👑"
+else:
+    badge_bg = "#374151"
+    badge_color = "#FFFFFF"
+    badge_icon = "🆓"
+
+st.markdown(
+    f"""
+    <div style="
+        position: fixed;
+        top: 60px;
+        right: 20px;
+        background: {badge_bg};
+        color: {badge_color};
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-weight: bold;
+        font-size: 14px;
+        z-index: 9999;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        border: 1px solid rgba(255,255,255,0.1);
+    ">
+        {badge_icon} {st.session_state['user_tier']} Plan
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+
 st.sidebar.header("🎯 System Controls")
 
 transaction_type = st.sidebar.selectbox(
@@ -174,6 +213,14 @@ st.sidebar.header("🔍 Quick Filters")
 
 with st.spinner(f'Fetching live {label} data for {prop_type_label}...'):
     df = load_data(selected_trans_id, selected_type_id)
+
+st.sidebar.markdown("---")
+st.sidebar.header("⚙️ Admin Testing")
+st.session_state['user_tier'] = st.sidebar.radio(
+    "Simulate User Tier:",
+    options=["Free", "Premium"],
+    index=0 if st.session_state['user_tier'] == 'Free' else 1
+)
 
 if not df.empty:
     max_val = int(df['price_pln'].max())
@@ -364,12 +411,30 @@ if not df.empty:
                             st.bar_chart(amort_chart, color="#FF9800")
 
                         st.subheader("🏆 Top ROI Opportunities")
+
+                        col_a, col_b = st.columns(2)
+                        with col_a:
+                            if not is_premium:
+                                st.warning("🔒 **PREMIUM LOCK:** Sale Price and exact links are hidden. Upgrade to snipe deals.")
+                                st.link_button("🔓 Unlock Premium (99 PLN/mo)", STRIPE_LINK, type="primary")
+                            else:
+                                st.success("👑 Premium Unlocked! Viewing all data.")
+                        with col_b:
+                            st.info("💡 Want a completely passive investment?")
+                            st.link_button("🤵 Let us negotiate & inspect for you (Book Call)", CALENDLY_LINK)
+                        st.markdown("---")
+
                         roi_df = roi_df.sort_values(by='roi_percent', ascending=False)
 
                         display_roi = roi_df[['district', 'price_pln', 'est_monthly_rent', 'roi_percent', 'amortization_years', 'url_link_html']].copy()
                         display_roi.columns = ['District', 'Sale Price (PLN)', 'Est. Rent (PLN/mo)', 'ROI (%)', 'Amortize (Yrs)', 'Link']
 
-                        display_roi['Sale Price (PLN)'] = display_roi['Sale Price (PLN)'].apply(lambda x: f"{x:,.0f} PLN")
+                        if not is_premium:
+                            display_roi['Sale Price (PLN)'] = "<span style='filter: blur(5px); user-select: none; opacity: 0.6;'>850,000 PLN</span> 🔒"
+                            display_roi['Link'] = "<span style='filter: blur(5px); user-select: none; opacity: 0.6;'>View Listing 🔗</span> 🔒"
+                        else:
+                            display_roi['Sale Price (PLN)'] = display_roi['Sale Price (PLN)'].apply(lambda x: f"{x:,.0f} PLN")
+
                         display_roi['Est. Rent (PLN/mo)'] = display_roi['Est. Rent (PLN/mo)'].apply(lambda x: f"{x:,.0f} PLN")
                         display_roi['ROI (%)'] = display_roi['ROI (%)'].apply(lambda x: f"<strong style='color: #4CAF50;'>{x:.1f}%</strong>")
                         display_roi['Amortize (Yrs)'] = display_roi['Amortize (Yrs)'].apply(lambda x: f"<strong>{x:.1f}</strong>")
@@ -402,15 +467,33 @@ if not df.empty:
                 radar_df = pd.merge(drops, filtered_df, on='property_id', how='inner')
 
                 if not radar_df.empty:
+                    col_x, col_y = st.columns(2)
+                    with col_x:
+                        if not is_premium:
+                            st.warning("🔒 **PREMIUM LOCK:** Exact prices and links are hidden. Upgrade to access.")
+                            st.link_button("🔓 Unlock Premium (99 PLN/mo)", STRIPE_LINK, type="primary")
+                        else:
+                            st.success("👑 Premium Unlocked! Viewing all data.")
+                    with col_y:
+                        st.info("💡 Want a completely passive investment?")
+                        st.link_button("🤵 Let us negotiate & inspect for you (Book Call)", CALENDLY_LINK)
+                    st.markdown("---")
+
                     radar_df = radar_df.sort_values(by='Discount (%)', ascending=False)
                     display_radar = radar_df[['district', 'Old Price', 'Current Price', 'Discount (PLN)', 'Discount (%)', 'price_per_sqm', 'url_link_html']].copy()
                     display_radar.columns = ['District', 'Old Price', 'Current Price', 'Discount (PLN)', 'Discount %', 'Price/m²', 'Link']
 
                     display_radar['Old Price'] = display_radar['Old Price'].apply(lambda x: f"<span style='text-decoration: line-through; color: gray;'>{x:,.0f} PLN</span>")
-                    display_radar['Current Price'] = display_radar['Current Price'].apply(lambda x: f"<strong style='color: #4CAF50;'>{x:,.0f} PLN</strong>")
-                    display_radar['Discount (PLN)'] = display_radar['Discount (PLN)'].apply(lambda x: f"-{x:,.0f} PLN")
-                    display_radar['Discount %'] = display_radar['Discount %'].apply(lambda x: f"<strong>-{x:.1f}%</strong>")
 
+                    if not is_premium:
+                        display_radar['Current Price'] = "<span style='filter: blur(5px); user-select: none; opacity: 0.6;'>850,000 PLN</span> 🔒"
+                        display_radar['Discount (PLN)'] = "<span style='filter: blur(5px); user-select: none; opacity: 0.6;'>-50,000 PLN</span> 🔒"
+                        display_radar['Link'] = "<span style='filter: blur(5px); user-select: none; opacity: 0.6;'>View Listing 🔗</span> 🔒"
+                    else:
+                        display_radar['Current Price'] = display_radar['Current Price'].apply(lambda x: f"<strong style='color: #4CAF50;'>{x:,.0f} PLN</strong>")
+                        display_radar['Discount (PLN)'] = display_radar['Discount (PLN)'].apply(lambda x: f"-{x:,.0f} PLN")
+
+                    display_radar['Discount %'] = display_radar['Discount %'].apply(lambda x: f"<strong>-{x:.1f}%</strong>")
                     display_radar['Price/m²'] = display_radar['Price/m²'].apply(lambda x: f"{x:,.0f} PLN" if pd.notna(x) else "N/A")
 
                     st.write(display_radar.to_html(escape=False, index=False, classes='stTable'), unsafe_allow_html=True)
