@@ -1,4 +1,5 @@
-﻿import requests
+﻿import os
+import requests
 import logging
 import time
 from datetime import datetime
@@ -13,7 +14,7 @@ class TelegramBot:
 
     def send_message(self, message, parse_mode="HTML"):
         """Sends a text message to the specified Telegram chat. (Exact logic from main)"""
-        
+
         payload = {
             "chat_id": self.chat_id,
             "text": message,
@@ -92,3 +93,38 @@ class TelegramBot:
                           f"🔗 <a href='{deal_data['full_url']}'>View Listing</a>"
 
         return alert_template
+
+def send_telegram_lead(name, email, phone, message, deal_type):
+    bot_token = os.getenv("TELEGRAM_TOKEN")
+    chat_id = os.getenv("TELEGRAM_CHAT_ID")
+
+    if not bot_token or not chat_id:
+        logger.error("❌ Missing TELEGRAM_BOT_TOKEN or TELEGRAM_CHAT_ID in environment variables.")
+        return False
+
+    text = f"🚨 <b>NEW VIP INVESTMENT LEAD!</b>\n\n" \
+           f"📌 <b>Target:</b> {deal_type}\n" \
+           f"👤 <b>Name:</b> {name}\n" \
+           f"📧 <b>Email:</b> {email}\n" \
+           f"📞 <b>Phone:</b> {phone}\n" \
+           f"💬 <b>Message:</b> {message}"
+
+    url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
+    payload = {
+        "chat_id": chat_id,
+        "text": text,
+        "parse_mode": "HTML"
+    }
+
+    try:
+        response = requests.post(url, json=payload, timeout=10)
+        if response.status_code == 200:
+            logger.info("✅ VIP LEAD NOTIFICATION SENT TO TELEGRAM!")
+            return True
+        else:
+            logger.error(f"❌ VIP LEAD TELEGRAM ERROR: {response.text}")
+            return False
+    except Exception as e:
+        logger.error(f"❌ VIP Lead Telegram Network Failed: {e}")
+        return False
+# 

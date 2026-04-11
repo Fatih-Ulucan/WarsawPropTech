@@ -20,6 +20,14 @@ except ImportError:
     except ImportError as e:
         st.error(f"❌ CONFIG FILE NOT FOUND! Error: {e}")
         st.stop()
+try:
+    from Scrapers.notifier import send_telegram_lead
+except ImportError:
+    try:
+        from notifier import send_telegram_lead
+    except ImportError as e:
+        st.error(f"❌ NOTIFIER MODULE NOT FOUND! Error: {e}")
+        st.stop()
 
 st.set_page_config(page_title="Warsaw AI PropTech", page_icon="🏢", layout="wide")
 
@@ -430,7 +438,12 @@ if not df.empty:
                                     submitted = st.form_submit_button("Request VIP Consulting")
                                     if submitted:
                                         if c_name and c_email:
-                                            st.success("✅ Thank you! Your request has been sent. We will contact you shortly.")
+                                            success = send_telegram_lead(c_name, c_email, c_phone, c_message, "High ROI Deal")
+                                            if success:
+                                                st.success("✅ Thank you! Your request has been sent. We will contact you shortly.")
+                                            else:
+                                                st.warning("⚠️ Request received, but couldn't sync with notification server. We will email you.")
+                                            # -------------------------------------
                                         else:
                                             st.error("Please fill in your name and email.")
                         st.markdown("---")
@@ -497,7 +510,12 @@ if not df.empty:
                                 submitted = st.form_submit_button("Request VIP Consulting")
                                 if submitted:
                                     if c_name and c_email:
-                                        st.success("✅ Thank you! Your request has been sent. We will contact you shortly.")
+                                        success = send_telegram_lead(c_name, c_email, c_phone, c_message, "Price Drop Alert")
+                                        if success:
+                                            st.success("✅ Thank you! Your request has been sent. We will contact you shortly.")
+                                        else:
+                                            st.warning("⚠️ Request received, but couldn't sync with notification server. We will email you.")
+                                        
                                     else:
                                         st.error("Please fill in your name and email.")
                     st.markdown("---")
