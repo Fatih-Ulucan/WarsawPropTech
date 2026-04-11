@@ -33,6 +33,10 @@ st.set_page_config(page_title="Warsaw AI PropTech", page_icon="🏢", layout="wi
 
 if 'user_tier' not in st.session_state:
     st.session_state['user_tier'] = 'Free'
+if 'logged_in' not in st.session_state:
+    st.session_state['logged_in'] = False
+if 'user_email' not in st.session_state:
+    st.session_state['user_email'] = ""
 
 base_dir = current_dir.parent
 env_path = base_dir / ".env"
@@ -57,6 +61,20 @@ if SUPABASE_URL and SUPABASE_KEY:
 else:
     st.error(f"❌ CRITICAL ERROR: Supabase keys are empty! Check your .env file content.")
     st.stop()
+
+def login_user(email, password):
+    url = f"{SUPABASE_URL.strip('/')}/auth/v1/token?grant_type=password"
+    headers = {"apikey": SUPABASE_KEY, "Content-Type": "application/json"}
+    payload = {"email": email, "password": password}
+    response = requests.post(url, headers=headers, json=payload)
+    return response
+
+def signup_user(email, password):
+    url = f"{SUPABASE_URL.strip('/')}/auth/v1/signup"
+    headers = {"apikey": SUPABASE_KEY, "Content-Type": "application/json"}
+    payload = {"email": email, "password": password}
+    response = requests.post(url, headers=headers, json=payload)
+    return response
 
 REVERSE_LOCATION_MAP = {v: k for k, v in LOCATION_MAP.items()}
 
@@ -165,6 +183,45 @@ def load_price_history():
         if not all_history: return pd.DataFrame()
         return pd.DataFrame(all_history)
     except Exception: return pd.DataFrame()
+
+
+if not st.session_state['logged_in']:
+    st.sidebar.header("🔐 Member Access")
+    auth_mode = st.sidebar.radio("Select Option", ["Login", "Sign Up"])
+
+    auth_email = st.sidebar.text_input("Email Address")
+    auth_password = st.sidebar.text_input("Password", type="password")
+
+    if auth_mode == "Login":
+        if st.sidebar.button("Login", use_container_width=True):
+            with st.spinner("Authenticating..."):
+                res = login_user(auth_email, auth_password)
+                if res.status_code == 200:
+                    st.session_state['logged_in'] = True
+                    st.session_state['user_email'] = auth_email
+                    st.session_state['user_tier'] = 'Free'
+                    st.rerun()
+                else:
+                    st.sidebar.error("❌ Invalid Email or Password.")
+    else:
+        if st.sidebar.button("Sign Up", use_container_width=True):
+            with st.spinner("Creating account..."):
+                res = signup_user(auth_email, auth_password)
+                if res.status_code == 200:
+                    st.sidebar.success("✅ Registration successful! You can now Login.")
+                else:
+                    error_msg = res.json().get('msg', 'Registration failed. Password must be at least 6 characters.')
+                    st.sidebar.error(f"❌ {error_msg}")
+else:
+    st.sidebar.success(f"👤 Logged in:\n{st.session_state['user_email']}")
+    if st.sidebar.button("Logout", use_container_width=True):
+        st.session_state['logged_in'] = False
+        st.session_state['user_email'] = ""
+        st.session_state['user_tier'] = 'Free'
+        st.rerun()
+
+st.sidebar.markdown("---")
+
 
 is_premium = st.session_state['user_tier'] == 'Premium'
 
@@ -427,23 +484,22 @@ if not df.empty:
                             else:
                                 st.success("👑 Premium Unlocked! Viewing all data.")
                         with col_b:
-                            st.info("💡 Want a completely passive investment?")
-                            with st.expander("🤵 Let us negotiate & inspect for you (Contact Us)"):
+                            st.info("💡 Curious about a specific property?")
+                            with st.expander("📄 Request Full Investment Dossier"):
                                 with st.form(key="vip_form_roi"):
-                                    st.write("Leave your details and we will reach out with a VIP offer.")
+                                    st.write("Enter your details to receive the unmasked address, seller contact, and AI analysis report.")
                                     c_name = st.text_input("Name & Surname")
-                                    c_email = st.text_input("Email Address")
+                                    c_email = st.text_input("Email Address", value=st.session_state.get('user_email', ''))
                                     c_phone = st.text_input("Phone Number")
-                                    c_message = st.text_area("Which property/district are you interested in?")
-                                    submitted = st.form_submit_button("Request VIP Consulting")
+                                    c_message = st.text_area("Which specific district/ROI deal are you inquiring about?")
+                                    submitted = st.form_submit_button("Request Data Dossier")
                                     if submitted:
                                         if c_name and c_email:
                                             success = send_telegram_lead(c_name, c_email, c_phone, c_message, "High ROI Deal")
                                             if success:
-                                                st.success("✅ Thank you! Your request has been sent. We will contact you shortly.")
+                                                st.success("✅ Thank you! Your request has been sent. Our team will contact you shortly.")
                                             else:
                                                 st.warning("⚠️ Request received, but couldn't sync with notification server. We will email you.")
-                                            # -------------------------------------
                                         else:
                                             st.error("Please fill in your name and email.")
                         st.markdown("---")
@@ -499,23 +555,22 @@ if not df.empty:
                         else:
                             st.success("👑 Premium Unlocked! Viewing all data.")
                     with col_y:
-                        st.info("💡 Want a completely passive investment?")
-                        with st.expander("🤵 Let us negotiate & inspect for you (Contact Us)"):
+                        st.info("💡 Curious about a specific property?")
+                        with st.expander("📄 Request Full Investment Dossier"):
                             with st.form(key="vip_form_drops"):
-                                st.write("Leave your details and we will reach out with a VIP offer.")
+                                st.write("Enter your details to receive the unmasked address, seller contact, and AI analysis report.")
                                 c_name = st.text_input("Name & Surname")
-                                c_email = st.text_input("Email Address")
+                                c_email = st.text_input("Email Address", value=st.session_state.get('user_email', ''))
                                 c_phone = st.text_input("Phone Number")
-                                c_message = st.text_area("Which property/district are you interested in?")
-                                submitted = st.form_submit_button("Request VIP Consulting")
+                                c_message = st.text_area("Which specific district/Price Drop deal are you inquiring about?")
+                                submitted = st.form_submit_button("Request Data Dossier")
                                 if submitted:
                                     if c_name and c_email:
                                         success = send_telegram_lead(c_name, c_email, c_phone, c_message, "Price Drop Alert")
                                         if success:
-                                            st.success("✅ Thank you! Your request has been sent. We will contact you shortly.")
+                                            st.success("✅ Thank you! Your request has been sent. Our team will contact you shortly.")
                                         else:
                                             st.warning("⚠️ Request received, but couldn't sync with notification server. We will email you.")
-                                        
                                     else:
                                         st.error("Please fill in your name and email.")
                     st.markdown("---")
