@@ -372,7 +372,13 @@ if not df.empty:
         """)
     st.markdown("---")
 
-    tab1, tab2, tab3, tab4 = st.tabs(["📊 Market Overview", "🗺️ Interactive Heatmap", "🧠 ROI & Amortization Map", "🚨 Price Drop Radar"])
+    tab1, tab2, tab3, tab4, tab5 = st.tabs([
+        "📊 Market Overview",
+        "🗺️ Interactive Heatmap",
+        "🧠 ROI & Amortization Map",
+        "🚨 Price Drop Radar",
+        "🧮 Investment Calculators"
+    ])
 
     with tab1:
         st.subheader("📊 Market Overview")
@@ -598,5 +604,66 @@ if not df.empty:
             else:
                 st.info("No price drop history available yet, or bot is still gathering initial data.")
 
+    with tab5:
+        st.subheader("🧮 Interactive Investment Calculators (Warsaw Market Specs)")
+        st.markdown("Simulate your financial scenarios and estimate real cash flow using current local market rates.")
+
+        calc_col1, calc_col2 = st.columns(2)
+
+        with calc_col1:
+            st.markdown("### 🏦 Mortgage Calculator")
+            prop_price = st.number_input("Property Price (PLN)", min_value=100000, value=800000, step=10000)
+            down_payment_pct = st.slider("Down Payment (%)", 0, 100, 20, help="20% is the standard minimum for investment mortgages in Poland.")
+            interest_rate = st.slider("Annual Interest Rate (%)", 0.0, 15.0, 7.2, 0.1, help="Current average Polish mortgage rate (WIBOR + margin).")
+            loan_term = st.selectbox("Loan Term (Years)", [10, 15, 20, 25, 30], index=4)
+
+            down_payment = prop_price * (down_payment_pct / 100)
+            principal = prop_price - down_payment
+
+            if principal > 0 and interest_rate > 0:
+                monthly_interest = (interest_rate / 100) / 12
+                num_payments = loan_term * 12
+                monthly_payment = principal * (monthly_interest * (1 + monthly_interest)**num_payments) / ((1 + monthly_interest)**num_payments - 1)
+            elif principal > 0 and interest_rate == 0:
+                monthly_payment = principal / (loan_term * 12)
+            else:
+                monthly_payment = 0
+
+            st.info(f"**Required Down Payment:** {down_payment:,.0f} PLN")
+            st.success(f"**Estimated Monthly Installment:** {monthly_payment:,.0f} PLN")
+
+        with calc_col2:
+            st.markdown("### 🛠️ Flipping (Renovation) Estimator")
+            prop_sqm = st.number_input("Property Size (m²)", min_value=10, max_value=500, value=50)
+            reno_level = st.radio("Renovation Quality (Warsaw Est.)", [
+                "Economy Refresh (~1,800 PLN/m²)",
+                "Standard Turn-key (~3,000 PLN/m²)",
+                "Premium/High-end (~4,500 PLN/m²)"
+            ])
+
+            if "Economy" in reno_level:
+                reno_cost_sqm = 1800
+            elif "Standard" in reno_level:
+                reno_cost_sqm = 3000
+            else:
+                reno_cost_sqm = 4500
+
+            total_reno_cost = prop_sqm * reno_cost_sqm
+            st.warning(f"**Estimated Total Renovation Cost:** {total_reno_cost:,.0f} PLN")
+
+            st.markdown("---")
+            st.markdown("### 💸 Net Cash Flow Analysis")
+            est_rent = st.number_input("Estimated Monthly Rent Income (PLN)", value=4000, step=100)
+            hoa_fees = st.number_input("HOA / Czynsz (PLN)", value=700, step=50, help="Average Czynsz in Warsaw for a 50m2 apartment.")
+            tax_rate = st.slider("Rental Tax Rate (%)", 0.0, 20.0, 8.5, 0.5, help="8.5% is the standard Ryczałt flat tax for rental income in Poland.")
+
+            tax_amount = est_rent * (tax_rate / 100)
+            net_cash_flow = est_rent - monthly_payment - hoa_fees - tax_amount
+
+            if net_cash_flow >= 0:
+                st.success(f"**Net Monthly Cash Flow:** +{net_cash_flow:,.0f} PLN 🤑")
+            else:
+                st.error(f"**Net Monthly Cash Flow:** {net_cash_flow:,.0f} PLN 🩸 (Negative)")
+ 
 else:
     st.info(f"There are currently no active {label.lower()} listings for {prop_type_label} in the system.")
