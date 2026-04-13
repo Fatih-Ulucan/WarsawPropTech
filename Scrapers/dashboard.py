@@ -76,6 +76,46 @@ def signup_user(email, password):
     response = requests.post(url, headers=headers, json=payload)
     return response
 
+def toggle_favorite(email, property_id, is_adding):
+    url = f"{SUPABASE_URL.strip('/')}/rest/v1/favorites"
+    headers = {
+        "apikey": SUPABASE_KEY,
+        "Authorization": f"Bearer {SUPABASE_KEY}",
+        "Content-Type": "application/json",
+        "Prefer": "return=minimal"
+    }
+    try:
+        if is_adding:
+            payload = {"user_email": email, "property_id": int(property_id)}
+            requests.post(url, headers=headers, json=payload, timeout=10)
+        else:
+            requests.delete(f"{url}?user_email=eq.{email}&property_id=eq.{int(property_id)}", headers=headers, timeout=10)
+    except Exception as e:
+        pass
+
+def get_user_favorites(email):
+    url = f"{SUPABASE_URL.strip('/')}/rest/v1/favorites?user_email=eq.{email}&select=property_id"
+    headers = {
+        "apikey": SUPABASE_KEY,
+        "Authorization": f"Bearer {SUPABASE_KEY}"
+    }
+    try:
+        res = requests.get(url, headers=headers, timeout=10)
+        if res.status_code == 200:
+            return [item['property_id'] for item in res.json()]
+    except Exception:
+        return []
+    return []
+
+def process_favorite_edits(edited_df, original_df, email):
+    for i, row in edited_df.iterrows():
+        property_id = row['property_id']
+        current_status = row['❤️ Track']
+        original_status = original_df.loc[i, '❤️ Track']
+
+        if current_status != original_status:
+            toggle_favorite(email, property_id, current_status)
+
 REVERSE_LOCATION_MAP = {v: k for k, v in LOCATION_MAP.items()}
 
 DISTRICT_COORDS = {
@@ -148,7 +188,12 @@ def load_data(trans_id, type_id):
         df['price_per_sqm'] = pd.to_numeric(df['price_per_sqm'], errors='coerce')
 
         df = df.dropna(subset=['price_pln'])
-        df['url_link_html'] = df['url_link'].apply(lambda x: f'<a href="{x}" target="_blank" style="color:#1E90FF; font-weight:bold;">View Listing 🔗</a>')
+
+        # --- REKLAM / SIFIR FIYAT FILTRESI EKLENDI ---
+        df = df[df['price_pln'] > 0]
+        # ---------------------------------------------
+
+        df['url_link'] = df['url_link'].apply(lambda x: f"{x}")
         return df
     except Exception:
         return pd.DataFrame()
@@ -372,12 +417,17 @@ if not df.empty:
         """)
     st.markdown("---")
 
-    tab1, tab2, tab3, tab4, tab5 = st.tabs([
+    user_fav_ids = []
+    if st.session_state['logged_in']:
+        user_fav_ids = get_user_favorites(st.session_state['user_email'])
+
+    tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([
         "📊 Market Overview",
         "🗺️ Interactive Heatmap",
         "🧠 ROI & Amortization Map",
         "🚨 Price Drop Radar",
-        "🧮 Investment Calculators"
+        "🧮 Investment Calculators",
+        "⭐ My Favorites"
     ])
 
     with tab1:
@@ -393,9 +443,38 @@ if not df.empty:
                 st.info("No price/m² data available for charts.")
 
         st.subheader(f"📋 Current {label} Listings")
-        display_df = filtered_df[['district', 'price_pln', 'sqm', 'rooms', 'price_per_sqm', 'url_link_html']].copy()
-        display_df.columns = ['District', 'Price (PLN)', 'm²', 'Rooms', 'Price/m²', 'Otodom Link']
-        st.write(display_df.to_html(escape=False, index=False, classes='stTable'), unsafe_allow_html=True)
+        display_df = filtered_df[['property_id', 'district', 'price_pln', 'sqm', 'rooms', 'price_per_sqm', 'url_link']].copy()
+
+        if st.session_state['logged_in']:
+            display_df['❤️ Track'] = display_df['property_id'].isin(user_fav_ids)
+            cols = ['❤️ Track', 'district', 'price_pln', 'sqm', 'rooms', 'price_per_sqm', 'url_link', 'property_id']
+        else:
+            cols = ['district', 'price_pln', 'sqm', 'rooms', 'price_per_sqm', 'url_link', 'property_id']
+
+        display_df = display_df[cols]
+
+        column_config = {
+            "property_id": None,
+            "district": "District",
+            "price_pln": st.column_config.NumberColumn("Price (PLN)", format="%.0f PLN"),
+            "sqm": st.column_config.NumberColumn("m²", format="%.0f"),
+            "rooms": "Rooms",
+            "price_per_sqm": st.column_config.NumberColumn("Price/m²", format="%.0f PLN"),
+            "url_link": st.column_config.LinkColumn("Listing Link", display_text="View 🔗")
+        }
+
+        if st.session_state['logged_in']:
+            edited_df = st.data_editor(
+                display_df,
+                column_config=column_config,
+                hide_index=True,
+                use_container_width=True,
+                disabled=["district", "price_pln", "sqm", "rooms", "price_per_sqm", "url_link"]
+            )
+            process_favorite_edits(edited_df, display_df, st.session_state['user_email'])
+        else:
+            st.dataframe(display_df, column_config=column_config, hide_index=True, use_container_width=True)
+            st.info("💡 **Log in to track properties and receive price drop alerts.**")
 
     with tab2:
         st.subheader("🗺️ Geographic Market Heatmap")
@@ -512,20 +591,42 @@ if not df.empty:
 
                         roi_df = roi_df.sort_values(by='roi_percent', ascending=False)
 
-                        display_roi = roi_df[['district', 'price_pln', 'est_monthly_rent', 'roi_percent', 'amortization_years', 'url_link_html']].copy()
-                        display_roi.columns = ['District', 'Sale Price (PLN)', 'Est. Rent (PLN/mo)', 'ROI (%)', 'Amortize (Yrs)', 'Link']
+                        display_roi = roi_df[['property_id', 'district', 'price_pln', 'est_monthly_rent', 'roi_percent', 'amortization_years', 'url_link']].copy()
 
                         if not is_premium:
-                            display_roi['Sale Price (PLN)'] = "<span style='filter: blur(5px); user-select: none; opacity: 0.6;'>850,000 PLN</span> 🔒"
-                            display_roi['Link'] = "<span style='filter: blur(5px); user-select: none; opacity: 0.6;'>View Listing 🔗</span> 🔒"
+                            display_roi['price_pln'] = "🔒 Locked"
+                            display_roi['url_link'] = "🔒 Locked"
+
+                        if st.session_state['logged_in']:
+                            display_roi['❤️ Track'] = display_roi['property_id'].isin(user_fav_ids)
+                            cols_roi = ['❤️ Track', 'district', 'price_pln', 'est_monthly_rent', 'roi_percent', 'amortization_years', 'url_link', 'property_id']
                         else:
-                            display_roi['Sale Price (PLN)'] = display_roi['Sale Price (PLN)'].apply(lambda x: f"{x:,.0f} PLN")
+                            cols_roi = ['district', 'price_pln', 'est_monthly_rent', 'roi_percent', 'amortization_years', 'url_link', 'property_id']
 
-                        display_roi['Est. Rent (PLN/mo)'] = display_roi['Est. Rent (PLN/mo)'].apply(lambda x: f"{x:,.0f} PLN")
-                        display_roi['ROI (%)'] = display_roi['ROI (%)'].apply(lambda x: f"<strong style='color: #4CAF50;'>{x:.1f}%</strong>")
-                        display_roi['Amortize (Yrs)'] = display_roi['Amortize (Yrs)'].apply(lambda x: f"<strong>{x:.1f}</strong>")
+                        display_roi = display_roi[cols_roi]
 
-                        st.write(display_roi.head(50).to_html(escape=False, index=False, classes='stTable'), unsafe_allow_html=True)
+                        col_conf_roi = {
+                            "property_id": None,
+                            "district": "District",
+                            "price_pln": st.column_config.NumberColumn("Sale Price (PLN)", format="%.0f PLN") if is_premium else st.column_config.TextColumn("Sale Price"),
+                            "est_monthly_rent": st.column_config.NumberColumn("Est. Rent/mo", format="%.0f PLN"),
+                            "roi_percent": st.column_config.NumberColumn("ROI (%)", format="%.1f%%"),
+                            "amortization_years": st.column_config.NumberColumn("Amortize (Yrs)", format="%.1f"),
+                            "url_link": st.column_config.LinkColumn("Link", display_text="View 🔗") if is_premium else st.column_config.TextColumn("Link")
+                        }
+
+                        if st.session_state['logged_in']:
+                            edited_roi = st.data_editor(
+                                display_roi.head(50),
+                                column_config=col_conf_roi,
+                                hide_index=True,
+                                use_container_width=True,
+                                disabled=["district", "price_pln", "est_monthly_rent", "roi_percent", "amortization_years", "url_link"]
+                            )
+                            process_favorite_edits(edited_roi, display_roi.head(50), st.session_state['user_email'])
+                        else:
+                            st.dataframe(display_roi.head(50), column_config=col_conf_roi, hide_index=True, use_container_width=True)
+
                     else:
                         st.info("Cannot calculate ROI metrics: Prices or estimated yields are mathematically invalid for the current selection.")
         else:
@@ -582,23 +683,44 @@ if not df.empty:
                     st.markdown("---")
 
                     radar_df = radar_df.sort_values(by='Discount (%)', ascending=False)
-                    display_radar = radar_df[['district', 'Old Price', 'Current Price', 'Discount (PLN)', 'Discount (%)', 'price_per_sqm', 'url_link_html']].copy()
-                    display_radar.columns = ['District', 'Old Price', 'Current Price', 'Discount (PLN)', 'Discount %', 'Price/m²', 'Link']
-
-                    display_radar['Old Price'] = display_radar['Old Price'].apply(lambda x: f"<span style='text-decoration: line-through; color: gray;'>{x:,.0f} PLN</span>")
+                    display_radar = radar_df[['property_id', 'district', 'Old Price', 'Current Price', 'Discount (PLN)', 'Discount (%)', 'price_per_sqm', 'url_link']].copy()
 
                     if not is_premium:
-                        display_radar['Current Price'] = "<span style='filter: blur(5px); user-select: none; opacity: 0.6;'>850,000 PLN</span> 🔒"
-                        display_radar['Discount (PLN)'] = "<span style='filter: blur(5px); user-select: none; opacity: 0.6;'>-50,000 PLN</span> 🔒"
-                        display_radar['Link'] = "<span style='filter: blur(5px); user-select: none; opacity: 0.6;'>View Listing 🔗</span> 🔒"
+                        display_radar['Current Price'] = "🔒 Locked"
+                        display_radar['Discount (PLN)'] = "🔒 Locked"
+                        display_radar['url_link'] = "🔒 Locked"
+
+                    if st.session_state['logged_in']:
+                        display_radar['❤️ Track'] = display_radar['property_id'].isin(user_fav_ids)
+                        cols_radar = ['❤️ Track', 'district', 'Old Price', 'Current Price', 'Discount (PLN)', 'Discount (%)', 'price_per_sqm', 'url_link', 'property_id']
                     else:
-                        display_radar['Current Price'] = display_radar['Current Price'].apply(lambda x: f"<strong style='color: #4CAF50;'>{x:,.0f} PLN</strong>")
-                        display_radar['Discount (PLN)'] = display_radar['Discount (PLN)'].apply(lambda x: f"-{x:,.0f} PLN")
+                        cols_radar = ['district', 'Old Price', 'Current Price', 'Discount (PLN)', 'Discount (%)', 'price_per_sqm', 'url_link', 'property_id']
 
-                    display_radar['Discount %'] = display_radar['Discount %'].apply(lambda x: f"<strong>-{x:.1f}%</strong>")
-                    display_radar['Price/m²'] = display_radar['Price/m²'].apply(lambda x: f"{x:,.0f} PLN" if pd.notna(x) else "N/A")
+                    display_radar = display_radar[cols_radar]
 
-                    st.write(display_radar.to_html(escape=False, index=False, classes='stTable'), unsafe_allow_html=True)
+                    col_conf_radar = {
+                        "property_id": None,
+                        "district": "District",
+                        "Old Price": st.column_config.NumberColumn("Old Price", format="%.0f PLN"),
+                        "Current Price": st.column_config.NumberColumn("Current Price", format="%.0f PLN") if is_premium else st.column_config.TextColumn("Current Price"),
+                        "Discount (PLN)": st.column_config.NumberColumn("Discount", format="-%.0f PLN") if is_premium else st.column_config.TextColumn("Discount"),
+                        "Discount (%)": st.column_config.NumberColumn("Discount %", format="-%.1f%%"),
+                        "price_per_sqm": st.column_config.NumberColumn("Price/m²", format="%.0f PLN"),
+                        "url_link": st.column_config.LinkColumn("Link", display_text="View 🔗") if is_premium else st.column_config.TextColumn("Link")
+                    }
+
+                    if st.session_state['logged_in']:
+                        edited_radar = st.data_editor(
+                            display_radar,
+                            column_config=col_conf_radar,
+                            hide_index=True,
+                            use_container_width=True,
+                            disabled=["district", "Old Price", "Current Price", "Discount (PLN)", "Discount (%)", "price_per_sqm", "url_link"]
+                        )
+                        process_favorite_edits(edited_radar, display_radar, st.session_state['user_email'])
+                    else:
+                        st.dataframe(display_radar, column_config=col_conf_radar, hide_index=True, use_container_width=True)
+
                 else:
                     st.info("No recent price drops found in the current selection. Sellers are holding firm!")
             else:
@@ -664,6 +786,73 @@ if not df.empty:
                 st.success(f"**Net Monthly Cash Flow:** +{net_cash_flow:,.0f} PLN 🤑")
             else:
                 st.error(f"**Net Monthly Cash Flow:** {net_cash_flow:,.0f} PLN 🩸 (Negative)")
- 
+
+    with tab6:
+        st.subheader("⭐ My Saved Properties")
+        if not st.session_state['logged_in']:
+            st.warning("🔒 Please log in from the left menu to view and manage your tracked properties.")
+        else:
+            with st.spinner("Loading your vault..."):
+                if not user_fav_ids:
+                    st.info("You haven't saved any properties yet. Browse the market tabs and check the '❤️ Track' box to start monitoring!")
+                else:
+                    # --- NEW ALERT LOGIC ADDED HERE ---
+                    if not history_df.empty:
+                        fav_history = history_df[history_df['property_id'].isin(user_fav_ids)]
+                        if not fav_history.empty:
+                            first_p = fav_history.groupby('property_id')['price_pln'].first()
+                            last_p = fav_history.groupby('property_id')['price_pln'].last()
+
+                            drop_alerts = []
+                            for pid in first_p.index:
+                                if first_p[pid] > last_p[pid]:
+                                    discount = first_p[pid] - last_p[pid]
+                                    drop_alerts.append((pid, discount, last_p[pid]))
+
+                            if drop_alerts:
+                                st.markdown("### 🔔 PRICE DROP ALERTS!")
+                                for pid, discount, new_price in drop_alerts:
+                                    st.success(f"**🚨 GOOD NEWS!** A property you are tracking (ID: {pid}) just dropped in price by **{discount:,.0f} PLN**! Current Price: **{new_price:,.0f} PLN**")
+                                st.markdown("---")
+                    # ----------------------------------
+
+                    fav_df = df[df['property_id'].isin(user_fav_ids)].copy()
+                    if fav_df.empty:
+                        st.warning("Your saved properties are no longer active on the market (Sold or Removed).")
+                    else:
+                        st.markdown("Here are your tracked investments. Uncheck the box to remove a property from your list.")
+
+                        fav_df['❤️ Track'] = True
+
+                        if not is_premium:
+                            fav_df['price_pln'] = "🔒 Locked"
+                            fav_df['url_link'] = "🔒 Locked"
+
+                        fav_cols = ['❤️ Track', 'district', 'price_pln', 'sqm', 'rooms', 'price_per_sqm', 'url_link', 'property_id']
+                        display_fav = fav_df[fav_cols]
+
+                        col_conf_fav = {
+                            "property_id": None,
+                            "district": "District",
+                            "price_pln": st.column_config.NumberColumn("Price (PLN)", format="%.0f PLN") if is_premium else st.column_config.TextColumn("Price"),
+                            "sqm": st.column_config.NumberColumn("m²", format="%.0f"),
+                            "rooms": "Rooms",
+                            "price_per_sqm": st.column_config.NumberColumn("Price/m²", format="%.0f PLN"),
+                            "url_link": st.column_config.LinkColumn("Link", display_text="View 🔗") if is_premium else st.column_config.TextColumn("Link")
+                        }
+
+                        edited_my_favs = st.data_editor(
+                            display_fav,
+                            column_config=col_conf_fav,
+                            hide_index=True,
+                            use_container_width=True,
+                            disabled=["district", "price_pln", "sqm", "rooms", "price_per_sqm", "url_link"]
+                        )
+
+                        for i, row in edited_my_favs.iterrows():
+                            if not row['❤️ Track']:
+                                toggle_favorite(st.session_state['user_email'], row['property_id'], False)
+                                st.rerun()
+
 else:
     st.info(f"There are currently no active {label.lower()} listings for {prop_type_label} in the system.")
