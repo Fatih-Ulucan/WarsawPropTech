@@ -50,6 +50,7 @@ class OtodomSniper:
 
             description = ""
             contact_phone = "Not Available / Hidden"
+            image_urls = []  
 
             try:
                 detail_page.goto(item['url'], timeout=30000, wait_until="domcontentloaded")
@@ -81,14 +82,30 @@ class OtodomSniper:
                     description = detail_page.locator('[data-cy="adPageAdDescription"]').inner_text()
                 except:
                     description = detail_page.locator('body').inner_text()
-            except Exception as e:
-                logger.error(f"Failed to fetch full description: {e}")
 
-            if description:
-                ai_report = self.ai.analyze_description(description)
+                try:
+                    images = detail_page.locator('picture source').all()
+                    for img in images:
+                        src = img.get_attribute('srcset')
+                        if src and "http" in src:
+                            clean_url = src.split(' ')[0]
+                            if clean_url not in image_urls:
+                                image_urls.append(clean_url)
+                    logger.info(f"📸 Extracted {len(image_urls)} image URLs for analysis.")
+                except Exception as e:
+                    logger.debug(f"⚠️ Image extraction failed: {e}")
+
+            except Exception as e:
+                logger.error(f"Failed to fetch full description/images: {e}")
+
+            if description or image_urls:
+                if image_urls:
+                    ai_report = self.ai.analyze_with_vision(description, image_urls)
+                else:
+                    ai_report = self.ai.analyze_description(description)
                 self.db.mark_as_analyzed(item['url'])
             else:
-                ai_report = "AI Analysis unavailable (Could not fetch full description)."
+                ai_report = "AI Analysis unavailable (Could not fetch description or photos)."
 
             alert = item['alert_template'].format(ai_report=ai_report, contact_phone=contact_phone)
             self.notif.send_message(alert)

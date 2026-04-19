@@ -1,6 +1,9 @@
 ﻿import google.generativeai as genai
 import logging
 import time
+import io
+import requests
+from PIL import Image
 from Scrapers.config import MAX_AI_CALLS
 
 logger = logging.getLogger(__name__)
@@ -56,3 +59,52 @@ class GeminiAnalyzer:
         except Exception as e:
             logger.error(f"AI Error: {e}")
             return "AI Analysis failed."
+
+    def analyze_with_vision(self, description, image_urls):
+        """Sends description AND property photos to Gemini for a visual flip analysis."""
+        if not self.model:
+            return "AI Analysis unavailable."
+
+        if self.ai_calls_made >= MAX_AI_CALLS:
+            logger.warning(f"⚠️ AI Skip: Limit ({MAX_AI_CALLS}) reached.")
+            return "AI skipped (Batch Limit Reached)."
+
+        images_to_analyze = []
+
+        for url in image_urls[:3]:
+            try:
+                response = requests.get(url, timeout=5)
+                if response.status_code == 200:
+                    img = Image.open(io.BytesIO(response.content))
+                    images_to_analyze.append(img)
+            except Exception as e:
+                logger.error(f"❌ Resim indirme hatası: {e}")
+
+        try:
+            time.sleep(1)
+            prompt = f"""
+            You are a Warsaw Real Estate Flipping Expert. Analyze this property description AND the attached photos.
+            
+            Description: {description[:2000]}
+            
+            Based heavily on the PHOTOS, tell me:
+            1. VISUAL CONDITION: (Is it modern, 90s PRL style, or needs general renovation?)
+            2. RENOVATION NEEDS: (What specifically looks bad? Floors, bathroom, kitchen?)
+            3. FLIP POTENTIAL: (High, Med, or Low?)
+            
+            Provide 3 short, punchy bullet points in English. Max 500 chars.
+            """
+
+            payload = [prompt] + images_to_analyze
+            response = self.model.generate_content(payload)
+            text = response.text.strip()
+
+            if text:
+                self.ai_calls_made += 1
+                return text[:500]
+
+            return "AI visual summary unavailable."
+
+        except Exception as e:
+            logger.error(f"AI Vision Error: {e}")
+            return "AI Vision Analysis failed."

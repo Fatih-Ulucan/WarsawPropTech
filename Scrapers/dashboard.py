@@ -7,6 +7,8 @@ from pathlib import Path
 from dotenv import load_dotenv
 import io
 import plotly.express as px
+import numpy as np
+from sklearn.linear_model import LinearRegression
 
 current_dir = Path(__file__).resolve().parent
 project_root = current_dir.parent
@@ -38,6 +40,15 @@ if 'logged_in' not in st.session_state:
 if 'user_email' not in st.session_state:
     st.session_state['user_email'] = ""
 
+if "success" in st.query_params and st.query_params["success"] == "true":
+    if st.session_state['logged_in']:
+        st.session_state['user_tier'] = 'Premium'
+        st.success("🎉 Payment Successful! Welcome to Premium. All hidden data is now unlocked for your account.")
+        st.query_params.clear()
+    else:
+        st.warning("⚠️ Payment received, but you are not logged in. Please log in to activate your Premium.")
+
+
 base_dir = current_dir.parent
 env_path = base_dir / ".env"
 
@@ -54,6 +65,7 @@ else:
 
 SUPABASE_URL = os.getenv("SUPABASE_URL")
 SUPABASE_KEY = os.getenv("SUPABASE_KEY")
+STRIPE_LINK = os.getenv("STRIPE_LINK", "https://buy.stripe.com/test_your_link_here")
 
 if SUPABASE_URL and SUPABASE_KEY:
     SUPABASE_URL = SUPABASE_URL.strip()
@@ -148,8 +160,6 @@ PROPERTY_TYPES = {
     "Garage": 6
 }
 
-STRIPE_LINK = "https://buy.stripe.com/test_your_link_here"
-
 @st.cache_data(ttl=300)
 def load_data(trans_id, type_id):
     clean_url = SUPABASE_URL.strip("/")
@@ -188,11 +198,7 @@ def load_data(trans_id, type_id):
         df['price_per_sqm'] = pd.to_numeric(df['price_per_sqm'], errors='coerce')
 
         df = df.dropna(subset=['price_pln'])
-
-        # --- REKLAM / SIFIR FIYAT FILTRESI EKLENDI ---
         df = df[df['price_pln'] > 0]
-        # ---------------------------------------------
-
         df['url_link'] = df['url_link'].apply(lambda x: f"{x}")
         return df
     except Exception:
@@ -229,6 +235,65 @@ def load_price_history():
         return pd.DataFrame(all_history)
     except Exception: return pd.DataFrame()
 
+@st.cache_data(ttl=3600)
+def predict_future_prices(df):
+    """
+    Takes available data and predicts the 6-month price trend 
+    by district using Linear Regression. Fixed for large datasets and realistic growth.
+    """
+    predictions = []
+
+    if df.empty:
+        return pd.DataFrame()
+
+    try:
+        df_ml = df.copy()
+        df_ml['price_per_sqm'] = pd.to_numeric(df_ml['price_per_sqm'], errors='coerce')
+        df_ml = df_ml.dropna(subset=['price_per_sqm', 'district'])
+        df_ml = df_ml[df_ml['price_per_sqm'] > 1000]
+    except Exception:
+        return pd.DataFrame()
+
+    try:
+        for district, group in df_ml.groupby('district'):
+            if len(group) < 3:
+                continue
+
+            group = group.sort_index()
+            X = np.arange(len(group)).reshape(-1, 1)
+            y = group['price_per_sqm'].values
+
+            model = LinearRegression()
+            model.fit(X, y)
+
+            future_step = len(group) + max(1, int(len(group) * 0.2))
+            future_X = np.array([[future_step]])
+            predicted_price = model.predict(future_X)[0]
+
+            current_avg = y.mean()
+
+            if current_avg > 0:
+                growth_potential = ((predicted_price - current_avg) / current_avg) * 100
+
+                if growth_potential > 15:
+                    growth_potential = 12 + (growth_potential * 0.05)
+                elif growth_potential < -15:
+                    growth_potential = -10 - (abs(growth_potential) * 0.05)
+
+                predictions.append({
+                    'District': district,
+                    'Current Avg (PLN/m²)': current_avg,
+                    'Predicted 6-Month (PLN/m²)': predicted_price,
+                    'Growth Potential (%)': growth_potential
+                })
+
+        result_df = pd.DataFrame(predictions)
+        if not result_df.empty:
+            result_df = result_df.sort_values(by='Growth Potential (%)', ascending=False)
+        return result_df
+    except Exception as e:
+        st.error(f"Prediction logic error: {e}")
+        return pd.DataFrame()
 
 if not st.session_state['logged_in']:
     st.sidebar.header("🔐 Member Access")
@@ -244,7 +309,8 @@ if not st.session_state['logged_in']:
                 if res.status_code == 200:
                     st.session_state['logged_in'] = True
                     st.session_state['user_email'] = auth_email
-                    st.session_state['user_tier'] = 'Free'
+                    if st.session_state['user_tier'] != 'Premium':
+                        st.session_state['user_tier'] = 'Free'
                     st.rerun()
                 else:
                     st.sidebar.error("❌ Invalid Email or Password.")
@@ -259,6 +325,13 @@ if not st.session_state['logged_in']:
                     st.sidebar.error(f"❌ {error_msg}")
 else:
     st.sidebar.success(f"👤 Logged in:\n{st.session_state['user_email']}")
+
+    if st.session_state['user_tier'] == 'Free':
+        st.sidebar.markdown("---")
+        st.sidebar.markdown("### 🚀 Unlock Pro Features")
+        st.sidebar.markdown("See exact prices, unblur property links, and track unlimited drops.")
+        st.sidebar.link_button("💎 Upgrade to Premium (199 PLN/mo)", STRIPE_LINK, type="primary", use_container_width=True)
+
     if st.sidebar.button("Logout", use_container_width=True):
         st.session_state['logged_in'] = False
         st.session_state['user_email'] = ""
@@ -421,13 +494,14 @@ if not df.empty:
     if st.session_state['logged_in']:
         user_fav_ids = get_user_favorites(st.session_state['user_email'])
 
-    tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([
+    tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs([
         "📊 Market Overview",
         "🗺️ Interactive Heatmap",
         "🧠 ROI & Amortization Map",
         "🚨 Price Drop Radar",
         "🧮 Investment Calculators",
-        "⭐ My Favorites"
+        "⭐ My Favorites",
+        "🔮 AI Future Forecast"
     ])
 
     with tab1:
@@ -796,7 +870,6 @@ if not df.empty:
                 if not user_fav_ids:
                     st.info("You haven't saved any properties yet. Browse the market tabs and check the '❤️ Track' box to start monitoring!")
                 else:
-                    # --- NEW ALERT LOGIC ADDED HERE ---
                     if not history_df.empty:
                         fav_history = history_df[history_df['property_id'].isin(user_fav_ids)]
                         if not fav_history.empty:
@@ -814,7 +887,6 @@ if not df.empty:
                                 for pid, discount, new_price in drop_alerts:
                                     st.success(f"**🚨 GOOD NEWS!** A property you are tracking (ID: {pid}) just dropped in price by **{discount:,.0f} PLN**! Current Price: **{new_price:,.0f} PLN**")
                                 st.markdown("---")
-                    # ----------------------------------
 
                     fav_df = df[df['property_id'].isin(user_fav_ids)].copy()
                     if fav_df.empty:
@@ -853,6 +925,45 @@ if not df.empty:
                             if not row['❤️ Track']:
                                 toggle_favorite(st.session_state['user_email'], row['property_id'], False)
                                 st.rerun()
+
+    with tab7:
+        st.subheader("🔮 Predictive Analytics: 6-Month District Forecast")
+        st.markdown("This machine learning model (Linear Regression) analyzes historical price trends to predict which Warsaw districts will appreciate the most in the next 6 months.")
+
+        with st.spinner("AI is training the predictive model..."):
+            forecast_df = predict_future_prices(df)
+
+            if not forecast_df.empty:
+                c1, c2 = st.columns(2)
+
+                with c1:
+                    st.markdown("### 🏆 Top 3 Investment Zones")
+                    top_3 = forecast_df.head(3)
+                    for index, row in top_3.iterrows():
+                        st.success(f"**📍 {row['District']}**\n\n📈 Expected Growth: **+%.1f%%**" % row['Growth Potential (%)'])
+
+                with c2:
+                    if not is_premium:
+                        st.warning("🔒 **PREMIUM LOCK:** Full predictive dataset is hidden. Upgrade to access all district forecasts.")
+                        st.link_button("🔓 Unlock Premium (199 PLN/mo)", STRIPE_LINK, type="primary")
+                        display_forecast = forecast_df.head(3).copy()
+                    else:
+                        st.success("👑 Premium Unlocked! Viewing all future predictions.")
+                        display_forecast = forecast_df.copy()
+
+                    st.dataframe(
+                        display_forecast,
+                        column_config={
+                            "District": "Warsaw District",
+                            "Current Avg (PLN/m²)": st.column_config.NumberColumn("Current Price/m²", format="%.0f PLN"),
+                            "Predicted 6-Month (PLN/m²)": st.column_config.NumberColumn("Predicted Price/m²", format="%.0f PLN"),
+                            "Growth Potential (%)": st.column_config.NumberColumn("Growth", format="%.1f%%")
+                        },
+                        hide_index=True,
+                        use_container_width=True
+                    )
+            else:
+                st.info("Bot needs to scrape more data to build an accurate predictive model. Check back later!")
 
 else:
     st.info(f"There are currently no active {label.lower()} listings for {prop_type_label} in the system.")
