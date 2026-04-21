@@ -57,22 +57,25 @@ if env_path.exists():
         with open(env_path, "r", encoding="utf-8-sig") as f:
             clean_content = f.read()
         load_dotenv(stream=io.StringIO(clean_content), override=True)
-    except Exception as e:
-        st.error(f"❌ Failed to parse .env file: {e}")
-else:
-    st.error(f"❌ .env file NOT FOUND at: {env_path}")
-    st.stop()
+    except Exception:
+        pass
 
-SUPABASE_URL = os.getenv("SUPABASE_URL")
-SUPABASE_KEY = os.getenv("SUPABASE_KEY")
-STRIPE_LINK = os.getenv("STRIPE_LINK", "https://buy.stripe.com/test_your_link_here")
+try:
+    SUPABASE_URL = st.secrets.get("SUPABASE_URL", os.environ.get("SUPABASE_URL"))
+    SUPABASE_KEY = st.secrets.get("SUPABASE_KEY", os.environ.get("SUPABASE_KEY"))
+    STRIPE_LINK = st.secrets.get("STRIPE_LINK", os.environ.get("STRIPE_LINK", "https://buy.stripe.com/test_your_link_here"))
+except Exception:
+    SUPABASE_URL = os.environ.get("SUPABASE_URL")
+    SUPABASE_KEY = os.environ.get("SUPABASE_KEY")
+    STRIPE_LINK = os.environ.get("STRIPE_LINK", "https://buy.stripe.com/test_your_link_here")
 
 if SUPABASE_URL and SUPABASE_KEY:
     SUPABASE_URL = SUPABASE_URL.strip()
     SUPABASE_KEY = SUPABASE_KEY.strip()
 else:
-    st.error(f"❌ CRITICAL ERROR: Supabase keys are empty! Check your .env file content.")
+    st.error("❌ CRITICAL ERROR: Supabase keys are missing! Check Streamlit Secrets or .env file.")
     st.stop()
+
 
 def login_user(email, password):
     url = f"{SUPABASE_URL.strip('/')}/auth/v1/token?grant_type=password"
@@ -237,10 +240,6 @@ def load_price_history():
 
 @st.cache_data(ttl=3600)
 def predict_future_prices(df):
-    """
-    Takes available data and predicts the 6-month price trend 
-    by district using Linear Regression. Fixed for large datasets and realistic growth.
-    """
     predictions = []
 
     if df.empty:
@@ -559,7 +558,7 @@ if not df.empty:
         st.markdown(f"Visual representation of **{prop_type_label}** {label.lower()} market in Warsaw. Bubble size represents the number of listings, color represents the average price per square meter.")
 
         map_data = []
-        map_price_key = 'Avg Total Price' if selected_trans_id == 1 else 'Avg Monthly Rent' # 💡 YENİLİK
+        map_price_key = 'Avg Total Price' if selected_trans_id == 1 else 'Avg Monthly Rent'
 
         for district, group in filtered_df.groupby('district'):
             if district in DISTRICT_COORDS:
