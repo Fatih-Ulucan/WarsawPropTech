@@ -50,7 +50,7 @@ class OtodomSniper:
 
             description = ""
             contact_phone = "Not Available / Hidden"
-            image_urls = []  
+            image_urls = []
 
             try:
                 detail_page.goto(item['url'], timeout=30000, wait_until="domcontentloaded")
@@ -98,11 +98,13 @@ class OtodomSniper:
             except Exception as e:
                 logger.error(f"Failed to fetch full description/images: {e}")
 
+            category = item.get('category', 'Apartment - Sale')
+
             if description or image_urls:
                 if image_urls:
-                    ai_report = self.ai.analyze_with_vision(description, image_urls)
+                    ai_report = self.ai.analyze_with_vision(description, image_urls, category=category)
                 else:
-                    ai_report = self.ai.analyze_description(description)
+                    ai_report = self.ai.analyze_description(description, category=category)
                 self.db.mark_as_analyzed(item['url'])
             else:
                 ai_report = "AI Analysis unavailable (Could not fetch description or photos)."
@@ -175,7 +177,8 @@ class OtodomSniper:
                                 raw_price = listing.locator('[data-sentry-element="MainPrice"]').first.inner_text()
 
                                 try:
-                                    clean_price = int(re.sub(r'[^\d]', '', raw_price))
+                                    price_text = raw_price.split(',')[0].split('zł')[0]
+                                    clean_price = int(re.sub(r'[^\d]', '', price_text))
                                 except: clean_price = 0
 
                                 sqm = None
@@ -262,7 +265,11 @@ class OtodomSniper:
                                                     'full_url': full_url
                                                 }
                                                 alert_template = self.notif.create_price_drop_alert(drop_data)
-                                                self.ai_queue.append({'url': full_url, 'alert_template': alert_template})
+                                                self.ai_queue.append({
+                                                    'url': full_url,
+                                                    'alert_template': alert_template,
+                                                    'category': target['label'] 
+                                                })
                                                 logger.info(f"💎 DEAL DETECTED! Added to AI Queue: {full_url}")
                                                 logger.info(f"🚨 PRICE DROP QUEUED: -{drop_amount} PLN for ID {property_id}")
 
@@ -345,7 +352,8 @@ class OtodomSniper:
                                     alert_template = self.notif.create_deal_alert(deal_data)
                                     self.ai_queue.append({
                                         'url': full_url,
-                                        'alert_template': alert_template
+                                        'alert_template': alert_template,
+                                        'category': target['label'] 
                                     })
                                     logger.info(f"💎 DEAL DETECTED! Added to AI Queue: {full_url}")
 

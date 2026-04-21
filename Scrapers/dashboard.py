@@ -451,8 +451,10 @@ if not df.empty:
     display_avg_total = f"{avg_price_total:,.0f} PLN" if pd.notna(avg_price_total) else "N/A"
     display_avg_sqm = f"{avg_price_sqm:,.0f} PLN" if pd.notna(avg_price_sqm) else "N/A"
 
+    ui_price_label = "Avg Sale Price" if selected_trans_id == 1 else "Avg Monthly Rent"
+
     col1.metric("Live Listings", f"{len(filtered_df)}")
-    col2.metric(f"Avg Total Price", display_avg_total)
+    col2.metric(ui_price_label, display_avg_total)
     col3.metric(f"Avg Price / m²", display_avg_sqm)
     col4.metric("Market Status", "Active 🟢")
 
@@ -527,10 +529,12 @@ if not df.empty:
 
         display_df = display_df[cols]
 
+        table_price_label = "Price (PLN)" if selected_trans_id == 1 else "Rent/mo (PLN)"
+
         column_config = {
             "property_id": None,
             "district": "District",
-            "price_pln": st.column_config.NumberColumn("Price (PLN)", format="%.0f PLN"),
+            "price_pln": st.column_config.NumberColumn(table_price_label, format="%.0f PLN"),
             "sqm": st.column_config.NumberColumn("m²", format="%.0f"),
             "rooms": "Rooms",
             "price_per_sqm": st.column_config.NumberColumn("Price/m²", format="%.0f PLN"),
@@ -555,6 +559,8 @@ if not df.empty:
         st.markdown(f"Visual representation of **{prop_type_label}** {label.lower()} market in Warsaw. Bubble size represents the number of listings, color represents the average price per square meter.")
 
         map_data = []
+        map_price_key = 'Avg Total Price' if selected_trans_id == 1 else 'Avg Monthly Rent' # 💡 YENİLİK
+
         for district, group in filtered_df.groupby('district'):
             if district in DISTRICT_COORDS:
                 avg_sqm = group['price_per_sqm'].mean()
@@ -563,7 +569,7 @@ if not df.empty:
                         'District': district,
                         'Listings Count': len(group),
                         'Avg Price/m²': round(avg_sqm, 0),
-                        'Avg Total Price': round(group['price_pln'].mean(), 0),
+                        map_price_key: round(group['price_pln'].mean(), 0),
                         'lat': DISTRICT_COORDS[district]['lat'],
                         'lon': DISTRICT_COORDS[district]['lon']
                     })
@@ -578,7 +584,7 @@ if not df.empty:
                 size="Listings Count",
                 color="Avg Price/m²",
                 hover_name="District",
-                hover_data={"lat": False, "lon": False, "Avg Total Price": True, "Listings Count": True},
+                hover_data={"lat": False, "lon": False, map_price_key: True, "Listings Count": True},
                 color_continuous_scale=px.colors.sequential.Plasma,
                 size_max=50,
                 zoom=10,
@@ -906,7 +912,7 @@ if not df.empty:
                         col_conf_fav = {
                             "property_id": None,
                             "district": "District",
-                            "price_pln": st.column_config.NumberColumn("Price (PLN)", format="%.0f PLN") if is_premium else st.column_config.TextColumn("Price"),
+                            "price_pln": st.column_config.NumberColumn(table_price_label, format="%.0f PLN") if is_premium else st.column_config.TextColumn("Price"),
                             "sqm": st.column_config.NumberColumn("m²", format="%.0f"),
                             "rooms": "Rooms",
                             "price_per_sqm": st.column_config.NumberColumn("Price/m²", format="%.0f PLN"),
