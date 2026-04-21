@@ -53,29 +53,36 @@ class OtodomSniper:
             image_urls = []
 
             try:
-                detail_page.goto(item['url'], timeout=30000, wait_until="domcontentloaded")
+                phone_button = detail_page.locator(
+                    'button[data-cy="ad-contact-phone"], '
+                    'button[data-testid="contact-phone-button"], '
+                    'button:has-text("Pokaż numer"), '
+                    'button:has-text("Pokaż"), '
+                    'button:has-text("pokaż"), '
+                    'div[data-cy="ad-contact-phone"] button, '
+                    'button.css-11y9s82' 
+                ).first
 
-                try:
-                    phone_button = detail_page.locator(
-                        'button[data-cy="ad-contact-phone"], '
-                        'button:has-text("Pokaż numer"), '
-                        'button:has-text("Pokaż"), '
-                        'button:has-text("pokaż"), '
-                        'div[data-cy="ad-contact-phone"] button'
-                    ).first
+                if phone_button.is_visible(timeout=5000):
+                    phone_button.click(force=True)
+                    logger.info(f"📞 Force-Clicked 'Show Number' button for: {item['url']}")
+                    detail_page.wait_for_timeout(2500) 
 
-                    if phone_button.is_visible(timeout=5000):
-                        phone_button.click(force=True)
-                        logger.info(f"📞 Force-Clicked 'Show Number' button for: {item['url']}")
-                        detail_page.wait_for_timeout(2000)
-                        try:
-                            phone_links = detail_page.locator('a[href^="tel:"]').all()
-                            if phone_links:
-                                contact_phone = phone_links[0].inner_text().strip()
-                        except Exception:
-                            logger.debug("⚠️ Phone API timeout/hidden.")
-                except Exception as e:
-                    logger.debug(f"⚠️ Phone extraction failed: {e}")
+                    try:
+                        phone_links = detail_page.locator('a[href^="tel:"]').all()
+                        if phone_links:
+                            contact_phone = phone_links[0].inner_text().strip()
+                        else:
+                            contact_phone = detail_page.locator('[data-cy="ad-contact-phone"]').inner_text().strip()
+
+                        if "pokaż" in contact_phone.lower():
+                            contact_phone = "Not Available / Hidden"
+
+                    except Exception:
+                        logger.debug("⚠️ Phone text extraction failed.")
+            except Exception as e:
+                logger.debug(f"⚠️ Phone button not found or blocked: {e}")
+            # ----------------------------------
 
                 try:
                     detail_page.wait_for_selector('[data-cy="adPageAdDescription"]', timeout=5000)
