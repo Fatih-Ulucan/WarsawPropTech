@@ -2,6 +2,7 @@
 import logging
 import time
 import urllib.parse
+from datetime import datetime
 from Scrapers.config import CACHE_TTL
 
 logger = logging.getLogger(__name__)
@@ -21,7 +22,7 @@ class SupabaseManager:
 
     def get_market_averages(self):
         if time.time() - self.last_fetch_time < CACHE_TTL and self.market_stats_cache:
-            logger.info("⚡ CACHE: Using saved market data (No API call needed).")
+            logger.info("⚡ CACHE: Using cached market data.")
             return self.market_stats_cache
 
         logger.info("🧠 AI ENGINE: Fetching real-time market averages from Supabase...")
@@ -43,7 +44,7 @@ class SupabaseManager:
 
                 self.market_stats_cache = market_dict
                 self.last_fetch_time = time.time()
-                logger.info(f"✅ AI ENGINE: Successfully loaded {len(market_dict)} market categories!")
+                logger.info(f"✅ AI ENGINE: Successfully loaded {len(market_dict)} market categories.")
                 return market_dict
         except Exception as e:
             logger.error(f"❌ AI ENGINE ERROR: Failed to fetch market stats: {e}")
@@ -55,6 +56,9 @@ class SupabaseManager:
         max_retries = 3
         for attempt in range(max_retries):
             try:
+                if "status" not in data:
+                    data["status"] = "ACTIVE"
+
                 response = requests.post(table_url, json=data, headers=self.headers, timeout=10)
                 return response.status_code
             except Exception:
@@ -76,7 +80,7 @@ class SupabaseManager:
 
     def check_existing_listing(self, full_url):
         safe_url = urllib.parse.quote(full_url)
-        get_url = f"{self.url}/rest/v1/listings?url_link=eq.{safe_url}&select=id,price_pln,property_id,agency_id,ai_analyzed,alert_sent"
+        get_url = f"{self.url}/rest/v1/listings?url_link=eq.{safe_url}&select=id,price_pln,property_id,agency_id,ai_analyzed,alert_sent,status"
 
         get_headers = {
             "apikey": self.key,
@@ -116,3 +120,32 @@ class SupabaseManager:
             requests.patch(patch_url, json={"ai_analyzed": True, "alert_sent": True}, headers=patch_headers, timeout=5)
         except:
             pass
+
+    def update_last_seen(self, row_id):
+        """Updates the 'updated_at' timestamp and ensures status is ACTIVE."""
+        patch_url = f"{self.url}/rest/v1/listings?id=eq.{row_id}"
+        patch_headers = {
+            "apikey": self.key,
+            "Authorization": f"Bearer {self.key}",
+            "Content-Type": "application/json"
+        }
+        current_time = datetime.utcnow().isoformat()
+        try:
+            requests.patch(patch_url, json={"updated_at": current_time, "status": "ACTIVE"}, headers=patch_headers, timeout=5)
+        except Exception as e:
+            logger.error(f"Last Seen Update Error: {e}")
+
+    def mark_as_sold(self, row_id):
+        """Marks a listing as SOLD instead of deleting it to preserve historical data."""
+        patch_url = f"{self.url}/rest/v1/listings?id=eq.{row_id}"
+        patch_headers = {
+            "apikey": self.key,
+            "Authorization": f"Bearer {self.key}",
+            "Content-Type": "application/json"
+        }
+        current_time = datetime.utcnow().isoformat()
+        try:
+            requests.patch(patch_url, json={"status": "SOLD", "sold_date": current_time}, headers=patch_headers, timeout=5)
+            logger.info(f"🏷️ STATUS UPDATE: Listing ID {row_id} marked as SOLD.")
+        except Exception as e:
+            logger.error(f"Mark as Sold Error: {e}")

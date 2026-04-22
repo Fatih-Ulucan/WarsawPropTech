@@ -27,6 +27,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 def initialize_system():
+    """Initializes environment variables and core system components."""
     BASE_DIR = Path(__file__).resolve().parent.parent
     ENV_PATH = BASE_DIR / ".env"
 
@@ -54,6 +55,7 @@ def initialize_system():
     return OtodomSniper(db, ai, bot)
 
 def start_engine():
+    """Starts the main scanning engine with auto-restart and anti-zombie logic."""
     logger.info("INFO: System initializing with AI Arbitrage Engine...")
 
     sniper = initialize_system()
@@ -72,10 +74,11 @@ def start_engine():
                 sniper.notif.send_message(f"♻️ <b>Auto-Restart:</b> Flushing RAM after {MAX_SCANS_BEFORE_REBOOT/1000}k scans.")
                 os.execv(sys.executable, ['python'] + sys.argv)
 
+            logger.info("💤 MISSION COMPLETE: Sleeping for 600 seconds...")
             time.sleep(600)
 
         except Exception as e:
-            logger.error(f"CRITICAL: {e}")
+            logger.error(f"CRITICAL SYSTEM ERROR: {e}")
             time.sleep(60)
 
 if __name__ == "__main__":

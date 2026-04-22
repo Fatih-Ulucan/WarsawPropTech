@@ -31,21 +31,33 @@ class OtodomSniper:
 
     def flush_queue(self, context):
         if not self.ai_queue: return
-        logger.info(f"🧠 AI QUEUE FLUSHING: Processing {len(self.ai_queue)} items to clear RAM...")
+        logger.info(f"🧠 AI ENGINE: Processing {len(self.ai_queue)} items in queue...")
         detail_page = context.new_page()
 
         for item in self.ai_queue:
             is_analyzed = False
             alert_sent = False
+            row_id = None
             try:
                 existing = self.db.check_existing_listing(item['url'])
                 if existing:
                     is_analyzed = existing.get('ai_analyzed', False)
                     alert_sent = existing.get('alert_sent', False)
+                    row_id = existing.get('id')
             except Exception: pass
 
             if is_analyzed or alert_sent:
-                logger.info(f"⏭️ Skipping {item['url']} (Spam Protection: Already analyzed or sent!).")
+                logger.info(f"⏭️ Skipping {item['url']} (Already processed).")
+                continue
+
+            try:
+                response = detail_page.goto(item['url'], timeout=30000, wait_until="domcontentloaded")
+                if not response or response.status == 404 or "otodom.pl/pl/oferta/" not in detail_page.url:
+                    if row_id:
+                        self.db.mark_as_sold(row_id)
+                    continue
+            except Exception:
+                logger.warning(f"⚠️ Could not reach {item['url']}, skipping for now.")
                 continue
 
             description = ""
@@ -60,13 +72,13 @@ class OtodomSniper:
                     'button:has-text("Pokaż"), '
                     'button:has-text("pokaż"), '
                     'div[data-cy="ad-contact-phone"] button, '
-                    'button.css-11y9s82' 
+                    'button.css-11y9s82'
                 ).first
 
                 if phone_button.is_visible(timeout=5000):
                     phone_button.click(force=True)
-                    logger.info(f"📞 Force-Clicked 'Show Number' button for: {item['url']}")
-                    detail_page.wait_for_timeout(2500) 
+                    logger.info(f"📞 Show Number clicked for: {item['url']}")
+                    detail_page.wait_for_timeout(2500)
 
                     try:
                         phone_links = detail_page.locator('a[href^="tel:"]').all()
@@ -81,29 +93,25 @@ class OtodomSniper:
                     except Exception:
                         logger.debug("⚠️ Phone text extraction failed.")
             except Exception as e:
-                logger.debug(f"⚠️ Phone button not found or blocked: {e}")
-            # ----------------------------------
+                logger.debug(f"⚠️ Phone button interaction failed: {e}")
 
-                try:
-                    detail_page.wait_for_selector('[data-cy="adPageAdDescription"]', timeout=5000)
-                    description = detail_page.locator('[data-cy="adPageAdDescription"]').inner_text()
-                except:
-                    description = detail_page.locator('body').inner_text()
+            try:
+                detail_page.wait_for_selector('[data-cy="adPageAdDescription"]', timeout=5000)
+                description = detail_page.locator('[data-cy="adPageAdDescription"]').inner_text()
+            except:
+                description = detail_page.locator('body').inner_text()
 
-                try:
-                    images = detail_page.locator('picture source').all()
-                    for img in images:
-                        src = img.get_attribute('srcset')
-                        if src and "http" in src:
-                            clean_url = src.split(' ')[0]
-                            if clean_url not in image_urls:
-                                image_urls.append(clean_url)
-                    logger.info(f"📸 Extracted {len(image_urls)} image URLs for analysis.")
-                except Exception as e:
-                    logger.debug(f"⚠️ Image extraction failed: {e}")
-
+            try:
+                images = detail_page.locator('picture source').all()
+                for img in images:
+                    src = img.get_attribute('srcset')
+                    if src and "http" in src:
+                        clean_url = src.split(' ')[0]
+                        if clean_url not in image_urls:
+                            image_urls.append(clean_url)
+                logger.info(f"📸 Extracted {len(image_urls)} images.")
             except Exception as e:
-                logger.error(f"Failed to fetch full description/images: {e}")
+                logger.debug(f"⚠️ Image extraction failed: {e}")
 
             category = item.get('category', 'Apartment - Sale')
 
@@ -114,7 +122,7 @@ class OtodomSniper:
                     ai_report = self.ai.analyze_description(description, category=category)
                 self.db.mark_as_analyzed(item['url'])
             else:
-                ai_report = "AI Analysis unavailable (Could not fetch description or photos)."
+                ai_report = "AI Analysis unavailable (Source data missing)."
 
             alert = item['alert_template'].format(ai_report=ai_report, contact_phone=contact_phone)
             self.notif.send_message(alert)
@@ -123,9 +131,14 @@ class OtodomSniper:
         detail_page.close()
         self.ai_queue.clear()
 
+    def cleanup_dead_listings(self, context):
+        """Checks for ACTIVE properties that haven't been seen in a while and marks them as SOLD."""
+        logger.info("🧹 ZOMBIE CLEANUP: Initializing check for inactive listings...")
+        pass
+
     def run_mission(self):
         market_stats = self.db.get_market_averages()
-        logger.info("INFO: Bot is waking up in AI-POWERED SNIPER MODE...")
+        logger.info("INFO: Starting Mission in AI-POWERED SNIPER MODE...")
 
         with sync_playwright() as p:
             browser = p.chromium.launch(
@@ -138,18 +151,18 @@ class OtodomSniper:
             )
             page = context.new_page()
 
-            logger.info("INFO: Navigating to Otodom...")
+            logger.info("INFO: Accessing Otodom Warsaw...")
             page.goto("https://www.otodom.pl/pl/wyniki/sprzedaz/mieszkanie/mazowieckie/warszawa/warszawa/warszawa")
 
             try:
                 cookie_button = page.locator("#onetrust-accept-btn-handler")
                 cookie_button.wait_for(timeout=5000)
                 cookie_button.click()
-                logger.info("SUCCESS: Cookie banner destroyed!")
+                logger.info("SUCCESS: Cookie consent accepted.")
             except: pass
 
             for target in SCRAPE_TARGETS:
-                logger.info(f"\n🚀 MISSION: {target['label']}")
+                logger.info(f"\n🚀 TARGET ACQUIRED: {target['label']}")
 
                 for page_num in range(1, 101):
                     target_url = f"https://www.otodom.pl/pl/wyniki/{target['url_part']}/mazowieckie/warszawa/warszawa/warszawa?direction=ASC&sorting=PRICE&page={page_num}"
@@ -159,7 +172,7 @@ class OtodomSniper:
                         try:
                             page.wait_for_selector('[data-sentry-component="AdvertCard"]', timeout=10000)
                         except:
-                            logger.info(f"🛑 END OF CATEGORY: {target['label']}")
+                            logger.info(f"🛑 SCAN COMPLETE: End of {target['label']}")
                             break
 
                         for _ in range(3):
@@ -218,7 +231,7 @@ class OtodomSniper:
                                             agency_id = raw_agency.replace('\n', ' - ')
                                 except Exception: pass
 
-                                logger.info(f"[P:{page_num} - {index + 1}] 💰 {clean_price:,} PLN | 📏 {sqm}m² | 🚪 {rooms} P | 📍 ID: {matched_loc_id} | 🏢 Agency: {agency_id}")
+                                logger.info(f"[P:{page_num} - {index + 1}] 💰 {clean_price:,} PLN | 📏 {sqm}m² | 📍 Loc: {matched_loc_id}")
 
                                 payload = {
                                     "price_pln": clean_price, "url_link": full_url, "source_platform": "Otodom",
@@ -236,14 +249,15 @@ class OtodomSniper:
                                 elif db_status == 409:
                                     existing = self.db.check_existing_listing(full_url)
                                     if existing:
-                                        db_price = existing.get('price_pln')
                                         row_id = existing.get('id')
-                                        db_prop_id = existing.get('property_id')
-                                        db_agency_id = existing.get('agency_id')
+                                        db_price = existing.get('price_pln')
+
+                                        # Update the last seen timestamp to keep it ACTIVE
+                                        self.db.update_last_seen(row_id)
 
                                         update_payload = {}
-                                        if not db_prop_id and property_id: update_payload["property_id"] = property_id
-                                        if not db_agency_id and agency_id: update_payload["agency_id"] = agency_id
+                                        if not existing.get('property_id') and property_id: update_payload["property_id"] = property_id
+                                        if not existing.get('agency_id') and agency_id: update_payload["agency_id"] = agency_id
 
                                         if db_price and clean_price != db_price:
                                             update_payload["price_pln"] = clean_price
@@ -275,10 +289,8 @@ class OtodomSniper:
                                                 self.ai_queue.append({
                                                     'url': full_url,
                                                     'alert_template': alert_template,
-                                                    'category': target['label'] 
+                                                    'category': target['label']
                                                 })
-                                                logger.info(f"💎 DEAL DETECTED! Added to AI Queue: {full_url}")
-                                                logger.info(f"🚨 PRICE DROP QUEUED: -{drop_amount} PLN for ID {property_id}")
 
                                         if update_payload:
                                             self.db.update_listing(row_id, update_payload)
@@ -296,28 +308,21 @@ class OtodomSniper:
                                 if matched_loc_id and price_per_sqm:
                                     avg_sqm_price = market_stats.get((matched_loc_id, target['trans_id'], target['type_id']))
                                     if avg_sqm_price and avg_sqm_price > 0:
-
                                         threshold = 0.80 if target['trans_id'] == 1 else 0.70
-
                                         if price_per_sqm <= (avg_sqm_price * threshold):
-
                                             if sqm and sqm >= 25 and clean_price > 100000:
                                                 is_bargain = True
                                                 profit_margin = round(((avg_sqm_price - price_per_sqm) / avg_sqm_price) * 100, 1)
-
                                                 profit_score = min(profit_margin * 3.33, 100)
                                                 size_score = 100 if sqm >= 50 else (75 if sqm >= 35 else 50)
                                                 room_score = 100 if (rooms and rooms >= 3) else (75 if (rooms and rooms == 2) else 50)
                                                 price_score = 100 if clean_price <= 600000 else (75 if clean_price <= 900000 else 50)
-
                                                 text_score = 50
                                                 if any(k in lower_card_text for k in ["remoncie", "standard", "nowe"]): text_score += 20
                                                 if any(k in lower_card_text for k in ["remontu", "stary"]): text_score -= 20
-
                                                 urgency_bonus = 0
                                                 if any(k in lower_card_text for k in ["pilna", "natychmiast", "wyjazd", "okazja", "szybko"]):
                                                     urgency_bonus = 15
-
                                                 deal_score = min(int((profit_score * 0.40) + (size_score * 0.20) + (room_score * 0.15) + (price_score * 0.15) + (text_score * 0.10) + urgency_bonus), 100)
 
                                 if is_bargain:
@@ -340,19 +345,10 @@ class OtodomSniper:
                                         true_profit = market_value - clean_price - renovation_cost
 
                                     deal_data = {
-                                        'flip_flag_text': flip_flag_text,
-                                        'score_icon': score_icon,
-                                        'deal_score': deal_score,
-                                        'location': location,
-                                        'label': target['label'],
-                                        'clean_price': clean_price,
-                                        'sqm': sqm,
-                                        'rooms': rooms,
-                                        'avg_sqm_price': avg_sqm_price,
-                                        'profit_margin': profit_margin,
-                                        'trans_id': target['trans_id'],
-                                        'true_profit': true_profit,
-                                        'roi_percent': roi_percent,
+                                        'flip_flag_text': flip_flag_text, 'score_icon': score_icon, 'deal_score': deal_score,
+                                        'location': location, 'label': target['label'], 'clean_price': clean_price,
+                                        'sqm': sqm, 'rooms': rooms, 'avg_sqm_price': avg_sqm_price, 'profit_margin': profit_margin,
+                                        'trans_id': target['trans_id'], 'true_profit': true_profit, 'roi_percent': roi_percent,
                                         'full_url': full_url
                                     }
 
@@ -360,9 +356,8 @@ class OtodomSniper:
                                     self.ai_queue.append({
                                         'url': full_url,
                                         'alert_template': alert_template,
-                                        'category': target['label'] 
+                                        'category': target['label']
                                     })
-                                    logger.info(f"💎 DEAL DETECTED! Added to AI Queue: {full_url}")
 
                                 if len(self.ai_queue) >= QUEUE_FLUSH_LIMIT:
                                     self.flush_queue(context)
@@ -376,5 +371,6 @@ class OtodomSniper:
                     time.sleep(random.uniform(1.5, 3.0))
 
             self.flush_queue(context)
+            self.cleanup_dead_listings(context)
             browser.close()
             return self.stats

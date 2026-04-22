@@ -219,8 +219,9 @@ def load_rent_averages(type_id):
     df_rent = load_data(trans_id=2, type_id=type_id)
     if df_rent.empty:
         return {}, 0
-    rent_avg_district = df_rent.groupby('loc_id')['price_per_sqm'].mean().to_dict()
-    rent_avg_city = df_rent['price_per_sqm'].mean()
+    df_rent_active = df_rent[df_rent['status'] == 'ACTIVE'] if 'status' in df_rent.columns else df_rent
+    rent_avg_district = df_rent_active.groupby('loc_id')['price_per_sqm'].mean().to_dict()
+    rent_avg_city = df_rent_active['price_per_sqm'].mean()
     return rent_avg_district, rent_avg_city
 
 @st.cache_data(ttl=300)
@@ -254,6 +255,8 @@ def predict_future_prices(df):
 
     try:
         df_ml = df.copy()
+        if 'status' in df_ml.columns:
+            df_ml = df_ml[df_ml['status'] == 'ACTIVE']
         df_ml['price_per_sqm'] = pd.to_numeric(df_ml['price_per_sqm'], errors='coerce')
         df_ml = df_ml.dropna(subset=['price_per_sqm', 'district'])
         df_ml = df_ml[df_ml['price_per_sqm'] > 1000]
@@ -411,8 +414,11 @@ st.session_state['user_tier'] = st.sidebar.radio(
 )
 
 if not df.empty:
-    max_val = int(df['price_pln'].max())
-    min_val = int(df['price_pln'].min())
+    df_active = df[df['status'] == 'ACTIVE'].copy() if 'status' in df.columns else df.copy()
+    df_sold = df[df['status'] == 'SOLD'].copy() if 'status' in df.columns else pd.DataFrame()
+
+    max_val = int(df_active['price_pln'].max()) if not df_active.empty else 1000000
+    min_val = int(df_active['price_pln'].min()) if not df_active.empty else 0
 
     max_price = st.sidebar.slider(
         "Max Budget (PLN)",
@@ -421,11 +427,11 @@ if not df.empty:
 
     districts = st.sidebar.multiselect(
         "Select Districts",
-        options=sorted(df['district'].dropna().unique()),
+        options=sorted(df_active['district'].dropna().unique()),
         default=[]
     )
 
-    filtered_df = df[df['price_pln'] <= max_price].copy()
+    filtered_df = df_active[df_active['price_pln'] <= max_price].copy()
     if districts:
         filtered_df = filtered_df[filtered_df['district'].isin(districts)]
 
@@ -502,14 +508,16 @@ if not df.empty:
     if st.session_state['logged_in']:
         user_fav_ids = get_user_favorites(st.session_state['user_email'])
 
-    tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs([
+    # 🔍 DUZENLEME: Yeni '✅ Closed Deals' sekmesi eklendi
+    tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8 = st.tabs([
         "📊 Market Overview",
         "🗺️ Interactive Heatmap",
         "🧠 ROI & Amortization Map",
         "🚨 Price Drop Radar",
         "🧮 Investment Calculators",
         "⭐ My Favorites",
-        "🔮 AI Future Forecast"
+        "🔮 AI Future Forecast",
+        "✅ Closed Deals"
     ])
 
     with tab1:
@@ -525,13 +533,14 @@ if not df.empty:
                 st.info("No price/m² data available for charts.")
 
         st.subheader(f"📋 Current {label} Listings")
-        display_df = filtered_df[['property_id', 'district', 'price_pln', 'sqm', 'rooms', 'price_per_sqm', 'url_link']].copy()
+        # 🔍 DUZENLEME: Status sütunu tabloya eklendi
+        display_df = filtered_df[['property_id', 'district', 'price_pln', 'sqm', 'rooms', 'price_per_sqm', 'url_link', 'status']].copy()
 
         if st.session_state['logged_in']:
             display_df['❤️ Track'] = display_df['property_id'].isin(user_fav_ids)
-            cols = ['❤️ Track', 'district', 'price_pln', 'sqm', 'rooms', 'price_per_sqm', 'url_link', 'property_id']
+            cols = ['❤️ Track', 'district', 'price_pln', 'sqm', 'rooms', 'price_per_sqm', 'url_link', 'status', 'property_id']
         else:
-            cols = ['district', 'price_pln', 'sqm', 'rooms', 'price_per_sqm', 'url_link', 'property_id']
+            cols = ['district', 'price_pln', 'sqm', 'rooms', 'price_per_sqm', 'url_link', 'status', 'property_id']
 
         display_df = display_df[cols]
 
@@ -544,7 +553,8 @@ if not df.empty:
             "sqm": st.column_config.NumberColumn("m²", format="%.0f"),
             "rooms": "Rooms",
             "price_per_sqm": st.column_config.NumberColumn("Price/m²", format="%.0f PLN"),
-            "url_link": st.column_config.LinkColumn("Listing Link", display_text="View 🔗")
+            "url_link": st.column_config.LinkColumn("Listing Link", display_text="View 🔗"),
+            "status": "Status"
         }
 
         if st.session_state['logged_in']:
@@ -553,7 +563,7 @@ if not df.empty:
                 column_config=column_config,
                 hide_index=True,
                 use_container_width=True,
-                disabled=["district", "price_pln", "sqm", "rooms", "price_per_sqm", "url_link"]
+                disabled=["district", "price_pln", "sqm", "rooms", "price_per_sqm", "url_link", "status"]
             )
             process_favorite_edits(edited_df, display_df, st.session_state['user_email'])
         else:
@@ -976,6 +986,30 @@ if not df.empty:
                     )
             else:
                 st.info("Bot needs to scrape more data to build an accurate predictive model. Check back later!")
+
+    with tab8:
+        st.subheader("✅ Closed Deals (Historical Sales)")
+        st.markdown("Properties that were recently removed from the market (Likely sold). Use this data to analyze market speed.")
+
+        if df_sold.empty:
+            st.info("No closed deals detected yet. Bot is monitoring removals...")
+        else:
+            display_sold = df_sold[['district', 'price_pln', 'sqm', 'rooms', 'price_per_sqm']].copy()
+
+            st.dataframe(
+                display_sold,
+                column_config={
+                    "district": "District",
+                    "price_pln": st.column_config.NumberColumn("Last Asking Price", format="%.0f PLN"),
+                    "sqm": st.column_config.NumberColumn("m²", format="%.0f"),
+                    "rooms": "Rooms",
+                    "price_per_sqm": st.column_config.NumberColumn("Price/m²", format="%.0f PLN"),
+                },
+                hide_index=True,
+                use_container_width=True
+            )
+
+            st.bar_chart(df_sold['district'].value_counts())
 
 else:
     st.info(f"There are currently no active {label.lower()} listings for {prop_type_label} in the system.")
