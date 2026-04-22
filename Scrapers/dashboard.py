@@ -32,6 +32,13 @@ except ImportError:
         st.stop()
 
 st.set_page_config(page_title="Warsaw AI PropTech", page_icon="🏢", layout="wide")
+st.markdown("""
+    <style>
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    header {visibility: hidden;}
+    </style>
+    """, unsafe_allow_html=True)
 
 if 'user_tier' not in st.session_state:
     st.session_state['user_tier'] = 'Free'
