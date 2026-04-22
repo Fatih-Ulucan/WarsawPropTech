@@ -33,7 +33,6 @@ except ImportError:
 
 st.set_page_config(page_title="Warsaw AI PropTech", page_icon="🏢", layout="wide")
 
-# --- UI/UX UPGRADE: Keskin Fontlar ve Genel Ayarlar ---
 st.markdown("""
     <style>
     #MainMenu {visibility: hidden;}
@@ -95,7 +94,6 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-# --- KAPSAMLI DIL (TRANSLATION) SOZLUĞU ---
 LANG_DICT = {
     "🇬🇧 EN": {
         "hero_title": "Warsaw Real Estate Intelligence",
@@ -240,7 +238,6 @@ LANG_DICT = {
     }
 }
 
-# --- TEMA VE DIL SECICISI (SAYFANIN EN USTU - SAG KÖŞE) ---
 col_space, col_lang, col_theme = st.columns([8, 1, 1])
 with col_lang:
     sel_lang = st.selectbox("🌐", ["🇬🇧 EN", "🇵🇱 PL", "🇹🇷 TR"], label_visibility="collapsed")
@@ -249,7 +246,6 @@ with col_theme:
 
 t = LANG_DICT[sel_lang]
 
-# --- GERCEK TEMA ENJEKSIYONU (SİYAH SİDEBAR VE EKRAN DÜZELTMESİ) ---
 if sel_theme == "🌙 Dark":
     st.markdown("""
     <style> 
@@ -293,29 +289,31 @@ if sel_theme == "🌙 Dark":
         text-shadow: none !important;
     }
     
-    /* İNPUT/GİRİŞ KUTULARI DÜZELTMESİ (Email, Şifre, Dropdown) */
+    /* İNPUT/GİRİŞ KUTULARI VE SELECTBOX WIDGETLARI (Karanlık Tema) */
     div[data-baseweb="input"] > div, div[data-baseweb="base-input"] { 
         background-color: #0F172A !important; 
-        border-color: #334155 !important; 
+        border: 1px solid #334155 !important; 
     }
     input[type="text"], input[type="password"] { 
-        color: #E2E8F0 !important; 
-        -webkit-text-fill-color: #E2E8F0 !important; 
+        color: #FFFFFF !important; 
+        -webkit-text-fill-color: #FFFFFF !important; 
     }
     
     div[data-baseweb="select"] > div { 
         background-color: #0F172A !important; 
-        border-color: #334155 !important; 
+        border: 1px solid #334155 !important; 
     }
-    div[data-baseweb="select"] span { color: #E2E8F0 !important; font-weight: 500 !important; }
-    ul[data-baseweb="menu"] { background-color: #0F172A !important; }
-    li[data-baseweb="menu-item"] { color: #E2E8F0 !important; }
+    div[data-baseweb="select"] span { color: #FFFFFF !important; font-weight: 500 !important; }
+    div[data-baseweb="select"] svg { fill: #FFFFFF !important; } /* Ok işaretleri */
+    
+    ul[data-baseweb="menu"] { background-color: #0F172A !important; border: 1px solid #334155 !important; }
+    li[data-baseweb="menu-item"] { color: #FFFFFF !important; }
     
     /* Butonlar */
     div.stButton > button { 
         background-color: #1E293B !important; 
         color: #FFFFFF !important; 
-        border-color: #334155 !important; 
+        border: 1px solid #334155 !important; 
     }
     div.stButton > button:hover { 
         border-color: #10B981 !important; 
@@ -363,9 +361,10 @@ elif sel_theme == "☀️ Light":
         text-shadow: none !important;
     }
     
+    /* İNPUT/GİRİŞ KUTULARI VE SELECTBOX WIDGETLARI (Açık Tema) */
     div[data-baseweb="input"] > div, div[data-baseweb="base-input"] { 
         background-color: #FFFFFF !important; 
-        border-color: #D1D5DB !important; 
+        border: 1px solid #D1D5DB !important; 
     }
     input[type="text"], input[type="password"] { 
         color: #000000 !important; 
@@ -374,16 +373,19 @@ elif sel_theme == "☀️ Light":
     
     div[data-baseweb="select"] > div { 
         background-color: #FFFFFF !important; 
-        border-color: #D1D5DB !important; 
+        border: 1px solid #D1D5DB !important; 
     }
     div[data-baseweb="select"] span { color: #000000 !important; font-weight: 500 !important; }
-    ul[data-baseweb="menu"] { background-color: #FFFFFF !important; }
+    div[data-baseweb="select"] svg { fill: #000000 !important; } /* Ok işaretleri */
+    
+    ul[data-baseweb="menu"] { background-color: #FFFFFF !important; border: 1px solid #D1D5DB !important;}
     li[data-baseweb="menu-item"] { color: #000000 !important; }
     
+    /* Butonlar */
     div.stButton > button { 
         background-color: #F3F4F6 !important; 
         color: #111827 !important; 
-        border-color: #D1D5DB !important; 
+        border: 1px solid #D1D5DB !important; 
     }
     div.stButton > button:hover { 
         border-color: #10B981 !important; 
@@ -606,7 +608,6 @@ def predict_future_prices(df):
         return result_df
     except Exception: return pd.DataFrame()
 
-# --- SIDEBAR (LOGIN & CONTROLS) ---
 if not st.session_state['logged_in']:
     st.sidebar.markdown("---")
     st.sidebar.header(t["sb_member"])
@@ -813,9 +814,8 @@ if not df.empty:
                     })
         map_df = pd.DataFrame(map_data)
 
-        # --- HARİTA DÜZELTMESİ ---
         current_map_style = "carto-darkmatter" if sel_theme == "🌙 Dark" else "carto-positron"
-        bg_col = "rgba(0,0,0,0)" # Arka plan tamamen şeffaf
+        bg_col = "rgba(0,0,0,0)" 
         font_col = "#FFFFFF" if sel_theme == "🌙 Dark" else "#000000"
 
         if not map_df.empty:
