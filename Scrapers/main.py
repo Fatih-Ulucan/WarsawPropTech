@@ -79,6 +79,11 @@ def start_engine():
 
         except Exception as e:
             logger.error(f"CRITICAL SYSTEM ERROR: {e}")
+            try:
+                error_msg = str(e)[:200] 
+                sniper.notif.send_message(f"🚨 <b>FATAL ENGINE ERROR:</b>\nMain loop crashed. Retrying in 60s.\n\n<i>Reason: {error_msg}</i>")
+            except:
+                pass
             time.sleep(60)
 
 if __name__ == "__main__":

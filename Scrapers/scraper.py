@@ -16,7 +16,7 @@ class OtodomSniper:
         self.ai = ai_analyzer
         self.notif = notifier
         self.ai_queue = []
-        self.stats = {"scanned": 0, "added": 0, "bargains": 0, "price_drops": 0, "start_time": datetime.now()}
+        self.stats = {"scanned": 0, "added": 0, "bargains": 0, "price_drops": 0, "error_count": 0, "errors": [], "start_time": datetime.now()}
 
     def normalize(self, text):
         return unicodedata.normalize('NFKD', text).encode('ascii', 'ignore').decode('utf-8').lower()
@@ -136,6 +136,34 @@ class OtodomSniper:
         logger.info("🧹 ZOMBIE CLEANUP: Initializing check for inactive listings...")
         pass
 
+    # --- UPGRADE: Telegram Batch Error Reporter ---
+    def send_mission_report(self):
+        duration = datetime.now() - self.stats["start_time"]
+        minutes = duration.total_seconds() / 60
+
+        report = (
+            f"📊 *MISSION AFTER-ACTION REPORT*\n"
+            f"⏱️ Duration: {minutes:.1f} mins\n"
+            f"🔍 Scanned: {self.stats['scanned']}\n"
+            f"✅ Added/Updated: {self.stats['added']}\n"
+            f"🔥 Bargains Found: {self.stats['bargains']}\n"
+            f"📉 Price Drops: {self.stats['price_drops']}\n\n"
+        )
+
+        if self.stats["error_count"] == 0:
+            report += "🟢 *Status: PERFECT EXECUTION* (0 Errors)"
+        else:
+            report += f"🔴 *Status: COMPLETED WITH ERRORS*\n❌ Total Errors: {self.stats['error_count']}\n\n⚠️ *Error Log (Sample):*\n"
+            for err in self.stats["errors"]:
+                report += f"- `{err}`\n"
+            if self.stats["error_count"] > len(self.stats["errors"]):
+                report += "...\n*(Remaining errors truncated to save space)*"
+
+        try:
+            self.notif.send_message(report)
+        except Exception as e:
+            logger.error(f"Failed to send mission report to Telegram: {e}")
+
     def run_mission(self):
         market_stats = self.db.get_market_averages()
         logger.info("INFO: Starting Mission in AI-POWERED SNIPER MODE...")
@@ -252,7 +280,6 @@ class OtodomSniper:
                                         row_id = existing.get('id')
                                         db_price = existing.get('price_pln')
 
-                                        # Update the last seen timestamp to keep it ACTIVE
                                         self.db.update_last_seen(row_id)
 
                                         update_payload = {}
@@ -363,8 +390,12 @@ class OtodomSniper:
                                     self.flush_queue(context)
 
                             except Exception as e:
+                                self.stats["error_count"] += 1
                                 logger.debug(f"⚠️ Listing processing skipped: {e}")
+                                if len(self.stats["errors"]) < 15:  
+                                    self.stats["errors"].append(f"Pg {page_num}, Itm {index + 1}: {str(e)[:60]}")
                                 continue
+
                     except Exception as e:
                         logger.error(f"ERROR: Page {page_num} failed: {e}")
 
@@ -373,4 +404,7 @@ class OtodomSniper:
             self.flush_queue(context)
             self.cleanup_dead_listings(context)
             browser.close()
+
+            self.send_mission_report()
+
             return self.stats
