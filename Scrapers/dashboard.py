@@ -639,7 +639,7 @@ else:
     if st.session_state['user_tier'] == 'Free':
         st.sidebar.markdown("---")
         st.sidebar.markdown(f"### {t['sb_unlock']}")
-        st.sidebar.link_button("💎 Upgrade to Premium (199 PLN/mo)", STRIPE_LINK, type="primary", use_container_width=True)
+        st.sidebar.link_button("💎 Upgrade to Premium (99 PLN/mo)", STRIPE_LINK, type="primary", use_container_width=True)
     if st.sidebar.button(t["sb_logout"], use_container_width=True):
         st.session_state['logged_in'] = False
         st.session_state['user_email'] = ""
