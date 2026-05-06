@@ -1,4 +1,4 @@
-﻿import os  
+﻿import os
 import re
 import random
 import logging
@@ -154,7 +154,11 @@ class OtodomSniper:
     def cleanup_dead_listings(self, context):
         """Checks for ACTIVE properties that haven't been seen in a while and marks them as SOLD."""
         logger.info("🧹 ZOMBIE CLEANUP: Initializing check for inactive listings...")
-        pass
+        try:
+            count = self.db.cleanup_old_listings(days_old=3)
+            logger.info(f"✅ ZOMBIE CLEANUP COMPLETE: {count} properties moved to SOLD archive.")
+        except Exception as e:
+            logger.error(f"❌ Error during cleanup: {e}")
 
     def send_mission_report(self):
         duration = datetime.now() - self.stats["start_time"]
@@ -451,7 +455,7 @@ class OtodomSniper:
             tracked_users = [row['user_email'] for row in response.data] if response.data else []
 
             if not tracked_users:
-                return 
+                return
 
             if alert_type == 'price_drop':
                 title = "🚨 Price Drop Alert!"

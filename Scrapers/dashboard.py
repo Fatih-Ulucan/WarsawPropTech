@@ -558,7 +558,6 @@ if not st.session_state['logged_in']:
 else:
     st.sidebar.success(f"👤 Logged in:\n{st.session_state['user_email']}")
 
-   
     try:
         notifs_response = supabase_client.table('user_notifications').select('*').eq('user_email', st.session_state['user_email']).eq('is_read', False).execute()
         if notifs_response.data:
@@ -571,7 +570,7 @@ else:
                 supabase_client.table('user_notifications').update({'is_read': True}).eq('user_email', st.session_state['user_email']).execute()
                 st.rerun()
     except Exception as e:
-        pass 
+        pass
 
     if st.session_state['user_tier'] == 'Free':
         st.sidebar.markdown("---")
@@ -637,12 +636,10 @@ if not df.empty:
     if districts: filtered_df = filtered_df[filtered_df['district'].isin(districts)]
     filtered_df = filtered_df.sort_values(by='price_per_sqm', ascending=True)
 
-    # --- HERO SECTION ---
     st.markdown('<div class="ai-badge">PropTech AI Engine v2.0</div>', unsafe_allow_html=True)
     st.markdown(f'<h1 class="hero-text">{t["hero_title"]}</h1>', unsafe_allow_html=True)
     st.markdown(f'<p class="sub-hero">{t["hero_sub"]}</p>', unsafe_allow_html=True)
 
-    # --- LIVE STATUS BAR ---
     st.markdown(
         f"""
         <div style="background-color: rgba(16, 185, 129, 0.05); padding: 12px 20px; border-radius: 8px; border: 1px solid rgba(16, 185, 129, 0.2); margin-bottom: 30px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
@@ -795,6 +792,7 @@ if not df.empty:
                         st.subheader(t["roi_top"])
                         roi_df = roi_df.sort_values(by='roi_percent', ascending=False)
                         display_roi = roi_df[['property_id', 'district', 'price_pln', 'est_monthly_rent', 'roi_percent', 'amortization_years', 'url_link']].copy()
+
                         if not is_premium:
                             display_roi['price_pln'] = "🔒 Locked"
                             display_roi['url_link'] = "🔒 Locked"
@@ -821,6 +819,7 @@ if not df.empty:
             if not history_df.empty and 'property_id' in filtered_df.columns:
                 history_df['price_pln'] = pd.to_numeric(history_df['price_pln'], errors='coerce')
                 history_df = history_df.sort_values(by=['property_id', 'created_at'])
+
                 first_prices = history_df.groupby('property_id')['price_pln'].first().rename('Old Price')
                 last_prices = history_df.groupby('property_id')['price_pln'].last().rename('Current Price')
                 drops = pd.concat([first_prices, last_prices], axis=1)
@@ -832,6 +831,7 @@ if not df.empty:
                 if not radar_df.empty:
                     radar_df = radar_df.sort_values(by='Discount (%)', ascending=False)
                     display_radar = radar_df[['property_id', 'district', 'Old Price', 'Current Price', 'Discount (PLN)', 'Discount (%)', 'price_per_sqm', 'url_link']].copy()
+
                     if not is_premium:
                         display_radar['Current Price'] = "🔒 Locked"
                         display_radar['Discount (PLN)'] = "🔒 Locked"
@@ -864,6 +864,7 @@ if not df.empty:
             loan_term = st.selectbox(t["calc_term"], [10, 15, 20, 25, 30], index=4)
             down_payment = prop_price * (down_payment_pct / 100)
             principal = prop_price - down_payment
+
             if principal > 0 and interest_rate > 0:
                 monthly_interest = (interest_rate / 100) / 12
                 num_payments = loan_term * 12
@@ -889,6 +890,7 @@ if not df.empty:
             hoa_fees = st.number_input(t["calc_hoa"], value=700, step=50)
             tax_rate = st.slider(t["calc_tax"], 0.0, 20.0, 8.5, 0.5)
             tax_amount = est_rent * (tax_rate / 100)
+
             net_cash_flow = est_rent - monthly_payment - hoa_fees - tax_amount
             if net_cash_flow >= 0: st.success(f"{t['calc_net']} +{net_cash_flow:,.0f} PLN 🤑")
             else: st.error(f"{t['calc_net']} {net_cash_flow:,.0f} PLN 🩸")
@@ -912,6 +914,7 @@ if not df.empty:
                                 st.markdown(t["fav_alert"])
                                 for pid, discount, new_price in drop_alerts: st.success(f"{t['fav_good']} (ID: {pid}) -> **-{discount:,.0f} PLN**! Current: **{new_price:,.0f} PLN**")
                                 st.markdown("---")
+
                     fav_df = df[df['property_id'].isin(user_fav_ids)].copy()
                     if fav_df.empty: st.warning(t["fav_sold"])
                     else:
@@ -931,6 +934,7 @@ if not df.empty:
                             "url_link": st.column_config.LinkColumn(t["th_link"], display_text="View 🔗") if is_premium else st.column_config.TextColumn(t["th_link"])
                         }
                         edited_my_favs = st.data_editor(display_fav, column_config=col_conf_fav, hide_index=True, use_container_width=True, disabled=["district", "price_pln", "sqm", "rooms", "price_per_sqm", "url_link"])
+
                         for i, row in edited_my_favs.iterrows():
                             if not row['❤️ Track']:
                                 toggle_favorite(st.session_state['user_email'], row['property_id'], False)
