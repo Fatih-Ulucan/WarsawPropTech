@@ -3,6 +3,9 @@ import requests
 import logging
 import time
 from datetime import datetime
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 
 logger = logging.getLogger(__name__)
 
@@ -127,4 +130,73 @@ def send_telegram_lead(name, email, phone, message, deal_type):
     except Exception as e:
         logger.error(f"❌ VIP Lead Telegram Network Failed: {e}")
         return False
-# 
+
+
+
+class EmailManager:
+    def __init__(self, sender_email, sender_password):
+        self.sender_email = sender_email
+        self.sender_password = sender_password
+
+    def send_user_email(self, to_email, subject, body_html):
+        """Sends an HTML email notification to a specific user."""
+        if not self.sender_email or not self.sender_password:
+            logger.error("❌ Email credentials missing. Cannot send email.")
+            return False
+
+        msg = MIMEMultipart()
+        msg['From'] = self.sender_email
+        msg['To'] = to_email
+        msg['Subject'] = subject
+        msg.attach(MIMEText(body_html, 'html'))
+
+        try:
+            server = smtplib.SMTP('smtp.gmail.com', 587)
+            server.starttls()
+            server.login(self.sender_email, self.sender_password)
+            server.send_message(msg)
+            server.quit()
+            logger.info(f"✅ EMAIL SENT SUCCESSFULLY TO: {to_email}")
+            return True
+        except Exception as e:
+            logger.error(f"❌ Email Sending Failed for {to_email}: {e}")
+            return False
+
+    def create_html_template(self, title, content_lines, property_url):
+        """Generates a professional, responsive HTML template for customer emails."""
+
+        content_html = "".join(f"<p style='margin: 10px 0;'>{line}</p>" for line in content_lines)
+
+        html = f"""
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        </head>
+        <body style="font-family: Arial, sans-serif; background-color: #f4f7f6; margin: 0; padding: 20px;">
+            <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+                <!-- Header -->
+                <div style="background: linear-gradient(135deg, #10B981 0%, #059669 100%); padding: 25px 20px; text-align: center;">
+                    <h2 style="color: #ffffff; margin: 0; font-size: 24px; letter-spacing: 0.5px;">{title}</h2>
+                </div>
+                
+                <!-- Body -->
+                <div style="padding: 30px 25px; color: #334155; font-size: 16px; line-height: 1.6;">
+                    {content_html}
+                    
+                    <div style="text-align: center; margin-top: 35px; margin-bottom: 15px;">
+                        <a href="{property_url}" style="background-color: #10B981; color: #ffffff; padding: 14px 28px; text-decoration: none; border-radius: 6px; font-weight: bold; font-size: 16px; display: inline-block;">View Property Details</a>
+                    </div>
+                </div>
+                
+                <!-- Footer -->
+                <div style="background-color: #f8fafc; padding: 20px; text-align: center; font-size: 13px; color: #94a3b8; border-top: 1px solid #e2e8f0;">
+                    <p style="margin: 0 0 10px 0;"><strong>Warsaw AI PropTech Engine</strong> &copy; {datetime.now().year}</p>
+                    <p style="margin: 0;">You received this email because you are tracking this property or it matches your VIP alert criteria.</p>
+                </div>
+            </div>
+        </body>
+        </html>
+        """
+        return html

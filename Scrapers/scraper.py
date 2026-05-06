@@ -1,4 +1,5 @@
-﻿import re
+﻿import os  
+import re
 import random
 import logging
 import time
@@ -7,6 +8,11 @@ import unicodedata
 from datetime import datetime
 from playwright.sync_api import sync_playwright
 from Scrapers.config import LOCATION_MAP, SCRAPE_TARGETS, USER_AGENTS, QUEUE_FLUSH_LIMIT
+
+try:
+    from Scrapers.notifier import EmailManager
+except ImportError:
+    pass
 
 logger = logging.getLogger(__name__)
 
@@ -17,6 +23,14 @@ class OtodomSniper:
         self.notif = notifier
         self.ai_queue = []
         self.stats = {"scanned": 0, "added": 0, "bargains": 0, "price_drops": 0, "error_count": 0, "errors": [], "start_time": datetime.now()}
+
+        try:
+            sender_email = os.environ.get("SENDER_EMAIL")
+            sender_password = os.environ.get("SENDER_PASSWORD")
+            self.email_manager = EmailManager(sender_email, sender_password)
+        except Exception as e:
+            logger.warning(f"Email Manager failed to initialize (Missing env variables?): {e}")
+            self.email_manager = None
 
     def normalize(self, text):
         return unicodedata.normalize('NFKD', text).encode('ascii', 'ignore').decode('utf-8').lower()
@@ -126,6 +140,12 @@ class OtodomSniper:
 
             alert = item['alert_template'].format(ai_report=ai_report, contact_phone=contact_phone)
             self.notif.send_message(alert)
+
+            try:
+                self._notify_users(item, ai_report)
+            except Exception as e:
+                logger.error(f"❌ Error occurred while sending user notifications: {e}")
+
             time.sleep(4)
 
         detail_page.close()
@@ -136,7 +156,6 @@ class OtodomSniper:
         logger.info("🧹 ZOMBIE CLEANUP: Initializing check for inactive listings...")
         pass
 
-    # --- UPGRADE: Telegram Batch Error Reporter ---
     def send_mission_report(self):
         duration = datetime.now() - self.stats["start_time"]
         minutes = duration.total_seconds() / 60
@@ -316,7 +335,10 @@ class OtodomSniper:
                                                 self.ai_queue.append({
                                                     'url': full_url,
                                                     'alert_template': alert_template,
-                                                    'category': target['label']
+                                                    'category': target['label'],
+                                                    'property_id': property_id,
+                                                    'alert_type': 'price_drop',
+                                                    'data': drop_data
                                                 })
 
                                         if update_payload:
@@ -383,7 +405,10 @@ class OtodomSniper:
                                     self.ai_queue.append({
                                         'url': full_url,
                                         'alert_template': alert_template,
-                                        'category': target['label']
+                                        'category': target['label'],
+                                        'property_id': property_id,
+                                        'alert_type': 'bargain',
+                                        'data': deal_data
                                     })
 
                                 if len(self.ai_queue) >= QUEUE_FLUSH_LIMIT:
@@ -392,7 +417,7 @@ class OtodomSniper:
                             except Exception as e:
                                 self.stats["error_count"] += 1
                                 logger.debug(f"⚠️ Listing processing skipped: {e}")
-                                if len(self.stats["errors"]) < 15:  
+                                if len(self.stats["errors"]) < 15:
                                     self.stats["errors"].append(f"Pg {page_num}, Itm {index + 1}: {str(e)[:60]}")
                                 continue
 
@@ -408,3 +433,58 @@ class OtodomSniper:
             self.send_mission_report()
 
             return self.stats
+
+    def _notify_users(self, item, ai_report):
+        """This function only sends emails and in-site UI notifications to users. It does not interfere with the original Telegram logic."""
+        if not hasattr(self.db, 'client'):
+            return
+
+        property_id = item.get('property_id')
+        alert_type = item.get('alert_type')
+        data = item.get('data')
+
+        if not property_id or not alert_type:
+            return
+
+        try:
+            response = self.db.client.table('favorites').select('user_email').eq('property_id', property_id).execute()
+            tracked_users = [row['user_email'] for row in response.data] if response.data else []
+
+            if not tracked_users:
+                return 
+
+            if alert_type == 'price_drop':
+                title = "🚨 Price Drop Alert!"
+                msg_ui = f"Discount! Property ID {property_id} dropped by {data['drop_amount']} PLN to {data['current_price']} PLN."
+                content_lines = [
+                    f"Great news! A property you are tracking has a new price.",
+                    f"<b>Location:</b> {data['location']}",
+                    f"<b>Old Price:</b> {data['db_price']} PLN",
+                    f"<b>New Price:</b> {data['current_price']} PLN",
+                    f"<b>Discount:</b> -{data['drop_amount']} PLN",
+                    f"<b>AI Note:</b> {ai_report}"
+                ]
+            elif alert_type == 'bargain':
+                title = "🔥 VIP Deal Found!"
+                msg_ui = f"Hot deal found! {data['clean_price']} PLN in {data['location']} (Margin: {data['profit_margin']}%)"
+                content_lines = [
+                    f"We found a highly profitable property matching your criteria.",
+                    f"<b>Location:</b> {data['location']}",
+                    f"<b>Price:</b> {data['clean_price']} PLN",
+                    f"<b>Profit Margin:</b> {data['profit_margin']}%",
+                    f"<b>AI Note:</b> {ai_report}"
+                ]
+            else:
+                return
+
+            if self.email_manager:
+                html_body = self.email_manager.create_html_template(title, content_lines, item['url'])
+
+            for email in tracked_users:
+                self.db.add_notification(email, msg_ui)
+
+                if self.email_manager:
+                    self.email_manager.send_user_email(email, title, html_body)
+
+        except Exception as e:
+            logger.error(f"❌ User Notification Error: {e}")

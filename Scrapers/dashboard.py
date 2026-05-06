@@ -10,6 +10,8 @@ import plotly.express as px
 import numpy as np
 from sklearn.linear_model import LinearRegression
 
+from supabase import create_client, Client
+
 current_dir = Path(__file__).resolve().parent
 project_root = current_dir.parent
 sys.path.append(str(project_root))
@@ -39,13 +41,13 @@ st.markdown("""
     footer {visibility: hidden;}
     header {visibility: hidden;}
     
-    /* Tüm site için anti-aliasing (Yazıların titremesini/parlamasını engeller) */
+    /* Anti-aliasing */
     * {
         -webkit-font-smoothing: antialiased !important;
         -moz-osx-font-smoothing: grayscale !important;
     }
     
-    /* Metric Card Upgrade - Daha Net Okunabilirlik */
+    /* Metric Card Upgrade */
     div[data-testid="stMetricValue"] {
         font-size: 28px;
         font-weight: 800;
@@ -87,7 +89,7 @@ st.markdown("""
         box-shadow: 0 2px 5px rgba(0,0,0,0.2);
     }
     
-    /* Top Right Selectors Ayarı */
+    /* Top Right Selectors */
     [data-testid="stHorizontalBlock"] {
         align-items: center;
     }
@@ -251,74 +253,35 @@ if sel_theme == "🌙 Dark":
     <style> 
     [data-testid="stAppViewContainer"] { background-color: #0E1117 !important; } 
     [data-testid="stSidebar"] { background-color: #000000 !important; } 
-    
-    /* --- ANA EKRAN GÖRÜNMEYEN YAZILARI DÜZELTME --- */
     .hero-text { color: #F8FAFC !important; }
     .sub-hero { color: #E2E8F0 !important; }
-    
     [data-testid="stAppViewContainer"] h1,
     [data-testid="stAppViewContainer"] h2,
     [data-testid="stAppViewContainer"] h3,
-    [data-testid="stAppViewContainer"] h4 {
-        color: #F8FAFC !important;
-    }
-    
-    /* Ana metinler (Renkli uyarı kutuları hariç tutularak beyaza çekilir) */
+    [data-testid="stAppViewContainer"] h4 { color: #F8FAFC !important; }
     div[data-testid="stAppViewContainer"] .stMarkdown p { color: #E2E8F0; }
     div[data-testid="stAlert"] .stMarkdown p { color: inherit !important; }
-    
     [data-testid="stCaptionContainer"] p { color: #94A3B8 !important; }
-    
-    /* Tab başlıkları */
     button[data-baseweb="tab"] p, button[data-baseweb="tab"] div { color: #F8FAFC !important; }
-    
-    /* Metrik açıklamaları */
     [data-testid="stMetricLabel"] > div > div > p { color: #94A3B8 !important; }
-    
-    /* Expander başlıkları */
     summary p { color: #F8FAFC !important; }
-
-    /* Sidebar Metinleri */
     [data-testid="stSidebar"] label, [data-testid="stSidebar"] p, [data-testid="stSidebar"] div { 
-        color: #E2E8F0 !important; 
-        font-weight: 500 !important; 
-        text-shadow: none !important;
+        color: #E2E8F0 !important; font-weight: 500 !important; text-shadow: none !important;
     }
     [data-testid="stSidebar"] h1, [data-testid="stSidebar"] h2, [data-testid="stSidebar"] h3 { 
-        color: #FFFFFF !important; 
-        text-shadow: none !important;
+        color: #FFFFFF !important; text-shadow: none !important;
     }
-    
-    /* İNPUT/GİRİŞ KUTULARI VE SELECTBOX WIDGETLARI (Karanlık Tema) */
     div[data-baseweb="input"] > div, div[data-baseweb="base-input"] { 
-        background-color: #0F172A !important; 
-        border: 1px solid #334155 !important; 
+        background-color: #0F172A !important; border: 1px solid #334155 !important; 
     }
-    input[type="text"], input[type="password"] { 
-        color: #FFFFFF !important; 
-        -webkit-text-fill-color: #FFFFFF !important; 
-    }
-    
-    div[data-baseweb="select"] > div { 
-        background-color: #0F172A !important; 
-        border: 1px solid #334155 !important; 
-    }
+    input[type="text"], input[type="password"] { color: #FFFFFF !important; -webkit-text-fill-color: #FFFFFF !important; }
+    div[data-baseweb="select"] > div { background-color: #0F172A !important; border: 1px solid #334155 !important; }
     div[data-baseweb="select"] span { color: #FFFFFF !important; font-weight: 500 !important; }
-    div[data-baseweb="select"] svg { fill: #FFFFFF !important; } /* Ok işaretleri */
-    
+    div[data-baseweb="select"] svg { fill: #FFFFFF !important; } 
     ul[data-baseweb="menu"] { background-color: #0F172A !important; border: 1px solid #334155 !important; }
     li[data-baseweb="menu-item"] { color: #FFFFFF !important; }
-    
-    /* Butonlar */
-    div.stButton > button { 
-        background-color: #1E293B !important; 
-        color: #FFFFFF !important; 
-        border: 1px solid #334155 !important; 
-    }
-    div.stButton > button:hover { 
-        border-color: #10B981 !important; 
-        color: #10B981 !important; 
-    }
+    div.stButton > button { background-color: #1E293B !important; color: #FFFFFF !important; border: 1px solid #334155 !important; }
+    div.stButton > button:hover { border-color: #10B981 !important; color: #10B981 !important; }
     </style>
     """, unsafe_allow_html=True)
 
@@ -327,70 +290,33 @@ elif sel_theme == "☀️ Light":
     <style> 
     [data-testid="stAppViewContainer"] { background-color: #FFFFFF !important; } 
     [data-testid="stSidebar"] { background-color: #F8F9FA !important; } 
-    
-    /* --- ANA EKRAN GÖRÜNMEYEN YAZILARI DÜZELTME (Açık Tema) --- */
     .hero-text { color: #0F172A !important; }
     .sub-hero { color: #334155 !important; }
-    
     [data-testid="stAppViewContainer"] h1,
     [data-testid="stAppViewContainer"] h2,
     [data-testid="stAppViewContainer"] h3,
-    [data-testid="stAppViewContainer"] h4 {
-        color: #0F172A !important;
-    }
-    
+    [data-testid="stAppViewContainer"] h4 { color: #0F172A !important; }
     div[data-testid="stAppViewContainer"] .stMarkdown p { color: #1E293B; }
     div[data-testid="stAlert"] .stMarkdown p { color: inherit !important; }
-    
     [data-testid="stCaptionContainer"] p { color: #64748B !important; }
-    
     button[data-baseweb="tab"] p, button[data-baseweb="tab"] div { color: #0F172A !important; }
-    
     [data-testid="stMetricLabel"] > div > div > p { color: #64748B !important; }
-    
     summary p { color: #0F172A !important; }
-
-    /* Sidebar Metinleri */
     [data-testid="stSidebar"] label, [data-testid="stSidebar"] p, [data-testid="stSidebar"] div { 
-        color: #1E293B !important; 
-        font-weight: 500 !important; 
-        text-shadow: none !important;
+        color: #1E293B !important; font-weight: 500 !important; text-shadow: none !important;
     }
     [data-testid="stSidebar"] h1, [data-testid="stSidebar"] h2, [data-testid="stSidebar"] h3 { 
-        color: #000000 !important; 
-        text-shadow: none !important;
+        color: #000000 !important; text-shadow: none !important;
     }
-    
-    /* İNPUT/GİRİŞ KUTULARI VE SELECTBOX WIDGETLARI (Açık Tema) */
-    div[data-baseweb="input"] > div, div[data-baseweb="base-input"] { 
-        background-color: #FFFFFF !important; 
-        border: 1px solid #D1D5DB !important; 
-    }
-    input[type="text"], input[type="password"] { 
-        color: #000000 !important; 
-        -webkit-text-fill-color: #000000 !important; 
-    }
-    
-    div[data-baseweb="select"] > div { 
-        background-color: #FFFFFF !important; 
-        border: 1px solid #D1D5DB !important; 
-    }
+    div[data-baseweb="input"] > div, div[data-baseweb="base-input"] { background-color: #FFFFFF !important; border: 1px solid #D1D5DB !important; }
+    input[type="text"], input[type="password"] { color: #000000 !important; -webkit-text-fill-color: #000000 !important; }
+    div[data-baseweb="select"] > div { background-color: #FFFFFF !important; border: 1px solid #D1D5DB !important; }
     div[data-baseweb="select"] span { color: #000000 !important; font-weight: 500 !important; }
-    div[data-baseweb="select"] svg { fill: #000000 !important; } /* Ok işaretleri */
-    
+    div[data-baseweb="select"] svg { fill: #000000 !important; } 
     ul[data-baseweb="menu"] { background-color: #FFFFFF !important; border: 1px solid #D1D5DB !important;}
     li[data-baseweb="menu-item"] { color: #000000 !important; }
-    
-    /* Butonlar */
-    div.stButton > button { 
-        background-color: #F3F4F6 !important; 
-        color: #111827 !important; 
-        border: 1px solid #D1D5DB !important; 
-    }
-    div.stButton > button:hover { 
-        border-color: #10B981 !important; 
-        color: #10B981 !important; 
-    }
+    div.stButton > button { background-color: #F3F4F6 !important; color: #111827 !important; border: 1px solid #D1D5DB !important; }
+    div.stButton > button:hover { border-color: #10B981 !important; color: #10B981 !important; }
     </style>
     """, unsafe_allow_html=True)
 
@@ -433,6 +359,7 @@ except Exception:
 if SUPABASE_URL and SUPABASE_KEY:
     SUPABASE_URL = SUPABASE_URL.strip()
     SUPABASE_KEY = SUPABASE_KEY.strip()
+    supabase_client: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 else:
     st.error("❌ CRITICAL ERROR: Supabase keys are missing! Check Streamlit Secrets or .env file.")
     st.stop()
@@ -452,32 +379,19 @@ def signup_user(email, password):
     return response
 
 def toggle_favorite(email, property_id, is_adding):
-    url = f"{SUPABASE_URL.strip('/')}/rest/v1/favorites"
-    headers = {
-        "apikey": SUPABASE_KEY,
-        "Authorization": f"Bearer {SUPABASE_KEY}",
-        "Content-Type": "application/json",
-        "Prefer": "return=minimal"
-    }
     try:
         if is_adding:
-            payload = {"user_email": email, "property_id": int(property_id)}
-            requests.post(url, headers=headers, json=payload, timeout=10)
+            supabase_client.table('favorites').insert({"user_email": email, "property_id": int(property_id)}).execute()
         else:
-            requests.delete(f"{url}?user_email=eq.{email}&property_id=eq.{int(property_id)}", headers=headers, timeout=10)
+            supabase_client.table('favorites').delete().eq('user_email', email).eq('property_id', int(property_id)).execute()
     except Exception as e:
         pass
 
 def get_user_favorites(email):
-    url = f"{SUPABASE_URL.strip('/')}/rest/v1/favorites?user_email=eq.{email}&select=property_id"
-    headers = {
-        "apikey": SUPABASE_KEY,
-        "Authorization": f"Bearer {SUPABASE_KEY}"
-    }
     try:
-        res = requests.get(url, headers=headers, timeout=10)
-        if res.status_code == 200:
-            return [item['property_id'] for item in res.json()]
+        res = supabase_client.table('favorites').select('property_id').eq('user_email', email).execute()
+        if res.data:
+            return [item['property_id'] for item in res.data]
     except Exception:
         return []
     return []
@@ -511,23 +425,28 @@ PROPERTY_TYPES = {
 
 @st.cache_data(ttl=300)
 def load_data(trans_id, type_id):
-    clean_url = SUPABASE_URL.strip("/")
-    headers = {"apikey": SUPABASE_KEY, "Authorization": f"Bearer {SUPABASE_KEY}", "Range-Unit": "items"}
     all_data = []
     limit = 1000
     offset = 0
     try:
         while True:
-            table_url = f"{clean_url}/rest/v1/listings?trans_id=eq.{trans_id}&type_id=eq.{type_id}&select=*&limit={limit}&offset={offset}"
-            response = requests.get(table_url, headers=headers, timeout=15)
-            if response.status_code == 200:
-                chunk = response.json()
-                if not chunk: break
-                all_data.extend(chunk)
-                if len(chunk) < limit: break
-                offset += limit
-            else: break
+            response = supabase_client.table('listings') \
+                .select('*') \
+                .eq('trans_id', trans_id) \
+                .eq('type_id', type_id) \
+                .range(offset, offset + limit - 1) \
+                .execute()
+
+            chunk = response.data
+            if not chunk:
+                break
+            all_data.extend(chunk)
+            if len(chunk) < limit:
+                break
+            offset += limit
+
         if not all_data: return pd.DataFrame()
+
         df = pd.DataFrame(all_data)
         df['district'] = df['loc_id'].map(REVERSE_LOCATION_MAP)
         df['price_pln'] = pd.to_numeric(df['price_pln'], errors='coerce')
@@ -550,22 +469,24 @@ def load_rent_averages(type_id):
 
 @st.cache_data(ttl=300)
 def load_price_history():
-    clean_url = SUPABASE_URL.strip("/")
-    headers = {"apikey": SUPABASE_KEY, "Authorization": f"Bearer {SUPABASE_KEY}", "Range-Unit": "items"}
     all_history = []
     limit = 1000
     offset = 0
     try:
         while True:
-            table_url = f"{clean_url}/rest/v1/price_history?select=property_id,price_pln,created_at&limit={limit}&offset={offset}"
-            response = requests.get(table_url, headers=headers, timeout=15)
-            if response.status_code == 200:
-                chunk = response.json()
-                if not chunk: break
-                all_history.extend(chunk)
-                if len(chunk) < limit: break
-                offset += limit
-            else: break
+            response = supabase_client.table('price_history') \
+                .select('property_id,price_pln,created_at') \
+                .range(offset, offset + limit - 1) \
+                .execute()
+
+            chunk = response.data
+            if not chunk:
+                break
+            all_history.extend(chunk)
+            if len(chunk) < limit:
+                break
+            offset += limit
+
         if not all_history: return pd.DataFrame()
         return pd.DataFrame(all_history)
     except Exception: return pd.DataFrame()
@@ -636,10 +557,27 @@ if not st.session_state['logged_in']:
                     st.sidebar.error(f"❌ {error_msg}")
 else:
     st.sidebar.success(f"👤 Logged in:\n{st.session_state['user_email']}")
+
+   
+    try:
+        notifs_response = supabase_client.table('user_notifications').select('*').eq('user_email', st.session_state['user_email']).eq('is_read', False).execute()
+        if notifs_response.data:
+            st.sidebar.markdown("---")
+            st.sidebar.markdown("### 🔔 Notifications")
+            for alert in notifs_response.data:
+                st.sidebar.warning(alert['message'])
+
+            if st.sidebar.button("Mark All as Read", use_container_width=True):
+                supabase_client.table('user_notifications').update({'is_read': True}).eq('user_email', st.session_state['user_email']).execute()
+                st.rerun()
+    except Exception as e:
+        pass 
+
     if st.session_state['user_tier'] == 'Free':
         st.sidebar.markdown("---")
         st.sidebar.markdown(f"### {t['sb_unlock']}")
         st.sidebar.link_button("💎 Upgrade to Premium (99 PLN/mo)", STRIPE_LINK, type="primary", use_container_width=True)
+
     if st.sidebar.button(t["sb_logout"], use_container_width=True):
         st.session_state['logged_in'] = False
         st.session_state['user_email'] = ""
@@ -815,7 +753,7 @@ if not df.empty:
         map_df = pd.DataFrame(map_data)
 
         current_map_style = "carto-darkmatter" if sel_theme == "🌙 Dark" else "carto-positron"
-        bg_col = "rgba(0,0,0,0)" 
+        bg_col = "rgba(0,0,0,0)"
         font_col = "#FFFFFF" if sel_theme == "🌙 Dark" else "#000000"
 
         if not map_df.empty:
