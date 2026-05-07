@@ -1,8 +1,8 @@
-﻿import google.generativeai as genai
-import logging
+﻿import logging
 import time
 import io
 import requests
+import base64
 from PIL import Image
 from Scrapers.config import MAX_AI_CALLS
 
@@ -13,19 +13,20 @@ class GeminiAnalyzer:
         self.api_key = api_key
         self.ai_calls_made = 0
         if api_key:
-            genai.configure(api_key=self.api_key)
-            self.model = genai.GenerativeModel('models/gemini-2.5-flash')
+            self.text_model = "llama-3.3-70b-versatile"
+            self.vision_model = "llama-3.2-90b-vision-preview" # Fotoğraf analizi için Groq Vision
+            self.api_url = "https://api.groq.com/openai/v1/chat/completions"
         else:
-            self.model = None
-            logger.warning("⚠️ GEMINI_API_KEY not found. AI Analysis will be skipped.")
+            self.api_key = None
+            logger.warning("⚠️ API_KEY not found. AI Analysis will be skipped.")
 
     def reset_counter(self):
         """Resets the daily/batch call counter."""
         self.ai_calls_made = 0
 
     def analyze_description(self, description, category="Apartment - Sale"):
-        """Sends property description to Gemini and returns a 5-point investment report based on category."""
-        if not self.model:
+        """Sends property description to Groq and returns a 5-point investment report based on category."""
+        if not self.api_key:
             return "AI Analysis unavailable."
 
         if self.ai_calls_made >= MAX_AI_CALLS:
@@ -71,9 +72,16 @@ class GeminiAnalyzer:
         Provide 5 short bullet points in English. Max 600 chars.
         Description: {description[:3500]}
         """
+            headers = {"Authorization": f"Bearer {self.api_key}", "Content-Type": "application/json"}
+            payload = {
+                "model": self.text_model,
+                "messages": [{"role": "user", "content": prompt}]
+            }
 
-            response = self.model.generate_content(prompt)
-            text = response.text.strip()
+            response = requests.post(self.api_url, headers=headers, json=payload, timeout=15)
+            response.raise_for_status()
+
+            text = response.json()['choices'][0]['message']['content'].strip()
 
             if text:
                 self.ai_calls_made += 1
@@ -86,8 +94,8 @@ class GeminiAnalyzer:
             return "AI Analysis failed."
 
     def analyze_with_vision(self, description, image_urls, category="Apartment - Sale"):
-        """Sends description AND property photos to Gemini for a visual flip analysis."""
-        if not self.model:
+        """Sends description AND property photos to Groq Vision for a visual flip analysis."""
+        if not self.api_key:
             return "AI Analysis unavailable."
 
         if self.ai_calls_made >= MAX_AI_CALLS:
@@ -100,8 +108,9 @@ class GeminiAnalyzer:
             try:
                 response = requests.get(url, timeout=5)
                 if response.status_code == 200:
-                    img = Image.open(io.BytesIO(response.content))
-                    images_to_analyze.append(img)
+                    base64_img = base64.b64encode(response.content).decode('utf-8')
+                    img_data_url = f"data:image/jpeg;base64,{base64_img}"
+                    images_to_analyze.append(img_data_url)
             except Exception as e:
                 logger.error(f"❌ Resim indirme hatası: {e}")
 
@@ -148,9 +157,23 @@ class GeminiAnalyzer:
             Provide 3 short, punchy bullet points in English. Max 500 chars.
             """
 
-            payload = [prompt] + images_to_analyze
-            response = self.model.generate_content(payload)
-            text = response.text.strip()
+            content_parts = [{"type": "text", "text": prompt}]
+            for img_data in images_to_analyze:
+                content_parts.append({
+                    "type": "image_url",
+                    "image_url": {"url": img_data}
+                })
+
+            headers = {"Authorization": f"Bearer {self.api_key}", "Content-Type": "application/json"}
+            payload = {
+                "model": self.vision_model,
+                "messages": [{"role": "user", "content": content_parts}]
+            }
+
+            response = requests.post(self.api_url, headers=headers, json=payload, timeout=20)
+            response.raise_for_status()
+
+            text = response.json()['choices'][0]['message']['content'].strip()
 
             if text:
                 self.ai_calls_made += 1

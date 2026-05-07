@@ -42,14 +42,17 @@ def initialize_system():
     SUPABASE_KEY = os.getenv("SUPABASE_KEY")
     TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN")
     TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
-    GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+
+    GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 
     if not SUPABASE_URL or not TELEGRAM_TOKEN:
         logger.error(f"❌ CRITICAL ERROR: Missing environment variables! URL: {SUPABASE_URL}")
         sys.exit()
 
     db = SupabaseManager(SUPABASE_URL, SUPABASE_KEY)
-    ai = GeminiAnalyzer(GEMINI_API_KEY)
+
+    ai = GeminiAnalyzer(GROQ_API_KEY)
+
     bot = TelegramBot(TELEGRAM_TOKEN, TELEGRAM_CHAT_ID)
 
     return OtodomSniper(db, ai, bot)
@@ -80,7 +83,7 @@ def start_engine():
         except Exception as e:
             logger.error(f"CRITICAL SYSTEM ERROR: {e}")
             try:
-                error_msg = str(e)[:200] 
+                error_msg = str(e)[:200]
                 sniper.notif.send_message(f"🚨 <b>FATAL ENGINE ERROR:</b>\nMain loop crashed. Retrying in 60s.\n\n<i>Reason: {error_msg}</i>")
             except:
                 pass
