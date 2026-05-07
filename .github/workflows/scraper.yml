@@ -23,6 +23,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
+          python -m pip install supabase
           python -m playwright install chromium
 
       - name: Run Warsaw Market Analysis
@@ -41,5 +42,5 @@ jobs:
         run: |
           curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendMessage" \
           -d chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" \
-          -d text="🚨 *KRİTİK HATA:* Warsaw PropTech botu tamamen çöktü! Sistem 12 saatlik devriyesini tamamlayamadı. Lütfen GitHub Actions loglarını kontrol et." \
+          -d text="🚨 *CRITICAL ERROR:* Warsaw PropTech bot has completely crashed! The system failed to complete its 12-hour patrol. Please check the GitHub Actions logs." \
           -d parse_mode="Markdown"

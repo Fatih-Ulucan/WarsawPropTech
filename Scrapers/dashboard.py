@@ -12,6 +12,9 @@ from sklearn.linear_model import LinearRegression
 
 from supabase import create_client, Client
 
+# --- 1. EXPANDER LINKI TANIMLA ---
+EXPANDER_LINK = "https://proptech.produktyfinansowe.pl/e/lead/327?source=lt"
+
 current_dir = Path(__file__).resolve().parent
 project_root = current_dir.parent
 sys.path.append(str(project_root))
@@ -218,7 +221,7 @@ LANG_DICT = {
         "th_old": "Eski Fiyat", "th_cur": "Mevcut Fiyat", "th_disc": "İndirim", "th_disc_pct": "İndirim %",
         "drop_none": "Seçilen filtrelerde yakın zamanda fiyat düşüşü bulunamadı.",
         "calc_sub": "Yerel piyasa oranlarını kullanarak finansal senaryolarınızı ve nakit akışınızı simüle edin.",
-        "calc_mort": "### 🏦 Mortgage Hesaplayıcı", "calc_prop": "Mülk Fiyatı (PLN)", "calc_down": "Peşinat (%)",
+        "calc_mort": "### 🏦 Konut Kredisi Hesaplayıcı", "calc_prop": "Mülk Fiyatı (PLN)", "calc_down": "Peşinat (%)",
         "calc_int": "Yıllık Faiz Oranı (%)", "calc_term": "Kredi Süresi (Yıl)", "calc_req_down": "**Gereken Peşinat:**",
         "calc_est_inst": "**Tahmini Aylık Taksit:**", "calc_reno": "### 🛠️ Yenileme (Flip) Maliyeti",
         "calc_size": "Mülk Boyutu (m²)", "calc_qual": "Yenileme Kalitesi (Varşova Tahmini)",
@@ -709,6 +712,16 @@ if not df.empty:
             if not chart_data.empty: st.area_chart(chart_data)
             else: st.info("No data available.")
 
+        # --- EXPANDER VIP KARTI (Tablo Öncesi) ---
+        st.markdown(f"""
+            <div style="background-color: rgba(255, 193, 7, 0.1); padding: 18px; border-radius: 12px; border: 1px solid #FFC107; margin-bottom: 20px;">
+                <h4 style="color: #FFC107; margin-top: 0;">🏆 Polonya'nın En İyi Kredi Teklifini Bulun</h4>
+                <p style="font-size: 14px; margin-bottom: 15px;"><b>Expander</b> uzmanları 20+ bankayı sizin için ücretsiz karşılaştırsın, en düşük faizli konut kredisini yakalayın.</p>
+            </div>
+        """, unsafe_allow_html=True)
+        st.link_button("🏢 Ücretsiz Uzman Danışmanlığı Al (20+ Banka) ➡️", EXPANDER_LINK, type="primary", use_container_width=True)
+        st.markdown("<br>", unsafe_allow_html=True)
+
         display_df = filtered_df[['property_id', 'district', 'price_pln', 'sqm', 'rooms', 'price_per_sqm', 'url_link', 'status']].copy()
         if st.session_state['logged_in']:
             display_df['❤️ Track'] = display_df['property_id'].isin(user_fav_ids)
@@ -873,6 +886,11 @@ if not df.empty:
             else: monthly_payment = 0
             st.info(f"{t['calc_req_down']} {down_payment:,.0f} PLN")
             st.success(f"{t['calc_est_inst']} {monthly_payment:,.0f} PLN")
+
+            # --- EXPANDER LINKI (Kalkülatör Altına) ---
+            st.markdown("---")
+            st.link_button("🏦 Expander: En Uygun Kredi Limitini Sorgula ➡️", EXPANDER_LINK, type="primary", use_container_width=True)
+            st.caption("ℹ️ Expander uzmanları 20 bankadan sizin için en iyi teklifi ücretsiz bulur.")
 
         with calc_col2:
             st.markdown(t["calc_reno"])
