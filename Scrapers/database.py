@@ -3,7 +3,7 @@ import requests
 import logging
 import time
 import urllib.parse
-from datetime import datetime
+from datetime import datetime, timedelta
 from supabase import create_client, Client
 from Scrapers.config import CACHE_TTL
 
@@ -98,23 +98,41 @@ class SupabaseManager:
             pass
 
     def update_last_seen(self, row_id):
-        """Updates the 'updated_at' timestamp and ensures status is ACTIVE."""
-        current_time = datetime.utcnow().isoformat()
+        """Updates the 'updated_at' timestamp safely with UTC format and ensures status is ACTIVE."""
+        current_time = datetime.utcnow().isoformat() + "Z"
         try:
-            self.client.table('listings').update({"updated_at": current_time, "status": "ACTIVE"}).eq('id', row_id).execute()
+            self.client.table('listings').update({
+                "updated_at": current_time,
+                "status": "ACTIVE",
+                "is_active": True
+            }).eq('id', row_id).execute()
         except Exception as e:
             logger.error(f"Last Seen Update Error: {e}")
 
+    def cleanup_old_listings(self, days_old=1):
+        """Marks listings as SOLD if they haven't been updated in 'days_old' days."""
+        cutoff_time = (datetime.utcnow() - timedelta(days=days_old)).isoformat() + "Z"
+        current_time = datetime.utcnow().isoformat() + "Z"
+        try:
+            response = self.client.table('listings').update({
+                "status": "SOLD",
+                "is_active": False,
+                "sold_date": current_time
+            }).eq('is_active', True).lt('updated_at', cutoff_time).execute()
+
+            return len(response.data) if response.data else 0
+        except Exception as e:
+            logger.error(f"Cleanup Error: {e}")
+            return 0
+
     def mark_as_sold(self, row_id):
         """Marks a listing as SOLD instead of deleting it to preserve historical data."""
-        current_time = datetime.utcnow().isoformat()
+        current_time = datetime.utcnow().isoformat() + "Z"
         try:
-            self.client.table('listings').update({"status": "SOLD", "sold_date": current_time}).eq('id', row_id).execute()
+            self.client.table('listings').update({"status": "SOLD", "sold_date": current_time, "is_active": False}).eq('id', row_id).execute()
             logger.info(f"🏷️ STATUS UPDATE: Listing ID {row_id} marked as SOLD.")
         except Exception as e:
             logger.error(f"Mark as Sold Error: {e}")
-
-  
 
     def add_notification(self, user_email, message):
         """
@@ -128,7 +146,7 @@ class SupabaseManager:
             "user_email": user_email,
             "message": message,
             "is_read": False,
-            "created_at": datetime.utcnow().isoformat()
+            "created_at": datetime.utcnow().isoformat() + "Z"
         }
         try:
             self.client.table('user_notifications').insert(payload).execute()

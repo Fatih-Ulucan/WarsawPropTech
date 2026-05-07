@@ -155,7 +155,7 @@ class OtodomSniper:
         """Checks for ACTIVE properties that haven't been seen in a while and marks them as SOLD."""
         logger.info("🧹 ZOMBIE CLEANUP: Initializing check for inactive listings...")
         try:
-            count = self.db.cleanup_old_listings(days_old=3)
+            count = self.db.cleanup_old_listings(days_old=1)
             logger.info(f"✅ ZOMBIE CLEANUP COMPLETE: {count} properties moved to SOLD archive.")
         except Exception as e:
             logger.error(f"❌ Error during cleanup: {e}")
