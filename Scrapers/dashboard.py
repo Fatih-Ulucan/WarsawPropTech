@@ -12,7 +12,6 @@ from sklearn.linear_model import LinearRegression
 
 from supabase import create_client, Client
 
-# --- 1. EXPANDER LINKI TANIMLA ---
 EXPANDER_LINK = "https://proptech.produktyfinansowe.pl/e/lead/327?source=lt"
 
 current_dir = Path(__file__).resolve().parent
@@ -145,7 +144,12 @@ LANG_DICT = {
         "for_unlock": "👑 Premium Unlocked! Viewing all future predictions.", "th_cur_avg": "Current Price/m²", "th_pred": "Predicted Price/m²", "th_grow": "Growth",
         "for_none": "Bot needs to scrape more data to build an accurate predictive model. Check back later!",
         "cd_sub": "Properties that were recently removed from the market (Likely sold). Use this data to analyze market speed.",
-        "cd_none": "No closed deals detected yet. Bot is monitoring removals...", "th_last": "Last Asking Price"
+        "cd_none": "No closed deals detected yet. Bot is monitoring removals...", "th_last": "Last Asking Price",
+        "vip_title": "🏆 Find the Best Mortgage Offer in Poland",
+        "vip_desc": "Let <b>Expander</b> experts compare 20+ banks for you free of charge and secure the lowest interest rate.",
+        "vip_btn": "🏢 Get Free Expert Advice (20+ Banks) ➡️",
+        "calc_exp_btn": "🏦 Expander: Check Your Best Mortgage Limit ➡️",
+        "calc_exp_sub": "ℹ️ Expander experts will find the best offer from 20 banks for you, completely free."
     },
     "🇵🇱 PL": {
         "hero_title": "Warszawska Inteligencja Nieruchomości",
@@ -192,7 +196,12 @@ LANG_DICT = {
         "for_unlock": "👑 Premium Odblokowane! Oglądasz wszystkie prognozy.", "th_cur_avg": "Obecna Cena/m²", "th_pred": "Przewidywana Cena/m²", "th_grow": "Wzrost",
         "for_none": "Bot musi zebrać więcej danych, aby zbudować dokładny model.",
         "cd_sub": "Nieruchomości, które zostały niedawno usunięte z rynku (Prawdopodobnie sprzedane).",
-        "cd_none": "Brak zamkniętych transakcji. Bot monitoruje rynek...", "th_last": "Ostatnia Cena Ofertowa"
+        "cd_none": "Brak zamkniętych transakcji. Bot monitoruje rynek...", "th_last": "Ostatnia Cena Ofertowa",
+        "vip_title": "🏆 Znajdź Najlepszą Ofertę Kredytową w Polsce",
+        "vip_desc": "Niech eksperci <b>Expander</b> bezpłatnie porównają dla Ciebie ponad 20 banków i znajdą najniższe oprocentowanie.",
+        "vip_btn": "🏢 Zdobądź Darmową Poradę Eksperta (20+ Banków) ➡️",
+        "calc_exp_btn": "🏦 Expander: Sprawdź Swój Limit Kredytowy ➡️",
+        "calc_exp_sub": "ℹ️ Eksperci Expander znajdą dla Ciebie najlepszą ofertę z 20 banków całkowicie za darmo."
     },
     "🇹🇷 TR": {
         "hero_title": "Varşova Emlak Zekası",
@@ -239,7 +248,12 @@ LANG_DICT = {
         "for_unlock": "👑 Premium Aktif! Tüm tahminleri görüntülüyorsunuz.", "th_cur_avg": "Mevcut Fiyat/m²", "th_pred": "Tahmini Fiyat/m²", "th_grow": "Büyüme",
         "for_none": "Modeli oluşturmak için botun daha fazla veri toplaması gerekiyor.",
         "cd_sub": "Yakın zamanda piyasadan kaldırılan (Büyük ihtimalle satılan) mülkler.",
-        "cd_none": "Henüz kapanan işlem tespit edilmedi. Bot izliyor...", "th_last": "Son İstenen Fiyat"
+        "cd_none": "Henüz kapanan işlem tespit edilmedi. Bot izliyor...", "th_last": "Son İstenen Fiyat",
+        "vip_title": "🏆 Polonya'nın En İyi Kredi Teklifini Bulun",
+        "vip_desc": "<b>Expander</b> uzmanları 20+ bankayı sizin için ücretsiz karşılaştırsın, en düşük faizli konut kredisini yakalayın.",
+        "vip_btn": "🏢 Ücretsiz Uzman Danışmanlığı Al (20+ Banka) ➡️",
+        "calc_exp_btn": "🏦 Expander: En Uygun Kredi Limitini Sorgula ➡️",
+        "calc_exp_sub": "ℹ️ Expander uzmanları 20 bankadan sizin için en iyi teklifi ücretsiz bulur."
     }
 }
 
@@ -712,14 +726,13 @@ if not df.empty:
             if not chart_data.empty: st.area_chart(chart_data)
             else: st.info("No data available.")
 
-        # --- EXPANDER VIP KARTI (Tablo Öncesi) ---
         st.markdown(f"""
             <div style="background-color: rgba(255, 193, 7, 0.1); padding: 18px; border-radius: 12px; border: 1px solid #FFC107; margin-bottom: 20px;">
-                <h4 style="color: #FFC107; margin-top: 0;">🏆 Polonya'nın En İyi Kredi Teklifini Bulun</h4>
-                <p style="font-size: 14px; margin-bottom: 15px;"><b>Expander</b> uzmanları 20+ bankayı sizin için ücretsiz karşılaştırsın, en düşük faizli konut kredisini yakalayın.</p>
+                <h4 style="color: #FFC107; margin-top: 0;">{t["vip_title"]}</h4>
+                <p style="font-size: 14px; margin-bottom: 15px;">{t["vip_desc"]}</p>
             </div>
         """, unsafe_allow_html=True)
-        st.link_button("🏢 Ücretsiz Uzman Danışmanlığı Al (20+ Banka) ➡️", EXPANDER_LINK, type="primary", use_container_width=True)
+        st.link_button(t["vip_btn"], EXPANDER_LINK, type="primary", use_container_width=True)
         st.markdown("<br>", unsafe_allow_html=True)
 
         display_df = filtered_df[['property_id', 'district', 'price_pln', 'sqm', 'rooms', 'price_per_sqm', 'url_link', 'status']].copy()
@@ -887,10 +900,9 @@ if not df.empty:
             st.info(f"{t['calc_req_down']} {down_payment:,.0f} PLN")
             st.success(f"{t['calc_est_inst']} {monthly_payment:,.0f} PLN")
 
-            # --- EXPANDER LINKI (Kalkülatör Altına) ---
             st.markdown("---")
-            st.link_button("🏦 Expander: En Uygun Kredi Limitini Sorgula ➡️", EXPANDER_LINK, type="primary", use_container_width=True)
-            st.caption("ℹ️ Expander uzmanları 20 bankadan sizin için en iyi teklifi ücretsiz bulur.")
+            st.link_button(t["calc_exp_btn"], EXPANDER_LINK, type="primary", use_container_width=True)
+            st.caption(t["calc_exp_sub"])
 
         with calc_col2:
             st.markdown(t["calc_reno"])
