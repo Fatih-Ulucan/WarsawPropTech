@@ -9,6 +9,7 @@ import io
 import plotly.express as px
 import numpy as np
 from sklearn.linear_model import LinearRegression
+import pydeck as pdk
 
 from supabase import create_client, Client
 
@@ -17,6 +18,19 @@ EXPANDER_LINK = "https://proptech.produktyfinansowe.pl/e/lead/327?source=lt"
 current_dir = Path(__file__).resolve().parent
 project_root = current_dir.parent
 sys.path.append(str(project_root))
+
+base_dir = current_dir.parent
+env_path = base_dir / ".env"
+
+if env_path.exists():
+    try:
+        with open(env_path, "r", encoding="utf-8-sig") as f:
+            clean_content = f.read()
+        load_dotenv(stream=io.StringIO(clean_content), override=True)
+    except Exception:
+        pass
+
+GOOGLE_MAPS_API_KEY = os.environ.get("GOOGLE_MAPS_API_KEY")
 
 try:
     from Scrapers.config import LOCATION_MAP
@@ -353,17 +367,6 @@ if "success" in st.query_params and st.query_params["success"] == "true":
     else:
         st.warning("⚠️ Payment received, but you are not logged in. Please log in to activate your Premium.")
 
-base_dir = current_dir.parent
-env_path = base_dir / ".env"
-
-if env_path.exists():
-    try:
-        with open(env_path, "r", encoding="utf-8-sig") as f:
-            clean_content = f.read()
-        load_dotenv(stream=io.StringIO(clean_content), override=True)
-    except Exception:
-        pass
-
 try:
     SUPABASE_URL = st.secrets.get("SUPABASE_URL", os.environ.get("SUPABASE_URL"))
     SUPABASE_KEY = st.secrets.get("SUPABASE_KEY", os.environ.get("SUPABASE_KEY"))
@@ -669,8 +672,7 @@ if not df.empty:
             </span>
         </div>
         <style> @keyframes blink {{ 0% {{opacity: 1;}} 50% {{opacity: 0.3;}} 100% {{opacity: 1;}} }} </style>
-        """, unsafe_allow_html=True
-    )
+        """, unsafe_allow_html=True)
 
     col1, col2, col3, col4 = st.columns(4)
 
@@ -762,29 +764,76 @@ if not df.empty:
             st.info("💡 **Log in to track properties and receive price drop alerts.**")
 
     with tab2:
-        st.subheader(t["tab2"])
-        map_data = []
-        map_price_key = 'Avg Total Price' if selected_trans_id == 1 else 'Avg Monthly Rent'
+        st.subheader("📍 District Intelligence & Location Analytics")
+
+        col_list, col_map = st.columns([2, 3])
+
+        # VERİ TEMİZLEME
+        analytics_data = []
         for district, group in filtered_df.groupby('district'):
             if district in DISTRICT_COORDS:
                 avg_sqm = group['price_per_sqm'].mean()
-                if pd.notna(avg_sqm):
-                    map_data.append({
-                        'District': district, 'Listings Count': len(group), 'Avg Price/m²': round(avg_sqm, 0),
-                        map_price_key: round(group['price_pln'].mean(), 0), 'lat': DISTRICT_COORDS[district]['lat'], 'lon': DISTRICT_COORDS[district]['lon']
+                if pd.notna(avg_sqm) and avg_sqm > 0:
+                    analytics_data.append({
+                        'District': district,
+                        'Avg Price/m²': int(avg_sqm),
+                        'Total Listings': len(group),
+                        'lat': float(DISTRICT_COORDS[district]['lat']),
+                        'lon': float(DISTRICT_COORDS[district]['lon'])
                     })
-        map_df = pd.DataFrame(map_data)
 
-        current_map_style = "carto-darkmatter" if sel_theme == "🌙 Dark" else "carto-positron"
-        bg_col = "rgba(0,0,0,0)"
-        font_col = "#FFFFFF" if sel_theme == "🌙 Dark" else "#000000"
+        df_summary = pd.DataFrame(analytics_data)
 
-        if not map_df.empty:
-            fig = px.scatter_mapbox(map_df, lat="lat", lon="lon", size="Listings Count", color="Avg Price/m²", hover_name="District", hover_data={"lat": False, "lon": False, map_price_key: True, "Listings Count": True}, color_continuous_scale=px.colors.sequential.Plasma, size_max=50, zoom=10, mapbox_style=current_map_style)
-            fig.update_layout(margin={"r":0,"t":40,"l":0,"b":0}, height=600, paper_bgcolor=bg_col, plot_bgcolor=bg_col, font=dict(color=font_col))
-            st.plotly_chart(fig, use_container_width=True)
-        else:
-            st.warning("Insufficient geographic data to render the map based on your current filters.")
+        with col_list:
+            st.markdown("### 📊 Market Rankings")
+            if not df_summary.empty:
+                st.dataframe(
+                    df_summary[['District', 'Avg Price/m²', 'Total Listings']].sort_values(by='Avg Price/m²', ascending=False),
+                    column_config={
+                        "Avg Price/m²": st.column_config.NumberColumn("Avg Price/m²", format="%d PLN"),
+                        "Total Listings": "Active Ads"
+                    },
+                    hide_index=True,
+                    use_container_width=True
+                )
+            else:
+                st.info("Awaiting market data filters...")
+
+        with col_map:
+            st.markdown("### 🗺️ Geographic Distribution")
+            if not df_summary.empty:
+                layer = pdk.Layer(
+                    "ScatterplotLayer",
+                    df_summary,
+                    get_position='[lon, lat]',
+                    get_fill_color=[16, 185, 129, 200], # Şık yeşil noktalar
+                    get_radius=500,
+                    pickable=True,
+                    auto_highlight=True
+                )
+
+                view_state = pdk.ViewState(
+                    latitude=52.2297,
+                    longitude=21.0122,
+                    zoom=10,
+                    pitch=0,
+                    bearing=0
+                )
+
+                # İŞTE BURASI: API KEY YOK, GOOGLE YOK! 
+                # Doğrudan PyDeck'in anahtarsız 'light' (CartoDB) motorunu kullanıyoruz.
+                r = pdk.Deck(
+                    layers=[layer],
+                    initial_view_state=view_state,
+                    map_style="light", # Bembeyaz ekranı bitiren sihirli kelime
+                    tooltip={
+                        "html": "<b>District:</b> {District}<br/><b>Price:</b> {Avg Price/m²} PLN/m²",
+                        "style": {"backgroundColor": "#0F172A", "color": "white", "fontFamily": "monospace"}
+                    }
+                )
+                st.pydeck_chart(r)
+            else:
+                st.warning("No geographic data available for current selection.")
 
     with tab3:
         st.subheader(t["tab3"])

@@ -5,6 +5,7 @@ import logging
 import time
 import urllib.parse
 import unicodedata
+import hashlib
 from datetime import datetime
 from playwright.sync_api import sync_playwright
 from Scrapers.config import LOCATION_MAP, SCRAPE_TARGETS, USER_AGENTS, QUEUE_FLUSH_LIMIT
@@ -66,10 +67,24 @@ class OtodomSniper:
 
             try:
                 response = detail_page.goto(item['url'], timeout=30000, wait_until="domcontentloaded")
-                if not response or response.status == 404 or "otodom.pl/pl/oferta/" not in detail_page.url:
+                current_url = detail_page.url
+
+                if not response or response.status == 404 or "otodom.pl/pl/oferta/" not in current_url:
                     if row_id:
                         self.db.mark_as_sold(row_id)
+                    logger.info(f"🧟 ZOMBIE KILLED (Redirect/404): {item['url']}")
                     continue
+
+                try:
+                    page_content = detail_page.locator('body').inner_text().lower()
+                    if "nie jest już dostępne" in page_content or "ogłoszenie nieaktualne" in page_content or "nie znaleziono strony" in page_content:
+                        if row_id:
+                            self.db.mark_as_sold(row_id)
+                        logger.info(f"🧟 ZOMBIE KILLED (Banner Detected): {item['url']}")
+                        continue
+                except Exception:
+                    pass
+
             except Exception:
                 logger.warning(f"⚠️ Could not reach {item['url']}, skipping for now.")
                 continue
@@ -110,10 +125,25 @@ class OtodomSniper:
                 logger.debug(f"⚠️ Phone button interaction failed: {e}")
 
             try:
-                detail_page.wait_for_selector('[data-cy="adPageAdDescription"]', timeout=5000)
-                description = detail_page.locator('[data-cy="adPageAdDescription"]').inner_text()
-            except:
-                description = detail_page.locator('body').inner_text()
+                desc_selectors = [
+                    '[data-cy="adPageAdDescription"]',
+                    '[data-testid="ad-description"]',
+                    '.css-1qzszy5'
+                ]
+                for selector in desc_selectors:
+                    if detail_page.locator(selector).count() > 0:
+                        description = detail_page.locator(selector).first.inner_text()
+                        break
+
+                if not description:
+                    if detail_page.locator('article').count() > 0:
+                        description = detail_page.locator('article').first.inner_text()
+            except Exception:
+                logger.debug("⚠️ Targeted description extraction failed, trying body fallback.")
+                try:
+                    description = detail_page.locator('body').inner_text()[:2500]
+                except:
+                    pass
 
             try:
                 images = detail_page.locator('picture source').all()
@@ -136,7 +166,7 @@ class OtodomSniper:
                     ai_report = self.ai.analyze_description(description, category=category)
                 self.db.mark_as_analyzed(item['url'])
             else:
-                ai_report = "AI Analysis unavailable (Source data missing)."
+                ai_report = "AI Analysis unavailable (Source data could not be extracted from page)."
 
             alert = item['alert_template'].format(ai_report=ai_report, contact_phone=contact_phone)
             self.notif.send_message(alert)
@@ -152,7 +182,6 @@ class OtodomSniper:
         self.ai_queue.clear()
 
     def cleanup_dead_listings(self, context):
-        """Checks for ACTIVE properties that haven't been seen in a while and marks them as SOLD."""
         logger.info("🧹 ZOMBIE CLEANUP: Initializing check for inactive listings...")
         try:
             count = self.db.cleanup_old_listings(days_old=1)
@@ -220,10 +249,11 @@ class OtodomSniper:
 
                     try:
                         page.goto(target_url, timeout=60000, wait_until="domcontentloaded")
+
                         try:
-                            page.wait_for_selector('[data-sentry-component="AdvertCard"]', timeout=10000)
+                            page.wait_for_selector('[data-cy="listing-item"], [data-testid="listing-item"], [data-sentry-component="AdvertCard"]', timeout=10000)
                         except:
-                            logger.info(f"🛑 SCAN COMPLETE: End of {target['label']}")
+                            logger.info(f"🛑 SCAN COMPLETE: End of {target['label']} or No Listings Found.")
                             break
 
                         for _ in range(3):
@@ -231,21 +261,53 @@ class OtodomSniper:
                             page.mouse.wheel(0, scroll_amount)
                             time.sleep(random.uniform(0.2, 0.6))
 
-                        all_listing = page.locator('[data-sentry-component="AdvertCard"]').all()
+                        all_listing = page.locator('[data-cy="listing-item"], [data-testid="listing-item"], [data-sentry-component="AdvertCard"]').all()
 
                         for index, listing in enumerate(all_listing):
                             self.stats["scanned"] += 1
                             try:
-                                raw_url = listing.locator('[data-cy="listing-item-link"]').first.get_attribute('href')
+                                raw_url = ""
+                                url_nodes = listing.locator('a[data-cy="listing-item-link"], a').all()
+                                if url_nodes:
+                                    raw_url = url_nodes[0].get_attribute('href')
+
                                 if not raw_url: continue
                                 full_url = raw_url if raw_url.startswith("http") else f"https://www.otodom.pl{raw_url.replace('/hpr','')}"
 
-                                prop_id_match = re.search(r'ID([^./?]+)', full_url)
-                                property_id = prop_id_match.group(1) if prop_id_match else None
+                                # DB KORUMASI 1: URL Sınırı. Reklam parametrelerini kesip atıyoruz.
+                                full_url = full_url.split('?')[0]
+
+                                prop_id_match = re.search(r'ID([A-Za-z0-9]+)(?:\.html|\?|$)', full_url)
+                                if prop_id_match:
+                                    property_id = prop_id_match.group(1)
+                                else:
+                                    fallback_match = re.search(r'-(\d{7,15})(?:\.html|\?|$)', full_url)
+                                    if fallback_match:
+                                        property_id = fallback_match.group(1)
+                                    else:
+                                        property_id = hashlib.md5(full_url.encode('utf-8')).hexdigest()[:12]
 
                                 card_text = listing.inner_text()
-                                location = listing.locator('[data-sentry-component="Address"]').first.inner_text()
-                                raw_price = listing.locator('[data-sentry-element="MainPrice"]').first.inner_text()
+
+                                location = ""
+                                loc_nodes = listing.locator('[data-sentry-component="Address"], p.css-19dke2r, p[data-testid="advert-card-address"]').all()
+                                if loc_nodes:
+                                    location = loc_nodes[0].inner_text()
+                                else:
+                                    for line in card_text.split('\n'):
+                                        if 'Warszawa' in line or 'mazowieckie' in line:
+                                            location = line
+                                            break
+                                    if not location:
+                                        location = card_text
+
+                                raw_price = ""
+                                price_nodes = listing.locator('[data-sentry-element="MainPrice"], span.css-1cwlsje, [data-testid="advert-card-price"]').all()
+                                if price_nodes:
+                                    raw_price = price_nodes[0].inner_text()
+                                else:
+                                    match = re.search(r'([\d\s]+(?:,[\d]+)?)\s*zł', card_text)
+                                    if match: raw_price = match.group(0)
 
                                 try:
                                     price_text = raw_price.split(',')[0].split('zł')[0]
@@ -256,21 +318,15 @@ class OtodomSniper:
                                 try:
                                     clean_text_for_area = re.sub(r'(\d)\s+(\d)', r'\1\2', card_text.replace('\xa0', ' ').lower())
                                     sqm_match = re.search(r'(\d+(?:[.,]\d+)?)\s*(?:m²|m2|m\s*kw|mkw)', clean_text_for_area)
-                                    ha_match = re.search(r'(\d+(?:[.,]\d+)?)\s*ha\b', clean_text_for_area)
-                                    ar_match = re.search(r'(\d+(?:[.,]\d+)?)\s*(?:ar|a)\b', clean_text_for_area)
-
                                     if sqm_match:
                                         sqm = float(sqm_match.group(1).replace(',', '.'))
-                                    elif ha_match:
-                                        sqm = float(ha_match.group(1).replace(',', '.')) * 10000
-                                    elif ar_match:
-                                        sqm = float(ar_match.group(1).replace(',', '.')) * 100
                                 except Exception: pass
 
-                                rooms_match = re.search(r'(\d+)\s*pok', card_text)
-                                rooms = int(rooms_match.group(1)) if rooms_match else None
+                                # DB KORUMASI 2: Regex geliştirildi (pok, pokoje, pokoi)
+                                rooms_match = re.search(r'(\d+)\s*(pok|pokoje|pokoi)', card_text.lower())
+                                rooms = int(rooms_match.group(1)) if rooms_match else 0
 
-                                price_per_sqm = round(clean_price / sqm, 2) if sqm and sqm > 0 else None
+                                price_per_sqm = round(clean_price / sqm, 2) if sqm and sqm > 0 else 0.0
                                 matched_loc_id = self.find_loc_id(location)
 
                                 agency_id = "Private/Unknown"
@@ -279,10 +335,16 @@ class OtodomSniper:
                                     if seller_info.count() > 0:
                                         raw_agency = seller_info.first.inner_text().strip()
                                         if raw_agency:
-                                            agency_id = raw_agency.replace('\n', ' - ')
+                                            agency_id = raw_agency.replace('\n', ' - ')[:50] # Veritabanı karakter sınırına takılmamak için 50'ye çektim
                                 except Exception: pass
 
-                                logger.info(f"[P:{page_num} - {index + 1}] 💰 {clean_price:,} PLN | 📏 {sqm}m² | 📍 Loc: {matched_loc_id}")
+                                # DB KORUMASI 3: NULL YASAK! Eksik verilere varsayılan "0" değeri atanır ki 400 hatası vermesin.
+                                clean_price = clean_price if clean_price else 0
+                                sqm = sqm if sqm else 0.0
+                                price_per_sqm = price_per_sqm if price_per_sqm else 0.0
+                                agency_id = agency_id if agency_id else "Unknown"
+
+                                logger.info(f"[P:{page_num} - {index + 1}] 💰 {clean_price:,} PLN | 📏 {sqm}m² | 🚪 {rooms}R | 📍 Loc: {matched_loc_id}")
 
                                 payload = {
                                     "price_pln": clean_price, "url_link": full_url, "source_platform": "Otodom",
@@ -293,6 +355,9 @@ class OtodomSniper:
                                 }
 
                                 db_status = self.db.save_listing(payload)
+
+                                if db_status not in [200, 201, 204, 409]:
+                                    logger.error(f"❌ SUPABASE REJECTION for {property_id} - HTTP Status: {db_status} - URL: {full_url}")
 
                                 if db_status in [200, 201, 204]:
                                     self.stats["added"] += 1
@@ -308,6 +373,7 @@ class OtodomSniper:
                                         update_payload = {}
                                         if not existing.get('property_id') and property_id: update_payload["property_id"] = property_id
                                         if not existing.get('agency_id') and agency_id: update_payload["agency_id"] = agency_id
+                                        if not existing.get('loc_id') and matched_loc_id: update_payload["loc_id"] = matched_loc_id
 
                                         if db_price and clean_price != db_price:
                                             update_payload["price_pln"] = clean_price
@@ -439,7 +505,6 @@ class OtodomSniper:
             return self.stats
 
     def _notify_users(self, item, ai_report):
-        """This function only sends emails and in-site UI notifications to users. It does not interfere with the original Telegram logic."""
         if not hasattr(self.db, 'client'):
             return
 

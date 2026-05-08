@@ -2,7 +2,6 @@
 import requests
 import logging
 import time
-import urllib.parse
 from datetime import datetime, timedelta
 from supabase import create_client, Client
 from Scrapers.config import CACHE_TTL
@@ -59,35 +58,53 @@ class SupabaseManager:
                     data["status"] = "ACTIVE"
 
                 response = requests.post(table_url, json=data, headers=self.headers, timeout=10)
+
+                if response.status_code not in [200, 201, 204, 409]:
+                    logger.error(f"❌ SUPABASE DB ERROR DETAILS: {response.text}")
+
                 return response.status_code
-            except Exception:
+            except Exception as e:
+                logger.error(f"Network exception in save_listing: {e}")
                 time.sleep(2)
         return None
 
     def log_price_history(self, property_id, price_pln):
         if not property_id or not price_pln: return
         try:
-            payload = {"property_id": property_id, "price_pln": price_pln}
-            self.client.table('price_history').insert(payload).execute()
-        except Exception:
-            pass
+            # Step 1: Find the actual listing_id from the listings table
+            res = self.client.table('listings').select('listing_id').eq('property_id', property_id).execute()
+            if res.data:
+                db_listing_id = res.data[0]['listing_id']
+
+                # Step 2: Insert into price_history using custom DB column names
+                payload = {
+                    "listing_id": db_listing_id,
+                    "new_price_pln": price_pln,
+                    "change_date": datetime.utcnow().isoformat() + "Z"
+                }
+                self.client.table('price_history').insert(payload).execute()
+        except Exception as e:
+            logger.error(f"❌ PRICE HISTORY DB ERROR: {e}")
 
     def check_existing_listing(self, full_url):
         try:
             response = self.client.table('listings') \
-                .select('id,price_pln,property_id,agency_id,ai_analyzed,alert_sent,status') \
+                .select('listing_id,price_pln,property_id,agency_id,ai_analyzed,alert_sent,status') \
                 .eq('url_link', full_url) \
                 .execute()
 
             if response.data:
-                return response.data[0]
-        except Exception:
-            pass
+                row = response.data[0]
+                # Map listing_id to id so the scraper logic continues working seamlessly
+                row['id'] = row['listing_id']
+                return row
+        except Exception as e:
+            logger.error(f"❌ CHECK LISTING (GET) ERROR: {e}")
         return None
 
     def update_listing(self, row_id, update_payload):
         try:
-            self.client.table('listings').update(update_payload).eq('id', row_id).execute()
+            self.client.table('listings').update(update_payload).eq('listing_id', row_id).execute()
         except Exception as e:
             logger.error(f"Price Update Check Error: {e}")
 
@@ -105,7 +122,7 @@ class SupabaseManager:
                 "updated_at": current_time,
                 "status": "ACTIVE",
                 "is_active": True
-            }).eq('id', row_id).execute()
+            }).eq('listing_id', row_id).execute()
         except Exception as e:
             logger.error(f"Last Seen Update Error: {e}")
 
@@ -129,7 +146,7 @@ class SupabaseManager:
         """Marks a listing as SOLD instead of deleting it to preserve historical data."""
         current_time = datetime.utcnow().isoformat() + "Z"
         try:
-            self.client.table('listings').update({"status": "SOLD", "sold_date": current_time, "is_active": False}).eq('id', row_id).execute()
+            self.client.table('listings').update({"status": "SOLD", "sold_date": current_time, "is_active": False}).eq('listing_id', row_id).execute()
             logger.info(f"🏷️ STATUS UPDATE: Listing ID {row_id} marked as SOLD.")
         except Exception as e:
             logger.error(f"Mark as Sold Error: {e}")

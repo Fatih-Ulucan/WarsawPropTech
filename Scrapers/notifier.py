@@ -62,7 +62,7 @@ class TelegramBot:
                          f"📐 <b>Size:</b> {drop_data['sqm']} m² | 🚪 <b>Rooms:</b> {drop_data['rooms']}\n" \
                          f"📈 <b>Margin vs Avg:</b> %{drop_data['profit_margin']}\n" \
                          f"━━━━━━━━━━━━━━━━━━━━\n" \
-                         f"🧠 <b>AI ANALYSIS (Gemini):</b>\n" \
+                         f"🧠 <b>PROPTECH AI ANALYSIS:</b>\n" \
                          f"{{ai_report}}\n" \
                          f"━━━━━━━━━━━━━━━━━━━━\n" \
                          f"📞 <b>Contact:</b> {{contact_phone}}\n" \
@@ -89,7 +89,7 @@ class TelegramBot:
             alert_template += f"🔮 <b>Est. ROI:</b> %{deal_data['roi_percent']} / Year\n"
 
         alert_template += f"━━━━━━━━━━━━━━━━━━━━\n" \
-                          f"🧠 <b>AI ANALYSIS (Gemini):</b>\n" \
+                          f"🧠 <b>PROPTECH AI ANALYSIS:</b>\n" \
                           f"{{ai_report}}\n" \
                           f"━━━━━━━━━━━━━━━━━━━━\n" \
                           f"📞 <b>Contact:</b> {{contact_phone}}\n" \
@@ -176,12 +176,10 @@ class EmailManager:
         </head>
         <body style="font-family: Arial, sans-serif; background-color: #f4f7f6; margin: 0; padding: 20px;">
             <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
-                <!-- Header -->
                 <div style="background: linear-gradient(135deg, #10B981 0%, #059669 100%); padding: 25px 20px; text-align: center;">
                     <h2 style="color: #ffffff; margin: 0; font-size: 24px; letter-spacing: 0.5px;">{title}</h2>
                 </div>
                 
-                <!-- Body -->
                 <div style="padding: 30px 25px; color: #334155; font-size: 16px; line-height: 1.6;">
                     {content_html}
                     
@@ -190,7 +188,6 @@ class EmailManager:
                     </div>
                 </div>
                 
-                <!-- Footer -->
                 <div style="background-color: #f8fafc; padding: 20px; text-align: center; font-size: 13px; color: #94a3b8; border-top: 1px solid #e2e8f0;">
                     <p style="margin: 0 0 10px 0;"><strong>Warsaw AI PropTech Engine</strong> &copy; {datetime.now().year}</p>
                     <p style="margin: 0;">You received this email because you are tracking this property or it matches your VIP alert criteria.</p>
