@@ -27,7 +27,6 @@ class TelegramBot:
         try:
             response = requests.post(self.api_url, json=payload, timeout=10)
             if response.status_code != 200:
-                # Exact log string from main
                 logger.error(f"❌ TELEGRAM API ERROR: {response.text}")
             else:
                 logger.info("✅ TELEGRAM MESSAGE SENT SUCCESSFULLY!")
@@ -49,7 +48,6 @@ class TelegramBot:
 
         self.send_message(report)
 
-
     def create_price_drop_alert(self, drop_data):
         """Exact string format from check_and_update_price for price drops."""
         alert_template = f"🚨 <b>PRICE DROP ALERT!</b> 🚨\n" \
@@ -65,7 +63,6 @@ class TelegramBot:
                          f"🧠 <b>PROPTECH AI ANALYSIS:</b>\n" \
                          f"{{ai_report}}\n" \
                          f"━━━━━━━━━━━━━━━━━━━━\n" \
-                         f"📞 <b>Contact:</b> {{contact_phone}}\n" \
                          f"🔗 <a href='{drop_data['full_url']}'>View Listing</a>"
         return alert_template
 
@@ -92,7 +89,6 @@ class TelegramBot:
                           f"🧠 <b>PROPTECH AI ANALYSIS:</b>\n" \
                           f"{{ai_report}}\n" \
                           f"━━━━━━━━━━━━━━━━━━━━\n" \
-                          f"📞 <b>Contact:</b> {{contact_phone}}\n" \
                           f"🔗 <a href='{deal_data['full_url']}'>View Listing</a>"
 
         return alert_template
@@ -130,7 +126,6 @@ def send_telegram_lead(name, email, phone, message, deal_type):
     except Exception as e:
         logger.error(f"❌ VIP Lead Telegram Network Failed: {e}")
         return False
-
 
 
 class EmailManager:

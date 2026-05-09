@@ -3,18 +3,20 @@ import time
 import io
 import requests
 import base64
+import os
 from PIL import Image
 from Scrapers.config import MAX_AI_CALLS
 
 logger = logging.getLogger(__name__)
 
 class GeminiAnalyzer:
-    def __init__(self, api_key):
-        self.api_key = api_key
+    def __init__(self, api_key=None):
+        self.api_key = api_key or os.getenv("API_KEY") or os.getenv("GROQ_API_KEY")
         self.ai_calls_made = 0
-        if api_key:
+
+        if self.api_key:
             self.text_model = "llama-3.3-70b-versatile"
-            self.vision_model = "llama-3.2-90b-vision-preview" # Fotoğraf analizi için Groq Vision
+            self.vision_model = "llama-3.2-90b-vision-preview"
             self.api_url = "https://api.groq.com/openai/v1/chat/completions"
         else:
             self.api_key = None
