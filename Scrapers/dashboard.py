@@ -413,182 +413,6 @@ def apply_limit(df, t_dict):
 
     return limited_df, is_limited
 
-@st.dialog("🔐 Login Portal")
-def show_login_modal():
-    st.text_input(t["sb_email"], key="mod_log_e")
-    st.text_input(t["sb_pass"], type="password", key="mod_log_p")
-
-    if st.button(t["sb_login"], use_container_width=True):
-        auth_email = st.session_state.mod_log_e.strip()
-        auth_password = st.session_state.mod_log_p
-        with st.spinner("Authenticating..."):
-            res = login_user(auth_email, auth_password)
-            if res.status_code == 200:
-                data = res.json()
-                st.session_state['logged_in'] = True
-                st.session_state['user_email'] = auth_email
-                st.session_state['access_token'] = data.get('access_token', '')
-                user_meta = data.get('user', {}).get('user_metadata', {})
-                st.session_state['user_fn'] = user_meta.get('first_name', '')
-                st.session_state['user_ln'] = user_meta.get('last_name', '')
-                if st.session_state.get('user_tier') != 'Premium':
-                    st.session_state['user_tier'] = 'Free'
-                st.rerun()
-            else:
-                st.error("❌ Invalid Email or Password.")
-
-    with st.expander(t["sb_forgot"]):
-        st.text_input(t["sb_email"], key="mod_fgt_e2")
-        if st.button("Send Reset Link", use_container_width=True):
-            forgot_email = st.session_state.mod_fgt_e2.strip()
-            if forgot_email:
-                with st.spinner("Processing..."):
-                    reset_password(forgot_email)
-                    st.success(f"✅ {t['msg_reset']}")
-            else:
-                st.error("❌ Please enter email.")
-
-@st.dialog("📝 Sign Up Portal")
-def show_signup_modal():
-    st.text_input(t["sb_fn"], key="mod_reg_fn")
-    st.text_input(t["sb_ln"], key="mod_reg_ln")
-    st.text_input(t["sb_email"], key="mod_reg_e")
-    st.text_input(t["sb_pass"], type="password", key="mod_reg_p")
-    st.text_input(t["sb_confirm"], type="password", key="mod_reg_c")
-
-    if st.button(t["sb_signup"], use_container_width=True):
-        auth_fn = st.session_state.mod_reg_fn.strip()
-        auth_ln = st.session_state.mod_reg_ln.strip()
-        auth_email_reg = st.session_state.mod_reg_e.strip()
-        auth_password_reg = st.session_state.mod_reg_p
-        auth_confirm = st.session_state.mod_reg_c
-
-        if len(auth_password_reg) < 8:
-            st.error(f"❌ {t['err_pass_len']}")
-        elif auth_password_reg != auth_confirm:
-            st.error(f"❌ {t['err_pass_match']}")
-        elif not auth_fn or not auth_ln:
-            st.error("❌ Names are required.")
-        else:
-            with st.spinner("Creating account..."):
-                res = signup_user(auth_email_reg, auth_password_reg, auth_fn, auth_ln)
-                if res.status_code == 200:
-                    st.success("✅ Registration successful! You can log in now.")
-                else:
-                    st.error("❌ Registration failed. Email may exist.")
-
-col_space, col_settings = st.columns([9, 2])
-with col_settings:
-    with st.popover(t["settings_menu"], use_container_width=True):
-        new_lang = st.selectbox("🌐 Language", ["🇬🇧 EN", "🇵🇱 PL", "🇹🇷 TR"], index=["🇬🇧 EN", "🇵🇱 PL", "🇹🇷 TR"].index(st.session_state['app_lang']), key="lang_sel")
-        new_theme = st.selectbox("🎨 Theme", ["Auto", "🌙 Dark", "☀️ Light"], index=["Auto", "🌙 Dark", "☀️ Light"].index(st.session_state['app_theme']), key="theme_sel")
-
-        if new_lang != st.session_state['app_lang'] or new_theme != st.session_state['app_theme']:
-            st.session_state['app_lang'] = new_lang
-            st.session_state['app_theme'] = new_theme
-            st.rerun()
-
-        if st.session_state['logged_in']:
-            st.divider()
-            st.markdown(f"**{t['prof_info']}**")
-            st.text_input(t["sb_fn"], value=st.session_state['user_fn'], key="upd_fn")
-            st.text_input(t["sb_ln"], value=st.session_state['user_ln'], key="upd_ln")
-            st.text_input(t["sb_email"], value=st.session_state['user_email'], disabled=True)
-            st.text_input(t["prof_sub"], value=f"{st.session_state['user_tier']} Plan", disabled=True)
-
-            if st.button(t["sb_update"], use_container_width=True):
-                fn_val = st.session_state.upd_fn.strip()
-                ln_val = st.session_state.upd_ln.strip()
-                if st.session_state.get('access_token'):
-                    with st.spinner("Updating..."):
-                        url = f"{os.environ.get('SUPABASE_URL', '').strip('/')}/auth/v1/user"
-                        headers = {
-                            "apikey": os.environ.get('SUPABASE_KEY', ''),
-                            "Authorization": f"Bearer {st.session_state['access_token']}",
-                            "Content-Type": "application/json"
-                        }
-                        payload = {"data": {"first_name": fn_val, "last_name": ln_val}}
-                        res = requests.put(url, headers=headers, json=payload)
-                        if res.status_code == 200:
-                            st.session_state['user_fn'] = fn_val
-                            st.session_state['user_ln'] = ln_val
-                            st.success(t["msg_updated"])
-                        else:
-                            st.error("Error updating profile.")
-
-sel_theme = st.session_state['app_theme']
-
-if sel_theme == "🌙 Dark":
-    st.markdown("""
-    <style> 
-    [data-testid="stAppViewContainer"] { background-color: #0E1117 !important; } 
-    [data-testid="stSidebar"] { background-color: #000000 !important; } 
-    .hero-text { color: #F8FAFC !important; }
-    .sub-hero { color: #E2E8F0 !important; }
-    [data-testid="stAppViewContainer"] h1,
-    [data-testid="stAppViewContainer"] h2,
-    [data-testid="stAppViewContainer"] h3,
-    [data-testid="stAppViewContainer"] h4 { color: #F8FAFC !important; }
-    div[data-testid="stAppViewContainer"] .stMarkdown p { color: #E2E8F0; }
-    div[data-testid="stAlert"] .stMarkdown p { color: inherit !important; }
-    [data-testid="stCaptionContainer"] p { color: #94A3B8 !important; }
-    button[data-baseweb="tab"] p, button[data-baseweb="tab"] div { color: #F8FAFC !important; }
-    [data-testid="stMetricLabel"] > div > div > p { color: #94A3B8 !important; }
-    summary p { color: #F8FAFC !important; }
-    [data-testid="stSidebar"] label, [data-testid="stSidebar"] p, [data-testid="stSidebar"] div { 
-        color: #E2E8F0 !important; font-weight: 500 !important; text-shadow: none !important;
-    }
-    [data-testid="stSidebar"] h1, [data-testid="stSidebar"] h2, [data-testid="stSidebar"] h3 { 
-        color: #FFFFFF !important; text-shadow: none !important;
-    }
-    div[data-baseweb="input"] > div, div[data-baseweb="base-input"] { 
-        background-color: #0F172A !important; border: 1px solid #334155 !important; 
-    }
-    input[type="text"], input[type="password"] { color: #FFFFFF !important; -webkit-text-fill-color: #FFFFFF !important; }
-    div[data-baseweb="select"] > div { background-color: #0F172A !important; border: 1px solid #334155 !important; }
-    div[data-baseweb="select"] span { color: #FFFFFF !important; font-weight: 500 !important; }
-    div[data-baseweb="select"] svg { fill: #FFFFFF !important; } 
-    ul[data-baseweb="menu"] { background-color: #0F172A !important; border: 1px solid #334155 !important; }
-    li[data-baseweb="menu-item"] { color: #FFFFFF !important; }
-    div.stButton > button { background-color: #1E293B !important; color: #FFFFFF !important; border: 1px solid #334155 !important; }
-    div.stButton > button:hover { border-color: #10B981 !important; color: #10B981 !important; }
-    </style>
-    """, unsafe_allow_html=True)
-elif sel_theme == "☀️ Light":
-    st.markdown("""
-    <style> 
-    [data-testid="stAppViewContainer"] { background-color: #FFFFFF !important; } 
-    [data-testid="stSidebar"] { background-color: #F8F9FA !important; } 
-    .hero-text { color: #0F172A !important; }
-    .sub-hero { color: #334155 !important; }
-    [data-testid="stAppViewContainer"] h1,
-    [data-testid="stAppViewContainer"] h2,
-    [data-testid="stAppViewContainer"] h3,
-    [data-testid="stAppViewContainer"] h4 { color: #0F172A !important; }
-    div[data-testid="stAppViewContainer"] .stMarkdown p { color: #1E293B; }
-    div[data-testid="stAlert"] .stMarkdown p { color: inherit !important; }
-    [data-testid="stCaptionContainer"] p { color: #64748B !important; }
-    button[data-baseweb="tab"] p, button[data-baseweb="tab"] div { color: #0F172A !important; }
-    [data-testid="stMetricLabel"] > div > div > p { color: #64748B !important; }
-    summary p { color: #0F172A !important; }
-    [data-testid="stSidebar"] label, [data-testid="stSidebar"] p, [data-testid="stSidebar"] div { 
-        color: #1E293B !important; font-weight: 500 !important; text-shadow: none !important;
-    }
-    [data-testid="stSidebar"] h1, [data-testid="stSidebar"] h2, [data-testid="stSidebar"] h3 { 
-        color: #000000 !important; text-shadow: none !important;
-    }
-    div[data-baseweb="input"] > div, div[data-baseweb="base-input"] { background-color: #FFFFFF !important; border: 1px solid #D1D5DB !important; }
-    input[type="text"], input[type="password"] { color: #000000 !important; -webkit-text-fill-color: #000000 !important; }
-    div[data-baseweb="select"] > div { background-color: #FFFFFF !important; border: 1px solid #D1D5DB !important; }
-    div[data-baseweb="select"] span { color: #000000 !important; font-weight: 500 !important; }
-    div[data-baseweb="select"] svg { fill: #000000 !important; } 
-    ul[data-baseweb="menu"] { background-color: #FFFFFF !important; border: 1px solid #D1D5DB !important;}
-    li[data-baseweb="menu-item"] { color: #000000 !important; }
-    div.stButton > button { background-color: #F3F4F6 !important; color: #111827 !important; border: 1px solid #D1D5DB !important; }
-    div.stButton > button:hover { border-color: #10B981 !important; color: #10B981 !important; }
-    </style>
-    """, unsafe_allow_html=True)
-
 if "success" in st.query_params and st.query_params["success"] == "true":
     if st.session_state['logged_in']:
         st.session_state['user_tier'] = 'Premium'
@@ -785,6 +609,187 @@ def predict_future_prices(df, trans_id=1):
         if not result_df.empty: result_df = result_df.sort_values(by='Growth Potential (%)', ascending=False)
         return result_df
     except Exception: return pd.DataFrame()
+
+# 🚨 ZIRHLI LOGİN EKRANI
+@st.dialog("🔐 Login Portal")
+def show_login_modal():
+    with st.form("login_form"):
+        auth_email = st.text_input(t["sb_email"])
+        auth_password = st.text_input(t["sb_pass"], type="password")
+        submit_login = st.form_submit_button(t["sb_login"], use_container_width=True)
+
+        if submit_login:
+            with st.spinner("Authenticating..."):
+                res = login_user(auth_email.strip(), auth_password)
+                if res.status_code == 200:
+                    data = res.json()
+                    st.session_state['logged_in'] = True
+                    st.session_state['user_email'] = auth_email.strip()
+                    st.session_state['access_token'] = data.get('access_token', '')
+                    user_meta = data.get('user', {}).get('user_metadata', {})
+                    st.session_state['user_fn'] = user_meta.get('first_name', '')
+                    st.session_state['user_ln'] = user_meta.get('last_name', '')
+                    if st.session_state.get('user_tier') != 'Premium':
+                        st.session_state['user_tier'] = 'Free'
+                    st.rerun()
+                else:
+                    st.error("❌ Invalid Email or Password.")
+
+    with st.expander(t["sb_forgot"]):
+        with st.form("forgot_form"):
+            forgot_email = st.text_input(t["sb_email"])
+            submit_forgot = st.form_submit_button("Send Reset Link", use_container_width=True)
+            if submit_forgot:
+                if forgot_email.strip():
+                    with st.spinner("Processing..."):
+                        reset_password(forgot_email.strip())
+                        st.success(f"✅ {t['msg_reset']}")
+                else:
+                    st.error("❌ Please enter email.")
+
+# 🚨 ZIRHLI SIGN UP EKRANI (VERİLERİ ASLA UNUTMAZ)
+@st.dialog("📝 Sign Up Portal")
+def show_signup_modal():
+    with st.form("signup_form"):
+        auth_fn = st.text_input(t["sb_fn"])
+        auth_ln = st.text_input(t["sb_ln"])
+        auth_email_reg = st.text_input(t["sb_email"])
+        auth_password_reg = st.text_input(t["sb_pass"], type="password")
+        auth_confirm = st.text_input(t["sb_confirm"], type="password")
+
+        submit_signup = st.form_submit_button(t["sb_signup"], use_container_width=True)
+
+        if submit_signup:
+            fn_clean = auth_fn.strip()
+            ln_clean = auth_ln.strip()
+
+            if len(auth_password_reg) < 8:
+                st.error(f"❌ {t['err_pass_len']}")
+            elif auth_password_reg != auth_confirm:
+                st.error(f"❌ {t['err_pass_match']}")
+            elif not fn_clean or not ln_clean:
+                st.error("❌ Names are required.")
+            else:
+                with st.spinner("Creating account..."):
+                    res = signup_user(auth_email_reg.strip(), auth_password_reg, fn_clean, ln_clean)
+                    if res.status_code == 200:
+                        st.success("✅ Registration successful! You can log in now.")
+                    else:
+                        st.error("❌ Registration failed. Email may exist.")
+
+col_space, col_settings = st.columns([9, 2])
+with col_settings:
+    with st.popover(t["settings_menu"], use_container_width=True):
+        new_lang = st.selectbox("🌐 Language", ["🇬🇧 EN", "🇵🇱 PL", "🇹🇷 TR"], index=["🇬🇧 EN", "🇵🇱 PL", "🇹🇷 TR"].index(st.session_state['app_lang']), key="lang_sel")
+        new_theme = st.selectbox("🎨 Theme", ["Auto", "🌙 Dark", "☀️ Light"], index=["Auto", "🌙 Dark", "☀️ Light"].index(st.session_state['app_theme']), key="theme_sel")
+
+        if new_lang != st.session_state['app_lang'] or new_theme != st.session_state['app_theme']:
+            st.session_state['app_lang'] = new_lang
+            st.session_state['app_theme'] = new_theme
+            st.rerun()
+
+        if st.session_state['logged_in']:
+            st.divider()
+            st.markdown(f"**{t['prof_info']}**")
+            with st.form("profile_form"):
+                new_fn = st.text_input(t["sb_fn"], value=st.session_state['user_fn'])
+                new_ln = st.text_input(t["sb_ln"], value=st.session_state['user_ln'])
+                st.text_input(t["sb_email"], value=st.session_state['user_email'], disabled=True)
+                st.text_input(t["prof_sub"], value=f"{st.session_state['user_tier']} Plan", disabled=True)
+                submit_update = st.form_submit_button(t["sb_update"], use_container_width=True)
+
+                if submit_update:
+                    fn_val = new_fn.strip()
+                    ln_val = new_ln.strip()
+                    if st.session_state.get('access_token'):
+                        with st.spinner("Updating..."):
+                            url = f"{os.environ.get('SUPABASE_URL', '').strip('/')}/auth/v1/user"
+                            headers = {
+                                "apikey": os.environ.get('SUPABASE_KEY', ''),
+                                "Authorization": f"Bearer {st.session_state['access_token']}",
+                                "Content-Type": "application/json"
+                            }
+                            payload = {"data": {"first_name": fn_val, "last_name": ln_val}}
+                            res = requests.put(url, headers=headers, json=payload)
+                            if res.status_code == 200:
+                                st.session_state['user_fn'] = fn_val
+                                st.session_state['user_ln'] = ln_val
+                                st.success(t["msg_updated"])
+                            else:
+                                st.error("Error updating profile.")
+
+sel_theme = st.session_state['app_theme']
+
+if sel_theme == "🌙 Dark":
+    st.markdown("""
+    <style> 
+    [data-testid="stAppViewContainer"] { background-color: #0E1117 !important; } 
+    [data-testid="stSidebar"] { background-color: #000000 !important; } 
+    .hero-text { color: #F8FAFC !important; }
+    .sub-hero { color: #E2E8F0 !important; }
+    [data-testid="stAppViewContainer"] h1,
+    [data-testid="stAppViewContainer"] h2,
+    [data-testid="stAppViewContainer"] h3,
+    [data-testid="stAppViewContainer"] h4 { color: #F8FAFC !important; }
+    div[data-testid="stAppViewContainer"] .stMarkdown p { color: #E2E8F0; }
+    div[data-testid="stAlert"] .stMarkdown p { color: inherit !important; }
+    [data-testid="stCaptionContainer"] p { color: #94A3B8 !important; }
+    button[data-baseweb="tab"] p, button[data-baseweb="tab"] div { color: #F8FAFC !important; }
+    [data-testid="stMetricLabel"] > div > div > p { color: #94A3B8 !important; }
+    summary p { color: #F8FAFC !important; }
+    [data-testid="stSidebar"] label, [data-testid="stSidebar"] p, [data-testid="stSidebar"] div { 
+        color: #E2E8F0 !important; font-weight: 500 !important; text-shadow: none !important;
+    }
+    [data-testid="stSidebar"] h1, [data-testid="stSidebar"] h2, [data-testid="stSidebar"] h3 { 
+        color: #FFFFFF !important; text-shadow: none !important;
+    }
+    div[data-baseweb="input"] > div, div[data-baseweb="base-input"] { 
+        background-color: #0F172A !important; border: 1px solid #334155 !important; 
+    }
+    input[type="text"], input[type="password"] { color: #FFFFFF !important; -webkit-text-fill-color: #FFFFFF !important; }
+    div[data-baseweb="select"] > div { background-color: #0F172A !important; border: 1px solid #334155 !important; }
+    div[data-baseweb="select"] span { color: #FFFFFF !important; font-weight: 500 !important; }
+    div[data-baseweb="select"] svg { fill: #FFFFFF !important; } 
+    ul[data-baseweb="menu"] { background-color: #0F172A !important; border: 1px solid #334155 !important; }
+    li[data-baseweb="menu-item"] { color: #FFFFFF !important; }
+    div.stButton > button { background-color: #1E293B !important; color: #FFFFFF !important; border: 1px solid #334155 !important; }
+    div.stButton > button:hover { border-color: #10B981 !important; color: #10B981 !important; }
+    </style>
+    """, unsafe_allow_html=True)
+elif sel_theme == "☀️ Light":
+    st.markdown("""
+    <style> 
+    [data-testid="stAppViewContainer"] { background-color: #FFFFFF !important; } 
+    [data-testid="stSidebar"] { background-color: #F8F9FA !important; } 
+    .hero-text { color: #0F172A !important; }
+    .sub-hero { color: #334155 !important; }
+    [data-testid="stAppViewContainer"] h1,
+    [data-testid="stAppViewContainer"] h2,
+    [data-testid="stAppViewContainer"] h3,
+    [data-testid="stAppViewContainer"] h4 { color: #0F172A !important; }
+    div[data-testid="stAppViewContainer"] .stMarkdown p { color: #1E293B; }
+    div[data-testid="stAlert"] .stMarkdown p { color: inherit !important; }
+    [data-testid="stCaptionContainer"] p { color: #64748B !important; }
+    button[data-baseweb="tab"] p, button[data-baseweb="tab"] div { color: #0F172A !important; }
+    [data-testid="stMetricLabel"] > div > div > p { color: #64748B !important; }
+    summary p { color: #0F172A !important; }
+    [data-testid="stSidebar"] label, [data-testid="stSidebar"] p, [data-testid="stSidebar"] div { 
+        color: #1E293B !important; font-weight: 500 !important; text-shadow: none !important;
+    }
+    [data-testid="stSidebar"] h1, [data-testid="stSidebar"] h2, [data-testid="stSidebar"] h3 { 
+        color: #000000 !important; text-shadow: none !important;
+    }
+    div[data-baseweb="input"] > div, div[data-baseweb="base-input"] { background-color: #FFFFFF !important; border: 1px solid #D1D5DB !important; }
+    input[type="text"], input[type="password"] { color: #000000 !important; -webkit-text-fill-color: #000000 !important; }
+    div[data-baseweb="select"] > div { background-color: #FFFFFF !important; border: 1px solid #D1D5DB !important; }
+    div[data-baseweb="select"] span { color: #000000 !important; font-weight: 500 !important; }
+    div[data-baseweb="select"] svg { fill: #000000 !important; } 
+    ul[data-baseweb="menu"] { background-color: #FFFFFF !important; border: 1px solid #D1D5DB !important;}
+    li[data-baseweb="menu-item"] { color: #000000 !important; }
+    div.stButton > button { background-color: #F3F4F6 !important; color: #111827 !important; border: 1px solid #D1D5DB !important; }
+    div.stButton > button:hover { border-color: #10B981 !important; color: #10B981 !important; }
+    </style>
+    """, unsafe_allow_html=True)
 
 if not st.session_state['logged_in']:
     st.sidebar.markdown("---")
