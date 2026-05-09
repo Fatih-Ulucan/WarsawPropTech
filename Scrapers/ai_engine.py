@@ -26,8 +26,8 @@ class GroqProptechAI:
         """Resets the daily/batch call counter."""
         self.ai_calls_made = 0
 
-    def analyze_description(self, description, category="Apartment - Sale"):
-        """Sends property description to Groq and returns a 5-point investment report based on category."""
+    def analyze_description(self, description, category="Apartment - Sale", language="English"):
+        """Sends property description to Groq and returns a 5-point investment report based on category and requested language."""
         if not self.api_key:
             return "AI Analysis unavailable."
 
@@ -47,7 +47,7 @@ class GroqProptechAI:
         4. INVESTMENT STRATEGY: (Long-term rent, Short-term/Airbnb?)
         5. URGENCY: (Motivated landlord? Open to price negotiation?)
 
-        Provide 5 short bullet points in English.
+        Provide 5 short bullet points in {language}.
         Description: {description[:3500]}
         """
             elif "Commercial" in category:
@@ -59,7 +59,7 @@ class GroqProptechAI:
         4. ROI STRATEGY: (Good for leasing out or owner-operator?)
         5. URGENCY: (Motivated seller/landlord? Open to negotiation?)
 
-        Provide 5 short bullet points in English.
+        Provide 5 short bullet points in {language}.
         Description: {description[:3500]}
         """
             else:
@@ -71,7 +71,7 @@ class GroqProptechAI:
         4. INVESTMENT STRATEGY: (Buy-to-let or Quick Flip?)
         5. URGENCY: (Motivated seller? Mentions quick sale, leaving country, or open to negotiation?)
 
-        Provide 5 short bullet points in English.
+        Provide 5 short bullet points in {language}.
         Description: {description[:3500]}
         """
             headers = {"Authorization": f"Bearer {self.api_key}", "Content-Type": "application/json"}
@@ -95,9 +95,9 @@ class GroqProptechAI:
             logger.error(f"AI Error: {e}")
             return "AI Analysis failed."
 
-    def analyze_with_vision(self, description, image_urls, category="Apartment - Sale", sqm=0):
+    def analyze_with_vision(self, description, image_urls, category="Apartment - Sale", sqm=0, language="English"):
         """
-        Sends description AND property photos to Groq Vision.
+        Sends description AND property photos to Groq Vision. Outputs in the specified language.
         """
         if not self.api_key:
             return "AI Analysis unavailable."
@@ -135,6 +135,7 @@ class GroqProptechAI:
             2. REFRESH ESTIMATE: (Approx cost to make it tenant-ready in PLN)
             3. RENTAL APPEAL: (Who will rent this?)
             
+            Provide the response in {language}.
             Description: {description[:3500]}
             """
             elif "Commercial" in category:
@@ -144,6 +145,7 @@ class GroqProptechAI:
             2. ADAPTATION COST: (Estimate renovation for business use)
             3. POTENTIAL: (Office, Retail, or Gastro?)
             
+            Provide the response in {language}.
             Description: {description[:3500]}
             """
             else:
@@ -162,7 +164,7 @@ class GroqProptechAI:
             3. MASTER NEGOTIATION LEVER (EXTREME DETAIL REQUIRED): Read the description meticulously. Even if the apartment is "newly renovated" or "perfect", you MUST find every single disadvantage or hidden cost mentioned or implied. Look for flaws such as: ground floor (parter), 4th floor without elevator (brak windy), mandatory extra fees for parking/storage (dodatkowo płatne), loud street, old building (wielka płyta), high monthly HOA fees (wysoki czynsz), poor layout, or specific legal status issues. List exactly how these specific flaws can be aggressively used to justify a massive price drop during negotiations with the seller.
             4. NO FAKE PRICES: DO NOT invent or assume a market price or target purchase price. Focus purely on the renovation cost and the specific percentage/value discounts justified by the flaws found in the text.
 
-            Provide a highly detailed, professional report in English using punchy bullet points. Be specific with PLN amounts and strategic negotiation arguments. Do not cut your sentences short.
+            Provide a highly detailed, professional report exactly in {language} using punchy bullet points. Be specific with PLN amounts and strategic negotiation arguments. Do not cut your sentences short.
             Description: {description[:3500]}
             """
 

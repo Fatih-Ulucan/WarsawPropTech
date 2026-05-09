@@ -163,7 +163,22 @@ LANG_DICT = {
         "vip_desc": "Let <b>Expander</b> experts compare 20+ banks for you free of charge and secure the lowest interest rate.",
         "vip_btn": "🏢 Get Free Expert Advice (20+ Banks) ➡️",
         "calc_exp_btn": "🏦 Expander: Check Your Best Mortgage Limit ➡️",
-        "calc_exp_sub": "ℹ️ Expander experts will find the best offer from 20 banks for you, completely free."
+        "calc_exp_sub": "ℹ️ Expander experts will find the best offer from 20 banks for you, completely free.",
+        "tab2_title": "📍 District Intelligence & Location Analytics",
+        "tab2_rankings": "### 📊 Market Rankings",
+        "tab2_map": "### 🗺️ Geographic Distribution",
+        "th_active_ads": "Active Ads",
+        "th_avg_price_sqm": "Avg Price/m²",
+        "ai_audit_title": "### 🤖 Groq AI Real-Time Audit & Negotiation",
+        "ai_audit_sub": "Enter any Otodom URL for an instant visual and financial investment audit via Llama 4 Vision.",
+        "ai_paste_url": "🔗 Paste Otodom URL",
+        "ai_size_calc": "📏 Size for Calculation (m²)",
+        "ai_btn_search": "🧠 Start Live Groq Deep Search",
+        "ai_spinner": "🚀 Groq AI Sniper is flying to the property page...",
+        "ai_local_found": "⚡ Listing found in local intelligence. Generating fresh Groq analysis...",
+        "ai_success": "✅ **AI Live Audit Result:**",
+        "ai_error": "❌ Failed to reach the property. Link might be broken or protected.",
+        "ai_warn_empty": "Please enter a link first."
     },
     "🇵🇱 PL": {
         "hero_title": "Warszawska Inteligencja Nieruchomości",
@@ -215,7 +230,22 @@ LANG_DICT = {
         "vip_desc": "Niech eksperci <b>Expander</b> bezpłatnie porównają dla Ciebie ponad 20 banków i znajdą najniższe oprocentowanie.",
         "vip_btn": "🏢 Zdobądź Darmową Poradę Eksperta (20+ Banków) ➡️",
         "calc_exp_btn": "🏦 Expander: Sprawdź Swój Limit Kredytowy ➡️",
-        "calc_exp_sub": "ℹ️ Eksperci Expander znajdą dla Ciebie najlepszą ofertę z 20 banków całkowicie za darmo."
+        "calc_exp_sub": "ℹ️ Eksperci Expander znajdą dla Ciebie najlepszą ofertę z 20 banków całkowicie za darmo.",
+        "tab2_title": "📍 Inteligencja Dzielnic i Analityka Lokalizacji",
+        "tab2_rankings": "### 📊 Rankingi Rynkowe",
+        "tab2_map": "### 🗺️ Rozkład Geograficzny",
+        "th_active_ads": "Aktywne Ogłoszenia",
+        "th_avg_price_sqm": "Śr. Cena/m²",
+        "ai_audit_title": "### 🤖 Groq AI Audyt i Negocjacje na Żywo",
+        "ai_audit_sub": "Wprowadź dowolny link Otodom, aby uzyskać natychmiastowy audyt wizualny i finansowy za pomocą Llama 4 Vision.",
+        "ai_paste_url": "🔗 Wklej link Otodom",
+        "ai_size_calc": "📏 Metraż do obliczeń (m²)",
+        "ai_btn_search": "🧠 Rozpocznij Skanowanie Groq AI",
+        "ai_spinner": "🚀 Groq AI Sniper leci na stronę nieruchomości...",
+        "ai_local_found": "⚡ Znaleziono ogłoszenie w bazie. Generowanie nowej analizy Groq...",
+        "ai_success": "✅ **Wynik Audytu AI na Żywo:**",
+        "ai_error": "❌ Nie udało się dotrzeć do nieruchomości. Link może być uszkodzony.",
+        "ai_warn_empty": "Proszę najpierw wprowadzić link."
     },
     "🇹🇷 TR": {
         "hero_title": "Varşova Emlak Zekası",
@@ -267,7 +297,22 @@ LANG_DICT = {
         "vip_desc": "<b>Expander</b> uzmanları 20+ bankayı sizin için ücretsiz karşılaştırsın, en düşük faizli konut kredisini yakalayın.",
         "vip_btn": "🏢 Ücretsiz Uzman Danışmanlığı Al (20+ Banka) ➡️",
         "calc_exp_btn": "🏦 Expander: En Uygun Kredi Limitini Sorgula ➡️",
-        "calc_exp_sub": "ℹ️ Expander uzmanları 20 bankadan sizin için en iyi teklifi ücretsiz bulur."
+        "calc_exp_sub": "ℹ️ Expander uzmanları 20 bankadan sizin için en iyi teklifi ücretsiz bulur.",
+        "tab2_title": "📍 Bölge Zekası ve Konum Analitiği",
+        "tab2_rankings": "### 📊 Piyasa Sıralamaları",
+        "tab2_map": "### 🗺️ Coğrafi Dağılım",
+        "th_active_ads": "Aktif İlanlar",
+        "th_avg_price_sqm": "Ort. Fiyat/m²",
+        "ai_audit_title": "### 🤖 Groq AI Canlı Denetim ve Müzakere",
+        "ai_audit_sub": "Llama 4 Vision ile anında görsel ve finansal yatırım denetimi için herhangi bir Otodom URL'sini girin.",
+        "ai_paste_url": "🔗 Otodom Linkini Yapıştır",
+        "ai_size_calc": "📏 Hesaplama için Boyut (m²)",
+        "ai_btn_search": "🧠 Canlı Groq Taramasını Başlat",
+        "ai_spinner": "🚀 Groq AI Sniper mülk sayfasına uçuyor...",
+        "ai_local_found": "⚡ İlan yerel istihbaratta bulundu. Yeni Groq analizi oluşturuluyor...",
+        "ai_success": "✅ **Yapay Zeka Canlı Denetim Sonucu:**",
+        "ai_error": "❌ Mülke ulaşılamadı. Bağlantı kopuk veya korumalı olabilir.",
+        "ai_warn_empty": "Lütfen önce bir link girin."
     }
 }
 
@@ -764,7 +809,7 @@ if not df.empty:
             st.info("💡 **Log in to track properties and receive price drop alerts.**")
 
     with tab2:
-        st.subheader("📍 District Intelligence & Location Analytics")
+        st.subheader(t["tab2_title"])
 
         col_list, col_map = st.columns([2, 3])
 
@@ -784,13 +829,14 @@ if not df.empty:
         df_summary = pd.DataFrame(analytics_data)
 
         with col_list:
-            st.markdown("### 📊 Market Rankings")
+            st.markdown(t["tab2_rankings"])
             if not df_summary.empty:
                 st.dataframe(
                     df_summary[['District', 'Avg Price/m²', 'Total Listings']].sort_values(by='Avg Price/m²', ascending=False),
                     column_config={
-                        "Avg Price/m²": st.column_config.NumberColumn("Avg Price/m²", format="%d PLN"),
-                        "Total Listings": "Active Ads"
+                        "District": t["th_dist"],
+                        "Avg Price/m²": st.column_config.NumberColumn(t["th_avg_price_sqm"], format="%d PLN"),
+                        "Total Listings": t["th_active_ads"]
                     },
                     hide_index=True,
                     use_container_width=True
@@ -799,7 +845,7 @@ if not df.empty:
                 st.info("Awaiting market data filters...")
 
         with col_map:
-            st.markdown("### 🗺️ Geographic Distribution")
+            st.markdown(t["tab2_map"])
             if not df_summary.empty:
                 layer = pdk.Layer(
                     "ScatterplotLayer",
@@ -953,15 +999,15 @@ if not df.empty:
         with calc_col2:
             st.markdown(t["calc_reno"])
 
-            st.markdown("### 🤖 Groq AI Real-Time Audit & Negotiation")
-            st.caption("Enter any Otodom URL for an instant visual and financial investment audit via Llama 3 Vision.")
+            st.markdown(t["ai_audit_title"])
+            st.caption(t["ai_audit_sub"])
 
-            target_url_input = st.text_input("🔗 Paste Otodom URL", placeholder="https://www.otodom.pl/...", key="deep_audit_link")
-            audit_sqm = st.number_input("📏 Size for Calculation (m²)", min_value=10, max_value=500, value=50)
+            target_url_input = st.text_input(t["ai_paste_url"], placeholder="https://www.otodom.pl/...", key="deep_audit_link")
+            audit_sqm = st.number_input(t["ai_size_calc"], min_value=10, max_value=500, value=50)
 
-            if st.button("🧠 Start Live Groq Deep Search", use_container_width=True):
+            if st.button(t["ai_btn_search"], use_container_width=True):
                 if target_url_input:
-                    with st.spinner("🚀 Groq AI Sniper is flying to the property page..."):
+                    with st.spinner(t["ai_spinner"]):
                         res = supabase_client.table('listings').select('description, image_urls').eq('url_link', target_url_input).execute()
 
                         found_data = None
@@ -970,7 +1016,7 @@ if not df.empty:
                                 'description': res.data[0]['description'],
                                 'image_urls': res.data[0].get('image_urls', [])
                             }
-                            st.info("⚡ Listing found in local intelligence. Generating fresh Groq analysis...")
+                            st.info(t["ai_local_found"])
                         else:
                             try:
                                 from Scrapers.scraper import fetch_single_listing_data
@@ -989,18 +1035,22 @@ if not df.empty:
 
                             groq_agent = AI_Class(os.getenv("GROQ_API_KEY"))
 
+                            ai_lang_map = {"🇬🇧 EN": "English", "🇵🇱 PL": "Polish", "🇹🇷 TR": "Turkish"}
+                            target_language = ai_lang_map.get(sel_lang, "English")
+
                             report = groq_agent.analyze_with_vision(
                                 found_data.get('description', ''),
                                 found_data.get('image_urls', []),
-                                sqm=audit_sqm
+                                sqm=audit_sqm,
+                                language=target_language
                             )
 
-                            st.success("✅ **AI Live Audit Result:**")
+                            st.success(t["ai_success"])
                             st.markdown(report)
                         else:
-                            st.error("❌ Failed to reach the property. Link might be broken or protected.")
+                            st.error(t["ai_error"])
                 else:
-                    st.warning("Please enter a link first.")
+                    st.warning(t["ai_warn_empty"])
             st.markdown("---")
 
             prop_sqm = st.number_input(t["calc_size"], min_value=10, max_value=500, value=50)
