@@ -675,7 +675,40 @@ def show_signup_modal():
                     else:
                         st.error("❌ Registration failed. Email may exist.")
 
-col_space, col_settings = st.columns([9, 2])
+# 🚨 SAĞ ÜST MENÜ: FAVORİLER VE AYARLAR BURADA!
+user_fav_ids = []
+if st.session_state['logged_in']:
+    user_fav_ids = get_user_favorites(st.session_state['user_email'])
+
+col_space, col_fav, col_settings = st.columns([7.5, 1.5, 1.5])
+
+with col_fav:
+    if st.session_state['logged_in']:
+        with st.popover(f"⭐ Favs ({len(user_fav_ids)})", use_container_width=True):
+            st.markdown(f"**⭐ {t['tab6']}**")
+            if user_fav_ids:
+                try:
+                    fav_res = supabase_client.table('listings').select('property_id, loc_id, price_pln, url_link').in_('property_id', user_fav_ids).execute()
+                    if fav_res.data:
+                        mini_fav_df = pd.DataFrame(fav_res.data)
+                        mini_fav_df['district'] = mini_fav_df['loc_id'].map(REVERSE_LOCATION_MAP)
+                        mini_fav_df['price_pln'] = pd.to_numeric(mini_fav_df['price_pln'], errors='coerce')
+
+                        st.dataframe(
+                            mini_fav_df[['district', 'price_pln', 'url_link']],
+                            column_config={
+                                "district": t["th_dist"],
+                                "price_pln": st.column_config.NumberColumn(t["th_price"], format="%.0f PLN"),
+                                "url_link": st.column_config.LinkColumn(t["th_link"], display_text="View 🔗")
+                            },
+                            hide_index=True,
+                            use_container_width=True
+                        )
+                except Exception:
+                    st.info("Scroll to the bottom vault to see details.")
+            else:
+                st.info(t["fav_empty"])
+
 with col_settings:
     with st.popover(t["settings_menu"], use_container_width=True):
         new_lang = st.selectbox("🌐 Language", ["🇬🇧 EN", "🇵🇱 PL", "🇹🇷 TR"], index=["🇬🇧 EN", "🇵🇱 PL", "🇹🇷 TR"].index(st.session_state['app_lang']), key="lang_sel")
@@ -933,10 +966,14 @@ if not df.empty:
             temp_df['dist_avg_sqm'] = temp_df['district'].map(dist_avg)
             temp_df['est_market_price'] = temp_df['dist_avg_sqm'] * temp_df['sqm']
             temp_df['profit'] = temp_df['est_market_price'] - temp_df['price_pln']
+
+            # 🚨 ÇÖP VERİ FİLTRESİ (Outlier Detection) eklendi!
+            # Kar, evin satış fiyatının %50'sinden büyükse bu bir hatadır, listeye alma.
+            temp_df = temp_df[temp_df['profit'] <= (temp_df['price_pln'] * 0.50)]
+
             temp_df = temp_df.sort_values(by='profit', ascending=False)
             top_deals = temp_df.head(3).to_dict('records')
 
-    # Yeterli veri yoksa gösterilecek yedek sabit veri (Artık Deal Closed yazmıyor)
     default_boxes = [
         {"color": st.success, "title": "**📍 Mokotów (Live Anomaly)**", "body": f"📉 **Est. Market:** 850,000 PLN\n🎯 **Listed Price:** 690,000 PLN\n💸 **Potential Margin:** ~160,000 PLN\n\n⚡ *Status: {t['active']}*"},
         {"color": st.info, "title": "**📍 Wola (High ROI)**", "body": f"📉 **Est. Market:** 600,000 PLN\n🎯 **Listed Price:** 510,000 PLN\n💸 **Potential Margin:** ~90,000 PLN\n\n⚡ *Status: {t['active']}*"},
@@ -969,9 +1006,6 @@ if not df.empty:
         4. **Investment Scoring:** We combine the potential profit margin, district liquidity speed, and AI textual sentiment into a proprietary **100-point Investment Score**, presenting only the most lucrative deals to you.
         """)
     st.markdown("---")
-
-    user_fav_ids = []
-    if st.session_state['logged_in']: user_fav_ids = get_user_favorites(st.session_state['user_email'])
 
     tab1, tab2, tab3, tab4, tab5, tab7, tab8 = st.tabs([
         t["tab1"], t["tab2"], t["tab3"], t["tab4"], t["tab5"], t["tab7"], t["tab8"]
