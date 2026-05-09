@@ -2,7 +2,7 @@ name: WarsawPropTech AI Radar
 
 on:
   schedule:
-    - cron: '0 */12 * * *'
+    - cron: '0 */6 * * *'
   workflow_dispatch:
 
 jobs:
@@ -46,5 +46,5 @@ jobs:
         run: |
           curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendMessage" \
           -d chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" \
-          -d text="🚨 *CRITICAL ERROR:* Warsaw PropTech bot has completely crashed! The system failed to complete its 12-hour patrol. Please check the GitHub Actions logs." \
+          -d text="🚨 *CRITICAL ERROR:* Warsaw PropTech bot has completely crashed! The system failed to complete its 6-hour patrol. Please check the GitHub Actions logs." \
           -d parse_mode="Markdown"
