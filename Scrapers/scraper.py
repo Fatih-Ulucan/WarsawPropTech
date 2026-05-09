@@ -569,7 +569,8 @@ def fetch_single_listing_data(url):
     import os
 
     try:
-        os.system("playwright install chromium")
+        if not os.path.exists("/home/appuser/.cache/ms-playwright"):
+            os.system("playwright install chromium")
     except:
         pass
 
@@ -585,10 +586,15 @@ from playwright.sync_api import sync_playwright
 def fetch(url):
     try:
         with sync_playwright() as p:
-            # Linux server compatible launch args
+            # 🛡️ LINUX SERVER GÜVENLİ BAŞLATMA AYARLARI
             browser = p.chromium.launch(
                 headless=True,
-                args=["--disable-blink-features=AutomationControlled", "--no-sandbox", "--disable-setuid-sandbox"]
+                args=[
+                    "--no-sandbox", 
+                    "--disable-setuid-sandbox", 
+                    "--disable-dev-shm-usage", 
+                    "--disable-gpu"
+                ]
             )
             
             context = browser.new_context(
@@ -598,7 +604,7 @@ def fetch(url):
             
             page = context.new_page()
             
-            # Use stealth only if available
+            # Stealth yüklemesi varsa kullan
             try:
                 from playwright_stealth import stealth
                 stealth(page)
@@ -606,17 +612,14 @@ def fetch(url):
                 pass
                 
             page.goto(url, wait_until="domcontentloaded", timeout=60000)
+            time.sleep(5) 
             
-            time.sleep(3)
-            
-            # Detection Check
+            # Engel kontrolü
             page_title = page.title()
-            if "Just a moment" in page_title or "Cloudflare" in page_title:
-                return {"error": "Cloudflare Blocked this IP (Data Center detection)."}
+            if "Just a moment" in page_title or "cloudflare" in page.content().lower():
+                browser.close()
+                return {"error": "Cloudflare Blocked: Streamlit Cloud IP is restricted by Otodom."}
 
-            page.mouse.wheel(0, 500)
-            time.sleep(1)
-            
             desc = ""
             selectors = ['[data-cy="adPageAdDescription"]', '[data-testid="ad-description"]', 'article', '.css-1qzszy5']
             for s in selectors:
@@ -630,8 +633,7 @@ def fetch(url):
                 src = n.get_attribute('srcset') or n.get_attribute('src')
                 if src and "http" in src and "static" not in src:
                     clean_src = src.split(' ')[0]
-                    if clean_src not in imgs:
-                        imgs.append(clean_src)
+                    if clean_src not in imgs: imgs.append(clean_src)
                 if len(imgs) >= 5: break
             
             browser.close()
@@ -646,6 +648,15 @@ if __name__ == "__main__":
 ''')
 
     try:
+        if not os.environ.get("GROQ_API_KEY"):
+            try:
+                import streamlit as st
+                os.environ["GROQ_API_KEY"] = st.secrets.get("GROQ_API_KEY", "")
+                os.environ["SUPABASE_URL"] = st.secrets.get("SUPABASE_URL", "")
+                os.environ["SUPABASE_KEY"] = st.secrets.get("SUPABASE_KEY", "")
+            except:
+                pass
+
         print(f"🕵️ Spawning Subprocess Proxy: {url}")
         process = subprocess.Popen(
             [sys.executable, script_path, url],
@@ -655,17 +666,17 @@ if __name__ == "__main__":
             encoding='utf-8'
         )
 
-        stdout, stderr = process.communicate(timeout=75)
+        stdout, stderr = process.communicate(timeout=90)
 
         if stdout:
             try:
-                lines = [l for line in stdout.splitlines() if (l := line.strip()).startswith('{')]
-                if lines:
-                    parsed_data = json.loads(lines[-1])
-                    if "error" in parsed_data:
-                        print(f"🔥 Error: {parsed_data['error']}")
-                        return None
-                    return parsed_data
+                for line in stdout.splitlines():
+                    if line.strip().startswith('{'):
+                        parsed_data = json.loads(line)
+                        if "error" in parsed_data:
+                            print(f"🔥 Error: {parsed_data['error']}")
+                            return None
+                        return parsed_data
                 return None
             except:
                 return None

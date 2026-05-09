@@ -12,7 +12,7 @@ sys.path.append(str(project_root))
 
 from Scrapers.config import MAX_SCANS_BEFORE_REBOOT
 from Scrapers.database import SupabaseManager
-from Scrapers.ai_engine import GeminiAnalyzer
+from Scrapers.ai_engine import GroqProptechAI
 from Scrapers.notifier import TelegramBot
 from Scrapers.scraper import OtodomSniper
 
@@ -32,9 +32,12 @@ def initialize_system():
     ENV_PATH = BASE_DIR / ".env"
 
     try:
-        with open(ENV_PATH, "r", encoding="utf-8-sig") as f:
-            clean_content = f.read()
-        load_dotenv(stream=StringIO(clean_content), override=True)
+        if ENV_PATH.exists():
+            with open(ENV_PATH, "r", encoding="utf-8-sig") as f:
+                clean_content = f.read()
+            load_dotenv(stream=StringIO(clean_content), override=True)
+        else:
+            pass
     except Exception as e:
         logger.error(f"❌ Failed to read .env file: {e}")
 
@@ -42,16 +45,15 @@ def initialize_system():
     SUPABASE_KEY = os.getenv("SUPABASE_KEY")
     TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN")
     TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
-
     GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 
     if not SUPABASE_URL or not TELEGRAM_TOKEN:
-        logger.error(f"❌ CRITICAL ERROR: Missing environment variables! URL: {SUPABASE_URL}")
+        logger.error(f"❌ CRITICAL ERROR: Missing environment variables! Check Secrets/Env.")
         sys.exit()
 
     db = SupabaseManager(SUPABASE_URL, SUPABASE_KEY)
 
-    ai = GeminiAnalyzer(GROQ_API_KEY)
+    ai = GroqProptechAI(GROQ_API_KEY)
 
     bot = TelegramBot(TELEGRAM_TOKEN, TELEGRAM_CHAT_ID)
 
@@ -77,6 +79,7 @@ def start_engine():
                 sniper.notif.send_message(f"♻️ <b>Auto-Restart:</b> Flushing RAM after {MAX_SCANS_BEFORE_REBOOT/1000}k scans.")
                 os.execv(sys.executable, ['python'] + sys.argv)
 
+            # Cycle delay
             logger.info("💤 MISSION COMPLETE: Sleeping for 600 seconds...")
             time.sleep(600)
 
@@ -84,7 +87,7 @@ def start_engine():
             logger.error(f"CRITICAL SYSTEM ERROR: {e}")
             try:
                 error_msg = str(e)[:200]
-                sniper.notif.send_message(f"🚨 <b>FATAL ENGINE ERROR:</b>\nMain loop crashed. Retrying in 60s.\n\n<i>Reason: {error_msg}</i>")
+                sniper.no tif.send_message(f"🚨 <b>FATAL ENGINE ERROR:</b>\nMain loop crashed. Retrying in 60s.\n\n<i>Reason: {error_msg}</i>")
             except:
                 pass
             time.sleep(60)
