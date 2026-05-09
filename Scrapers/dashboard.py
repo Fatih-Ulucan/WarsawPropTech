@@ -13,6 +13,8 @@ import pydeck as pdk
 
 from supabase import create_client, Client
 
+FREE_TABLE_LIMIT = 5
+FREE_TOOL_USAGE_LIMIT = 3
 EXPANDER_LINK = "https://proptech.produktyfinansowe.pl/e/lead/327?source=lt"
 
 current_dir = Path(__file__).resolve().parent
@@ -57,13 +59,21 @@ st.markdown("""
     footer {visibility: hidden;}
     header {visibility: hidden;}
     
-    /* Anti-aliasing */
+    .lock-overlay {
+        background-color: rgba(255, 75, 75, 0.05);
+        border: 2px dashed #ff4b4b;
+        padding: 20px;
+        border-radius: 12px;
+        text-align: center;
+        margin-top: 15px;
+    }
+    .premium-text { color: #ff4b4b; font-weight: bold; }
+
     * {
         -webkit-font-smoothing: antialiased !important;
         -moz-osx-font-smoothing: grayscale !important;
     }
     
-    /* Metric Card Upgrade */
     div[data-testid="stMetricValue"] {
         font-size: 28px;
         font-weight: 800;
@@ -79,7 +89,6 @@ st.markdown("""
         box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     }
 
-    /* Hero Section Branding */
     .hero-text {
         font-size: 44px;
         font-weight: 900;
@@ -105,7 +114,6 @@ st.markdown("""
         box-shadow: 0 2px 5px rgba(0,0,0,0.2);
     }
     
-    /* Top Right Selectors */
     [data-testid="stHorizontalBlock"] {
         align-items: center;
     }
@@ -178,7 +186,12 @@ LANG_DICT = {
         "ai_local_found": "⚡ Listing found in local intelligence. Generating fresh Groq analysis...",
         "ai_success": "✅ **AI Live Audit Result:**",
         "ai_error": "❌ Failed to reach the property. Link might be broken or protected.",
-        "ai_warn_empty": "Please enter a link first."
+        "ai_warn_empty": "Please enter a link first.",
+        "lock_msg": f"🔓 <b>Showing only {FREE_TABLE_LIMIT} results.</b> <span class='premium-text'>Upgrade to Premium</span> to see all data.",
+        "limit_reached": f"🛑 **Limit Reached:** You have used your {FREE_TOOL_USAGE_LIMIT} free daily AI audits.",
+        "upgrade_btn": "💎 Get Unlimited Access",
+        "audits_left": "💡 You have {} free audits left for today.",
+        "locked": "🔒 Locked", "locked_link": "🔒 Upgrade to View"
     },
     "🇵🇱 PL": {
         "hero_title": "Warszawska Inteligencja Nieruchomości",
@@ -245,7 +258,12 @@ LANG_DICT = {
         "ai_local_found": "⚡ Znaleziono ogłoszenie w bazie. Generowanie nowej analizy Groq...",
         "ai_success": "✅ **Wynik Audytu AI na Żywo:**",
         "ai_error": "❌ Nie udało się dotrzeć do nieruchomości. Link może być uszkodzony.",
-        "ai_warn_empty": "Proszę najpierw wprowadzić link."
+        "ai_warn_empty": "Proszę najpierw wprowadzić link.",
+        "lock_msg": f"🔓 <b>Pokazujemy tylko {FREE_TABLE_LIMIT} wyników.</b> <span class='premium-text'>Przejdź na Premium</span>, aby zobaczyć wszystko.",
+        "limit_reached": f"🛑 **Osiągnięto limit:** Wykorzystałeś {FREE_TOOL_USAGE_LIMIT} darmowe audyty AI.",
+        "upgrade_btn": "💎 Uzyskaj nieograniczony dostęp",
+        "audits_left": "💡 Zostało Ci {} darmowych audytów na dziś.",
+        "locked": "🔒 Zablokowane", "locked_link": "🔒 Kup Premium"
     },
     "🇹🇷 TR": {
         "hero_title": "Varşova Emlak Zekası",
@@ -312,9 +330,46 @@ LANG_DICT = {
         "ai_local_found": "⚡ İlan yerel istihbaratta bulundu. Yeni Groq analizi oluşturuluyor...",
         "ai_success": "✅ **Yapay Zeka Canlı Denetim Sonucu:**",
         "ai_error": "❌ Mülke ulaşılamadı. Bağlantı kopuk veya korumalı olabilir.",
-        "ai_warn_empty": "Lütfen önce bir link girin."
+        "ai_warn_empty": "Lütfen önce bir link girin.",
+        "lock_msg": f"🔓 <b>Sadece {FREE_TABLE_LIMIT} ilan gösteriliyor.</b> Tüm verileri görmek için <span class='premium-text'>Premium'a geçin</span>.",
+        "limit_reached": f"🛑 **Limit Doldu:** Günlük {FREE_TOOL_USAGE_LIMIT} ücretsiz AI analiz hakkını kullandın.",
+        "upgrade_btn": "💎 Sınırsız Erişime Geç",
+        "audits_left": "💡 Bugün için {} ücretsiz analiz hakkın kaldı.",
+        "locked": "🔒 Kilitli", "locked_link": "🔒 Görmek için Yükselt"
     }
 }
+
+if 'usage_counter' not in st.session_state:
+    st.session_state['usage_counter'] = 0
+
+def check_limit(t_dict):
+    if st.session_state.get('user_tier', 'Free') == 'Premium':
+        return True
+    if st.session_state['usage_counter'] >= FREE_TOOL_USAGE_LIMIT:
+        st.error(t_dict["limit_reached"])
+        st.link_button(t_dict["upgrade_btn"], STRIPE_LINK, type="primary")
+        return False
+    return True
+
+def apply_limit(df, t_dict):
+    if st.session_state.get('user_tier', 'Free') == 'Premium':
+        return df, False
+
+    limited_df = df.copy()
+    is_limited = len(df) > FREE_TABLE_LIMIT
+
+    if is_limited:
+        cols = limited_df.columns
+        if 'price_pln' in cols:
+            limited_df.iloc[FREE_TABLE_LIMIT:, cols.get_loc('price_pln')] = t_dict["locked"]
+        if 'url_link' in cols:
+            limited_df.iloc[FREE_TABLE_LIMIT:, cols.get_loc('url_link')] = t_dict["locked_link"]
+        if 'Discount (PLN)' in cols:
+            limited_df.iloc[FREE_TABLE_LIMIT:, cols.get_loc('Discount (PLN)')] = t_dict["locked"]
+        if 'Current Price' in cols:
+            limited_df.iloc[FREE_TABLE_LIMIT:, cols.get_loc('Current Price')] = t_dict["locked"]
+
+    return limited_df, is_limited
 
 col_space, col_lang, col_theme = st.columns([8, 1, 1])
 with col_lang:
@@ -783,6 +838,9 @@ if not df.empty:
         st.markdown("<br>", unsafe_allow_html=True)
 
         display_df = filtered_df[['property_id', 'district', 'price_pln', 'sqm', 'rooms', 'price_per_sqm', 'url_link', 'status']].copy()
+
+        display_df, showing_limit_msg = apply_limit(display_df, t)
+
         if st.session_state['logged_in']:
             display_df['❤️ Track'] = display_df['property_id'].isin(user_fav_ids)
             cols = ['❤️ Track', 'district', 'price_pln', 'sqm', 'rooms', 'price_per_sqm', 'url_link', 'status', 'property_id']
@@ -793,11 +851,11 @@ if not df.empty:
 
         column_config = {
             "property_id": None, "district": t["th_dist"],
-            "price_pln": st.column_config.NumberColumn(t["th_price"], format="%.0f PLN"),
+            "price_pln": st.column_config.TextColumn(t["th_price"]) if not is_premium else st.column_config.NumberColumn(t["th_price"], format="%.0f PLN"),
             "sqm": st.column_config.NumberColumn(t["th_sqm"], format="%.0f"),
             "rooms": t["th_rooms"],
             "price_per_sqm": st.column_config.NumberColumn(t["th_psqm"], format="%.0f PLN"),
-            "url_link": st.column_config.LinkColumn(t["th_link"], display_text="View 🔗"),
+            "url_link": st.column_config.LinkColumn(t["th_link"], display_text="View 🔗") if is_premium else st.column_config.TextColumn(t["th_link"]),
             "status": t["th_status"]
         }
 
@@ -807,6 +865,9 @@ if not df.empty:
         else:
             st.dataframe(display_df, column_config=column_config, hide_index=True, use_container_width=True)
             st.info("💡 **Log in to track properties and receive price drop alerts.**")
+
+        if showing_limit_msg:
+            st.markdown(f"<div class='lock-overlay'>{t['lock_msg']}</div>", unsafe_allow_html=True)
 
     with tab2:
         st.subheader(t["tab2_title"])
@@ -909,11 +970,8 @@ if not df.empty:
 
                         st.subheader(t["roi_top"])
                         roi_df = roi_df.sort_values(by='roi_percent', ascending=False)
-                        display_roi = roi_df[['property_id', 'district', 'price_pln', 'est_monthly_rent', 'roi_percent', 'amortization_years', 'url_link']].copy()
 
-                        if not is_premium:
-                            display_roi['price_pln'] = "🔒 Locked"
-                            display_roi['url_link'] = "🔒 Locked"
+                        display_roi, roi_showing_limit = apply_limit(roi_df[['property_id', 'district', 'price_pln', 'est_monthly_rent', 'roi_percent', 'amortization_years', 'url_link']], t)
 
                         cols_roi = ['❤️ Track', 'district', 'price_pln', 'est_monthly_rent', 'roi_percent', 'amortization_years', 'url_link', 'property_id'] if st.session_state['logged_in'] else ['district', 'price_pln', 'est_monthly_rent', 'roi_percent', 'amortization_years', 'url_link', 'property_id']
                         if st.session_state['logged_in']: display_roi['❤️ Track'] = display_roi['property_id'].isin(user_fav_ids)
@@ -921,13 +979,15 @@ if not df.empty:
 
                         col_conf_roi = {
                             "property_id": None, "district": t["th_dist"],
-                            "price_pln": st.column_config.NumberColumn(t["th_price"], format="%.0f PLN") if is_premium else st.column_config.TextColumn(t["th_price"]),
+                            "price_pln": st.column_config.TextColumn(t["th_price"]) if not is_premium else st.column_config.NumberColumn(t["th_price"], format="%.0f PLN"),
                             "est_monthly_rent": st.column_config.NumberColumn(t["th_est_rent"], format="%.0f PLN"),
                             "roi_percent": st.column_config.NumberColumn(t["th_roi"], format="%.1f%%"),
                             "amortization_years": st.column_config.NumberColumn(t["th_amort"], format="%.1f"),
                             "url_link": st.column_config.LinkColumn(t["th_link"], display_text="View 🔗") if is_premium else st.column_config.TextColumn(t["th_link"])
                         }
                         st.dataframe(display_roi.head(50), column_config=col_conf_roi, hide_index=True, use_container_width=True)
+                        if roi_showing_limit:
+                            st.markdown(f"<div class='lock-overlay'>{t['lock_msg']}</div>", unsafe_allow_html=True)
 
     with tab4:
         st.subheader(t["tab4"])
@@ -948,25 +1008,24 @@ if not df.empty:
 
                 if not radar_df.empty:
                     radar_df = radar_df.sort_values(by='Discount (%)', ascending=False)
-                    display_radar = radar_df[['property_id', 'district', 'Old Price', 'Current Price', 'Discount (PLN)', 'Discount (%)', 'price_per_sqm', 'url_link']].copy()
 
-                    if not is_premium:
-                        display_radar['Current Price'] = "🔒 Locked"
-                        display_radar['Discount (PLN)'] = "🔒 Locked"
-                        display_radar['url_link'] = "🔒 Locked"
+                    display_radar, radar_showing_limit = apply_limit(radar_df[['property_id', 'district', 'Old Price', 'Current Price', 'Discount (PLN)', 'Discount (%)', 'price_per_sqm', 'url_link']], t)
+
                     cols_radar = ['❤️ Track', 'district', 'Old Price', 'Current Price', 'Discount (PLN)', 'Discount (%)', 'price_per_sqm', 'url_link', 'property_id'] if st.session_state['logged_in'] else ['district', 'Old Price', 'Current Price', 'Discount (PLN)', 'Discount (%)', 'price_per_sqm', 'url_link', 'property_id']
                     if st.session_state['logged_in']: display_radar['❤️ Track'] = display_radar['property_id'].isin(user_fav_ids)
                     display_radar = display_radar[cols_radar]
                     col_conf_radar = {
                         "property_id": None, "district": t["th_dist"],
                         "Old Price": st.column_config.NumberColumn(t["th_old"], format="%.0f PLN"),
-                        "Current Price": st.column_config.NumberColumn(t["th_cur"], format="%.0f PLN") if is_premium else st.column_config.TextColumn(t["th_cur"]),
-                        "Discount (PLN)": st.column_config.NumberColumn(t["th_disc"], format="-%.0f PLN") if is_premium else st.column_config.TextColumn(t["th_disc"]),
+                        "Current Price": st.column_config.TextColumn(t["th_cur"]) if not is_premium else st.column_config.NumberColumn(t["th_cur"], format="%.0f PLN"),
+                        "Discount (PLN)": st.column_config.TextColumn(t["th_disc"]) if not is_premium else st.column_config.NumberColumn(t["th_disc"], format="-%.0f PLN"),
                         "Discount (%)": st.column_config.NumberColumn(t["th_disc_pct"], format="-%.1f%%"),
                         "price_per_sqm": st.column_config.NumberColumn(t["th_psqm"], format="%.0f PLN"),
                         "url_link": st.column_config.LinkColumn(t["th_link"], display_text="View 🔗") if is_premium else st.column_config.TextColumn(t["th_link"])
                     }
                     st.dataframe(display_radar, column_config=col_conf_radar, hide_index=True, use_container_width=True)
+                    if radar_showing_limit:
+                        st.markdown(f"<div class='lock-overlay'>{t['lock_msg']}</div>", unsafe_allow_html=True)
                 else:
                     st.info(t["drop_none"])
 
@@ -998,7 +1057,6 @@ if not df.empty:
 
         with calc_col2:
             st.markdown(t["calc_reno"])
-
             st.markdown(t["ai_audit_title"])
             st.caption(t["ai_audit_sub"])
 
@@ -1006,53 +1064,55 @@ if not df.empty:
             audit_sqm = st.number_input(t["ai_size_calc"], min_value=10, max_value=500, value=50)
 
             if st.button(t["ai_btn_search"], use_container_width=True):
-                if target_url_input:
-                    with st.spinner(t["ai_spinner"]):
-                        res = supabase_client.table('listings').select('description, image_urls').eq('url_link', target_url_input).execute()
+                if check_limit(t):
+                    if target_url_input:
+                        with st.spinner(t["ai_spinner"]):
+                            res = supabase_client.table('listings').select('description, image_urls').eq('url_link', target_url_input).execute()
 
-                        found_data = None
-                        if res.data and res.data[0].get('description'):
-                            found_data = {
-                                'description': res.data[0]['description'],
-                                'image_urls': res.data[0].get('image_urls', [])
-                            }
-                            st.info(t["ai_local_found"])
-                        else:
-                            try:
-                                from Scrapers.scraper import fetch_single_listing_data
-                                found_data = fetch_single_listing_data(target_url_input)
-                            except ImportError:
-                                from scraper import fetch_single_listing_data
-                                found_data = fetch_single_listing_data(target_url_input)
+                            found_data = None
+                            if res.data and res.data[0].get('description'):
+                                found_data = {
+                                    'description': res.data[0]['description'],
+                                    'image_urls': res.data[0].get('image_urls', [])
+                                }
+                                st.info(t["ai_local_found"])
+                            else:
+                                try:
+                                    from Scrapers.scraper import fetch_single_listing_data
+                                    found_data = fetch_single_listing_data(target_url_input)
+                                except ImportError:
+                                    from scraper import fetch_single_listing_data
+                                    found_data = fetch_single_listing_data(target_url_input)
 
-                        if found_data:
-                            try:
-                                from Scrapers.ai_engine import GroqProptechAI
-                                AI_Class = GroqProptechAI
-                            except ImportError:
-                                from Scrapers.ai_engine import GeminiAnalyzer
-                                AI_Class = GeminiAnalyzer
+                            if found_data:
+                                try:
+                                    from Scrapers.ai_engine import GroqProptechAI
+                                    AI_Class = GroqProptechAI
+                                except ImportError:
+                                    from Scrapers.ai_engine import GeminiAnalyzer
+                                    AI_Class = GeminiAnalyzer
 
-                            groq_agent = AI_Class(os.getenv("GROQ_API_KEY"))
+                                groq_agent = AI_Class(os.getenv("GROQ_API_KEY"))
+                                ai_lang_map = {"🇬🇧 EN": "English", "🇵🇱 PL": "Polish", "🇹🇷 TR": "Turkish"}
+                                target_language = ai_lang_map.get(sel_lang, "English")
 
-                            ai_lang_map = {"🇬🇧 EN": "English", "🇵🇱 PL": "Polish", "🇹🇷 TR": "Turkish"}
-                            target_language = ai_lang_map.get(sel_lang, "English")
+                                report = groq_agent.analyze_with_vision(
+                                    found_data.get('description', ''),
+                                    found_data.get('image_urls', []),
+                                    sqm=audit_sqm,
+                                    language=target_language
+                                )
 
-                            report = groq_agent.analyze_with_vision(
-                                found_data.get('description', ''),
-                                found_data.get('image_urls', []),
-                                sqm=audit_sqm,
-                                language=target_language
-                            )
+                                st.session_state['usage_counter'] += 1
+                                st.success(t["ai_success"])
+                                st.markdown(report)
+                                st.info(t["audits_left"].format(FREE_TOOL_USAGE_LIMIT - st.session_state['usage_counter']))
+                            else:
+                                st.error(t["ai_error"])
+                    else:
+                        st.warning(t["ai_warn_empty"])
 
-                            st.success(t["ai_success"])
-                            st.markdown(report)
-                        else:
-                            st.error(t["ai_error"])
-                else:
-                    st.warning(t["ai_warn_empty"])
             st.markdown("---")
-
             prop_sqm = st.number_input(t["calc_size"], min_value=10, max_value=500, value=50)
             reno_level = st.radio(t["calc_qual"], [t["calc_eco"], t["calc_std"], t["calc_prem"]])
             if "Economy" in reno_level or "Ekonomiczne" in reno_level or "Ekonomik" in reno_level: reno_cost_sqm = 1800
@@ -1079,32 +1139,21 @@ if not df.empty:
             with st.spinner(t["fav_load"]):
                 if not user_fav_ids: st.info(t["fav_empty"])
                 else:
-                    if not history_df.empty:
-                        fav_history = history_df[history_df['property_id'].isin(user_fav_ids)]
-                        if not fav_history.empty:
-                            first_p = fav_history.groupby('property_id')['price_pln'].first()
-                            last_p = fav_history.groupby('property_id')['price_pln'].last()
-                            drop_alerts = []
-                            for pid in first_p.index:
-                                if first_p[pid] > last_p[pid]: drop_alerts.append((pid, first_p[pid] - last_p[pid], last_p[pid]))
-                            if drop_alerts:
-                                st.markdown(t["fav_alert"])
-                                for pid, discount, new_price in drop_alerts: st.success(f"{t['fav_good']} (ID: {pid}) -> **-{discount:,.0f} PLN**! Current: **{new_price:,.0f} PLN**")
-                                st.markdown("---")
-
                     fav_df = df[df['property_id'].isin(user_fav_ids)].copy()
                     if fav_df.empty: st.warning(t["fav_sold"])
                     else:
                         st.markdown(t["fav_here"])
                         fav_df['❤️ Track'] = True
+
                         if not is_premium:
-                            fav_df['price_pln'] = "🔒 Locked"
-                            fav_df['url_link'] = "🔒 Locked"
+                            fav_df['price_pln'] = t["locked"]
+                            fav_df['url_link'] = t["locked_link"]
+
                         fav_cols = ['❤️ Track', 'district', 'price_pln', 'sqm', 'rooms', 'price_per_sqm', 'url_link', 'property_id']
                         display_fav = fav_df[fav_cols]
                         col_conf_fav = {
                             "property_id": None, "district": t["th_dist"],
-                            "price_pln": st.column_config.NumberColumn(t["th_price"], format="%.0f PLN") if is_premium else st.column_config.TextColumn(t["th_price"]),
+                            "price_pln": st.column_config.TextColumn(t["th_price"]) if not is_premium else st.column_config.NumberColumn(t["th_price"], format="%.0f PLN"),
                             "sqm": st.column_config.NumberColumn(t["th_sqm"], format="%.0f"),
                             "rooms": t["th_rooms"],
                             "price_per_sqm": st.column_config.NumberColumn(t["th_psqm"], format="%.0f PLN"),
@@ -1144,7 +1193,11 @@ if not df.empty:
         if df_sold.empty: st.info(t["cd_none"])
         else:
             display_sold = df_sold[['district', 'price_pln', 'sqm', 'rooms', 'price_per_sqm']].copy()
-            st.dataframe(display_sold, column_config={"district": t["th_dist"], "price_pln": st.column_config.NumberColumn(t["th_last"], format="%.0f PLN"), "sqm": st.column_config.NumberColumn(t["th_sqm"], format="%.0f"), "rooms": t["th_rooms"], "price_per_sqm": st.column_config.NumberColumn(t["th_psqm"], format="%.0f PLN")}, hide_index=True, use_container_width=True)
+            display_sold, cd_showing_limit = apply_limit(display_sold, t)
+
+            st.dataframe(display_sold, column_config={"district": t["th_dist"], "price_pln": st.column_config.TextColumn(t["th_last"]) if not is_premium else st.column_config.NumberColumn(t["th_last"], format="%.0f PLN"), "sqm": st.column_config.NumberColumn(t["th_sqm"], format="%.0f"), "rooms": t["th_rooms"], "price_per_sqm": st.column_config.NumberColumn(t["th_psqm"], format="%.0f PLN")}, hide_index=True, use_container_width=True)
+            if cd_showing_limit:
+                st.markdown(f"<div class='lock-overlay'>{t['lock_msg']}</div>", unsafe_allow_html=True)
             st.bar_chart(df_sold['district'].value_counts())
 
 else:
