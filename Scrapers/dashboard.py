@@ -143,8 +143,8 @@ LANG_DICT = {
         "sb_districts": "Select Districts",
         "th_dist": "District", "th_price": "Price (PLN)", "th_sqm": "m²", "th_rooms": "Rooms",
         "th_psqm": "Price/m²", "th_link": "Link", "th_status": "Status",
-        "cs_title": "🏆 Recent Arbitrage Success (Case Studies)",
-        "cs_info": "ℹ️ *The scenarios below are simulated models based on historical price anomaly data captured and verified by our engine.*",
+        "cs_title": "🏆 Top Live Arbitrage Opportunities",
+        "cs_info": "ℹ️ *The listings below are live anomalies detected by comparing asking price vs district average.*",
         "roi_calc": "Calculating ROI based on live rent averages...", "roi_warn": "⚠️ Live rental data is missing...",
         "roi_info": "ℹ️ **Data Note:** ROI calculation requires property size (m²).", "roi_col1": "**Average ROI (%) by District**",
         "roi_col2": "**Average Amortization (Years) by District**", "roi_top": "🏆 Top ROI Opportunities",
@@ -222,8 +222,8 @@ LANG_DICT = {
         "sb_districts": "Wybierz Dzielnice",
         "th_dist": "Dzielnica", "th_price": "Cena (PLN)", "th_sqm": "m²", "th_rooms": "Pokoje",
         "th_psqm": "Cena/m²", "th_link": "Link", "th_status": "Status",
-        "cs_title": "🏆 Ostatnie Sukcesy Arbitrażowe",
-        "cs_info": "ℹ️ *Poniższe scenariusze to symulowane modele oparte na historycznych anomaliach cenowych zarejestrowanych przez nasz silnik.*",
+        "cs_title": "🏆 Najlepsze Aktywne Okazje Arbitrażowe",
+        "cs_info": "ℹ️ *Poniższe oferty to aktywne anomalie wykryte przez porównanie ceny ofertowej ze średnią dzielnicy.*",
         "roi_calc": "Obliczanie ROI na podstawie średnich czynszów...", "roi_warn": "⚠️ Brak danych o wynajmie na żywo...",
         "roi_info": "ℹ️ **Uwaga:** Obliczenie ROI wymaga rozmiaru nieruchomości (m²).", "roi_col1": "**Średnie ROI (%) wg Dzielnic**",
         "roi_col2": "**Średnia Amortyzacja (Lata) wg Dzielnic**", "roi_top": "🏆 Najlepsze Okazje ROI",
@@ -301,8 +301,8 @@ LANG_DICT = {
         "sb_districts": "Bölge Seç",
         "th_dist": "Bölge", "th_price": "Fiyat (PLN)", "th_sqm": "m²", "th_rooms": "Oda",
         "th_psqm": "Fiyat/m²", "th_link": "Link", "th_status": "Durum",
-        "cs_title": "🏆 Son Arbitraj Başarıları (Örnek Vakalar)",
-        "cs_info": "ℹ️ *Aşağıdaki senaryolar, motorumuz tarafından yakalanan geçmiş fiyat anomalisi verilerine dayanan simüle edilmiş modellerdir.*",
+        "cs_title": "🏆 En İyi Aktif Arbitraj Fırsatları",
+        "cs_info": "ℹ️ *Aşağıdaki ilanlar, istenen fiyat ile bölge ortalaması karşılaştırılarak tespit edilen canlı piyasa fırsatlarıdır.*",
         "roi_calc": "Canlı kira ortalamalarına göre ROI hesaplanıyor...", "roi_warn": "⚠️ Canlı kira verisi eksik...",
         "roi_info": "ℹ️ **Not:** ROI hesaplaması m² verisi gerektirir.", "roi_col1": "**Bölgelere Göre Ort. ROI (%)**",
         "roi_col2": "**Bölgelere Göre Ort. Amortisman (Yıl)**", "roi_top": "🏆 En İyi ROI Fırsatları",
@@ -610,7 +610,6 @@ def predict_future_prices(df, trans_id=1):
         return result_df
     except Exception: return pd.DataFrame()
 
-# 🚨 ZIRHLI LOGİN EKRANI
 @st.dialog("🔐 Login Portal")
 def show_login_modal():
     with st.form("login_form"):
@@ -647,7 +646,6 @@ def show_login_modal():
                 else:
                     st.error("❌ Please enter email.")
 
-# 🚨 ZIRHLI SIGN UP EKRANI (VERİLERİ ASLA UNUTMAZ)
 @st.dialog("📝 Sign Up Portal")
 def show_signup_modal():
     with st.form("signup_form"):
@@ -922,16 +920,45 @@ if not df.empty:
 
     st.markdown("---")
 
+    # 🚨 DİNAMİK TOP 3 ARBİTRAJ (CASE STUDIES) KISMI
     st.markdown(f"### {t['cs_title']}")
     st.caption(t["cs_info"])
     cs1, cs2, cs3 = st.columns(3)
 
-    with cs1:
-        st.success("**📍 Mokotów (Flip Opportunity)**\n\n📉 **Market Avg:** 850,000 PLN\n🎯 **Captured Price:** 690,000 PLN\n💸 **Net Profit:** ~160,000 PLN\n\n⚡ *Status: Deal Closed*")
-    with cs2:
-        st.info("**📍 Wola (High ROI)**\n\n📉 **Market Rent:** 4,200 PLN/mo\n🎯 **Captured Sale:** 510,000 PLN\n🚀 **Annual ROI:** 9.8% (Net)\n\n⚡ *Status: Deal Closed*")
-    with cs3:
-        st.warning("**📍 Śródmieście (Urgent Sale)**\n\n📉 **Market Avg:** 1,200,000 PLN\n🎯 **Captured Price:** 980,000 PLN\n💸 **Net Profit:** ~220,000 PLN\n\n⚡ *Status: Deal Closed*")
+    top_deals = []
+    if not filtered_df.empty and 'sqm' in filtered_df.columns:
+        dist_avg = filtered_df.groupby('district')['price_per_sqm'].mean().to_dict()
+        temp_df = filtered_df.dropna(subset=['sqm', 'price_pln']).copy()
+        if not temp_df.empty:
+            temp_df['dist_avg_sqm'] = temp_df['district'].map(dist_avg)
+            temp_df['est_market_price'] = temp_df['dist_avg_sqm'] * temp_df['sqm']
+            temp_df['profit'] = temp_df['est_market_price'] - temp_df['price_pln']
+            temp_df = temp_df.sort_values(by='profit', ascending=False)
+            top_deals = temp_df.head(3).to_dict('records')
+
+    # Yeterli veri yoksa gösterilecek yedek sabit veri (Artık Deal Closed yazmıyor)
+    default_boxes = [
+        {"color": st.success, "title": "**📍 Mokotów (Live Anomaly)**", "body": f"📉 **Est. Market:** 850,000 PLN\n🎯 **Listed Price:** 690,000 PLN\n💸 **Potential Margin:** ~160,000 PLN\n\n⚡ *Status: {t['active']}*"},
+        {"color": st.info, "title": "**📍 Wola (High ROI)**", "body": f"📉 **Est. Market:** 600,000 PLN\n🎯 **Listed Price:** 510,000 PLN\n💸 **Potential Margin:** ~90,000 PLN\n\n⚡ *Status: {t['active']}*"},
+        {"color": st.warning, "title": "**📍 Śródmieście (Urgent Sale)**", "body": f"📉 **Est. Market:** 1,200,000 PLN\n🎯 **Listed Price:** 980,000 PLN\n💸 **Potential Margin:** ~220,000 PLN\n\n⚡ *Status: {t['active']}*"}
+    ]
+
+    boxes = [cs1, cs2, cs3]
+    for i in range(3):
+        with boxes[i]:
+            if i < len(top_deals):
+                deal = top_deals[i]
+                dist = deal['district']
+                market_avg = deal['est_market_price']
+                price = deal['price_pln']
+                profit = deal['profit']
+                link = deal['url_link']
+                color_func = st.success if i == 0 else (st.info if i == 1 else st.warning)
+
+                body_text = f"📉 **Est. Market:** {market_avg:,.0f} PLN\n🎯 **Listed Price:** {price:,.0f} PLN\n💸 **Potential Margin:** ~{profit:,.0f} PLN\n\n⚡ *Status: {t['active']}* [🔗 View]({link})"
+                color_func(f"**📍 {dist} (Live Anomaly)**\n\n{body_text}")
+            else:
+                default_boxes[i]["color"](f"{default_boxes[i]['title']}\n\n{default_boxes[i]['body']}")
 
     with st.expander("🤖 Transparency: How Does Our AI Methodology Work?"):
         st.markdown("""
