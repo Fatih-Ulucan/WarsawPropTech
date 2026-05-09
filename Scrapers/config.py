@@ -12,14 +12,22 @@ LOCATION_MAP = {
 }
 
 SCRAPE_TARGETS = [
-    {"url_part": "sprzedaz/mieszkanie", "trans_id": 1, "type_id": 1, "label": "🏠 APARTMENT SALE"},
     {"url_part": "wynajem/mieszkanie", "trans_id": 2, "type_id": 1, "label": "🔑 APARTMENT RENT"},
-    {"url_part": "sprzedaz/kawalerka", "trans_id": 1, "type_id": 1, "label": "🛋️ STUDIO SALE"},
-    {"url_part": "wynajem/kawalerka", "trans_id": 2, "type_id": 1, "label": "🛌 STUDIO RENT"},
-    {"url_part": "sprzedaz/dom", "trans_id": 1, "type_id": 2, "label": "🏡 HOUSE SALE"},
-    {"url_part": "wynajem/dom", "trans_id": 2, "type_id": 2, "label": "🏠 HOUSE RENT"},
-    {"url_part": "sprzedaz/lokal", "trans_id": 1, "type_id": 3, "label": "🏢 COMMERCIAL SALE"},
-    {"url_part": "wynajem/lokal", "trans_id": 2, "type_id": 3, "label": "🏬 COMMERCIAL RENT"}
+    {"url_part": "sprzedaz/mieszkanie", "trans_id": 1, "type_id": 1, "label": "🏠 APARTMENT SALE"},
+
+    {"url_part": "wynajem/lokal", "trans_id": 2, "type_id": 2, "label": "🏬 COMMERCIAL RENT"},
+    {"url_part": "sprzedaz/lokal", "trans_id": 1, "type_id": 2, "label": "🏢 COMMERCIAL SALE"},
+
+    {"url_part": "wynajem/garaz", "trans_id": 2, "type_id": 6, "label": "🚗 GARAGE RENT"},
+    {"url_part": "sprzedaz/garaz", "trans_id": 1, "type_id": 6, "label": "🚗 GARAGE SALE"},
+
+    {"url_part": "wynajem/biuro", "trans_id": 2, "type_id": 4, "label": "🏢 OFFICE RENT"},
+    {"url_part": "sprzedaz/biuro", "trans_id": 1, "type_id": 4, "label": "🏢 OFFICE SALE"},
+
+    {"url_part": "wynajem/hala", "trans_id": 2, "type_id": 5, "label": "🏭 WAREHOUSE RENT"},
+    {"url_part": "sprzedaz/hala", "trans_id": 1, "type_id": 5, "label": "🏭 WAREHOUSE SALE"},
+
+    {"url_part": "sprzedaz/dzialka", "trans_id": 1, "type_id": 3, "label": "🌍 LAND SALE"}
 ]
 
 USER_AGENTS = [
@@ -30,6 +38,7 @@ USER_AGENTS = [
 ]
 
 CACHE_TTL = 600
-QUEUE_FLUSH_LIMIT = 100
+QUEUE_FLUSH_LIMIT = 50
 MAX_AI_CALLS = 10
-MAX_SCANS_BEFORE_REBOOT = 10000
+
+MAX_SCANS_BEFORE_REBOOT = 50000
