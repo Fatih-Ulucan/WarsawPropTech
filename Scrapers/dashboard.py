@@ -10,7 +10,6 @@ import plotly.express as px
 import numpy as np
 from sklearn.linear_model import LinearRegression
 import pydeck as pdk
-
 from supabase import create_client, Client
 
 FREE_TABLE_LIMIT = 5
@@ -51,13 +50,13 @@ except ImportError:
         st.error(f"❌ NOTIFIER MODULE NOT FOUND! Error: {e}")
         st.stop()
 
-st.set_page_config(page_title="Warsaw AI PropTech", page_icon="🏢", layout="wide")
+# 🚨 SOL MENÜYÜ DAİMA AÇIK BAŞLATMA KOMUTU EKLENDİ
+st.set_page_config(page_title="Warsaw AI PropTech", page_icon="🏢", layout="wide", initial_sidebar_state="expanded")
 
 st.markdown("""
     <style>
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
-    header {visibility: hidden;}
     
     .lock-overlay {
         background-color: rgba(255, 75, 75, 0.05);
@@ -130,7 +129,12 @@ LANG_DICT = {
         "tab1": "📊 Market Overview", "tab2": "🗺️ Interactive Heatmap", "tab3": "🧠 ROI & Amortization Map",
         "tab4": "🚨 Price Drop Radar", "tab5": "🧮 Investment Calculators", "tab6": "⭐ My Favorites",
         "tab7": "🔮 AI Future Forecast", "tab8": "✅ Closed Deals",
-        "sb_member": "🔐 Member Access", "sb_login": "Login", "sb_signup": "Sign Up",
+        "sb_member": "🔐 Member Access", "sb_login": "Login", "sb_signup": "Sign Up", "sb_forgot": "Forgot Password?",
+        "sb_back": "⬅ Back", "prof_info": "👤 Profile Info", "prof_name": "Full Name", "prof_sub": "Subscription",
+        "sb_fn": "First Name", "sb_ln": "Last Name", "sb_confirm": "Confirm Password",
+        "sb_update": "Update Profile", "msg_updated": "Profile updated successfully!",
+        "err_pass_len": "Password must be at least 8 characters.", "err_pass_match": "Passwords do not match.",
+        "msg_reset": "Reset link sent! Check your email.",
         "sb_email": "Email Address", "sb_pass": "Password", "sb_unlock": "🚀 Unlock Pro Features",
         "sb_logout": "Logout", "sb_controls": "🎯 System Controls", "sb_mode": "Market Mode",
         "sb_sale": "Sale (Investment)", "sb_rent": "Rent (Yield)", "sb_type": "Property Type",
@@ -156,7 +160,7 @@ LANG_DICT = {
         "calc_est_reno": "**Estimated Total Renovation Cost:**", "calc_cf": "### 💸 Net Cash Flow Analysis",
         "calc_est_inc": "Estimated Monthly Rent Income (PLN)", "calc_hoa": "HOA / Czynsz (PLN)", "calc_tax": "Rental Tax Rate (%)",
         "calc_net": "**Net Monthly Cash Flow:**",
-        "fav_warn": "🔒 Please log in from the left menu to view and manage your tracked properties.", "fav_load": "Loading your vault...",
+        "fav_warn": "🔒 Please log in to view and manage your tracked properties.", "fav_load": "Loading your vault...",
         "fav_empty": "You haven't saved any properties yet. Browse the market tabs and check the '❤️ Track' box to start monitoring!",
         "fav_alert": "### 🔔 PRICE DROP ALERTS!", "fav_good": "**🚨 GOOD NEWS!** A property you are tracking",
         "fav_sold": "Your saved properties are no longer active on the market (Sold or Removed).", "fav_here": "Here are your tracked investments. Uncheck the box to remove a property from your list.",
@@ -192,7 +196,8 @@ LANG_DICT = {
         "upgrade_btn": "💎 Get Unlimited Access",
         "audits_left": "💡 You have {} free audits left for today.",
         "locked": "🔒 Locked", "locked_link": "🔒 Upgrade to View",
-        "roi_only_sale": "💡 **ROI Map is restricted.** Switch 'Market Mode' to 'Sale (Investment)' on the left menu to view return on investment data."
+        "roi_only_sale": "💡 **ROI Map is restricted.** Switch 'Market Mode' to 'Sale (Investment)' on the left menu to view return on investment data.",
+        "settings_menu": "⚙️ Settings"
     },
     "🇵🇱 PL": {
         "hero_title": "Warszawska Inteligencja Nieruchomości",
@@ -203,7 +208,12 @@ LANG_DICT = {
         "tab1": "📊 Przegląd Rynku", "tab2": "🗺️ Mapa Cieplna", "tab3": "🧠 ROI i Amortyzacja",
         "tab4": "🚨 Radar Spadków Cen", "tab5": "🧮 Kalkulatory Inwestycyjne", "tab6": "⭐ Moje Ulubione",
         "tab7": "🔮 Prognoza Przyszłości", "tab8": "✅ Zamknięte Transakcje",
-        "sb_member": "🔐 Dostęp Użytkownika", "sb_login": "Zaloguj", "sb_signup": "Rejestracja",
+        "sb_member": "🔐 Dostęp Użytkownika", "sb_login": "Zaloguj", "sb_signup": "Rejestracja", "sb_forgot": "Zapomniałeś hasła?",
+        "sb_back": "⬅ Wróć", "prof_info": "👤 Twój Profil", "prof_name": "Imię i nazwisko", "prof_sub": "Subskrypcja",
+        "sb_fn": "Imię", "sb_ln": "Nazwisko", "sb_confirm": "Potwierdź hasło",
+        "sb_update": "Zaktualizuj Profil", "msg_updated": "Profil zaktualizowany pomyślnie!",
+        "err_pass_len": "Hasło musi mieć co najmniej 8 znaków.", "err_pass_match": "Hasła nie są identyczne.",
+        "msg_reset": "Wysłano link resetujący! Sprawdź email.",
         "sb_email": "Adres Email", "sb_pass": "Hasło", "sb_unlock": "🚀 Odblokuj Funkcje Pro",
         "sb_logout": "Wyloguj", "sb_controls": "🎯 Panel Sterowania", "sb_mode": "Tryb Rynku",
         "sb_sale": "Sprzedaż (Inwestycja)", "sb_rent": "Wynajem (Zysk)", "sb_type": "Typ Nieruchomości",
@@ -229,7 +239,7 @@ LANG_DICT = {
         "calc_est_reno": "**Szacowany Całkowity Koszt Remontu:**", "calc_cf": "### 💸 Analiza Przepływów Pieniężnych (Cash Flow)",
         "calc_est_inc": "Szacowany Miesięczny Przychód z Najmu (PLN)", "calc_hoa": "Czynsz Administracyjny (PLN)", "calc_tax": "Podatek od Najmu (%)",
         "calc_net": "**Zysk Miesięczny Na Czysto (Net Cash Flow):**",
-        "fav_warn": "🔒 Zaloguj się z lewego menu, aby zarządzać śledzonymi nieruchomościami.", "fav_load": "Ładowanie twojego skarbca...",
+        "fav_warn": "🔒 Zaloguj się, aby zarządzać śledzonymi nieruchomościami.", "fav_load": "Ładowanie twojego skarbca...",
         "fav_empty": "Nie zapisałeś jeszcze żadnych nieruchomości. Zaznacz '❤️ Track', aby zacząć monitorować!",
         "fav_alert": "### 🔔 ALERTY O SPADKU CEN!", "fav_good": "**🚨 DOBRE WIEŚCI!** Nieruchomość, którą śledzisz",
         "fav_sold": "Twoje zapisane nieruchomości nie są już aktywne (Sprzedane lub Usunięte).", "fav_here": "Oto twoje śledzone inwestycje. Odznacz pole, aby usunąć z listy.",
@@ -265,7 +275,8 @@ LANG_DICT = {
         "upgrade_btn": "💎 Uzyskaj nieograniczony dostęp",
         "audits_left": "💡 Zostało Ci {} darmowych audytów na dziś.",
         "locked": "🔒 Zablokowane", "locked_link": "🔒 Kup Premium",
-        "roi_only_sale": "💡 **Mapa ROI ograniczona.** Przełącz 'Tryb Rynku' na 'Sprzedaż (Inwestycja)', aby zobaczyć te dane."
+        "roi_only_sale": "💡 **Mapa ROI ograniczona.** Przełącz 'Tryb Rynku' na 'Sprzedaż (Inwestycja)', aby zobaczyć te dane.",
+        "settings_menu": "⚙️ Ustawienia"
     },
     "🇹🇷 TR": {
         "hero_title": "Varşova Emlak Zekası",
@@ -276,7 +287,12 @@ LANG_DICT = {
         "tab1": "📊 Piyasa Özeti", "tab2": "🗺️ Isı Haritası", "tab3": "🧠 ROI & Amortisman",
         "tab4": "🚨 Fiyat Düşüş Radarı", "tab5": "🧮 Yatırım Hesaplayıcı", "tab6": "⭐ Favorilerim",
         "tab7": "🔮 Gelecek Tahmini", "tab8": "✅ Kapanan İşlemler",
-        "sb_member": "🔐 Üye Girişi", "sb_login": "Giriş Yap", "sb_signup": "Kayıt Ol",
+        "sb_member": "🔐 Üye Girişi", "sb_login": "Giriş Yap", "sb_signup": "Kayıt Ol", "sb_forgot": "Şifremi Unuttum?",
+        "sb_back": "⬅ Geri", "prof_info": "👤 Profil Bilgileri", "prof_name": "Ad Soyad", "prof_sub": "Abonelik",
+        "sb_fn": "Ad", "sb_ln": "Soyad", "sb_confirm": "Şifreyi Onayla",
+        "sb_update": "Profili Güncelle", "msg_updated": "Profil başarıyla güncellendi!",
+        "err_pass_len": "Şifre en az 8 karakter olmalıdır.", "err_pass_match": "Şifreler eşleşmiyor.",
+        "msg_reset": "Sıfırlama bağlantısı gönderildi! E-postanızı kontrol edin.",
         "sb_email": "E-posta Adresi", "sb_pass": "Şifre", "sb_unlock": "🚀 Pro Özellikleri Aç",
         "sb_logout": "Çıkış Yap", "sb_controls": "🎯 Sistem Kontrolleri", "sb_mode": "Piyasa Modu",
         "sb_sale": "Satılık (Yatırım)", "sb_rent": "Kiralık (Getiri)", "sb_type": "Mülk Tipi",
@@ -338,12 +354,31 @@ LANG_DICT = {
         "upgrade_btn": "💎 Sınırsız Erişime Geç",
         "audits_left": "💡 Bugün için {} ücretsiz analiz hakkın kaldı.",
         "locked": "🔒 Kilitli", "locked_link": "🔒 Görmek için Yükselt",
-        "roi_only_sale": "💡 **ROI Haritası kısıtlıdır.** Bu veriyi görmek için sol menüden 'Piyasa Modu'nu 'Satılık (Yatırım)' olarak değiştirin."
+        "roi_only_sale": "💡 **ROI Haritası kısıtlıdır.** Bu veriyi görmek için sol menüden 'Piyasa Modu'nu 'Satılık (Yatırım)' olarak değiştirin.",
+        "settings_menu": "⚙️ Ayarlar"
     }
 }
 
+if 'app_lang' not in st.session_state:
+    st.session_state['app_lang'] = "🇬🇧 EN"
+if 'app_theme' not in st.session_state:
+    st.session_state['app_theme'] = "Auto"
 if 'usage_counter' not in st.session_state:
     st.session_state['usage_counter'] = 0
+if 'user_tier' not in st.session_state:
+    st.session_state['user_tier'] = 'Free'
+if 'logged_in' not in st.session_state:
+    st.session_state['logged_in'] = False
+if 'user_email' not in st.session_state:
+    st.session_state['user_email'] = ""
+if 'user_fn' not in st.session_state:
+    st.session_state['user_fn'] = ""
+if 'user_ln' not in st.session_state:
+    st.session_state['user_ln'] = ""
+if 'access_token' not in st.session_state:
+    st.session_state['access_token'] = ""
+
+t = LANG_DICT[st.session_state['app_lang']]
 
 def check_limit(t_dict):
     if st.session_state.get('user_tier', 'Free') == 'Premium':
@@ -377,94 +412,6 @@ def apply_limit(df, t_dict):
 
     return limited_df, is_limited
 
-col_space, col_lang, col_theme = st.columns([8, 1, 1])
-with col_lang:
-    sel_lang = st.selectbox("🌐", ["🇬🇧 EN", "🇵🇱 PL", "🇹🇷 TR"], label_visibility="collapsed")
-with col_theme:
-    sel_theme = st.selectbox("🎨", ["Auto", "🌙 Dark", "☀️ Light"], label_visibility="collapsed")
-
-t = LANG_DICT[sel_lang]
-
-if sel_theme == "🌙 Dark":
-    st.markdown("""
-    <style> 
-    [data-testid="stAppViewContainer"] { background-color: #0E1117 !important; } 
-    [data-testid="stSidebar"] { background-color: #000000 !important; } 
-    .hero-text { color: #F8FAFC !important; }
-    .sub-hero { color: #E2E8F0 !important; }
-    [data-testid="stAppViewContainer"] h1,
-    [data-testid="stAppViewContainer"] h2,
-    [data-testid="stAppViewContainer"] h3,
-    [data-testid="stAppViewContainer"] h4 { color: #F8FAFC !important; }
-    div[data-testid="stAppViewContainer"] .stMarkdown p { color: #E2E8F0; }
-    div[data-testid="stAlert"] .stMarkdown p { color: inherit !important; }
-    [data-testid="stCaptionContainer"] p { color: #94A3B8 !important; }
-    button[data-baseweb="tab"] p, button[data-baseweb="tab"] div { color: #F8FAFC !important; }
-    [data-testid="stMetricLabel"] > div > div > p { color: #94A3B8 !important; }
-    summary p { color: #F8FAFC !important; }
-    [data-testid="stSidebar"] label, [data-testid="stSidebar"] p, [data-testid="stSidebar"] div { 
-        color: #E2E8F0 !important; font-weight: 500 !important; text-shadow: none !important;
-    }
-    [data-testid="stSidebar"] h1, [data-testid="stSidebar"] h2, [data-testid="stSidebar"] h3 { 
-        color: #FFFFFF !important; text-shadow: none !important;
-    }
-    div[data-baseweb="input"] > div, div[data-baseweb="base-input"] { 
-        background-color: #0F172A !important; border: 1px solid #334155 !important; 
-    }
-    input[type="text"], input[type="password"] { color: #FFFFFF !important; -webkit-text-fill-color: #FFFFFF !important; }
-    div[data-baseweb="select"] > div { background-color: #0F172A !important; border: 1px solid #334155 !important; }
-    div[data-baseweb="select"] span { color: #FFFFFF !important; font-weight: 500 !important; }
-    div[data-baseweb="select"] svg { fill: #FFFFFF !important; } 
-    ul[data-baseweb="menu"] { background-color: #0F172A !important; border: 1px solid #334155 !important; }
-    li[data-baseweb="menu-item"] { color: #FFFFFF !important; }
-    div.stButton > button { background-color: #1E293B !important; color: #FFFFFF !important; border: 1px solid #334155 !important; }
-    div.stButton > button:hover { border-color: #10B981 !important; color: #10B981 !important; }
-    </style>
-    """, unsafe_allow_html=True)
-
-elif sel_theme == "☀️ Light":
-    st.markdown("""
-    <style> 
-    [data-testid="stAppViewContainer"] { background-color: #FFFFFF !important; } 
-    [data-testid="stSidebar"] { background-color: #F8F9FA !important; } 
-    .hero-text { color: #0F172A !important; }
-    .sub-hero { color: #334155 !important; }
-    [data-testid="stAppViewContainer"] h1,
-    [data-testid="stAppViewContainer"] h2,
-    [data-testid="stAppViewContainer"] h3,
-    [data-testid="stAppViewContainer"] h4 { color: #0F172A !important; }
-    div[data-testid="stAppViewContainer"] .stMarkdown p { color: #1E293B; }
-    div[data-testid="stAlert"] .stMarkdown p { color: inherit !important; }
-    [data-testid="stCaptionContainer"] p { color: #64748B !important; }
-    button[data-baseweb="tab"] p, button[data-baseweb="tab"] div { color: #0F172A !important; }
-    [data-testid="stMetricLabel"] > div > div > p { color: #64748B !important; }
-    summary p { color: #0F172A !important; }
-    [data-testid="stSidebar"] label, [data-testid="stSidebar"] p, [data-testid="stSidebar"] div { 
-        color: #1E293B !important; font-weight: 500 !important; text-shadow: none !important;
-    }
-    [data-testid="stSidebar"] h1, [data-testid="stSidebar"] h2, [data-testid="stSidebar"] h3 { 
-        color: #000000 !important; text-shadow: none !important;
-    }
-    div[data-baseweb="input"] > div, div[data-baseweb="base-input"] { background-color: #FFFFFF !important; border: 1px solid #D1D5DB !important; }
-    input[type="text"], input[type="password"] { color: #000000 !important; -webkit-text-fill-color: #000000 !important; }
-    div[data-baseweb="select"] > div { background-color: #FFFFFF !important; border: 1px solid #D1D5DB !important; }
-    div[data-baseweb="select"] span { color: #000000 !important; font-weight: 500 !important; }
-    div[data-baseweb="select"] svg { fill: #000000 !important; } 
-    ul[data-baseweb="menu"] { background-color: #FFFFFF !important; border: 1px solid #D1D5DB !important;}
-    li[data-baseweb="menu-item"] { color: #000000 !important; }
-    div.stButton > button { background-color: #F3F4F6 !important; color: #111827 !important; border: 1px solid #D1D5DB !important; }
-    div.stButton > button:hover { border-color: #10B981 !important; color: #10B981 !important; }
-    </style>
-    """, unsafe_allow_html=True)
-
-
-if 'user_tier' not in st.session_state:
-    st.session_state['user_tier'] = 'Free'
-if 'logged_in' not in st.session_state:
-    st.session_state['logged_in'] = False
-if 'user_email' not in st.session_state:
-    st.session_state['user_email'] = ""
-
 if "success" in st.query_params and st.query_params["success"] == "true":
     if st.session_state['logged_in']:
         st.session_state['user_tier'] = 'Premium'
@@ -497,10 +444,17 @@ def login_user(email, password):
     response = requests.post(url, headers=headers, json=payload)
     return response
 
-def signup_user(email, password):
+def signup_user(email, password, fn, ln):
     url = f"{SUPABASE_URL.strip('/')}/auth/v1/signup"
     headers = {"apikey": SUPABASE_KEY, "Content-Type": "application/json"}
-    payload = {"email": email, "password": password}
+    payload = {"email": email, "password": password, "data": {"first_name": fn, "last_name": ln}}
+    response = requests.post(url, headers=headers, json=payload)
+    return response
+
+def reset_password(email):
+    url = f"{SUPABASE_URL.strip('/')}/auth/v1/recover"
+    headers = {"apikey": SUPABASE_KEY, "Content-Type": "application/json"}
+    payload = {"email": email}
     response = requests.post(url, headers=headers, json=payload)
     return response
 
@@ -531,7 +485,6 @@ def process_favorite_edits(edited_df, original_df, email):
             toggle_favorite(email, property_id, current_status)
 
 REVERSE_LOCATION_MAP = {v: k for k, v in LOCATION_MAP.items()}
-
 DISTRICT_COORDS = {
     'Mokotów': {'lat': 52.1939, 'lon': 21.0211}, 'Praga-Południe': {'lat': 52.2393, 'lon': 21.0820},
     'Ursynów': {'lat': 52.1410, 'lon': 21.0326}, 'Wola': {'lat': 52.2361, 'lon': 20.9575},
@@ -656,34 +609,192 @@ def predict_future_prices(df, trans_id=1):
         return result_df
     except Exception: return pd.DataFrame()
 
+@st.dialog("🔐 Login Portal")
+def show_login_modal():
+    st.text_input(t["sb_email"], key="mod_log_e")
+    st.text_input(t["sb_pass"], type="password", key="mod_log_p")
+
+    if st.button(t["sb_login"], use_container_width=True):
+        auth_email = st.session_state.mod_log_e.strip()
+        auth_password = st.session_state.mod_log_p
+        with st.spinner("Authenticating..."):
+            res = login_user(auth_email, auth_password)
+            if res.status_code == 200:
+                data = res.json()
+                st.session_state['logged_in'] = True
+                st.session_state['user_email'] = auth_email
+                st.session_state['access_token'] = data.get('access_token', '')
+                user_meta = data.get('user', {}).get('user_metadata', {})
+                st.session_state['user_fn'] = user_meta.get('first_name', '')
+                st.session_state['user_ln'] = user_meta.get('last_name', '')
+                if st.session_state.get('user_tier') != 'Premium':
+                    st.session_state['user_tier'] = 'Free'
+                st.rerun()
+            else:
+                st.error("❌ Invalid Email or Password.")
+
+    with st.expander(t["sb_forgot"]):
+        st.text_input(t["sb_email"], key="mod_fgt_e2")
+        if st.button("Send Reset Link", use_container_width=True):
+            forgot_email = st.session_state.mod_fgt_e2.strip()
+            if forgot_email:
+                with st.spinner("Processing..."):
+                    reset_password(forgot_email)
+                    st.success(f"✅ {t['msg_reset']}")
+            else:
+                st.error("❌ Please enter email.")
+
+@st.dialog("📝 Sign Up Portal")
+def show_signup_modal():
+    st.text_input(t["sb_fn"], key="mod_reg_fn")
+    st.text_input(t["sb_ln"], key="mod_reg_ln")
+    st.text_input(t["sb_email"], key="mod_reg_e")
+    st.text_input(t["sb_pass"], type="password", key="mod_reg_p")
+    st.text_input(t["sb_confirm"], type="password", key="mod_reg_c")
+
+    if st.button(t["sb_signup"], use_container_width=True):
+        auth_fn = st.session_state.mod_reg_fn.strip()
+        auth_ln = st.session_state.mod_reg_ln.strip()
+        auth_email_reg = st.session_state.mod_reg_e.strip()
+        auth_password_reg = st.session_state.mod_reg_p
+        auth_confirm = st.session_state.mod_reg_c
+
+        if len(auth_password_reg) < 8:
+            st.error(f"❌ {t['err_pass_len']}")
+        elif auth_password_reg != auth_confirm:
+            st.error(f"❌ {t['err_pass_match']}")
+        elif not auth_fn or not auth_ln:
+            st.error("❌ Names are required.")
+        else:
+            with st.spinner("Creating account..."):
+                res = signup_user(auth_email_reg, auth_password_reg, auth_fn, auth_ln)
+                if res.status_code == 200:
+                    st.success("✅ Registration successful! You can log in now.")
+                else:
+                    st.error("❌ Registration failed. Email may exist.")
+
+col_space, col_settings = st.columns([9, 2])
+with col_settings:
+    with st.popover(t["settings_menu"], use_container_width=True):
+        new_lang = st.selectbox("🌐 Language", ["🇬🇧 EN", "🇵🇱 PL", "🇹🇷 TR"], index=["🇬🇧 EN", "🇵🇱 PL", "🇹🇷 TR"].index(st.session_state['app_lang']), key="lang_sel")
+        new_theme = st.selectbox("🎨 Theme", ["Auto", "🌙 Dark", "☀️ Light"], index=["Auto", "🌙 Dark", "☀️ Light"].index(st.session_state['app_theme']), key="theme_sel")
+
+        if new_lang != st.session_state['app_lang'] or new_theme != st.session_state['app_theme']:
+            st.session_state['app_lang'] = new_lang
+            st.session_state['app_theme'] = new_theme
+            st.rerun()
+
+        if st.session_state['logged_in']:
+            st.divider()
+            st.markdown(f"**{t['prof_info']}**")
+            st.text_input(t["sb_fn"], value=st.session_state['user_fn'], key="upd_fn")
+            st.text_input(t["sb_ln"], value=st.session_state['user_ln'], key="upd_ln")
+            st.text_input(t["sb_email"], value=st.session_state['user_email'], disabled=True)
+            st.text_input(t["prof_sub"], value=f"{st.session_state['user_tier']} Plan", disabled=True)
+
+            if st.button(t["sb_update"], use_container_width=True):
+                fn_val = st.session_state.upd_fn.strip()
+                ln_val = st.session_state.upd_ln.strip()
+                if st.session_state.get('access_token'):
+                    with st.spinner("Updating..."):
+                        url = f"{os.environ.get('SUPABASE_URL', '').strip('/')}/auth/v1/user"
+                        headers = {
+                            "apikey": os.environ.get('SUPABASE_KEY', ''),
+                            "Authorization": f"Bearer {st.session_state['access_token']}",
+                            "Content-Type": "application/json"
+                        }
+                        payload = {"data": {"first_name": fn_val, "last_name": ln_val}}
+                        res = requests.put(url, headers=headers, json=payload)
+                        if res.status_code == 200:
+                            st.session_state['user_fn'] = fn_val
+                            st.session_state['user_ln'] = ln_val
+                            st.success(t["msg_updated"])
+                        else:
+                            st.error("Error updating profile.")
+
+sel_theme = st.session_state['app_theme']
+
+if sel_theme == "🌙 Dark":
+    st.markdown("""
+    <style> 
+    [data-testid="stAppViewContainer"] { background-color: #0E1117 !important; } 
+    [data-testid="stSidebar"] { background-color: #000000 !important; } 
+    .hero-text { color: #F8FAFC !important; }
+    .sub-hero { color: #E2E8F0 !important; }
+    [data-testid="stAppViewContainer"] h1,
+    [data-testid="stAppViewContainer"] h2,
+    [data-testid="stAppViewContainer"] h3,
+    [data-testid="stAppViewContainer"] h4 { color: #F8FAFC !important; }
+    div[data-testid="stAppViewContainer"] .stMarkdown p { color: #E2E8F0; }
+    div[data-testid="stAlert"] .stMarkdown p { color: inherit !important; }
+    [data-testid="stCaptionContainer"] p { color: #94A3B8 !important; }
+    button[data-baseweb="tab"] p, button[data-baseweb="tab"] div { color: #F8FAFC !important; }
+    [data-testid="stMetricLabel"] > div > div > p { color: #94A3B8 !important; }
+    summary p { color: #F8FAFC !important; }
+    [data-testid="stSidebar"] label, [data-testid="stSidebar"] p, [data-testid="stSidebar"] div { 
+        color: #E2E8F0 !important; font-weight: 500 !important; text-shadow: none !important;
+    }
+    [data-testid="stSidebar"] h1, [data-testid="stSidebar"] h2, [data-testid="stSidebar"] h3 { 
+        color: #FFFFFF !important; text-shadow: none !important;
+    }
+    div[data-baseweb="input"] > div, div[data-baseweb="base-input"] { 
+        background-color: #0F172A !important; border: 1px solid #334155 !important; 
+    }
+    input[type="text"], input[type="password"] { color: #FFFFFF !important; -webkit-text-fill-color: #FFFFFF !important; }
+    div[data-baseweb="select"] > div { background-color: #0F172A !important; border: 1px solid #334155 !important; }
+    div[data-baseweb="select"] span { color: #FFFFFF !important; font-weight: 500 !important; }
+    div[data-baseweb="select"] svg { fill: #FFFFFF !important; } 
+    ul[data-baseweb="menu"] { background-color: #0F172A !important; border: 1px solid #334155 !important; }
+    li[data-baseweb="menu-item"] { color: #FFFFFF !important; }
+    div.stButton > button { background-color: #1E293B !important; color: #FFFFFF !important; border: 1px solid #334155 !important; }
+    div.stButton > button:hover { border-color: #10B981 !important; color: #10B981 !important; }
+    </style>
+    """, unsafe_allow_html=True)
+elif sel_theme == "☀️ Light":
+    st.markdown("""
+    <style> 
+    [data-testid="stAppViewContainer"] { background-color: #FFFFFF !important; } 
+    [data-testid="stSidebar"] { background-color: #F8F9FA !important; } 
+    .hero-text { color: #0F172A !important; }
+    .sub-hero { color: #334155 !important; }
+    [data-testid="stAppViewContainer"] h1,
+    [data-testid="stAppViewContainer"] h2,
+    [data-testid="stAppViewContainer"] h3,
+    [data-testid="stAppViewContainer"] h4 { color: #0F172A !important; }
+    div[data-testid="stAppViewContainer"] .stMarkdown p { color: #1E293B; }
+    div[data-testid="stAlert"] .stMarkdown p { color: inherit !important; }
+    [data-testid="stCaptionContainer"] p { color: #64748B !important; }
+    button[data-baseweb="tab"] p, button[data-baseweb="tab"] div { color: #0F172A !important; }
+    [data-testid="stMetricLabel"] > div > div > p { color: #64748B !important; }
+    summary p { color: #0F172A !important; }
+    [data-testid="stSidebar"] label, [data-testid="stSidebar"] p, [data-testid="stSidebar"] div { 
+        color: #1E293B !important; font-weight: 500 !important; text-shadow: none !important;
+    }
+    [data-testid="stSidebar"] h1, [data-testid="stSidebar"] h2, [data-testid="stSidebar"] h3 { 
+        color: #000000 !important; text-shadow: none !important;
+    }
+    div[data-baseweb="input"] > div, div[data-baseweb="base-input"] { background-color: #FFFFFF !important; border: 1px solid #D1D5DB !important; }
+    input[type="text"], input[type="password"] { color: #000000 !important; -webkit-text-fill-color: #000000 !important; }
+    div[data-baseweb="select"] > div { background-color: #FFFFFF !important; border: 1px solid #D1D5DB !important; }
+    div[data-baseweb="select"] span { color: #000000 !important; font-weight: 500 !important; }
+    div[data-baseweb="select"] svg { fill: #000000 !important; } 
+    ul[data-baseweb="menu"] { background-color: #FFFFFF !important; border: 1px solid #D1D5DB !important;}
+    li[data-baseweb="menu-item"] { color: #000000 !important; }
+    div.stButton > button { background-color: #F3F4F6 !important; color: #111827 !important; border: 1px solid #D1D5DB !important; }
+    div.stButton > button:hover { border-color: #10B981 !important; color: #10B981 !important; }
+    </style>
+    """, unsafe_allow_html=True)
+
 if not st.session_state['logged_in']:
     st.sidebar.markdown("---")
     st.sidebar.header(t["sb_member"])
-    auth_mode = st.sidebar.radio("Select", [t["sb_login"], t["sb_signup"]], label_visibility="collapsed")
-
-    auth_email = st.sidebar.text_input(t["sb_email"])
-    auth_password = st.sidebar.text_input(t["sb_pass"], type="password")
-
-    if auth_mode == t["sb_login"]:
-        if st.sidebar.button(t["sb_login"], use_container_width=True):
-            with st.spinner("Authenticating..."):
-                res = login_user(auth_email, auth_password)
-                if res.status_code == 200:
-                    st.session_state['logged_in'] = True
-                    st.session_state['user_email'] = auth_email
-                    if st.session_state['user_tier'] != 'Premium': st.session_state['user_tier'] = 'Free'
-                    st.rerun()
-                else: st.sidebar.error("❌ Invalid Email or Password.")
-    else:
-        if st.sidebar.button(t["sb_signup"], use_container_width=True):
-            with st.spinner("Creating account..."):
-                res = signup_user(auth_email, auth_password)
-                if res.status_code == 200: st.sidebar.success("✅ Registration successful!")
-                else:
-                    error_msg = res.json().get('msg', 'Registration failed. Password must be at least 6 characters.')
-                    st.sidebar.error(f"❌ {error_msg}")
+    if st.sidebar.button(t["sb_login"], use_container_width=True):
+        show_login_modal()
+    if st.sidebar.button(t["sb_signup"], use_container_width=True):
+        show_signup_modal()
 else:
-    st.sidebar.success(f"👤 Logged in:\n{st.session_state['user_email']}")
+    st.sidebar.markdown("---")
+    st.sidebar.success(f"👤 Logged in as:\n{st.session_state['user_fn']} {st.session_state['user_ln']}")
 
     try:
         notifs_response = supabase_client.table('user_notifications').select('*').eq('user_email', st.session_state['user_email']).eq('is_read', False).execute()
@@ -696,7 +807,7 @@ else:
             if st.sidebar.button("Mark All as Read", use_container_width=True):
                 supabase_client.table('user_notifications').update({'is_read': True}).eq('user_email', st.session_state['user_email']).execute()
                 st.rerun()
-    except Exception as e:
+    except Exception:
         pass
 
     if st.session_state['user_tier'] == 'Free':
@@ -704,10 +815,14 @@ else:
         st.sidebar.markdown(f"### {t['sb_unlock']}")
         st.sidebar.link_button("💎 Upgrade to Premium (99 PLN/mo)", STRIPE_LINK, type="primary", use_container_width=True)
 
+    st.sidebar.markdown("---")
     if st.sidebar.button(t["sb_logout"], use_container_width=True):
         st.session_state['logged_in'] = False
         st.session_state['user_email'] = ""
         st.session_state['user_tier'] = 'Free'
+        st.session_state['user_fn'] = ""
+        st.session_state['user_ln'] = ""
+        st.session_state['access_token'] = ""
         st.rerun()
 
 st.sidebar.markdown("---")
@@ -825,8 +940,8 @@ if not df.empty:
     user_fav_ids = []
     if st.session_state['logged_in']: user_fav_ids = get_user_favorites(st.session_state['user_email'])
 
-    tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8 = st.tabs([
-        t["tab1"], t["tab2"], t["tab3"], t["tab4"], t["tab5"], t["tab6"], t["tab7"], t["tab8"]
+    tab1, tab2, tab3, tab4, tab5, tab7, tab8 = st.tabs([
+        t["tab1"], t["tab2"], t["tab3"], t["tab4"], t["tab5"], t["tab7"], t["tab8"]
     ])
 
     with tab1:
@@ -1161,40 +1276,6 @@ if not df.empty:
             if net_cash_flow >= 0: st.success(f"{t['calc_net']} +{net_cash_flow:,.0f} PLN 🤑")
             else: st.error(f"{t['calc_net']} {net_cash_flow:,.0f} PLN 🩸")
 
-    with tab6:
-        st.subheader(t["tab6"])
-        if not st.session_state['logged_in']: st.warning(t["fav_warn"])
-        else:
-            with st.spinner(t["fav_load"]):
-                if not user_fav_ids: st.info(t["fav_empty"])
-                else:
-                    fav_df = df[df['property_id'].isin(user_fav_ids)].copy()
-                    if fav_df.empty: st.warning(t["fav_sold"])
-                    else:
-                        st.markdown(t["fav_here"])
-                        fav_df['❤️ Track'] = True
-
-                        if is_locked_mode:
-                            fav_df['price_pln'] = t["locked"]
-                            fav_df['url_link'] = t["locked_link"]
-
-                        fav_cols = ['❤️ Track', 'district', 'price_pln', 'sqm', 'rooms', 'price_per_sqm', 'url_link', 'property_id']
-                        display_fav = fav_df[fav_cols]
-                        col_conf_fav = {
-                            "property_id": None, "district": t["th_dist"],
-                            "price_pln": st.column_config.TextColumn(t["th_price"]) if is_locked_mode else st.column_config.NumberColumn(t["th_price"], format="%.0f PLN"),
-                            "sqm": st.column_config.NumberColumn(t["th_sqm"], format="%.0f"),
-                            "rooms": t["th_rooms"],
-                            "price_per_sqm": st.column_config.NumberColumn(t["th_psqm"], format="%.0f PLN"),
-                            "url_link": st.column_config.TextColumn(t["th_link"]) if is_locked_mode else st.column_config.LinkColumn(t["th_link"], display_text="View 🔗")
-                        }
-                        edited_my_favs = st.data_editor(display_fav, column_config=col_conf_fav, hide_index=True, use_container_width=True, disabled=["district", "price_pln", "sqm", "rooms", "price_per_sqm", "url_link"])
-
-                        for i, row in edited_my_favs.iterrows():
-                            if not row['❤️ Track']:
-                                toggle_favorite(st.session_state['user_email'], row['property_id'], False)
-                                st.rerun()
-
     with tab7:
         st.subheader(t["tab7"])
         st.markdown(t["for_sub"])
@@ -1226,6 +1307,33 @@ if not df.empty:
 
             st.dataframe(display_sold, column_config={"district": t["th_dist"], "price_pln": st.column_config.NumberColumn(t["th_last"], format="%.0f PLN"), "sqm": st.column_config.NumberColumn(t["th_sqm"], format="%.0f"), "rooms": t["th_rooms"], "price_per_sqm": st.column_config.NumberColumn(t["th_psqm"], format="%.0f PLN")}, hide_index=True, use_container_width=True)
             st.bar_chart(df_sold['district'].value_counts())
+
+    if st.session_state['logged_in'] and user_fav_ids:
+        st.markdown("---")
+        st.subheader(f"⭐ {t['tab6']}")
+        with st.expander(t["fav_here"], expanded=True):
+            fav_df = df[df['property_id'].isin(user_fav_ids)].copy()
+            if fav_df.empty: st.warning(t["fav_sold"])
+            else:
+                fav_df['❤️ Track'] = True
+                if is_locked_mode:
+                    fav_df['price_pln'] = t["locked"]
+                    fav_df['url_link'] = t["locked_link"]
+                fav_cols = ['❤️ Track', 'district', 'price_pln', 'sqm', 'rooms', 'price_per_sqm', 'url_link', 'property_id']
+                display_fav = fav_df[fav_cols]
+                col_conf_fav = {
+                    "property_id": None, "district": t["th_dist"],
+                    "price_pln": st.column_config.TextColumn(t["th_price"]) if is_locked_mode else st.column_config.NumberColumn(t["th_price"], format="%.0f PLN"),
+                    "sqm": st.column_config.NumberColumn(t["th_sqm"], format="%.0f"),
+                    "rooms": t["th_rooms"],
+                    "price_per_sqm": st.column_config.NumberColumn(t["th_psqm"], format="%.0f PLN"),
+                    "url_link": st.column_config.TextColumn(t["th_link"]) if is_locked_mode else st.column_config.LinkColumn(t["th_link"], display_text="View 🔗")
+                }
+                edited_my_favs = st.data_editor(display_fav, column_config=col_conf_fav, hide_index=True, use_container_width=True, disabled=["district", "price_pln", "sqm", "rooms", "price_per_sqm", "url_link"])
+                for i, row in edited_my_favs.iterrows():
+                    if not row['❤️ Track']:
+                        toggle_favorite(st.session_state['user_email'], row['property_id'], False)
+                        st.rerun()
 
 else:
     st.info("No active listings found in the system matching current criteria.")
