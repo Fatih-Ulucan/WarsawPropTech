@@ -359,6 +359,7 @@ def apply_limit(df, t_dict):
     is_limited = len(df) > FREE_TABLE_LIMIT
 
     if is_limited:
+        limited_df = limited_df.astype(object)
         cols = limited_df.columns
         if 'price_pln' in cols:
             limited_df.iloc[FREE_TABLE_LIMIT:, cols.get_loc('price_pln')] = t_dict["locked"]
@@ -368,6 +369,8 @@ def apply_limit(df, t_dict):
             limited_df.iloc[FREE_TABLE_LIMIT:, cols.get_loc('Discount (PLN)')] = t_dict["locked"]
         if 'Current Price' in cols:
             limited_df.iloc[FREE_TABLE_LIMIT:, cols.get_loc('Current Price')] = t_dict["locked"]
+        if 'est_monthly_rent' in cols:
+            limited_df.iloc[FREE_TABLE_LIMIT:, cols.get_loc('est_monthly_rent')] = t_dict["locked"]
 
     return limited_df, is_limited
 
