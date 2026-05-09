@@ -191,7 +191,8 @@ LANG_DICT = {
         "limit_reached": f"🛑 **Limit Reached:** You have used your {FREE_TOOL_USAGE_LIMIT} free daily AI audits.",
         "upgrade_btn": "💎 Get Unlimited Access",
         "audits_left": "💡 You have {} free audits left for today.",
-        "locked": "🔒 Locked", "locked_link": "🔒 Upgrade to View"
+        "locked": "🔒 Locked", "locked_link": "🔒 Upgrade to View",
+        "roi_only_sale": "💡 **ROI Map is restricted.** Switch 'Market Mode' to 'Sale (Investment)' on the left menu to view return on investment data."
     },
     "🇵🇱 PL": {
         "hero_title": "Warszawska Inteligencja Nieruchomości",
@@ -263,7 +264,8 @@ LANG_DICT = {
         "limit_reached": f"🛑 **Osiągnięto limit:** Wykorzystałeś {FREE_TOOL_USAGE_LIMIT} darmowe audyty AI.",
         "upgrade_btn": "💎 Uzyskaj nieograniczony dostęp",
         "audits_left": "💡 Zostało Ci {} darmowych audytów na dziś.",
-        "locked": "🔒 Zablokowane", "locked_link": "🔒 Kup Premium"
+        "locked": "🔒 Zablokowane", "locked_link": "🔒 Kup Premium",
+        "roi_only_sale": "💡 **Mapa ROI ograniczona.** Przełącz 'Tryb Rynku' na 'Sprzedaż (Inwestycja)', aby zobaczyć te dane."
     },
     "🇹🇷 TR": {
         "hero_title": "Varşova Emlak Zekası",
@@ -335,7 +337,8 @@ LANG_DICT = {
         "limit_reached": f"🛑 **Limit Doldu:** Günlük {FREE_TOOL_USAGE_LIMIT} ücretsiz AI analiz hakkını kullandın.",
         "upgrade_btn": "💎 Sınırsız Erişime Geç",
         "audits_left": "💡 Bugün için {} ücretsiz analiz hakkın kaldı.",
-        "locked": "🔒 Kilitli", "locked_link": "🔒 Görmek için Yükselt"
+        "locked": "🔒 Kilitli", "locked_link": "🔒 Görmek için Yükselt",
+        "roi_only_sale": "💡 **ROI Haritası kısıtlıdır.** Bu veriyi görmek için sol menüden 'Piyasa Modu'nu 'Satılık (Yatırım)' olarak değiştirin."
     }
 }
 
@@ -615,7 +618,7 @@ def load_price_history():
     except Exception: return pd.DataFrame()
 
 @st.cache_data(ttl=3600)
-def predict_future_prices(df):
+def predict_future_prices(df, trans_id=1):
     predictions = []
     if df.empty: return pd.DataFrame()
     try:
@@ -624,7 +627,8 @@ def predict_future_prices(df):
             df_ml = df_ml[df_ml['status'] == 'ACTIVE']
         df_ml['price_per_sqm'] = pd.to_numeric(df_ml['price_per_sqm'], errors='coerce')
         df_ml = df_ml.dropna(subset=['price_per_sqm', 'district'])
-        df_ml = df_ml[df_ml['price_per_sqm'] > 1000]
+        min_sqm = 1000 if trans_id == 1 else 10
+        df_ml = df_ml[df_ml['price_per_sqm'] > min_sqm]
     except Exception: return pd.DataFrame()
 
     try:
@@ -736,6 +740,8 @@ transaction_type = st.sidebar.selectbox(
 selected_trans_id = transaction_type[1]
 label = "Sale" if selected_trans_id == 1 else "Rent"
 
+is_locked_mode = (not is_premium) and (selected_trans_id == 1)
+
 prop_type_label = st.sidebar.selectbox(t["sb_type"], options=list(PROPERTY_TYPES.keys()))
 selected_type_id = PROPERTY_TYPES[prop_type_label]
 
@@ -749,7 +755,8 @@ if not df.empty:
     df_active = df[df['status'] == 'ACTIVE'].copy() if 'status' in df.columns else df.copy()
     df_sold = df[df['status'] == 'SOLD'].copy() if 'status' in df.columns else pd.DataFrame()
 
-    max_val = int(df_active['price_pln'].max()) if not df_active.empty else 1000000
+    default_max = 2000000 if selected_trans_id == 1 else 50000
+    max_val = int(df_active['price_pln'].max()) if not df_active.empty else default_max
     min_val = int(df_active['price_pln'].min()) if not df_active.empty else 0
 
     max_price = st.sidebar.slider(t["sb_budget"], min_value=min_val, max_value=max_val, value=max_val, step=5000 if selected_trans_id == 2 else 50000)
@@ -842,7 +849,10 @@ if not df.empty:
 
         display_df = filtered_df[['property_id', 'district', 'price_pln', 'sqm', 'rooms', 'price_per_sqm', 'url_link', 'status']].copy()
 
-        display_df, showing_limit_msg = apply_limit(display_df, t)
+        if is_locked_mode:
+            display_df, showing_limit_msg = apply_limit(display_df, t)
+        else:
+            showing_limit_msg = False
 
         if st.session_state['logged_in']:
             display_df['❤️ Track'] = display_df['property_id'].isin(user_fav_ids)
@@ -854,11 +864,11 @@ if not df.empty:
 
         column_config = {
             "property_id": None, "district": t["th_dist"],
-            "price_pln": st.column_config.TextColumn(t["th_price"]) if not is_premium else st.column_config.NumberColumn(t["th_price"], format="%.0f PLN"),
+            "price_pln": st.column_config.TextColumn(t["th_price"]) if is_locked_mode else st.column_config.NumberColumn(t["th_price"], format="%.0f PLN"),
             "sqm": st.column_config.NumberColumn(t["th_sqm"], format="%.0f"),
             "rooms": t["th_rooms"],
             "price_per_sqm": st.column_config.NumberColumn(t["th_psqm"], format="%.0f PLN"),
-            "url_link": st.column_config.LinkColumn(t["th_link"], display_text="View 🔗") if is_premium else st.column_config.TextColumn(t["th_link"]),
+            "url_link": st.column_config.TextColumn(t["th_link"]) if is_locked_mode else st.column_config.LinkColumn(t["th_link"], display_text="View 🔗"),
             "status": t["th_status"]
         }
 
@@ -974,7 +984,13 @@ if not df.empty:
                         st.subheader(t["roi_top"])
                         roi_df = roi_df.sort_values(by='roi_percent', ascending=False)
 
-                        display_roi, roi_showing_limit = apply_limit(roi_df[['property_id', 'district', 'price_pln', 'est_monthly_rent', 'roi_percent', 'amortization_years', 'url_link']], t)
+                        display_roi_full = roi_df[['property_id', 'district', 'price_pln', 'est_monthly_rent', 'roi_percent', 'amortization_years', 'url_link']]
+
+                        if is_locked_mode:
+                            display_roi, roi_showing_limit = apply_limit(display_roi_full, t)
+                        else:
+                            display_roi = display_roi_full
+                            roi_showing_limit = False
 
                         cols_roi = ['❤️ Track', 'district', 'price_pln', 'est_monthly_rent', 'roi_percent', 'amortization_years', 'url_link', 'property_id'] if st.session_state['logged_in'] else ['district', 'price_pln', 'est_monthly_rent', 'roi_percent', 'amortization_years', 'url_link', 'property_id']
                         if st.session_state['logged_in']: display_roi['❤️ Track'] = display_roi['property_id'].isin(user_fav_ids)
@@ -982,15 +998,17 @@ if not df.empty:
 
                         col_conf_roi = {
                             "property_id": None, "district": t["th_dist"],
-                            "price_pln": st.column_config.TextColumn(t["th_price"]) if not is_premium else st.column_config.NumberColumn(t["th_price"], format="%.0f PLN"),
+                            "price_pln": st.column_config.TextColumn(t["th_price"]) if is_locked_mode else st.column_config.NumberColumn(t["th_price"], format="%.0f PLN"),
                             "est_monthly_rent": st.column_config.NumberColumn(t["th_est_rent"], format="%.0f PLN"),
                             "roi_percent": st.column_config.NumberColumn(t["th_roi"], format="%.1f%%"),
                             "amortization_years": st.column_config.NumberColumn(t["th_amort"], format="%.1f"),
-                            "url_link": st.column_config.LinkColumn(t["th_link"], display_text="View 🔗") if is_premium else st.column_config.TextColumn(t["th_link"])
+                            "url_link": st.column_config.TextColumn(t["th_link"]) if is_locked_mode else st.column_config.LinkColumn(t["th_link"], display_text="View 🔗")
                         }
                         st.dataframe(display_roi.head(50), column_config=col_conf_roi, hide_index=True, use_container_width=True)
                         if roi_showing_limit:
                             st.markdown(f"<div class='lock-overlay'>{t['lock_msg']}</div>", unsafe_allow_html=True)
+        else:
+            st.info(t["roi_only_sale"])
 
     with tab4:
         st.subheader(t["tab4"])
@@ -1012,19 +1030,26 @@ if not df.empty:
                 if not radar_df.empty:
                     radar_df = radar_df.sort_values(by='Discount (%)', ascending=False)
 
-                    display_radar, radar_showing_limit = apply_limit(radar_df[['property_id', 'district', 'Old Price', 'Current Price', 'Discount (PLN)', 'Discount (%)', 'price_per_sqm', 'url_link']], t)
+                    display_radar_full = radar_df[['property_id', 'district', 'Old Price', 'Current Price', 'Discount (PLN)', 'Discount (%)', 'price_per_sqm', 'url_link']]
+
+                    if is_locked_mode:
+                        display_radar, radar_showing_limit = apply_limit(display_radar_full, t)
+                    else:
+                        display_radar = display_radar_full
+                        radar_showing_limit = False
 
                     cols_radar = ['❤️ Track', 'district', 'Old Price', 'Current Price', 'Discount (PLN)', 'Discount (%)', 'price_per_sqm', 'url_link', 'property_id'] if st.session_state['logged_in'] else ['district', 'Old Price', 'Current Price', 'Discount (PLN)', 'Discount (%)', 'price_per_sqm', 'url_link', 'property_id']
                     if st.session_state['logged_in']: display_radar['❤️ Track'] = display_radar['property_id'].isin(user_fav_ids)
                     display_radar = display_radar[cols_radar]
+
                     col_conf_radar = {
                         "property_id": None, "district": t["th_dist"],
                         "Old Price": st.column_config.NumberColumn(t["th_old"], format="%.0f PLN"),
-                        "Current Price": st.column_config.TextColumn(t["th_cur"]) if not is_premium else st.column_config.NumberColumn(t["th_cur"], format="%.0f PLN"),
-                        "Discount (PLN)": st.column_config.TextColumn(t["th_disc"]) if not is_premium else st.column_config.NumberColumn(t["th_disc"], format="-%.0f PLN"),
+                        "Current Price": st.column_config.TextColumn(t["th_cur"]) if is_locked_mode else st.column_config.NumberColumn(t["th_cur"], format="%.0f PLN"),
+                        "Discount (PLN)": st.column_config.TextColumn(t["th_disc"]) if is_locked_mode else st.column_config.NumberColumn(t["th_disc"], format="-%.0f PLN"),
                         "Discount (%)": st.column_config.NumberColumn(t["th_disc_pct"], format="-%.1f%%"),
                         "price_per_sqm": st.column_config.NumberColumn(t["th_psqm"], format="%.0f PLN"),
-                        "url_link": st.column_config.LinkColumn(t["th_link"], display_text="View 🔗") if is_premium else st.column_config.TextColumn(t["th_link"])
+                        "url_link": st.column_config.TextColumn(t["th_link"]) if is_locked_mode else st.column_config.LinkColumn(t["th_link"], display_text="View 🔗")
                     }
                     st.dataframe(display_radar, column_config=col_conf_radar, hide_index=True, use_container_width=True)
                     if radar_showing_limit:
@@ -1103,6 +1128,7 @@ if not df.empty:
                                     found_data.get('description', ''),
                                     found_data.get('image_urls', []),
                                     sqm=audit_sqm,
+                                    category=f"{prop_type_label} - {label}",
                                     language=target_language
                                 )
 
@@ -1148,7 +1174,7 @@ if not df.empty:
                         st.markdown(t["fav_here"])
                         fav_df['❤️ Track'] = True
 
-                        if not is_premium:
+                        if is_locked_mode:
                             fav_df['price_pln'] = t["locked"]
                             fav_df['url_link'] = t["locked_link"]
 
@@ -1156,11 +1182,11 @@ if not df.empty:
                         display_fav = fav_df[fav_cols]
                         col_conf_fav = {
                             "property_id": None, "district": t["th_dist"],
-                            "price_pln": st.column_config.TextColumn(t["th_price"]) if not is_premium else st.column_config.NumberColumn(t["th_price"], format="%.0f PLN"),
+                            "price_pln": st.column_config.TextColumn(t["th_price"]) if is_locked_mode else st.column_config.NumberColumn(t["th_price"], format="%.0f PLN"),
                             "sqm": st.column_config.NumberColumn(t["th_sqm"], format="%.0f"),
                             "rooms": t["th_rooms"],
                             "price_per_sqm": st.column_config.NumberColumn(t["th_psqm"], format="%.0f PLN"),
-                            "url_link": st.column_config.LinkColumn(t["th_link"], display_text="View 🔗") if is_premium else st.column_config.TextColumn(t["th_link"])
+                            "url_link": st.column_config.TextColumn(t["th_link"]) if is_locked_mode else st.column_config.LinkColumn(t["th_link"], display_text="View 🔗")
                         }
                         edited_my_favs = st.data_editor(display_fav, column_config=col_conf_fav, hide_index=True, use_container_width=True, disabled=["district", "price_pln", "sqm", "rooms", "price_per_sqm", "url_link"])
 
@@ -1173,19 +1199,20 @@ if not df.empty:
         st.subheader(t["tab7"])
         st.markdown(t["for_sub"])
         with st.spinner(t["for_train"]):
-            forecast_df = predict_future_prices(df)
+            forecast_df = predict_future_prices(df, selected_trans_id)
             if not forecast_df.empty:
                 c1, c2 = st.columns(2)
                 with c1:
                     st.markdown(t["for_top3"])
                     for index, row in forecast_df.head(3).iterrows(): st.success(f"**📍 {row['District']}**\n\n{t['for_growth']} **+%.1f%%**" % row['Growth Potential (%)'])
                 with c2:
-                    if not is_premium:
+                    if is_locked_mode:
                         st.warning(t["for_lock"])
                         st.link_button(t["sb_unlock"], STRIPE_LINK, type="primary")
                         display_forecast = forecast_df.head(3).copy()
                     else:
-                        st.success(t["for_unlock"])
+                        if is_premium:
+                            st.success(t["for_unlock"])
                         display_forecast = forecast_df.copy()
                     st.dataframe(display_forecast, column_config={"District": t["th_dist"], "Current Avg (PLN/m²)": st.column_config.NumberColumn(t["th_cur_avg"], format="%.0f PLN"), "Predicted 6-Month (PLN/m²)": st.column_config.NumberColumn(t["th_pred"], format="%.0f PLN"), "Growth Potential (%)": st.column_config.NumberColumn(t["th_grow"], format="%.1f%%")}, hide_index=True, use_container_width=True)
             else: st.info(t["for_none"])
@@ -1196,11 +1223,8 @@ if not df.empty:
         if df_sold.empty: st.info(t["cd_none"])
         else:
             display_sold = df_sold[['district', 'price_pln', 'sqm', 'rooms', 'price_per_sqm']].copy()
-            display_sold, cd_showing_limit = apply_limit(display_sold, t)
 
-            st.dataframe(display_sold, column_config={"district": t["th_dist"], "price_pln": st.column_config.TextColumn(t["th_last"]) if not is_premium else st.column_config.NumberColumn(t["th_last"], format="%.0f PLN"), "sqm": st.column_config.NumberColumn(t["th_sqm"], format="%.0f"), "rooms": t["th_rooms"], "price_per_sqm": st.column_config.NumberColumn(t["th_psqm"], format="%.0f PLN")}, hide_index=True, use_container_width=True)
-            if cd_showing_limit:
-                st.markdown(f"<div class='lock-overlay'>{t['lock_msg']}</div>", unsafe_allow_html=True)
+            st.dataframe(display_sold, column_config={"district": t["th_dist"], "price_pln": st.column_config.NumberColumn(t["th_last"], format="%.0f PLN"), "sqm": st.column_config.NumberColumn(t["th_sqm"], format="%.0f"), "rooms": t["th_rooms"], "price_per_sqm": st.column_config.NumberColumn(t["th_psqm"], format="%.0f PLN")}, hide_index=True, use_container_width=True)
             st.bar_chart(df_sold['district'].value_counts())
 
 else:
