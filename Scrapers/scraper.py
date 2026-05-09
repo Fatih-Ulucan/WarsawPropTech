@@ -403,7 +403,7 @@ class OtodomSniper:
                                                     'profit_margin': profit_margin,
                                                     'full_url': full_url
                                                 }
-                                                alert_template = self.notif.create_price_drop_alert(drop_data)
+                                                alert_template = self.notif.create_price_drop_alert(drop_amount)
                                                 self.ai_queue.append({
                                                     'url': full_url,
                                                     'alert_template': alert_template,
@@ -526,23 +526,20 @@ class OtodomSniper:
 
             if alert_type == 'price_drop':
                 title = "🚨 Price Drop Alert!"
-                msg_ui = f"Discount! Property ID {property_id} dropped by {data['drop_amount']} PLN to {data['current_price']} PLN."
+                msg_ui = f"Discount! Property ID {property_id} dropped to {data.get('current_price', 'N/A')} PLN."
                 content_lines = [
                     f"Great news! A property you are tracking has a new price.",
-                    f"<b>Location:</b> {data['location']}",
-                    f"<b>Old Price:</b> {data['db_price']} PLN",
-                    f"<b>New Price:</b> {data['current_price']} PLN",
-                    f"<b>Discount:</b> -{data['drop_amount']} PLN",
+                    f"<b>Location:</b> {data.get('location', 'Unknown')}",
+                    f"<b>New Price:</b> {data.get('current_price', 'N/A')} PLN",
                     f"<b>AI Note:</b> {ai_report}"
                 ]
             elif alert_type == 'bargain':
                 title = "🔥 VIP Deal Found!"
-                msg_ui = f"Hot deal found! {data['clean_price']} PLN in {data['location']} (Margin: {data['profit_margin']}%)"
+                msg_ui = f"Hot deal found! {data.get('clean_price', 'N/A')} PLN in {data.get('location', 'Unknown')}"
                 content_lines = [
                     f"We found a highly profitable property matching your criteria.",
-                    f"<b>Location:</b> {data['location']}",
-                    f"<b>Price:</b> {data['clean_price']} PLN",
-                    f"<b>Profit Margin:</b> {data['profit_margin']}%",
+                    f"<b>Location:</b> {data.get('location', 'Unknown')}",
+                    f"<b>Price:</b> {data.get('clean_price', 'N/A')} PLN",
                     f"<b>AI Note:</b> {ai_report}"
                 ]
             else:
@@ -563,20 +560,24 @@ class OtodomSniper:
 
 def fetch_single_listing_data(url):
     """
-    Python 3.14 Compatibility Fix: Bypasses the broken asyncio engine 
-    by running the scraper as a separate system process.
+    Bypasses asyncio issues on Streamlit Cloud & Python 3.14
+    by running scraper as a separate system process.
     """
     import subprocess
     import json
     import sys
     import os
 
+    try:
+        os.system("playwright install chromium")
+    except:
+        pass
+
     script_dir = os.path.dirname(os.path.abspath(__file__))
     script_path = os.path.join(script_dir, "mini_fetcher.py")
 
-    if not os.path.exists(script_path):
-        with open(script_path, "w", encoding="utf-8") as f:
-            f.write('''import sys
+    with open(script_path, "w", encoding="utf-8") as f:
+        f.write('''import sys
 import json
 import time
 from playwright.sync_api import sync_playwright
@@ -584,32 +585,35 @@ from playwright.sync_api import sync_playwright
 def fetch(url):
     try:
         with sync_playwright() as p:
+            # Linux server compatible launch args
             browser = p.chromium.launch(
                 headless=True,
-                args=["--disable-blink-features=AutomationControlled"]
+                args=["--disable-blink-features=AutomationControlled", "--no-sandbox", "--disable-setuid-sandbox"]
             )
             
             context = browser.new_context(
                 user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
-                viewport={'width': 1920, 'height': 1080},
-                extra_http_headers={
-                    "Accept-Language": "pl-PL,pl;q=0.9,en-US;q=0.8",
-                    "Referer": "https://www.google.pl/"
-                }
+                viewport={'width': 1280, 'height': 720}
             )
             
             page = context.new_page()
             
-            # Use stealth only if available to prevent crashes
+            # Use stealth only if available
             try:
                 from playwright_stealth import stealth
                 stealth(page)
-            except Exception:
+            except:
                 pass
                 
             page.goto(url, wait_until="domcontentloaded", timeout=60000)
             
-            time.sleep(2)
+            time.sleep(3)
+            
+            # Detection Check
+            page_title = page.title()
+            if "Just a moment" in page_title or "Cloudflare" in page_title:
+                return {"error": "Cloudflare Blocked this IP (Data Center detection)."}
+
             page.mouse.wheel(0, 500)
             time.sleep(1)
             
@@ -638,13 +642,11 @@ def fetch(url):
 
 if __name__ == "__main__":
     if len(sys.argv) > 1:
-        target_url = sys.argv[1]
-        result = fetch(target_url)
-        print(json.dumps(result))
+        print(json.dumps(fetch(sys.argv[1])))
 ''')
 
     try:
-        print(f"🕵️ Spawning isolated Subprocess Proxy for: {url}")
+        print(f"🕵️ Spawning Subprocess Proxy: {url}")
         process = subprocess.Popen(
             [sys.executable, script_path, url],
             stdout=subprocess.PIPE,
@@ -657,28 +659,18 @@ if __name__ == "__main__":
 
         if stdout:
             try:
-                # Find the last valid JSON in stdout (in case stealth prints warnings)
-                json_lines = [line for line in stdout.splitlines() if line.startswith('{')]
-                if json_lines:
-                    parsed_data = json.loads(json_lines[-1])
+                lines = [l for line in stdout.splitlines() if (l := line.strip()).startswith('{')]
+                if lines:
+                    parsed_data = json.loads(lines[-1])
                     if "error" in parsed_data:
-                        print(f"🔥 Subprocess reported error: {parsed_data['error']}")
+                        print(f"🔥 Error: {parsed_data['error']}")
                         return None
                     return parsed_data
-                else:
-                    print("🔥 No valid JSON returned from subprocess.")
-                    return None
-            except json.JSONDecodeError:
-                print(f"🔥 JSON Decode Error from Subprocess. Raw output: {stdout}")
                 return None
-        else:
-            print(f"🔥 Subprocess failed with error: {stderr}")
-            return None
-
-    except subprocess.TimeoutExpired:
-        process.kill()
-        print("🔥 Subprocess Proxy timed out (75s).")
+            except:
+                return None
         return None
+
     except Exception as e:
-        print(f"🔥 Critical Bridge Failure: {e}")
+        print(f"🔥 Critical Failure: {e}")
         return None
