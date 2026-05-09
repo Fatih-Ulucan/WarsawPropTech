@@ -158,21 +158,26 @@ class OtodomSniper:
                 logger.debug(f"⚠️ Image extraction failed: {e}")
 
             category = item.get('category', 'Apartment - Sale')
+            sqm_val = item.get('data', {}).get('sqm', 0)
 
             if description or image_urls:
                 if image_urls:
-                    ai_report = self.ai.analyze_with_vision(description, image_urls, category=category)
+                    ai_report = self.ai.analyze_with_vision(description, image_urls, category=category, sqm=sqm_val)
                 else:
                     ai_report = self.ai.analyze_description(description, category=category)
                 self.db.mark_as_analyzed(item['url'])
             else:
                 ai_report = "AI Analysis unavailable (Source data could not be extracted from page)."
 
-            alert = item['alert_template'].format(ai_report=ai_report, contact_phone=contact_phone)
+            loc_id_val = item.get('data', {}).get('loc_id')
+            m_speed = self.db.get_market_speed_rank(loc_id_val) if loc_id_val else "Unknown ⚪"
+
+            final_report = f"🏙️ <b>Market Speed:</b> {m_speed}\n" + ai_report
+            alert = item['alert_template'].format(ai_report=final_report, contact_phone=contact_phone)
             self.notif.send_message(alert)
 
             try:
-                self._notify_users(item, ai_report)
+                self._notify_users(item, final_report)
             except Exception as e:
                 logger.error(f"❌ Error occurred while sending user notifications: {e}")
 
@@ -274,7 +279,6 @@ class OtodomSniper:
                                 if not raw_url: continue
                                 full_url = raw_url if raw_url.startswith("http") else f"https://www.otodom.pl{raw_url.replace('/hpr','')}"
 
-                                # DB KORUMASI 1: URL Sınırı. Reklam parametrelerini kesip atıyoruz.
                                 full_url = full_url.split('?')[0]
 
                                 prop_id_match = re.search(r'ID([A-Za-z0-9]+)(?:\.html|\?|$)', full_url)
@@ -322,7 +326,6 @@ class OtodomSniper:
                                         sqm = float(sqm_match.group(1).replace(',', '.'))
                                 except Exception: pass
 
-                                # DB KORUMASI 2: Regex geliştirildi (pok, pokoje, pokoi)
                                 rooms_match = re.search(r'(\d+)\s*(pok|pokoje|pokoi)', card_text.lower())
                                 rooms = int(rooms_match.group(1)) if rooms_match else 0
 
@@ -335,10 +338,9 @@ class OtodomSniper:
                                     if seller_info.count() > 0:
                                         raw_agency = seller_info.first.inner_text().strip()
                                         if raw_agency:
-                                            agency_id = raw_agency.replace('\n', ' - ')[:50] # Veritabanı karakter sınırına takılmamak için 50'ye çektim
+                                            agency_id = raw_agency.replace('\n', ' - ')[:50]
                                 except Exception: pass
 
-                                # DB KORUMASI 3: NULL YASAK! Eksik verilere varsayılan "0" değeri atanır ki 400 hatası vermesin.
                                 clean_price = clean_price if clean_price else 0
                                 sqm = sqm if sqm else 0.0
                                 price_per_sqm = price_per_sqm if price_per_sqm else 0.0
@@ -408,7 +410,7 @@ class OtodomSniper:
                                                     'category': target['label'],
                                                     'property_id': property_id,
                                                     'alert_type': 'price_drop',
-                                                    'data': drop_data
+                                                    'data': {'sqm': sqm, 'loc_id': matched_loc_id}
                                                 })
 
                                         if update_payload:
@@ -478,7 +480,7 @@ class OtodomSniper:
                                         'category': target['label'],
                                         'property_id': property_id,
                                         'alert_type': 'bargain',
-                                        'data': deal_data
+                                        'data': {'sqm': sqm, 'loc_id': matched_loc_id}
                                     })
 
                                 if len(self.ai_queue) >= QUEUE_FLUSH_LIMIT:
@@ -557,3 +559,126 @@ class OtodomSniper:
 
         except Exception as e:
             logger.error(f"❌ User Notification Error: {e}")
+
+
+def fetch_single_listing_data(url):
+    """
+    Python 3.14 Compatibility Fix: Bypasses the broken asyncio engine 
+    by running the scraper as a separate system process.
+    """
+    import subprocess
+    import json
+    import sys
+    import os
+
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    script_path = os.path.join(script_dir, "mini_fetcher.py")
+
+    if not os.path.exists(script_path):
+        with open(script_path, "w", encoding="utf-8") as f:
+            f.write('''import sys
+import json
+import time
+from playwright.sync_api import sync_playwright
+
+def fetch(url):
+    try:
+        with sync_playwright() as p:
+            browser = p.chromium.launch(
+                headless=True,
+                args=["--disable-blink-features=AutomationControlled"]
+            )
+            
+            context = browser.new_context(
+                user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
+                viewport={'width': 1920, 'height': 1080},
+                extra_http_headers={
+                    "Accept-Language": "pl-PL,pl;q=0.9,en-US;q=0.8",
+                    "Referer": "https://www.google.pl/"
+                }
+            )
+            
+            page = context.new_page()
+            
+            # Use stealth only if available to prevent crashes
+            try:
+                from playwright_stealth import stealth
+                stealth(page)
+            except Exception:
+                pass
+                
+            page.goto(url, wait_until="domcontentloaded", timeout=60000)
+            
+            time.sleep(2)
+            page.mouse.wheel(0, 500)
+            time.sleep(1)
+            
+            desc = ""
+            selectors = ['[data-cy="adPageAdDescription"]', '[data-testid="ad-description"]', 'article', '.css-1qzszy5']
+            for s in selectors:
+                if page.locator(s).count() > 0:
+                    desc = page.locator(s).first.inner_text()
+                    break
+            
+            imgs = []
+            nodes = page.locator('picture source, picture img').all()
+            for n in nodes:
+                src = n.get_attribute('srcset') or n.get_attribute('src')
+                if src and "http" in src and "static" not in src:
+                    clean_src = src.split(' ')[0]
+                    if clean_src not in imgs:
+                        imgs.append(clean_src)
+                if len(imgs) >= 5: break
+            
+            browser.close()
+            return {"description": desc, "image_urls": imgs}
+            
+    except Exception as e:
+        return {"error": str(e)}
+
+if __name__ == "__main__":
+    if len(sys.argv) > 1:
+        target_url = sys.argv[1]
+        result = fetch(target_url)
+        print(json.dumps(result))
+''')
+
+    try:
+        print(f"🕵️ Spawning isolated Subprocess Proxy for: {url}")
+        process = subprocess.Popen(
+            [sys.executable, script_path, url],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+            encoding='utf-8'
+        )
+
+        stdout, stderr = process.communicate(timeout=75)
+
+        if stdout:
+            try:
+                # Find the last valid JSON in stdout (in case stealth prints warnings)
+                json_lines = [line for line in stdout.splitlines() if line.startswith('{')]
+                if json_lines:
+                    parsed_data = json.loads(json_lines[-1])
+                    if "error" in parsed_data:
+                        print(f"🔥 Subprocess reported error: {parsed_data['error']}")
+                        return None
+                    return parsed_data
+                else:
+                    print("🔥 No valid JSON returned from subprocess.")
+                    return None
+            except json.JSONDecodeError:
+                print(f"🔥 JSON Decode Error from Subprocess. Raw output: {stdout}")
+                return None
+        else:
+            print(f"🔥 Subprocess failed with error: {stderr}")
+            return None
+
+    except subprocess.TimeoutExpired:
+        process.kill()
+        print("🔥 Subprocess Proxy timed out (75s).")
+        return None
+    except Exception as e:
+        print(f"🔥 Critical Bridge Failure: {e}")
+        return None

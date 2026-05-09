@@ -768,7 +768,6 @@ if not df.empty:
 
         col_list, col_map = st.columns([2, 3])
 
-        # VERİ TEMİZLEME
         analytics_data = []
         for district, group in filtered_df.groupby('district'):
             if district in DISTRICT_COORDS:
@@ -806,7 +805,7 @@ if not df.empty:
                     "ScatterplotLayer",
                     df_summary,
                     get_position='[lon, lat]',
-                    get_fill_color=[16, 185, 129, 200], # Şık yeşil noktalar
+                    get_fill_color=[16, 185, 129, 200],
                     get_radius=500,
                     pickable=True,
                     auto_highlight=True
@@ -820,12 +819,10 @@ if not df.empty:
                     bearing=0
                 )
 
-                # İŞTE BURASI: API KEY YOK, GOOGLE YOK! 
-                # Doğrudan PyDeck'in anahtarsız 'light' (CartoDB) motorunu kullanıyoruz.
                 r = pdk.Deck(
                     layers=[layer],
                     initial_view_state=view_state,
-                    map_style="light", # Bembeyaz ekranı bitiren sihirli kelime
+                    map_style="light",
                     tooltip={
                         "html": "<b>District:</b> {District}<br/><b>Price:</b> {Avg Price/m²} PLN/m²",
                         "style": {"backgroundColor": "#0F172A", "color": "white", "fontFamily": "monospace"}
@@ -955,6 +952,57 @@ if not df.empty:
 
         with calc_col2:
             st.markdown(t["calc_reno"])
+
+            st.markdown("### 🤖 Groq AI Real-Time Audit & Negotiation")
+            st.caption("Enter any Otodom URL for an instant visual and financial investment audit via Llama 3 Vision.")
+
+            target_url_input = st.text_input("🔗 Paste Otodom URL", placeholder="https://www.otodom.pl/...", key="deep_audit_link")
+            audit_sqm = st.number_input("📏 Size for Calculation (m²)", min_value=10, max_value=500, value=50)
+
+            if st.button("🧠 Start Live Groq Deep Search", use_container_width=True):
+                if target_url_input:
+                    with st.spinner("🚀 Groq AI Sniper is flying to the property page..."):
+                        res = supabase_client.table('listings').select('description, image_urls').eq('url_link', target_url_input).execute()
+
+                        found_data = None
+                        if res.data and res.data[0].get('description'):
+                            found_data = {
+                                'description': res.data[0]['description'],
+                                'image_urls': res.data[0].get('image_urls', [])
+                            }
+                            st.info("⚡ Listing found in local intelligence. Generating fresh Groq analysis...")
+                        else:
+                            try:
+                                from Scrapers.scraper import fetch_single_listing_data
+                                found_data = fetch_single_listing_data(target_url_input)
+                            except ImportError:
+                                from scraper import fetch_single_listing_data
+                                found_data = fetch_single_listing_data(target_url_input)
+
+                        if found_data:
+                            try:
+                                from Scrapers.ai_engine import GroqProptechAI
+                                AI_Class = GroqProptechAI
+                            except ImportError:
+                                from Scrapers.ai_engine import GeminiAnalyzer
+                                AI_Class = GeminiAnalyzer
+
+                            groq_agent = AI_Class(os.getenv("GROQ_API_KEY"))
+
+                            report = groq_agent.analyze_with_vision(
+                                found_data.get('description', ''),
+                                found_data.get('image_urls', []),
+                                sqm=audit_sqm
+                            )
+
+                            st.success("✅ **AI Live Audit Result:**")
+                            st.markdown(report)
+                        else:
+                            st.error("❌ Failed to reach the property. Link might be broken or protected.")
+                else:
+                    st.warning("Please enter a link first.")
+            st.markdown("---")
+
             prop_sqm = st.number_input(t["calc_size"], min_value=10, max_value=500, value=50)
             reno_level = st.radio(t["calc_qual"], [t["calc_eco"], t["calc_std"], t["calc_prem"]])
             if "Economy" in reno_level or "Ekonomiczne" in reno_level or "Ekonomik" in reno_level: reno_cost_sqm = 1800

@@ -9,14 +9,14 @@ from Scrapers.config import MAX_AI_CALLS
 
 logger = logging.getLogger(__name__)
 
-class GeminiAnalyzer:
+class GroqProptechAI:
     def __init__(self, api_key=None):
         self.api_key = api_key or os.getenv("API_KEY") or os.getenv("GROQ_API_KEY")
         self.ai_calls_made = 0
 
         if self.api_key:
             self.text_model = "llama-3.3-70b-versatile"
-            self.vision_model = "llama-3.2-90b-vision-preview"
+            self.vision_model = "meta-llama/llama-4-scout-17b-16e-instruct"
             self.api_url = "https://api.groq.com/openai/v1/chat/completions"
         else:
             self.api_key = None
@@ -47,7 +47,7 @@ class GeminiAnalyzer:
         4. INVESTMENT STRATEGY: (Long-term rent, Short-term/Airbnb?)
         5. URGENCY: (Motivated landlord? Open to price negotiation?)
 
-        Provide 5 short bullet points in English. Max 600 chars.
+        Provide 5 short bullet points in English.
         Description: {description[:3500]}
         """
             elif "Commercial" in category:
@@ -59,7 +59,7 @@ class GeminiAnalyzer:
         4. ROI STRATEGY: (Good for leasing out or owner-operator?)
         5. URGENCY: (Motivated seller/landlord? Open to negotiation?)
 
-        Provide 5 short bullet points in English. Max 600 chars.
+        Provide 5 short bullet points in English.
         Description: {description[:3500]}
         """
             else:
@@ -71,7 +71,7 @@ class GeminiAnalyzer:
         4. INVESTMENT STRATEGY: (Buy-to-let or Quick Flip?)
         5. URGENCY: (Motivated seller? Mentions quick sale, leaving country, or open to negotiation?)
 
-        Provide 5 short bullet points in English. Max 600 chars.
+        Provide 5 short bullet points in English.
         Description: {description[:3500]}
         """
             headers = {"Authorization": f"Bearer {self.api_key}", "Content-Type": "application/json"}
@@ -87,7 +87,7 @@ class GeminiAnalyzer:
 
             if text:
                 self.ai_calls_made += 1
-                return text[:600]
+                return text
 
             return "AI summary unavailable."
 
@@ -95,68 +95,75 @@ class GeminiAnalyzer:
             logger.error(f"AI Error: {e}")
             return "AI Analysis failed."
 
-    def analyze_with_vision(self, description, image_urls, category="Apartment - Sale"):
-        """Sends description AND property photos to Groq Vision for a visual flip analysis."""
+    def analyze_with_vision(self, description, image_urls, category="Apartment - Sale", sqm=0):
+        """
+        Sends description AND property photos to Groq Vision.
+        """
         if not self.api_key:
             return "AI Analysis unavailable."
 
         if self.ai_calls_made >= MAX_AI_CALLS:
-            logger.warning(f"⚠️ AI Skip: Limit ({MAX_AI_CALLS}) reached.")
             return "AI skipped (Batch Limit Reached)."
 
         images_to_analyze = []
 
-        for url in image_urls[:3]:
+        if image_urls:
             try:
-                response = requests.get(url, timeout=5)
+                response = requests.get(image_urls[0], timeout=5)
                 if response.status_code == 200:
-                    base64_img = base64.b64encode(response.content).decode('utf-8')
+                    img = Image.open(io.BytesIO(response.content))
+                    if img.mode != 'RGB':
+                        img = img.convert('RGB')
+
+                    img.thumbnail((512, 512))
+                    buffered = io.BytesIO()
+                    img.save(buffered, format="JPEG", quality=75)
+
+                    base64_img = base64.b64encode(buffered.getvalue()).decode('utf-8')
                     img_data_url = f"data:image/jpeg;base64,{base64_img}"
                     images_to_analyze.append(img_data_url)
             except Exception as e:
-                logger.error(f"❌ Resim indirme hatası: {e}")
+                logger.error(f"❌ Image compression error: {e}")
 
         try:
             time.sleep(1)
 
             if "Rent" in category:
                 prompt = f"""
-            You are a Warsaw Real Estate Expert. Analyze this {category} description AND the attached photos.
+            You are a Warsaw Real Estate Expert. Analyze photos and description.
+            1. VISUAL CONDITION: (Modern, PRL/Old, or Fresh?)
+            2. REFRESH ESTIMATE: (Approx cost to make it tenant-ready in PLN)
+            3. RENTAL APPEAL: (Who will rent this?)
             
-            Description: {description[:2000]}
-            
-            Based heavily on the PHOTOS, tell me:
-            1. VISUAL CONDITION: (Is it modern, old-fashioned, or needs cleaning?)
-            2. TENANT APPEAL: (Will it attract students, pros, or hard to rent?)
-            3. RENTAL POTENTIAL: (High, Med, or Low?)
-            
-            Provide 3 short, punchy bullet points in English. Max 500 chars.
+            Description: {description[:3500]}
             """
             elif "Commercial" in category:
                 prompt = f"""
-            You are a Warsaw Commercial Real Estate Expert. Analyze this {category} description AND the attached photos.
+            You are a Warsaw Commercial Expert. Analyze photos for adaptation needs.
+            1. SPACE READINESS: (White box, needs floors/ceilings, or ready?)
+            2. ADAPTATION COST: (Estimate renovation for business use)
+            3. POTENTIAL: (Office, Retail, or Gastro?)
             
-            Description: {description[:2000]}
-            
-            Based heavily on the PHOTOS, tell me:
-            1. VISUAL CONDITION: (Ready for business, needs fit-out, or poor?)
-            2. SPACE LAYOUT: (Good for retail, office, or gastronomy?)
-            3. COMMERCIAL POTENTIAL: (High, Med, or Low?)
-            
-            Provide 3 short, punchy bullet points in English. Max 500 chars.
+            Description: {description[:3500]}
             """
             else:
                 prompt = f"""
-            You are a Warsaw Real Estate Flipping Expert. Analyze this property description AND the attached photos.
+            You are an elite Warsaw Real Estate Investment Analyst and Master Negotiator.
+            Analyze the provided photo and READ THE ENTIRE DESCRIPTION carefully for an investment project ({sqm} m2). 
             
-            Description: {description[:2000]}
+            MARKET RATES (Warsaw 2026):
+            - Cosmetic Refresh: 1,800 PLN/m2
+            - Standard Reno (Bath/Kitchen): 3,000 PLN/m2
+            - Total Gut Renovation: 4,500+ PLN/m2
             
-            Based heavily on the PHOTOS, tell me:
-            1. VISUAL CONDITION: (Is it modern, 90s PRL style, or needs general renovation?)
-            2. RENOVATION NEEDS: (What specifically looks bad? Floors, bathroom, kitchen?)
-            3. FLIP POTENTIAL: (High, Med, or Low?)
-            
-            Provide 3 short, punchy bullet points in English. Max 500 chars.
+            CRITICAL INSTRUCTIONS:
+            1. VISUAL & STRUCTURAL STATUS: Assess the real condition. Is it modernized, 90s style, or a disaster?
+            2. SMART RENO BUDGET: Calculate based on ACTUAL condition and {sqm}m2. If the description explicitly states it is newly renovated, high standard, or ready to move in, state the renovation budget as 0 PLN (or a minimal cosmetic budget). DO NOT calculate a full gut renovation for a new apartment.
+            3. MASTER NEGOTIATION LEVER (EXTREME DETAIL REQUIRED): Read the description meticulously. Even if the apartment is "newly renovated" or "perfect", you MUST find every single disadvantage or hidden cost mentioned or implied. Look for flaws such as: ground floor (parter), 4th floor without elevator (brak windy), mandatory extra fees for parking/storage (dodatkowo płatne), loud street, old building (wielka płyta), high monthly HOA fees (wysoki czynsz), poor layout, or specific legal status issues. List exactly how these specific flaws can be aggressively used to justify a massive price drop during negotiations with the seller.
+            4. NO FAKE PRICES: DO NOT invent or assume a market price or target purchase price. Focus purely on the renovation cost and the specific percentage/value discounts justified by the flaws found in the text.
+
+            Provide a highly detailed, professional report in English using punchy bullet points. Be specific with PLN amounts and strategic negotiation arguments. Do not cut your sentences short.
+            Description: {description[:3500]}
             """
 
             content_parts = [{"type": "text", "text": prompt}]
@@ -169,20 +176,27 @@ class GeminiAnalyzer:
             headers = {"Authorization": f"Bearer {self.api_key}", "Content-Type": "application/json"}
             payload = {
                 "model": self.vision_model,
-                "messages": [{"role": "user", "content": content_parts}]
+                "messages": [{"role": "user", "content": content_parts}],
+                "max_tokens": 1200,
+                "temperature": 0.3
             }
 
-            response = requests.post(self.api_url, headers=headers, json=payload, timeout=20)
-            response.raise_for_status()
+            response = requests.post(self.api_url, headers=headers, json=payload, timeout=25)
 
+            if response.status_code != 200:
+                error_details = response.text[:200]
+                logger.error(f"Groq API Error: {error_details}")
+                return f"⚠️ Groq API Rejected the request. Reason: {error_details}"
+
+            response.raise_for_status()
             text = response.json()['choices'][0]['message']['content'].strip()
 
             if text:
                 self.ai_calls_made += 1
-                return text[:500]
+                return text
 
             return "AI visual summary unavailable."
 
         except Exception as e:
             logger.error(f"AI Vision Error: {e}")
-            return "AI Vision Analysis failed."
+            return f"AI Vision Analysis failed: {str(e)[:100]}"

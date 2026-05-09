@@ -170,3 +170,60 @@ class SupabaseManager:
             logger.info(f"🔔 UI NOTIFICATION SAVED FOR: {user_email}")
         except Exception as e:
             logger.error(f"❌ Failed to save user UI notification: {e}")
+
+
+    def get_liquidity_stats(self):
+        """
+        Calculates the average days it takes for a listing to move from ACTIVE to SOLD.
+        This provides the 'Market Velocity' for each district based on historical data.
+        """
+        logger.info("📈 ANALYTICS: Calculating market liquidity stats...")
+        try:
+            response = self.client.table('listings') \
+                .select('loc_id, created_at, sold_date') \
+                .eq('status', 'SOLD') \
+                .not_.is_('sold_date', 'null') \
+                .execute()
+
+            if not response.data:
+                return {}
+
+            liquidity_data = {}
+            temp_stats = {}
+
+            for row in response.data:
+                loc_id = row['loc_id']
+                try:
+                    # Parse dates and handle potential UTC 'Z' suffix
+                    created = datetime.fromisoformat(row['created_at'].replace('Z', ''))
+                    sold = datetime.fromisoformat(row['sold_date'].replace('Z', ''))
+
+                    days_to_sell = (sold - created).days
+                    if days_to_sell < 0: days_to_sell = 0
+
+                    if loc_id not in temp_stats:
+                        temp_stats[loc_id] = []
+                    temp_stats[loc_id].append(days_to_sell)
+                except Exception:
+                    continue
+
+            for loc_id, days_list in temp_stats.items():
+                avg_days = sum(days_list) / len(days_list)
+                liquidity_data[loc_id] = round(avg_days, 1)
+
+            logger.info(f"✅ ANALYTICS: Liquidity calculated for {len(liquidity_data)} districts.")
+            return liquidity_data
+        except Exception as e:
+            logger.error(f"❌ Liquidity Calculation Error: {e}")
+            return {}
+
+    def get_market_speed_rank(self, loc_id):
+        """Returns a human-readable market speed label based on average days to sell."""
+        stats = self.get_liquidity_stats()
+        avg_days = stats.get(loc_id)
+
+        if avg_days is None: return "Pending Data ⚪"
+        if avg_days <= 10: return "Ultra Fast 🔥"
+        if avg_days <= 20: return "Fast 🟢"
+        if avg_days <= 45: return "Moderate 🟡"
+        return "Slow 🔴"
