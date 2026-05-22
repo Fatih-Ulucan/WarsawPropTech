@@ -234,6 +234,7 @@ class OtodomSniper:
                 user_agent=random.choice(USER_AGENTS),
                 viewport={'width': random.randint(1366, 1920), 'height': random.randint(768, 1080)}
             )
+            self.cleanup_dead_listings(context)
             page = context.new_page()
 
             logger.info("INFO: Accessing Otodom Warsaw...")
@@ -294,7 +295,6 @@ class OtodomSniper:
                                 card_text = listing.inner_text()
                                 lower_card_text = card_text.lower()
 
-                                # 🧟 ZOMBIE / SOLD LISTING CHECK (NEW)
                                 if "nieaktualne" in lower_card_text or "rezerwacja" in lower_card_text or "zarezerwowane" in lower_card_text:
                                     existing = self.db.check_existing_listing(full_url)
                                     if existing:
@@ -509,7 +509,6 @@ class OtodomSniper:
                     time.sleep(random.uniform(1.5, 3.0))
 
             self.flush_queue(context)
-            self.cleanup_dead_listings(context)
             browser.close()
 
             self.send_mission_report()
