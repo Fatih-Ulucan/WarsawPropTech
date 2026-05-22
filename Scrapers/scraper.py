@@ -292,6 +292,15 @@ class OtodomSniper:
                                         property_id = hashlib.md5(full_url.encode('utf-8')).hexdigest()[:12]
 
                                 card_text = listing.inner_text()
+                                lower_card_text = card_text.lower()
+
+                                # 🧟 ZOMBIE / SOLD LISTING CHECK (NEW)
+                                if "nieaktualne" in lower_card_text or "rezerwacja" in lower_card_text or "zarezerwowane" in lower_card_text:
+                                    existing = self.db.check_existing_listing(full_url)
+                                    if existing:
+                                        self.db.mark_as_sold(existing.get('id'))
+                                        logger.info(f"🧟 ZOMBIE KILLED (Badge on Search): {full_url}")
+                                    continue
 
                                 location = ""
                                 loc_nodes = listing.locator('[data-sentry-component="Address"], p.css-19dke2r, p[data-testid="advert-card-address"]').all()
@@ -326,7 +335,7 @@ class OtodomSniper:
                                         sqm = float(sqm_match.group(1).replace(',', '.'))
                                 except Exception: pass
 
-                                rooms_match = re.search(r'(\d+)\s*(pok|pokoje|pokoi)', card_text.lower())
+                                rooms_match = re.search(r'(\d+)\s*(pok|pokoje|pokoi)', lower_card_text)
                                 rooms = int(rooms_match.group(1)) if rooms_match else 0
 
                                 price_per_sqm = round(clean_price / sqm, 2) if sqm and sqm > 0 else 0.0
@@ -353,7 +362,9 @@ class OtodomSniper:
                                     "is_active": True, "trans_id": target['trans_id'], "type_id": target['type_id'],
                                     "sqm": sqm, "rooms": rooms, "price_per_sqm": price_per_sqm, "loc_id": matched_loc_id,
                                     "property_id": property_id, "agency_id": agency_id,
-                                    "ai_analyzed": False
+                                    "ai_analyzed": False,
+                                    "status": "ACTIVE",
+                                    "updated_at": datetime.utcnow().isoformat() + "Z"
                                 }
 
                                 db_status = self.db.save_listing(payload)
@@ -421,7 +432,6 @@ class OtodomSniper:
                                 avg_sqm_price = 0
                                 deal_score = 0
 
-                                lower_card_text = card_text.lower()
                                 flip_flag_text = ""
                                 if "remontu" in lower_card_text or "odświeżenia" in lower_card_text:
                                     flip_flag_text = "🛠️ <b>FLIP POTENTIAL DETECTED!</b>\n━━━━━━━━━━━━━━━━━━━━\n"

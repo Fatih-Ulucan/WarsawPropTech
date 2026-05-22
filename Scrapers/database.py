@@ -54,8 +54,13 @@ class SupabaseManager:
         max_retries = 3
         for attempt in range(max_retries):
             try:
+                # 🛠️ MISSING TIMESTAMP AND STATUS FLAGS ADDED HERE
                 if "status" not in data:
                     data["status"] = "ACTIVE"
+                if "is_active" not in data:
+                    data["is_active"] = True
+                if "updated_at" not in data:
+                    data["updated_at"] = datetime.utcnow().isoformat() + "Z"
 
                 response = requests.post(table_url, json=data, headers=self.headers, timeout=10)
 
