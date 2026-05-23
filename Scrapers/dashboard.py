@@ -22,6 +22,20 @@ from datetime import timedelta
 from Scrapers.notifier import send_telegram_lead, EmailManager
 from Scrapers.config import LOCATION_MAP
 
+hide_st_style = """
+            <style>
+            /* Hide top menu, footer, and header */
+            #MainMenu {visibility: hidden !important;}
+            footer {visibility: hidden !important;}
+            header {visibility: hidden !important;}
+            
+            /* Safe codes targeting only the deploy button and toolbar */
+            [data-testid="stToolbar"] {display: none !important;}
+            .stDeployButton {display: none !important;}
+            </style>
+            """
+st.markdown(hide_st_style, unsafe_allow_html=True)
+
 FREE_TABLE_LIMIT = 5
 FREE_TOOL_USAGE_LIMIT = 3
 EXPANDER_LINK = "https://proptech.produktyfinansowe.pl/e/lead/327?source=lt"
