@@ -476,11 +476,11 @@ if "success" in st.query_params and st.query_params["success"] == "true":
 try:
     SUPABASE_URL = st.secrets.get("SUPABASE_URL", os.environ.get("SUPABASE_URL"))
     SUPABASE_KEY = st.secrets.get("SUPABASE_KEY", os.environ.get("SUPABASE_KEY"))
-    STRIPE_LINK = st.secrets.get("STRIPE_LINK", os.environ.get("STRIPE_LINK", "https://buy.stripe.com/test_your_link_here"))
+    STRIPE_LINK = st.secrets.get("STRIPE_LINK", os.environ.get("STRIPE_LINK", "https://buy.stripe.com/9B66oA1Dp4t02BLa0U67S00"))
 except Exception:
     SUPABASE_URL = os.environ.get("SUPABASE_URL")
     SUPABASE_KEY = os.environ.get("SUPABASE_KEY")
-    STRIPE_LINK = os.environ.get("STRIPE_LINK", "https://buy.stripe.com/test_your_link_here")
+    STRIPE_LINK = os.environ.get("STRIPE_LINK", "https://buy.stripe.com/9B66oA1Dp4t02BLa0U67S00")
 
 if SUPABASE_URL and SUPABASE_KEY:
     SUPABASE_URL = SUPABASE_URL.strip()
