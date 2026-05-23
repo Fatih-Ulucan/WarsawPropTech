@@ -6,6 +6,12 @@ from pathlib import Path
 from dotenv import load_dotenv
 from io import StringIO
 from datetime import datetime, timedelta
+
+current_dir = Path(__file__).resolve().parent
+project_root = current_dir.parent
+if str(project_root) not in sys.path:
+    sys.path.append(str(project_root))
+
 from Scrapers.config import MAX_SCANS_BEFORE_REBOOT
 from Scrapers.database import SupabaseManager
 from Scrapers.ai_engine import GroqProptechAI
@@ -69,6 +75,7 @@ def start_engine():
 
             subscribers = sniper.db.get_subscribers()
             if subscribers:
+                EXPANDER_LINK = "https://proptech.produktyfinansowe.pl/e/lead/327?source=lt" 
                 report_lines = [
                     f"Ads Scanned: {final_stats['scanned']}",
                     f"New Entries: {final_stats['added']}",
