@@ -64,19 +64,22 @@ except ImportError:
 st.set_page_config(page_title="Warsaw AI PropTech", page_icon="🏢", layout="wide", initial_sidebar_state="expanded")
 
 st.markdown("""
-    <style>
-    #MainMenu {visibility: hidden;}
-    footer {visibility: hidden;}
-    [data-testid="stToolbar"] {visibility: hidden;}
-    
-    .lock-overlay {
-        background-color: rgba(255, 75, 75, 0.05);
-        border: 2px dashed #ff4b4b;
-        padding: 20px;
-        border-radius: 12px;
-        text-align: center;
-        margin-top: 15px;
-    }
+        <style>
+        #MainMenu {visibility: hidden;}
+        footer {visibility: hidden;}
+        
+        /* Hide only the Deploy button, DO NOT TOUCH stToolbar so the left arrow doesn't break */
+        .stDeployButton {display: none;}
+        
+        .lock-overlay {
+            background-color: rgba(255, 75, 75, 0.05);
+            border: 2px dashed #ff4b4b;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            margin-top: 15px;
+        }
+        /* ... the rest of your code continues the same way ... */
     .premium-text { color: #ff4b4b; font-weight: bold; }
 
     * {
