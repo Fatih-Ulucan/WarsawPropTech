@@ -291,7 +291,7 @@ LANG_DICT = {
         "upgrade_btn": "💎 Uzyskaj nieograniczony dostęp",
         "audits_left": "💡 Zostało Ci {} darmowych audytów na dziś.",
         "locked": "🔒 Zablokowane", "locked_link": "🔒 Kup Premium",
-        "roi_only_sale": "💡 **Mapa ROI ograniczona.** Przełącz 'Tryb Rynku' na 'Sprzedaż (Inwestycja)', aby zobaczyć te dane.",
+        "roi_only_sale": "💡 **ROI Haritası kısıtlıdır.** Bu veriyi görmek dla sol menüden 'Piyasa Modu'nu 'Sprzedaż (Inwestycja)' jako değiştirin.",
         "settings_menu": "⚙️ Ustawienia",
         "ht_title": "📈 Głęboka Analiza: Historyczne Trendy Cenowe",
         "ht_sub": "Wprowadź link Otodom, aby zwizualizować historyczne zmiany cen nieruchomości na tle średnich w dzielnicy.",
@@ -362,17 +362,17 @@ LANG_DICT = {
         "vip_desc": "<b>Expander</b> uzmanları 20+ bankayı sizin için ücretsiz karşılaştırsın, en düşük faizli konut kredisini yakalayın.",
         "vip_btn": "🏢 Ücretsiz Uzman Danışmanlığı Al (20+ Banka) ➡️",
         "calc_exp_btn": "🏦 Expander: Check Your Best Mortgage Limit ➡️",
-        "calc_exp_sub": "ℹ️ Expander uzmanları 20 bankadan sizin için en iyi teklifi ücretsiz bulur.",
+        "calc_exp_sub": "ℹ️ Expander uzmanları 20 bankadan sizin dla en iyi teklifi ücretsiz bulur.",
         "tab2_title": "📍 Bölge Zekası ve Konum Analitiği",
         "tab2_rankings": "### 📊 Piyasa Sıralamaları",
         "tab2_map": "### 🗺️ Coğrafi Dağılım",
         "th_active_ads": "Aktif İlanlar",
         "th_avg_price_sqm": "Ort. Fiyat/m²",
         "ai_audit_title": "### 🤖 Groq AI Canlı Denetim ve Müzakere",
-        "ai_audit_sub": "Llama 4 Vision ile anında görsel ve finansal yatırım denetimi için herhangi bir Otodom URL'sini girin.",
-        "ai_paste_url": "🔗 Wklej link Otodom",
-        "ai_size_calc": "📏 Hesaplama için Boyut (m²)",
-        "ai_btn_search": "🧠 Rozpocznij Skanowanie Groq AI",
+        "ai_audit_sub": "Llama 4 Vision ile anında görsel ve finansal yatırım denetimi dla herhangi bir Otodom URL'sini girin.",
+        "ai_paste_url": "🔗 Otodom Linkini Yapıştır",
+        "ai_size_calc": "📏 Hesaplama dla Boyut (m²)",
+        "ai_btn_search": "🧠 Canlı Groq Taramasını Başlat",
         "ai_spinner": "🚀 Groq AI Sniper mülk sayfasına uçuyor...",
         "ai_local_found": "⚡ İlan yerel istihbaratta bulundu. Yeni Groq analizi oluşturuluyor...",
         "ai_success": "✅ **Yapay Zeka Canlı Denetim Sonucu:**",
@@ -381,18 +381,18 @@ LANG_DICT = {
         "lock_msg": f"🔓 <b>Sadece {FREE_TABLE_LIMIT} ilan gösteriliyor.</b> Tüm verileri görmek dla <span class='premium-text'>Premium'a geçin</span>.",
         "limit_reached": f"🛑 **Limit Doldu:** Günlük {FREE_TOOL_USAGE_LIMIT} ücretsiz AI analiz hakkını kullandın.",
         "upgrade_btn": "💎 Sınırsız Erişime Geç",
-        "audits_left": "💡 Bugün için {} ücretsiz analiz hakkın kaldı.",
-        "locked": "🔒 Kilitli", "locked_link": "🔒 Görmek için Yükselt",
-        "roi_only_sale": "💡 **ROI Haritası kısıtlıdır.** Bu veriyi görmek için sol menüden 'Piyasa Modu'nu 'Satılık (Yatırım)' olarak değiştirin.",
+        "audits_left": "💡 Bugün dla {} ücretsiz analiz hakkın kaldı.",
+        "locked": "🔒 Kilitli", "locked_link": "🔒 Görmek dla Yükselt",
+        "roi_only_sale": "💡 **ROI Haritası kısıtlıdır.** Bu veriyi görmek dla sol menüden 'Piyasa Modu'nu 'Satılık (Yatırım)' jako değiştirin.",
         "settings_menu": "⚙️ Ayarlar",
         "ht_title": "📈 Derinlemesine İnceleme: Geçmiş Fiyat Trendleri",
-        "ht_sub": "Mülkün geçmiş fiyat değişimlerini bölge ortalamalarına karşı görselleştirmek için bir Otodom bağlantısı girin.",
+        "ht_sub": "Mülkün geçmiş fiyat değişimlerini bölge ortalamalarına karşı görselleştirmek dla bir Otodom bağlantısı girin.",
         "ht_btn": "📊 Fiyat Trend Haritası Oluştur",
         "ht_spinner": "Geçmiş veritabanları taranıyor...",
         "ht_err_url": "Lütfen geçerli bir Otodom bağlantısı girin.",
-        "ht_err_not_found": "Bu mülk için geçmiş veri bulunamadı.",
+        "ht_err_not_found": "Bu mülk dla geçmiş veri bulunamadı.",
         "ht_chart_title": "Fiyat Geçmişi: Mülk vs Bölge Ortalaması",
-        "ht_sim_note": "💡 *Not: Trend görselleştirmesini artırmak için yapay zeka ile simüle edilmiş geçmiş piyasa verileri gösteriliyor.*",
+        "ht_sim_note": "💡 *Not: Trend görselleştirmesini artırmak dla yapay zeka ile simüle edilmiş geçmiş piyasa verileri gösteriliyor.*",
         "ht_ai_title": "🤖 Groq AI Trend ve Değerleme Raporu",
         "ht_ai_spin": "Groq AI piyasa sinyallerini analiz ediyor...",
         "email_btn": "📧 Email'e Gönder",
@@ -1512,7 +1512,7 @@ if not df.empty:
                                 property_url=target_hist_url
                             )
                             if st.button(t["email_btn"], use_container_width=True):
-                                if mail_bot.send_user_email(st.session_state['user_email'], "Property Analysis Report", html_content:
+                                if mail_bot.send_user_email(st.session_state['user_email'], "Property Analysis Report", html_icerik):
                                     st.success(t["email_success"])
                                 else:
                                     st.error(t["email_fail"])
@@ -1547,6 +1547,15 @@ if not df.empty:
                     if not row['❤️ Track']:
                         toggle_favorite(st.session_state['user_email'], row['property_id'], False)
                         st.rerun()
-
 else:
     st.info("No active listings found in the system matching current criteria.")
+
+st.markdown("---")
+st.markdown("""
+<div style='text-align: center; color: #64748b; font-size: 13px; margin-top: 50px; padding: 20px; line-height: 1.6;'>
+    <p><strong>Contact Us:</strong> Have feedback, found a bug, want a custom feature, or interested in special offers? Reach out at: <b>warsaw.proptech@gmail.com</b></p>
+    <hr style='border: 0; border-top: 1px solid #e2e8f0; margin: 20px auto; width: 60%;'>
+    <p><strong>Legal Disclaimer:</strong> This platform provides AI-driven market intelligence and data analysis for <b>informational purposes only</b>. The contents of this site do not constitute financial, investment, or real estate advice. Market data, price trends, and AI forecasts are based on historical analysis and simulations; they are not guaranteed. All investment decisions are the user's sole responsibility. We are not responsible for any financial losses or damages resulting from the use of this data.</p>
+    <p>© 2026 Warsaw AI PropTech. All rights reserved.</p>
+</div>
+""", unsafe_allow_html=True)
