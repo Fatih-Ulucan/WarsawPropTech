@@ -42,3 +42,5 @@ QUEUE_FLUSH_LIMIT = 50
 MAX_AI_CALLS = 10
 
 MAX_SCANS_BEFORE_REBOOT = 50000
+
+EXPANDER_LINK = "https://proptech.produktyfinansowe.pl/e/lead/327?source=lt"
