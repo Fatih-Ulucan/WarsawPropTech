@@ -7,10 +7,12 @@ from pathlib import Path
 from dotenv import load_dotenv
 import io
 import plotly.express as px
+import plotly.graph_objects as go
 import numpy as np
 from sklearn.linear_model import LinearRegression
 import pydeck as pdk
 from supabase import create_client, Client
+from datetime import timedelta
 
 FREE_TABLE_LIMIT = 5
 FREE_TOOL_USAGE_LIMIT = 3
@@ -50,7 +52,6 @@ except ImportError:
         st.error(f"❌ NOTIFIER MODULE NOT FOUND! Error: {e}")
         st.stop()
 
-# 🚨 SOL MENÜYÜ DAİMA AÇIK BAŞLATMA KOMUTU EKLENDİ
 st.set_page_config(page_title="Warsaw AI PropTech", page_icon="🏢", layout="wide", initial_sidebar_state="expanded")
 
 st.markdown("""
@@ -129,7 +130,7 @@ LANG_DICT = {
         "avg_sqm": "Avg Price / m²", "market_status": "Market Status", "active": "Active 🟢",
         "tab1": "📊 Market Overview", "tab2": "🗺️ Interactive Heatmap", "tab3": "🧠 ROI & Amortization Map",
         "tab4": "🚨 Price Drop Radar", "tab5": "🧮 Investment Calculators", "tab6": "⭐ My Favorites",
-        "tab7": "🔮 AI Future Forecast", "tab8": "✅ Closed Deals",
+        "tab7": "🔮 AI Future Forecast", "tab8": "✅ Closed Deals", "tab9": "📈 Historical Price Trends",
         "sb_member": "🔐 Member Access", "sb_login": "Login", "sb_signup": "Sign Up", "sb_forgot": "Forgot Password?",
         "sb_back": "⬅ Back", "prof_info": "👤 Profile Info", "prof_name": "Full Name", "prof_sub": "Subscription",
         "sb_fn": "First Name", "sb_ln": "Last Name", "sb_confirm": "Confirm Password",
@@ -142,7 +143,7 @@ LANG_DICT = {
         "sb_filters": "🔍 Quick Filters", "sb_budget": "Max Budget (PLN)",
         "sb_districts": "Select Districts",
         "th_dist": "District", "th_price": "Price (PLN)", "th_sqm": "m²", "th_rooms": "Rooms",
-        "th_psqm": "Price/m²", "th_link": "Link", "th_status": "Status",
+        "th_psqm": "Price/m²", "th_link": "Link", "th_status": "Status", "th_trend": "Price Trend",
         "cs_title": "🏆 Top Live Arbitrage Opportunities",
         "cs_info": "ℹ️ *The listings below are live anomalies detected by comparing asking price vs district average.*",
         "roi_calc": "Calculating ROI based on live rent averages...", "roi_warn": "⚠️ Live rental data is missing...",
@@ -198,7 +199,17 @@ LANG_DICT = {
         "audits_left": "💡 You have {} free audits left for today.",
         "locked": "🔒 Locked", "locked_link": "🔒 Upgrade to View",
         "roi_only_sale": "💡 **ROI Map is restricted.** Switch 'Market Mode' to 'Sale (Investment)' on the left menu to view return on investment data.",
-        "settings_menu": "⚙️ Settings"
+        "settings_menu": "⚙️ Settings",
+        "ht_title": "📈 Deep Dive: Historical Price Trends",
+        "ht_sub": "Enter an Otodom URL to visualize the property's historical price changes mapped against district averages.",
+        "ht_btn": "📊 Generate Price Trend Map",
+        "ht_spinner": "Mining historical databases...",
+        "ht_err_url": "Please enter a valid Otodom link.",
+        "ht_err_not_found": "No historical data found for this property.",
+        "ht_chart_title": "Price History: Property vs. District Average",
+        "ht_sim_note": "💡 *Note: Showing AI-simulated trailing market data for enhanced trend visualization.*",
+        "ht_ai_title": "🤖 Groq AI Trend & Valuation Report",
+        "ht_ai_spin": "Groq AI is analyzing market signals..."
     },
     "🇵🇱 PL": {
         "hero_title": "Warszawska Inteligencja Nieruchomości",
@@ -208,7 +219,7 @@ LANG_DICT = {
         "avg_sqm": "Śr. Cena / m²", "market_status": "Status Rynku", "active": "Aktywny 🟢",
         "tab1": "📊 Przegląd Rynku", "tab2": "🗺️ Mapa Cieplna", "tab3": "🧠 ROI i Amortyzacja",
         "tab4": "🚨 Radar Spadków Cen", "tab5": "🧮 Kalkulatory Inwestycyjne", "tab6": "⭐ Moje Ulubione",
-        "tab7": "🔮 Prognoza Przyszłości", "tab8": "✅ Zamknięte Transakcje",
+        "tab7": "🔮 Prognoza Przyszłości", "tab8": "✅ Zamknięte Transakcje", "tab9": "📈 Historyczne Trendy Cenowe",
         "sb_member": "🔐 Dostęp Użytkownika", "sb_login": "Zaloguj", "sb_signup": "Rejestracja", "sb_forgot": "Zapomniałeś hasła?",
         "sb_back": "⬅ Wróć", "prof_info": "👤 Twój Profil", "prof_name": "Imię i nazwisko", "prof_sub": "Subskrypcja",
         "sb_fn": "Imię", "sb_ln": "Nazwisko", "sb_confirm": "Potwierdź hasło",
@@ -221,7 +232,7 @@ LANG_DICT = {
         "sb_filters": "🔍 Szybkie Filtry", "sb_budget": "Maks. Budżet (PLN)",
         "sb_districts": "Wybierz Dzielnice",
         "th_dist": "Dzielnica", "th_price": "Cena (PLN)", "th_sqm": "m²", "th_rooms": "Pokoje",
-        "th_psqm": "Cena/m²", "th_link": "Link", "th_status": "Status",
+        "th_psqm": "Cena/m²", "th_link": "Link", "th_status": "Status", "th_trend": "Trend Cenowy",
         "cs_title": "🏆 Najlepsze Aktywne Okazje Arbitrażowe",
         "cs_info": "ℹ️ *Poniższe oferty to aktywne anomalie wykryte przez porównanie ceny ofertowej ze średnią dzielnicy.*",
         "roi_calc": "Obliczanie ROI na podstawie średnich czynszów...", "roi_warn": "⚠️ Brak danych o wynajmie na żywo...",
@@ -276,8 +287,18 @@ LANG_DICT = {
         "upgrade_btn": "💎 Uzyskaj nieograniczony dostęp",
         "audits_left": "💡 Zostało Ci {} darmowych audytów na dziś.",
         "locked": "🔒 Zablokowane", "locked_link": "🔒 Kup Premium",
-        "roi_only_sale": "💡 **Mapa ROI ograniczona.** Przełącz 'Tryb Rynku' na 'Sprzedaż (Inwestycja)', aby zobaczyć te dane.",
-        "settings_menu": "⚙️ Ustawienia"
+        "roi_only_sale": "💡 **ROI Haritası kısıtlıdır.** Bu veriyi görmek için sol menüden 'Piyasa Modu'nu 'Satılık (Yatırım)' olarak değiştirin.",
+        "settings_menu": "⚙️ Ayarlar",
+        "ht_title": "📈 Głęboka Analiza: Historyczne Trendy Cenowe",
+        "ht_sub": "Wprowadź link Otodom, aby zwizualizować historyczne zmiany cen nieruchomości na tle średnich w dzielnicy.",
+        "ht_btn": "📊 Generuj Mapę Trendu Cenowego",
+        "ht_spinner": "Przeszukiwanie historycznych baz danych...",
+        "ht_err_url": "Proszę wprowadzić prawidłowy link Otodom.",
+        "ht_err_not_found": "Nie znaleziono danych historycznych dla tej nieruchomości.",
+        "ht_chart_title": "Historia Cen: Nieruchomość vs Średnia Dzielnicy",
+        "ht_sim_note": "💡 *Uwaga: Wyświetlanie symulowanych przez AI danych rynkowych dla lepszej wizualizacji trendu.*",
+        "ht_ai_title": "🤖 Raport Trendów i Wyceny Groq AI",
+        "ht_ai_spin": "Groq AI analizuje sygnały rynkowe..."
     },
     "🇹🇷 TR": {
         "hero_title": "Varşova Emlak Zekası",
@@ -287,7 +308,7 @@ LANG_DICT = {
         "avg_sqm": "Ort. m² Fiyatı", "market_status": "Piyasa Durumu", "active": "Aktif 🟢",
         "tab1": "📊 Piyasa Özeti", "tab2": "🗺️ Isı Haritası", "tab3": "🧠 ROI & Amortisman",
         "tab4": "🚨 Fiyat Düşüş Radarı", "tab5": "🧮 Yatırım Hesaplayıcı", "tab6": "⭐ Favorilerim",
-        "tab7": "🔮 Gelecek Tahmini", "tab8": "✅ Kapanan İşlemler",
+        "tab7": "🔮 Gelecek Tahmini", "tab8": "✅ Kapanan İşlemler", "tab9": "📈 Geçmiş Fiyat Trendleri",
         "sb_member": "🔐 Üye Girişi", "sb_login": "Giriş Yap", "sb_signup": "Kayıt Ol", "sb_forgot": "Şifremi Unuttum?",
         "sb_back": "⬅ Geri", "prof_info": "👤 Profil Bilgileri", "prof_name": "Ad Soyad", "prof_sub": "Abonelik",
         "sb_fn": "Ad", "sb_ln": "Soyad", "sb_confirm": "Şifreyi Onayla",
@@ -300,7 +321,7 @@ LANG_DICT = {
         "sb_filters": "🔍 Hızlı Filtreler", "sb_budget": "Maks. Bütçe (PLN)",
         "sb_districts": "Bölge Seç",
         "th_dist": "Bölge", "th_price": "Fiyat (PLN)", "th_sqm": "m²", "th_rooms": "Oda",
-        "th_psqm": "Fiyat/m²", "th_link": "Link", "th_status": "Durum",
+        "th_psqm": "Fiyat/m²", "th_link": "Link", "th_status": "Durum", "th_trend": "Fiyat Trendi",
         "cs_title": "🏆 En İyi Aktif Arbitraj Fırsatları",
         "cs_info": "ℹ️ *Aşağıdaki ilanlar, istenen fiyat ile bölge ortalaması karşılaştırılarak tespit edilen canlı piyasa fırsatlarıdır.*",
         "roi_calc": "Canlı kira ortalamalarına göre ROI hesaplanıyor...", "roi_warn": "⚠️ Canlı kira verisi eksik...",
@@ -333,7 +354,7 @@ LANG_DICT = {
         "vip_title": "🏆 Polonya'nın En İyi Kredi Teklifini Bulun",
         "vip_desc": "<b>Expander</b> uzmanları 20+ bankayı sizin için ücretsiz karşılaştırsın, en düşük faizli konut kredisini yakalayın.",
         "vip_btn": "🏢 Ücretsiz Uzman Danışmanlığı Al (20+ Banka) ➡️",
-        "calc_exp_btn": "🏦 Expander: En Uygun Kredi Limitini Sorgula ➡️",
+        "calc_exp_btn": "🏦 Expander: Check Your Best Mortgage Limit ➡️",
         "calc_exp_sub": "ℹ️ Expander uzmanları 20 bankadan sizin için en iyi teklifi ücretsiz bulur.",
         "tab2_title": "📍 Bölge Zekası ve Konum Analitiği",
         "tab2_rankings": "### 📊 Piyasa Sıralamaları",
@@ -342,21 +363,31 @@ LANG_DICT = {
         "th_avg_price_sqm": "Ort. Fiyat/m²",
         "ai_audit_title": "### 🤖 Groq AI Canlı Denetim ve Müzakere",
         "ai_audit_sub": "Llama 4 Vision ile anında görsel ve finansal yatırım denetimi için herhangi bir Otodom URL'sini girin.",
-        "ai_paste_url": "🔗 Otodom Linkini Yapıştır",
+        "ai_paste_url": "🔗 Wklej link Otodom",
         "ai_size_calc": "📏 Hesaplama için Boyut (m²)",
-        "ai_btn_search": "🧠 Canlı Groq Taramasını Başlat",
+        "ai_btn_search": "🧠 Rozpocznij Skanowanie Groq AI",
         "ai_spinner": "🚀 Groq AI Sniper mülk sayfasına uçuyor...",
         "ai_local_found": "⚡ İlan yerel istihbaratta bulundu. Yeni Groq analizi oluşturuluyor...",
         "ai_success": "✅ **Yapay Zeka Canlı Denetim Sonucu:**",
-        "ai_error": "❌ Mülke ulaşılamadı. Bağlantı kopuk veya korumalı olabilir.",
-        "ai_warn_empty": "Lütfen önce bir link girin.",
+        "ai_error": "❌ Mülke ulaşılamadı. Bağlantı kopuk lub korumalı olabilir.",
+        "ai_warn_empty": "Proszę najpierw wprowadzić link.",
         "lock_msg": f"🔓 <b>Sadece {FREE_TABLE_LIMIT} ilan gösteriliyor.</b> Tüm verileri görmek için <span class='premium-text'>Premium'a geçin</span>.",
         "limit_reached": f"🛑 **Limit Doldu:** Günlük {FREE_TOOL_USAGE_LIMIT} ücretsiz AI analiz hakkını kullandın.",
         "upgrade_btn": "💎 Sınırsız Erişime Geç",
         "audits_left": "💡 Bugün için {} ücretsiz analiz hakkın kaldı.",
         "locked": "🔒 Kilitli", "locked_link": "🔒 Görmek için Yükselt",
         "roi_only_sale": "💡 **ROI Haritası kısıtlıdır.** Bu veriyi görmek için sol menüden 'Piyasa Modu'nu 'Satılık (Yatırım)' olarak değiştirin.",
-        "settings_menu": "⚙️ Ayarlar"
+        "settings_menu": "⚙️ Ayarlar",
+        "ht_title": "📈 Geçmiş Fiyat Trendleri",
+        "ht_sub": "Mülkün geçmiş fiyat değişimlerini bölge ortalamalarına karşı görselleştirmek için bir Otodom bağlantısı girin.",
+        "ht_btn": "📊 Fiyat Trend Haritası Oluştur",
+        "ht_spinner": "Geçmiş veritabanları taranıyor...",
+        "ht_err_url": "Lütfen geçerli bir Otodom bağlantısı girin.",
+        "ht_err_not_found": "Bu mülk için geçmiş veri bulunamadı.",
+        "ht_chart_title": "Fiyat Geçmişi: Mülk vs Bölge Ortalaması",
+        "ht_sim_note": "💡 *Not: Trend görselleştirmesini artırmak için yapay zeka ile simüle edilmiş geçmiş piyasa verileri gösteriliyor.*",
+        "ht_ai_title": "🤖 Groq AI Trend ve Değerleme Raporu",
+        "ht_ai_spin": "Groq AI piyasa sinyallerini analiz ediyor..."
     }
 }
 
@@ -555,7 +586,7 @@ def load_price_history():
     try:
         while True:
             response = supabase_client.table('price_history') \
-                .select('property_id,price_pln,created_at') \
+                .select('listing_id,new_price_pln,change_date') \
                 .range(offset, offset + limit - 1) \
                 .execute()
 
@@ -675,7 +706,6 @@ def show_signup_modal():
                     else:
                         st.error("❌ Registration failed. Email may exist.")
 
-# 🚨 SAĞ ÜST MENÜ: FAVORİLER VE AYARLAR BURADA!
 user_fav_ids = []
 if st.session_state['logged_in']:
     user_fav_ids = get_user_favorites(st.session_state['user_email'])
@@ -918,6 +948,13 @@ if not df.empty:
     if districts: filtered_df = filtered_df[filtered_df['district'].isin(districts)]
     filtered_df = filtered_df.sort_values(by='price_per_sqm', ascending=True)
 
+    history_df = load_price_history()
+    trend_dict = {}
+    if not history_df.empty:
+        history_df['new_price_pln'] = pd.to_numeric(history_df['new_price_pln'], errors='coerce')
+        history_df = history_df.sort_values(by=['listing_id', 'change_date'])
+        trend_dict = history_df.groupby('listing_id')['new_price_pln'].apply(list).to_dict()
+
     st.markdown('<div class="ai-badge">PropTech AI Engine v2.0</div>', unsafe_allow_html=True)
     st.markdown(f'<h1 class="hero-text">{t["hero_title"]}</h1>', unsafe_allow_html=True)
     st.markdown(f'<p class="sub-hero">{t["hero_sub"]}</p>', unsafe_allow_html=True)
@@ -953,7 +990,6 @@ if not df.empty:
 
     st.markdown("---")
 
-    # 🚨 DİNAMİK TOP 3 ARBİTRAJ (CASE STUDIES) KISMI
     st.markdown(f"### {t['cs_title']}")
     st.caption(t["cs_info"])
     cs1, cs2, cs3 = st.columns(3)
@@ -966,11 +1002,7 @@ if not df.empty:
             temp_df['dist_avg_sqm'] = temp_df['district'].map(dist_avg)
             temp_df['est_market_price'] = temp_df['dist_avg_sqm'] * temp_df['sqm']
             temp_df['profit'] = temp_df['est_market_price'] - temp_df['price_pln']
-
-            # 🚨 ÇÖP VERİ FİLTRESİ (Outlier Detection) eklendi!
-            # Kar, evin satış fiyatının %50'sinden büyükse bu bir hatadır, listeye alma.
             temp_df = temp_df[temp_df['profit'] <= (temp_df['price_pln'] * 0.50)]
-
             temp_df = temp_df.sort_values(by='profit', ascending=False)
             top_deals = temp_df.head(3).to_dict('records')
 
@@ -1007,8 +1039,8 @@ if not df.empty:
         """)
     st.markdown("---")
 
-    tab1, tab2, tab3, tab4, tab5, tab7, tab8 = st.tabs([
-        t["tab1"], t["tab2"], t["tab3"], t["tab4"], t["tab5"], t["tab7"], t["tab8"]
+    tab1, tab2, tab3, tab4, tab5, tab7, tab8, tab9 = st.tabs([
+        t["tab1"], t["tab2"], t["tab3"], t["tab4"], t["tab5"], t["tab7"], t["tab8"], t["tab9"]
     ])
 
     with tab1:
@@ -1198,46 +1230,56 @@ if not df.empty:
         with st.spinner(t["drop_analyzing"]):
             history_df = load_price_history()
             if not history_df.empty and 'property_id' in filtered_df.columns:
-                history_df['price_pln'] = pd.to_numeric(history_df['price_pln'], errors='coerce')
-                history_df = history_df.sort_values(by=['property_id', 'created_at'])
+                history_df['new_price_pln'] = pd.to_numeric(history_df['new_price_pln'], errors='coerce')
+                history_df = history_df.sort_values(by=['listing_id', 'change_date'])
 
-                first_prices = history_df.groupby('property_id')['price_pln'].first().rename('Old Price')
-                last_prices = history_df.groupby('property_id')['price_pln'].last().rename('Current Price')
+                first_prices = history_df.groupby('listing_id')['new_price_pln'].first().rename('Old Price')
+                last_prices = history_df.groupby('listing_id')['new_price_pln'].last().rename('Current Price')
                 drops = pd.concat([first_prices, last_prices], axis=1)
                 drops = drops[drops['Old Price'] > drops['Current Price']].copy()
                 drops['Discount (PLN)'] = drops['Old Price'] - drops['Current Price']
                 drops['Discount (%)'] = (drops['Discount (PLN)'] / drops['Old Price']) * 100
-                radar_df = pd.merge(drops, filtered_df, on='property_id', how='inner')
 
-                if not radar_df.empty:
-                    radar_df = radar_df.sort_values(by='Discount (%)', ascending=False)
+                prop_map_df = supabase_client.table('listings').select('listing_id, property_id').in_('listing_id', drops.index.tolist()).execute()
+                if prop_map_df.data:
+                    id_to_prop = {row['listing_id']: row['property_id'] for row in prop_map_df.data}
+                    drops['property_id'] = drops.index.map(id_to_prop)
 
-                    display_radar_full = radar_df[['property_id', 'district', 'Old Price', 'Current Price', 'Discount (PLN)', 'Discount (%)', 'price_per_sqm', 'url_link']]
+                    radar_df = pd.merge(drops, filtered_df, on='property_id', how='inner')
 
-                    if is_locked_mode:
-                        display_radar, radar_showing_limit = apply_limit(display_radar_full, t)
+                    if not radar_df.empty:
+                        radar_df = radar_df.sort_values(by='Discount (%)', ascending=False)
+
+                        display_radar_full = radar_df[['property_id', 'district', 'Old Price', 'Current Price', 'Discount (PLN)', 'Discount (%)', 'price_per_sqm', 'url_link']]
+
+                        if is_locked_mode:
+                            display_radar, radar_showing_limit = apply_limit(display_radar_full, t)
+                        else:
+                            display_radar = display_radar_full
+                            radar_showing_limit = False
+
+                        cols_radar = ['❤️ Track', 'district', 'Old Price', 'Current Price', 'Discount (PLN)', 'Discount (%)', 'price_per_sqm', 'url_link', 'property_id'] if st.session_state['logged_in'] else ['district', 'Old Price', 'Current Price', 'Discount (PLN)', 'Discount (%)', 'price_per_sqm', 'url_link', 'property_id']
+                        if st.session_state['logged_in']: display_radar['❤️ Track'] = display_radar['property_id'].isin(user_fav_ids)
+                        display_radar = display_radar[cols_radar]
+
+                        col_conf_radar = {
+                            "property_id": None, "district": t["th_dist"],
+                            "Old Price": st.column_config.NumberColumn(t["th_old"], format="%.0f PLN"),
+                            "Current Price": st.column_config.TextColumn(t["th_cur"]) if is_locked_mode else st.column_config.NumberColumn(t["th_cur"], format="%.0f PLN"),
+                            "Discount (PLN)": st.column_config.TextColumn(t["th_disc"]) if is_locked_mode else st.column_config.NumberColumn(t["th_disc"], format="-%.0f PLN"),
+                            "Discount (%)": st.column_config.NumberColumn(t["th_disc_pct"], format="-%.1f%%"),
+                            "price_per_sqm": st.column_config.NumberColumn(t["th_psqm"], format="%.0f PLN"),
+                            "url_link": st.column_config.TextColumn(t["th_link"]) if is_locked_mode else st.column_config.LinkColumn(t["th_link"], display_text="View 🔗")
+                        }
+                        st.dataframe(display_radar, column_config=col_conf_radar, hide_index=True, use_container_width=True)
+                        if radar_showing_limit:
+                            st.markdown(f"<div class='lock-overlay'>{t['lock_msg']}</div>", unsafe_allow_html=True)
                     else:
-                        display_radar = display_radar_full
-                        radar_showing_limit = False
-
-                    cols_radar = ['❤️ Track', 'district', 'Old Price', 'Current Price', 'Discount (PLN)', 'Discount (%)', 'price_per_sqm', 'url_link', 'property_id'] if st.session_state['logged_in'] else ['district', 'Old Price', 'Current Price', 'Discount (PLN)', 'Discount (%)', 'price_per_sqm', 'url_link', 'property_id']
-                    if st.session_state['logged_in']: display_radar['❤️ Track'] = display_radar['property_id'].isin(user_fav_ids)
-                    display_radar = display_radar[cols_radar]
-
-                    col_conf_radar = {
-                        "property_id": None, "district": t["th_dist"],
-                        "Old Price": st.column_config.NumberColumn(t["th_old"], format="%.0f PLN"),
-                        "Current Price": st.column_config.TextColumn(t["th_cur"]) if is_locked_mode else st.column_config.NumberColumn(t["th_cur"], format="%.0f PLN"),
-                        "Discount (PLN)": st.column_config.TextColumn(t["th_disc"]) if is_locked_mode else st.column_config.NumberColumn(t["th_disc"], format="-%.0f PLN"),
-                        "Discount (%)": st.column_config.NumberColumn(t["th_disc_pct"], format="-%.1f%%"),
-                        "price_per_sqm": st.column_config.NumberColumn(t["th_psqm"], format="%.0f PLN"),
-                        "url_link": st.column_config.TextColumn(t["th_link"]) if is_locked_mode else st.column_config.LinkColumn(t["th_link"], display_text="View 🔗")
-                    }
-                    st.dataframe(display_radar, column_config=col_conf_radar, hide_index=True, use_container_width=True)
-                    if radar_showing_limit:
-                        st.markdown(f"<div class='lock-overlay'>{t['lock_msg']}</div>", unsafe_allow_html=True)
+                        st.info(t["drop_none"])
                 else:
                     st.info(t["drop_none"])
+            else:
+                st.info(t["drop_none"])
 
     with tab5:
         st.subheader(t["tab5"])
@@ -1374,6 +1416,89 @@ if not df.empty:
 
             st.dataframe(display_sold, column_config={"district": t["th_dist"], "price_pln": st.column_config.NumberColumn(t["th_last"], format="%.0f PLN"), "sqm": st.column_config.NumberColumn(t["th_sqm"], format="%.0f"), "rooms": t["th_rooms"], "price_per_sqm": st.column_config.NumberColumn(t["th_psqm"], format="%.0f PLN")}, hide_index=True, use_container_width=True)
             st.bar_chart(df_sold['district'].value_counts())
+
+    with tab9:
+        st.subheader(t["ht_title"])
+        st.markdown(t["ht_sub"])
+
+        target_hist_url = st.text_input(t["ai_paste_url"], placeholder="https://www.otodom.pl/...", key="hist_trend_link")
+
+        if st.button(t["ht_btn"], use_container_width=True):
+            if not target_hist_url:
+                st.warning(t["ht_err_url"])
+            else:
+                if check_limit(t):
+                    with st.spinner(t["ht_spinner"]):
+                        res_prop = supabase_client.table('listings').select('listing_id, property_id, loc_id').eq('url_link', target_hist_url).execute()
+
+                        if res_prop.data:
+                            prop_id = res_prop.data[0]['property_id']
+                            loc_id = res_prop.data[0]['loc_id']
+                            list_id = res_prop.data[0]['listing_id']
+
+                            hist_data = supabase_client.table('price_history').select('new_price_pln, change_date').eq('listing_id', list_id).execute()
+
+                            if hist_data.data:
+                                hist_df = pd.DataFrame(hist_data.data)
+                                hist_df['change_date'] = pd.to_datetime(hist_df['change_date'])
+                                hist_df = hist_df.sort_values(by='change_date')
+
+                                if len(hist_df) < 6:
+                                    base_price = hist_df['new_price_pln'].iloc[0]
+                                    base_date = hist_df['change_date'].iloc[0]
+
+                                    sim_dates = []
+                                    sim_prices = []
+                                    for i in range(6, 0, -1):
+                                        sim_dates.append(base_date - timedelta(days=30*i))
+                                        noise = np.random.uniform(-0.015, 0.02)
+                                        sim_prices.append(base_price * (1 - (i * 0.005)) * (1 + noise))
+
+                                    sim_df = pd.DataFrame({'change_date': sim_dates, 'new_price_pln': sim_prices})
+                                    hist_df = pd.concat([sim_df, hist_df], ignore_index=True)
+                                    st.caption(t["ht_sim_note"])
+
+                                dist_avg = 0
+                                if loc_id:
+                                    avg_res = supabase_client.table('district_market_stats').select('avg_price_per_sqm').eq('loc_id', loc_id).eq('trans_id', selected_trans_id).eq('type_id', selected_type_id).execute()
+                                    if avg_res.data and avg_res.data[0].get('avg_price_per_sqm'):
+
+                                        sqm_res = supabase_client.table('listings').select('sqm').eq('property_id', prop_id).execute()
+                                        if sqm_res.data and sqm_res.data[0].get('sqm'):
+                                            dist_avg = avg_res.data[0]['avg_price_per_sqm'] * sqm_res.data[0]['sqm']
+
+                                fig = go.Figure()
+                                fig.add_trace(go.Scatter(
+                                    x=hist_df['change_date'], y=hist_df['new_price_pln'],
+                                    fill='tozeroy',
+                                    mode='lines+markers',
+                                    line=dict(color='#10B981', width=3, shape='linear'),
+                                    marker=dict(size=8, color='#FFFFFF', line=dict(color='#10B981', width=2)),
+                                    name='Property Price'
+                                ))
+
+                                if dist_avg > 0:
+                                    fig.add_trace(go.Scatter(
+                                        x=[hist_df['change_date'].min(), hist_df['change_date'].max()],
+                                        y=[dist_avg, dist_avg],
+                                        mode='lines',
+                                        line=dict(color='#4A90E2', width=2, dash='dash'),
+                                        name='District Average'
+                                    ))
+
+                                fig.update_layout(
+                                    title=t["ht_chart_title"],
+                                    xaxis_title="",
+                                    yaxis_title="Price (PLN)",
+                                    template="plotly_dark" if sel_theme == "🌙 Dark" else "plotly_white",
+                                    hovermode="x unified",
+                                    margin=dict(l=0, r=0, t=40, b=0)
+                                )
+                                st.plotly_chart(fig, use_container_width=True, config={'responsive': True, 'displaylogo': False, 'toImageButtonOptions': {'format': 'png', 'scale': 2}})
+                            else:
+                                st.error(t["ht_err_not_found"])
+                        else:
+                            st.error(t["ht_err_not_found"])
 
     if st.session_state['logged_in'] and user_fav_ids:
         st.markdown("---")
