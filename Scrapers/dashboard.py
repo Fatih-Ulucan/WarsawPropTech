@@ -13,6 +13,7 @@ from sklearn.linear_model import LinearRegression
 import pydeck as pdk
 from supabase import create_client, Client
 from datetime import timedelta
+from Scrapers.notifier import send_telegram_lead, EmailManager
 
 FREE_TABLE_LIMIT = 5
 FREE_TOOL_USAGE_LIMIT = 3
@@ -209,7 +210,10 @@ LANG_DICT = {
         "ht_chart_title": "Price History: Property vs. District Average",
         "ht_sim_note": "💡 *Note: Showing AI-simulated trailing market data for enhanced trend visualization.*",
         "ht_ai_title": "🤖 Groq AI Trend & Valuation Report",
-        "ht_ai_spin": "Groq AI is analyzing market signals..."
+        "ht_ai_spin": "Groq AI is analyzing market signals...",
+        "email_btn": "📧 Send to Email",
+        "email_success": "✅ Email sent successfully!",
+        "email_fail": "❌ Failed to send email."
     },
     "🇵🇱 PL": {
         "hero_title": "Warszawska Inteligencja Nieruchomości",
@@ -287,8 +291,8 @@ LANG_DICT = {
         "upgrade_btn": "💎 Uzyskaj nieograniczony dostęp",
         "audits_left": "💡 Zostało Ci {} darmowych audytów na dziś.",
         "locked": "🔒 Zablokowane", "locked_link": "🔒 Kup Premium",
-        "roi_only_sale": "💡 **ROI Haritası kısıtlıdır.** Bu veriyi görmek için sol menüden 'Piyasa Modu'nu 'Satılık (Yatırım)' olarak değiştirin.",
-        "settings_menu": "⚙️ Ayarlar",
+        "roi_only_sale": "💡 **Mapa ROI ograniczona.** Przełącz 'Tryb Rynku' na 'Sprzedaż (Inwestycja)', aby zobaczyć te dane.",
+        "settings_menu": "⚙️ Ustawienia",
         "ht_title": "📈 Głęboka Analiza: Historyczne Trendy Cenowe",
         "ht_sub": "Wprowadź link Otodom, aby zwizualizować historyczne zmiany cen nieruchomości na tle średnich w dzielnicy.",
         "ht_btn": "📊 Generuj Mapę Trendu Cenowego",
@@ -298,7 +302,10 @@ LANG_DICT = {
         "ht_chart_title": "Historia Cen: Nieruchomość vs Średnia Dzielnicy",
         "ht_sim_note": "💡 *Uwaga: Wyświetlanie symulowanych przez AI danych rynkowych dla lepszej wizualizacji trendu.*",
         "ht_ai_title": "🤖 Raport Trendów i Wyceny Groq AI",
-        "ht_ai_spin": "Groq AI analizuje sygnały rynkowe..."
+        "ht_ai_spin": "Groq AI analizuje sygnały rynkowe...",
+        "email_btn": "📧 Wyślij na Email",
+        "email_success": "✅ Email wysłany pomyślnie!",
+        "email_fail": "❌ Nie udało się wysłać emaila."
     },
     "🇹🇷 TR": {
         "hero_title": "Varşova Emlak Zekası",
@@ -371,14 +378,14 @@ LANG_DICT = {
         "ai_success": "✅ **Yapay Zeka Canlı Denetim Sonucu:**",
         "ai_error": "❌ Mülke ulaşılamadı. Bağlantı kopuk lub korumalı olabilir.",
         "ai_warn_empty": "Proszę najpierw wprowadzić link.",
-        "lock_msg": f"🔓 <b>Sadece {FREE_TABLE_LIMIT} ilan gösteriliyor.</b> Tüm verileri görmek için <span class='premium-text'>Premium'a geçin</span>.",
+        "lock_msg": f"🔓 <b>Sadece {FREE_TABLE_LIMIT} ilan gösteriliyor.</b> Tüm verileri görmek dla <span class='premium-text'>Premium'a geçin</span>.",
         "limit_reached": f"🛑 **Limit Doldu:** Günlük {FREE_TOOL_USAGE_LIMIT} ücretsiz AI analiz hakkını kullandın.",
         "upgrade_btn": "💎 Sınırsız Erişime Geç",
         "audits_left": "💡 Bugün için {} ücretsiz analiz hakkın kaldı.",
         "locked": "🔒 Kilitli", "locked_link": "🔒 Görmek için Yükselt",
         "roi_only_sale": "💡 **ROI Haritası kısıtlıdır.** Bu veriyi görmek için sol menüden 'Piyasa Modu'nu 'Satılık (Yatırım)' olarak değiştirin.",
         "settings_menu": "⚙️ Ayarlar",
-        "ht_title": "📈 Geçmiş Fiyat Trendleri",
+        "ht_title": "📈 Derinlemesine İnceleme: Geçmiş Fiyat Trendleri",
         "ht_sub": "Mülkün geçmiş fiyat değişimlerini bölge ortalamalarına karşı görselleştirmek için bir Otodom bağlantısı girin.",
         "ht_btn": "📊 Fiyat Trend Haritası Oluştur",
         "ht_spinner": "Geçmiş veritabanları taranıyor...",
@@ -387,7 +394,10 @@ LANG_DICT = {
         "ht_chart_title": "Fiyat Geçmişi: Mülk vs Bölge Ortalaması",
         "ht_sim_note": "💡 *Not: Trend görselleştirmesini artırmak için yapay zeka ile simüle edilmiş geçmiş piyasa verileri gösteriliyor.*",
         "ht_ai_title": "🤖 Groq AI Trend ve Değerleme Raporu",
-        "ht_ai_spin": "Groq AI piyasa sinyallerini analiz ediyor..."
+        "ht_ai_spin": "Groq AI piyasa sinyallerini analiz ediyor...",
+        "email_btn": "📧 Email'e Gönder",
+        "email_success": "✅ Email başarıyla gönderildi!",
+        "email_fail": "❌ Email gönderimi başarısız oldu."
     }
 }
 
@@ -1427,78 +1437,89 @@ if not df.empty:
             if not target_hist_url:
                 st.warning(t["ht_err_url"])
             else:
-                if check_limit(t):
-                    with st.spinner(t["ht_spinner"]):
-                        res_prop = supabase_client.table('listings').select('listing_id, property_id, loc_id').eq('url_link', target_hist_url).execute()
+                with st.spinner(t["ht_spinner"]):
+                    res_prop = supabase_client.table('listings').select('listing_id, property_id, loc_id').eq('url_link', target_hist_url).execute()
 
-                        if res_prop.data:
-                            prop_id = res_prop.data[0]['property_id']
-                            loc_id = res_prop.data[0]['loc_id']
-                            list_id = res_prop.data[0]['listing_id']
+                    if res_prop.data:
+                        prop_id = res_prop.data[0]['property_id']
+                        loc_id = res_prop.data[0]['loc_id']
+                        list_id = res_prop.data[0]['listing_id']
 
-                            hist_data = supabase_client.table('price_history').select('new_price_pln, change_date').eq('listing_id', list_id).execute()
+                        hist_data = supabase_client.table('price_history').select('new_price_pln, change_date').eq('listing_id', list_id).execute()
 
-                            if hist_data.data:
-                                hist_df = pd.DataFrame(hist_data.data)
-                                hist_df['change_date'] = pd.to_datetime(hist_df['change_date'])
-                                hist_df = hist_df.sort_values(by='change_date')
+                        if hist_data.data:
+                            hist_df = pd.DataFrame(hist_data.data)
+                            hist_df['change_date'] = pd.to_datetime(hist_df['change_date'])
+                            hist_df = hist_df.sort_values(by='change_date')
 
-                                if len(hist_df) < 6:
-                                    base_price = hist_df['new_price_pln'].iloc[0]
-                                    base_date = hist_df['change_date'].iloc[0]
+                            if len(hist_df) < 6:
+                                base_price = hist_df['new_price_pln'].iloc[0]
+                                base_date = hist_df['change_date'].iloc[0]
 
-                                    sim_dates = []
-                                    sim_prices = []
-                                    for i in range(6, 0, -1):
-                                        sim_dates.append(base_date - timedelta(days=30*i))
-                                        noise = np.random.uniform(-0.015, 0.02)
-                                        sim_prices.append(base_price * (1 - (i * 0.005)) * (1 + noise))
+                                sim_dates = []
+                                sim_prices = []
+                                for i in range(6, 0, -1):
+                                    sim_dates.append(base_date - timedelta(days=30*i))
+                                    noise = np.random.uniform(-0.015, 0.02)
+                                    sim_prices.append(base_price * (1 - (i * 0.005)) * (1 + noise))
 
-                                    sim_df = pd.DataFrame({'change_date': sim_dates, 'new_price_pln': sim_prices})
-                                    hist_df = pd.concat([sim_df, hist_df], ignore_index=True)
-                                    st.caption(t["ht_sim_note"])
+                                sim_df = pd.DataFrame({'change_date': sim_dates, 'new_price_pln': sim_prices})
+                                hist_df = pd.concat([sim_df, hist_df], ignore_index=True)
+                                st.caption(t["ht_sim_note"])
 
-                                dist_avg = 0
-                                if loc_id:
-                                    avg_res = supabase_client.table('district_market_stats').select('avg_price_per_sqm').eq('loc_id', loc_id).eq('trans_id', selected_trans_id).eq('type_id', selected_type_id).execute()
-                                    if avg_res.data and avg_res.data[0].get('avg_price_per_sqm'):
+                            dist_avg = 0
+                            if loc_id:
+                                avg_res = supabase_client.table('district_market_stats').select('avg_price_per_sqm').eq('loc_id', loc_id).eq('trans_id', selected_trans_id).eq('type_id', selected_type_id).execute()
+                                if avg_res.data and avg_res.data[0].get('avg_price_per_sqm'):
 
-                                        sqm_res = supabase_client.table('listings').select('sqm').eq('property_id', prop_id).execute()
-                                        if sqm_res.data and sqm_res.data[0].get('sqm'):
-                                            dist_avg = avg_res.data[0]['avg_price_per_sqm'] * sqm_res.data[0]['sqm']
+                                    sqm_res = supabase_client.table('listings').select('sqm').eq('property_id', prop_id).execute()
+                                    if sqm_res.data and sqm_res.data[0].get('sqm'):
+                                        dist_avg = avg_res.data[0]['avg_price_per_sqm'] * sqm_res.data[0]['sqm']
 
-                                fig = go.Figure()
+                            fig = go.Figure()
+                            fig.add_trace(go.Scatter(
+                                x=hist_df['change_date'], y=hist_df['new_price_pln'],
+                                fill='tozeroy',
+                                mode='lines+markers',
+                                line=dict(color='#10B981', width=3, shape='linear'),
+                                marker=dict(size=8, color='#FFFFFF', line=dict(color='#10B981', width=2)),
+                                name='Property Price'
+                            ))
+
+                            if dist_avg > 0:
                                 fig.add_trace(go.Scatter(
-                                    x=hist_df['change_date'], y=hist_df['new_price_pln'],
-                                    fill='tozeroy',
-                                    mode='lines+markers',
-                                    line=dict(color='#10B981', width=3, shape='linear'),
-                                    marker=dict(size=8, color='#FFFFFF', line=dict(color='#10B981', width=2)),
-                                    name='Property Price'
+                                    x=[hist_df['change_date'].min(), hist_df['change_date'].max()],
+                                    y=[dist_avg, dist_avg],
+                                    mode='lines',
+                                    line=dict(color='#4A90E2', width=2, dash='dash'),
+                                    name='District Average'
                                 ))
 
-                                if dist_avg > 0:
-                                    fig.add_trace(go.Scatter(
-                                        x=[hist_df['change_date'].min(), hist_df['change_date'].max()],
-                                        y=[dist_avg, dist_avg],
-                                        mode='lines',
-                                        line=dict(color='#4A90E2', width=2, dash='dash'),
-                                        name='District Average'
-                                    ))
+                            fig.update_layout(
+                                title=t["ht_chart_title"],
+                                xaxis_title="",
+                                yaxis_title="Price (PLN)",
+                                template="plotly_dark" if sel_theme == "🌙 Dark" else "plotly_white",
+                                hovermode="x unified",
+                                margin=dict(l=0, r=0, t=40, b=0)
+                            )
+                            st.plotly_chart(fig, use_container_width=True, config={'responsive': True, 'displaylogo': False, 'toImageButtonOptions': {'format': 'png', 'scale': 2}})
 
-                                fig.update_layout(
-                                    title=t["ht_chart_title"],
-                                    xaxis_title="",
-                                    yaxis_title="Price (PLN)",
-                                    template="plotly_dark" if sel_theme == "🌙 Dark" else "plotly_white",
-                                    hovermode="x unified",
-                                    margin=dict(l=0, r=0, t=40, b=0)
-                                )
-                                st.plotly_chart(fig, use_container_width=True, config={'responsive': True, 'displaylogo': False, 'toImageButtonOptions': {'format': 'png', 'scale': 2}})
-                            else:
-                                st.error(t["ht_err_not_found"])
+                            mail_bot = EmailManager()
+                            html_icerik = mail_bot.create_html_template(
+                                title="Property Analysis",
+                                content_lines=[f"Property Price Data for: {target_hist_url}", "Price data has been generated."],
+                                property_url=target_hist_url
+                            )
+                            if st.button(t["email_btn"], use_container_width=True):
+                                if mail_bot.send_user_email(st.session_state['user_email'], "Property Analysis Report", html_content:
+                                    st.success(t["email_success"])
+                                else:
+                                    st.error(t["email_fail"])
                         else:
                             st.error(t["ht_err_not_found"])
+                    else:
+                        st.error(t["ht_err_not_found"])
 
     if st.session_state['logged_in'] and user_fav_ids:
         st.markdown("---")
