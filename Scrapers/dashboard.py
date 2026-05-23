@@ -1,9 +1,15 @@
-﻿import streamlit as st
+﻿import sys
+from pathlib import Path
+
+current_dir = Path(__file__).resolve().parent
+project_root = current_dir.parent
+if str(project_root) not in sys.path:
+    sys.path.append(str(project_root))
+
+import streamlit as st
 import pandas as pd
 import requests
 import os
-import sys
-from pathlib import Path
 from dotenv import load_dotenv
 import io
 import plotly.express as px
@@ -14,6 +20,7 @@ import pydeck as pdk
 from supabase import create_client, Client
 from datetime import timedelta
 from Scrapers.notifier import send_telegram_lead, EmailManager
+from Scrapers.config import LOCATION_MAP
 
 FREE_TABLE_LIMIT = 5
 FREE_TOOL_USAGE_LIMIT = 3
