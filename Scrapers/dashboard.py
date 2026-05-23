@@ -871,7 +871,7 @@ if not st.session_state['logged_in']:
         show_signup_modal()
 else:
     st.sidebar.markdown("---")
-    st.sidebar.success(f"👤 Logged in as:\n{st.session_state['user_fn']} {st.session_state['user_ln']}")
+    st.sidebar.success("👤 Logged in as: Member")
 
     try:
         notifs_response = supabase_client.table('user_notifications').select('*').eq('user_email', st.session_state['user_email']).eq('is_read', False).execute()
