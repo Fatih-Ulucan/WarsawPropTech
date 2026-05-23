@@ -189,7 +189,7 @@ class OtodomSniper:
     def cleanup_dead_listings(self, context):
         logger.info("🧹 ZOMBIE CLEANUP: Initializing check for inactive listings...")
         try:
-            count = self.db.cleanup_old_listings(days_old=1)
+            count = self.db.cleanup_old_listings(days_old=3)
             logger.info(f"✅ ZOMBIE CLEANUP COMPLETE: {count} properties moved to SOLD archive.")
         except Exception as e:
             logger.error(f"❌ Error during cleanup: {e}")
@@ -250,7 +250,7 @@ class OtodomSniper:
             for target in SCRAPE_TARGETS:
                 logger.info(f"\n🚀 TARGET ACQUIRED: {target['label']}")
 
-                for page_num in range(1, 101):
+                for page_num in range(1, 51):
                     target_url = f"https://www.otodom.pl/pl/wyniki/{target['url_part']}/mazowieckie/warszawa/warszawa/warszawa?direction=ASC&sorting=PRICE&page={page_num}"
 
                     try:
@@ -595,7 +595,6 @@ from playwright.sync_api import sync_playwright
 def fetch(url):
     try:
         with sync_playwright() as p:
-            # 🛡️ LINUX SERVER GÜVENLİ BAŞLATMA AYARLARI
             browser = p.chromium.launch(
                 headless=True,
                 args=[
@@ -613,7 +612,6 @@ def fetch(url):
             
             page = context.new_page()
             
-            # Stealth yüklemesi varsa kullan
             try:
                 from playwright_stealth import stealth
                 stealth(page)
@@ -623,7 +621,6 @@ def fetch(url):
             page.goto(url, wait_until="domcontentloaded", timeout=60000)
             time.sleep(5) 
             
-            # Engel kontrolü
             page_title = page.title()
             if "Just a moment" in page_title or "cloudflare" in page.content().lower():
                 browser.close()
