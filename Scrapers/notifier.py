@@ -4,9 +4,41 @@ import logging
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+from email.mime.application import MIMEApplication 
 from datetime import datetime
+from fpdf import FPDF 
 
 logger = logging.getLogger(__name__)
+
+class PDFReport(FPDF):
+    def header(self):
+        self.set_font('Arial', 'B', 16)
+        self.set_text_color(16, 185, 129) 
+        self.cell(0, 10, 'Warsaw AI PropTech - Market Insights', 0, 1, 'C')
+        self.set_font('Arial', 'I', 10)
+        self.set_text_color(100, 100, 100)
+        self.cell(0, 10, f'Report Generated: {datetime.now().strftime("%Y-%m-%d %H:%M")}', 0, 1, 'C')
+        self.ln(10)
+
+    def add_opportunity_table(self, data_rows):
+        self.set_font('Arial', 'B', 10)
+        self.set_fill_color(0, 51, 102) # Koyu Lacivert Başlıklar
+        self.set_text_color(255, 255, 255)
+        cols = ['District', 'Price (PLN)', 'Size (m2)', 'Est. ROI / Margin']
+        widths = [45, 45, 30, 50]
+
+        for i, col in enumerate(cols):
+            self.cell(widths[i], 10, col, 1, 0, 'C', 1)
+        self.ln()
+
+        self.set_font('Arial', '', 10)
+        self.set_text_color(0, 0, 0)
+        for row in data_rows:
+            self.cell(widths[0], 10, str(row[0]), 1)
+            self.cell(widths[1], 10, f"{row[1]:,}", 1, 0, 'R')
+            self.cell(widths[2], 10, str(row[2]), 1, 0, 'C')
+            self.cell(widths[3], 10, str(row[3]), 1, 0, 'C')
+            self.ln()
 
 class TelegramBot:
     def __init__(self, token, chat_id):
@@ -113,6 +145,32 @@ class EmailManager:
             return True
         except Exception as e:
             logger.error(f"❌ Email Failed: {e}")
+            return False
+
+    def send_email_with_pdf(self, to_email, subject, body_html, pdf_path):
+        if not self.sender_email or not self.sender_password:
+            return False
+
+        msg = MIMEMultipart()
+        msg['From'] = self.sender_email
+        msg['To'] = to_email
+        msg['Subject'] = subject
+        msg.attach(MIMEText(body_html, 'html'))
+
+        try:
+            with open(pdf_path, "rb") as f:
+                part = MIMEApplication(f.read(), Name=os.path.basename(pdf_path))
+            part['Content-Disposition'] = f'attachment; filename="{os.path.basename(pdf_path)}"'
+            msg.attach(part)
+
+            server = smtplib.SMTP('smtp.gmail.com', 587)
+            server.starttls()
+            server.login(self.sender_email, self.sender_password)
+            server.send_message(msg)
+            server.quit()
+            return True
+        except Exception as e:
+            logger.error(f"❌ PDF Email Failed: {e}")
             return False
 
     def create_html_template(self, title, content_lines, property_url):

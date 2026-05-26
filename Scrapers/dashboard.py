@@ -1,15 +1,18 @@
 ﻿import sys
 from pathlib import Path
+import os
 
 current_dir = Path(__file__).resolve().parent
 project_root = current_dir.parent
+
 if str(project_root) not in sys.path:
     sys.path.append(str(project_root))
+if str(current_dir) not in sys.path:
+    sys.path.append(str(current_dir))
 
 import streamlit as st
 import pandas as pd
 import requests
-import os
 from dotenv import load_dotenv
 import io
 import plotly.express as px
@@ -19,17 +22,11 @@ from sklearn.linear_model import LinearRegression
 import pydeck as pdk
 from supabase import create_client, Client
 from datetime import timedelta
-from Scrapers.notifier import send_telegram_lead, EmailManager
-from Scrapers.config import LOCATION_MAP
 
 
 FREE_TABLE_LIMIT = 5
 FREE_TOOL_USAGE_LIMIT = 3
 EXPANDER_LINK = "https://proptech.produktyfinansowe.pl/e/lead/327?source=lt"
-
-current_dir = Path(__file__).resolve().parent
-project_root = current_dir.parent
-sys.path.append(str(project_root))
 
 base_dir = current_dir.parent
 env_path = base_dir / ".env"
@@ -52,11 +49,12 @@ except ImportError:
     except ImportError as e:
         st.error(f"❌ CONFIG FILE NOT FOUND! Error: {e}")
         st.stop()
+
 try:
-    from Scrapers.notifier import send_telegram_lead
+    from Scrapers.notifier import send_telegram_lead, EmailManager
 except ImportError:
     try:
-        from notifier import send_telegram_lead
+        from notifier import send_telegram_lead, EmailManager
     except ImportError as e:
         st.error(f"❌ NOTIFIER MODULE NOT FOUND! Error: {e}")
         st.stop()
@@ -68,7 +66,6 @@ st.markdown("""
         #MainMenu {visibility: hidden;}
         footer {visibility: hidden;}
         
-        /* Hide only the Deploy button, DO NOT TOUCH stToolbar so the left arrow doesn't break */
         .stDeployButton {display: none;}
         
         .lock-overlay {
@@ -79,7 +76,6 @@ st.markdown("""
             text-align: center;
             margin-top: 15px;
         }
-        /* ... the rest of your code continues the same way ... */
     .premium-text { color: #ff4b4b; font-weight: bold; }
 
     * {
@@ -1354,16 +1350,28 @@ if not df.empty:
                                     from Scrapers.scraper import fetch_single_listing_data
                                     found_data = fetch_single_listing_data(target_url_input)
                                 except ImportError:
-                                    from scraper import fetch_single_listing_data
-                                    found_data = fetch_single_listing_data(target_url_input)
+                                    try:
+                                        from scraper import fetch_single_listing_data
+                                        found_data = fetch_single_listing_data(target_url_input)
+                                    except ImportError as e:
+                                        st.error(f"Error importing scraper: {e}")
+                                        found_data = None
 
                             if found_data:
                                 try:
                                     from Scrapers.ai_engine import GroqProptechAI
                                     AI_Class = GroqProptechAI
                                 except ImportError:
-                                    from Scrapers.ai_engine import GeminiAnalyzer
-                                    AI_Class = GeminiAnalyzer
+                                    try:
+                                        from ai_engine import GroqProptechAI
+                                        AI_Class = GroqProptechAI
+                                    except ImportError:
+                                        try:
+                                            from Scrapers.ai_engine import GeminiAnalyzer
+                                            AI_Class = GeminiAnalyzer
+                                        except ImportError:
+                                            from ai_engine import GeminiAnalyzer
+                                            AI_Class = GeminiAnalyzer
 
                                 groq_agent = AI_Class(os.getenv("GROQ_API_KEY"))
                                 ai_lang_map = {"🇬🇧 EN": "English", "🇵🇱 PL": "Polish", "🇹🇷 TR": "Turkish"}

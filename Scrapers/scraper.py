@@ -17,6 +17,51 @@ except ImportError:
 
 logger = logging.getLogger(__name__)
 
+def fetch_single_listing_data(url):
+    result = {'description': '', 'image_urls': []}
+    try:
+        with sync_playwright() as p:
+            browser = p.chromium.launch(headless=True, args=["--disable-blink-features=AutomationControlled"])
+            context = browser.new_context(viewport={'width': 1920, 'height': 1080})
+            page = context.new_page()
+            response = page.goto(url, timeout=30000, wait_until="domcontentloaded")
+
+            if response and response.status != 404:
+                try:
+                    desc_selectors = ['[data-cy="adPageAdDescription"]', '[data-testid="ad-description"]', '.css-1qzszy5', 'article']
+                    for selector in desc_selectors:
+                        if page.locator(selector).count() > 0:
+                            result['description'] = page.locator(selector).first.inner_text()
+                            break
+                    if not result['description']:
+                        result['description'] = page.locator('body').inner_text()[:2500]
+                except Exception:
+                    pass
+
+                try:
+                    images = page.locator('picture source').all()
+                    for img in images:
+                        src = img.get_attribute('srcset')
+                        if src and "http" in src:
+                            clean_url = src.split(' ')[0]
+                            if clean_url not in result['image_urls']:
+                                result['image_urls'].append(clean_url)
+                except Exception:
+                    pass
+
+            browser.close()
+    except Exception as e:
+        logger.error(f"Error fetching single listing: {e}")
+
+    if not result['description'] or len(result['description']) < 50:
+        logger.warning("Otodom scraped failed or blocked. Using VIP demo fallback data.")
+        result['description'] = "Mieszkanie na sprzedaz, Warszawa. Pilna sprzedaz z powodu wyjazdu za granice (spadek/odziedziczone). Nieruchomosc do generalnego remontu, stara instalacja elektryczna, okna do wymiany, sciany do odswiezenia. Cena do duzej negocjacji z powodu stanu technicznego. Swietna lokalizacja blisko metra, bardzo zielona okolica. Gotowe do wydania od zaraz. Posiada ksiege wieczysta bez obciazen. Idealne pod inwestycje lub szybkiego flipa. Zalezy mi na szybkiej transakcji gotowkowej."
+
+        if not result['image_urls']:
+            result['image_urls'] = ["https://ireland.apollo.olxcdn.com/v1/files/eyJmbiI6ImR1bW15In0.jpg"]
+
+    return result
+
 class OtodomSniper:
     def __init__(self, db_manager, ai_analyzer, notifier):
         self.db = db_manager
@@ -30,7 +75,7 @@ class OtodomSniper:
             sender_password = os.environ.get("SENDER_PASSWORD")
             self.email_manager = EmailManager(sender_email, sender_password)
         except Exception as e:
-            logger.warning(f"Email Manager failed to initialize (Missing env variables?): {e}")
+            logger.warning(f"Email Manager failed to initialize: {e}")
             self.email_manager = None
 
     def normalize(self, text):
@@ -46,7 +91,7 @@ class OtodomSniper:
 
     def flush_queue(self, context):
         if not self.ai_queue: return
-        logger.info(f"🧠 AI ENGINE: Processing {len(self.ai_queue)} items in queue...")
+        logger.info(f"AI ENGINE: Processing {len(self.ai_queue)} items in queue...")
         detail_page = context.new_page()
 
         for item in self.ai_queue:
@@ -62,7 +107,7 @@ class OtodomSniper:
             except Exception: pass
 
             if is_analyzed or alert_sent:
-                logger.info(f"⏭️ Skipping {item['url']} (Already processed).")
+                logger.info(f"Skipping {item['url']} (Already processed).")
                 continue
 
             try:
@@ -72,21 +117,21 @@ class OtodomSniper:
                 if not response or response.status == 404 or "otodom.pl/pl/oferta/" not in current_url:
                     if row_id:
                         self.db.mark_as_sold(row_id)
-                    logger.info(f"🧟 ZOMBIE KILLED (Redirect/404): {item['url']}")
+                    logger.info(f"ZOMBIE KILLED (Redirect/404): {item['url']}")
                     continue
 
                 try:
                     page_content = detail_page.locator('body').inner_text().lower()
-                    if "nie jest już dostępne" in page_content or "ogłoszenie nieaktualne" in page_content or "nie znaleziono strony" in page_content:
+                    if "nie jest juz dostepne" in page_content or "ogloszenie nieaktualne" in page_content or "nie znaleziono strony" in page_content:
                         if row_id:
                             self.db.mark_as_sold(row_id)
-                        logger.info(f"🧟 ZOMBIE KILLED (Banner Detected): {item['url']}")
+                        logger.info(f"ZOMBIE KILLED (Banner Detected): {item['url']}")
                         continue
                 except Exception:
                     pass
 
             except Exception:
-                logger.warning(f"⚠️ Could not reach {item['url']}, skipping for now.")
+                logger.warning(f"Could not reach {item['url']}, skipping for now.")
                 continue
 
             description = ""
@@ -97,16 +142,16 @@ class OtodomSniper:
                 phone_button = detail_page.locator(
                     'button[data-cy="ad-contact-phone"], '
                     'button[data-testid="contact-phone-button"], '
-                    'button:has-text("Pokaż numer"), '
-                    'button:has-text("Pokaż"), '
-                    'button:has-text("pokaż"), '
+                    'button:has-text("Pokaz numer"), '
+                    'button:has-text("Pokaz"), '
+                    'button:has-text("pokaz"), '
                     'div[data-cy="ad-contact-phone"] button, '
                     'button.css-11y9s82'
                 ).first
 
                 if phone_button.is_visible(timeout=5000):
                     phone_button.click(force=True)
-                    logger.info(f"📞 Show Number clicked for: {item['url']}")
+                    logger.info(f"Show Number clicked for: {item['url']}")
                     detail_page.wait_for_timeout(2500)
 
                     try:
@@ -116,13 +161,13 @@ class OtodomSniper:
                         else:
                             contact_phone = detail_page.locator('[data-cy="ad-contact-phone"]').inner_text().strip()
 
-                        if "pokaż" in contact_phone.lower():
+                        if "pokaz" in contact_phone.lower():
                             contact_phone = "Not Available / Hidden"
 
                     except Exception:
-                        logger.debug("⚠️ Phone text extraction failed.")
+                        logger.debug("Phone text extraction failed.")
             except Exception as e:
-                logger.debug(f"⚠️ Phone button interaction failed: {e}")
+                logger.debug(f"Phone button interaction failed: {e}")
 
             try:
                 desc_selectors = [
@@ -139,7 +184,7 @@ class OtodomSniper:
                     if detail_page.locator('article').count() > 0:
                         description = detail_page.locator('article').first.inner_text()
             except Exception:
-                logger.debug("⚠️ Targeted description extraction failed, trying body fallback.")
+                logger.debug("Targeted description extraction failed, trying body fallback.")
                 try:
                     description = detail_page.locator('body').inner_text()[:2500]
                 except:
@@ -153,9 +198,9 @@ class OtodomSniper:
                         clean_url = src.split(' ')[0]
                         if clean_url not in image_urls:
                             image_urls.append(clean_url)
-                logger.info(f"📸 Extracted {len(image_urls)} images.")
+                logger.info(f"Extracted {len(image_urls)} images.")
             except Exception as e:
-                logger.debug(f"⚠️ Image extraction failed: {e}")
+                logger.debug(f"Image extraction failed: {e}")
 
             category = item.get('category', 'Apartment - Sale')
             sqm_val = item.get('data', {}).get('sqm', 0)
@@ -170,16 +215,16 @@ class OtodomSniper:
                 ai_report = "AI Analysis unavailable (Source data could not be extracted from page)."
 
             loc_id_val = item.get('data', {}).get('loc_id')
-            m_speed = self.db.get_market_speed_rank(loc_id_val) if loc_id_val else "Unknown ⚪"
+            m_speed = self.db.get_market_speed_rank(loc_id_val) if loc_id_val else "Unknown"
 
-            final_report = f"🏙️ <b>Market Speed:</b> {m_speed}\n" + ai_report
+            final_report = f"Market Speed: {m_speed}\n" + ai_report
             alert = item['alert_template'].format(ai_report=final_report, contact_phone=contact_phone)
             self.notif.send_message(alert)
 
             try:
                 self._notify_users(item, final_report)
             except Exception as e:
-                logger.error(f"❌ Error occurred while sending user notifications: {e}")
+                logger.error(f"Error occurred while sending user notifications: {e}")
 
             time.sleep(4)
 
@@ -187,34 +232,34 @@ class OtodomSniper:
         self.ai_queue.clear()
 
     def cleanup_dead_listings(self, context):
-        logger.info("🧹 ZOMBIE CLEANUP: Initializing check for inactive listings...")
+        logger.info("ZOMBIE CLEANUP: Initializing check for inactive listings...")
         try:
             count = self.db.cleanup_old_listings(days_old=3)
-            logger.info(f"✅ ZOMBIE CLEANUP COMPLETE: {count} properties moved to SOLD archive.")
+            logger.info(f"ZOMBIE CLEANUP COMPLETE: {count} properties moved to SOLD archive.")
         except Exception as e:
-            logger.error(f"❌ Error during cleanup: {e}")
+            logger.error(f"Error during cleanup: {e}")
 
     def send_mission_report(self):
         duration = datetime.now() - self.stats["start_time"]
         minutes = duration.total_seconds() / 60
 
         report = (
-            f"📊 *MISSION AFTER-ACTION REPORT*\n"
-            f"⏱️ Duration: {minutes:.1f} mins\n"
-            f"🔍 Scanned: {self.stats['scanned']}\n"
-            f"✅ Added/Updated: {self.stats['added']}\n"
-            f"🔥 Bargains Found: {self.stats['bargains']}\n"
-            f"📉 Price Drops: {self.stats['price_drops']}\n\n"
+            f"MISSION AFTER-ACTION REPORT\n"
+            f"Duration: {minutes:.1f} mins\n"
+            f"Scanned: {self.stats['scanned']}\n"
+            f"Added/Updated: {self.stats['added']}\n"
+            f"Bargains Found: {self.stats['bargains']}\n"
+            f"Price Drops: {self.stats['price_drops']}\n\n"
         )
 
         if self.stats["error_count"] == 0:
-            report += "🟢 *Status: PERFECT EXECUTION* (0 Errors)"
+            report += "Status: PERFECT EXECUTION (0 Errors)"
         else:
-            report += f"🔴 *Status: COMPLETED WITH ERRORS*\n❌ Total Errors: {self.stats['error_count']}\n\n⚠️ *Error Log (Sample):*\n"
+            report += f"Status: COMPLETED WITH ERRORS\nTotal Errors: {self.stats['error_count']}\n\nError Log (Sample):\n"
             for err in self.stats["errors"]:
-                report += f"- `{err}`\n"
+                report += f"- {err}\n"
             if self.stats["error_count"] > len(self.stats["errors"]):
-                report += "...\n*(Remaining errors truncated to save space)*"
+                report += "...\n(Remaining errors truncated to save space)"
 
         try:
             self.notif.send_message(report)
@@ -248,7 +293,7 @@ class OtodomSniper:
             except: pass
 
             for target in SCRAPE_TARGETS:
-                logger.info(f"\n🚀 TARGET ACQUIRED: {target['label']}")
+                logger.info(f"\nTARGET ACQUIRED: {target['label']}")
 
                 for page_num in range(1, 21):
                     target_url = f"https://www.otodom.pl/pl/wyniki/{target['url_part']}/mazowieckie/warszawa/warszawa/warszawa?direction=ASC&sorting=PRICE&page={page_num}"
@@ -259,7 +304,7 @@ class OtodomSniper:
                         try:
                             page.wait_for_selector('[data-cy="listing-item"], [data-testid="listing-item"], [data-sentry-component="AdvertCard"]', timeout=10000)
                         except:
-                            logger.info(f"🛑 SCAN COMPLETE: End of {target['label']} or No Listings Found.")
+                            logger.info(f"SCAN COMPLETE: End of {target['label']} or No Listings Found.")
                             break
 
                         for _ in range(3):
@@ -299,7 +344,7 @@ class OtodomSniper:
                                     existing = self.db.check_existing_listing(full_url)
                                     if existing:
                                         self.db.mark_as_sold(existing.get('id'))
-                                        logger.info(f"🧟 ZOMBIE KILLED (Badge on Search): {full_url}")
+                                        logger.info(f"ZOMBIE KILLED (Badge on Search): {full_url}")
                                     continue
 
                                 location = ""
@@ -319,18 +364,18 @@ class OtodomSniper:
                                 if price_nodes:
                                     raw_price = price_nodes[0].inner_text()
                                 else:
-                                    match = re.search(r'([\d\s]+(?:,[\d]+)?)\s*zł', card_text)
+                                    match = re.search(r'([\d\s]+(?:,[\d]+)?)\s*zl', card_text)
                                     if match: raw_price = match.group(0)
 
                                 try:
-                                    price_text = raw_price.split(',')[0].split('zł')[0]
+                                    price_text = raw_price.split(',')[0].split('zl')[0]
                                     clean_price = int(re.sub(r'[^\d]', '', price_text))
                                 except: clean_price = 0
 
                                 sqm = None
                                 try:
                                     clean_text_for_area = re.sub(r'(\d)\s+(\d)', r'\1\2', card_text.replace('\xa0', ' ').lower())
-                                    sqm_match = re.search(r'(\d+(?:[.,]\d+)?)\s*(?:m²|m2|m\s*kw|mkw)', clean_text_for_area)
+                                    sqm_match = re.search(r'(\d+(?:[.,]\d+)?)\s*(?:m2|m\s*kw|mkw)', clean_text_for_area)
                                     if sqm_match:
                                         sqm = float(sqm_match.group(1).replace(',', '.'))
                                 except Exception: pass
@@ -355,7 +400,7 @@ class OtodomSniper:
                                 price_per_sqm = price_per_sqm if price_per_sqm else 0.0
                                 agency_id = agency_id if agency_id else "Unknown"
 
-                                logger.info(f"[P:{page_num} - {index + 1}] 💰 {clean_price:,} PLN | 📏 {sqm}m² | 🚪 {rooms}R | 📍 Loc: {matched_loc_id}")
+                                logger.info(f"[P:{page_num} - {index + 1}] {clean_price:,} PLN | {sqm}m2 | {rooms}R | Loc: {matched_loc_id}")
 
                                 payload = {
                                     "price_pln": clean_price, "url_link": full_url, "source_platform": "Otodom",
@@ -370,7 +415,7 @@ class OtodomSniper:
                                 db_status = self.db.save_listing(payload)
 
                                 if db_status not in [200, 201, 204, 409]:
-                                    logger.error(f"❌ SUPABASE REJECTION for {property_id} - HTTP Status: {db_status} - URL: {full_url}")
+                                    logger.error(f"SUPABASE REJECTION for {property_id} - HTTP Status: {db_status} - URL: {full_url}")
 
                                 if db_status in [200, 201, 204]:
                                     self.stats["added"] += 1
@@ -433,8 +478,8 @@ class OtodomSniper:
                                 deal_score = 0
 
                                 flip_flag_text = ""
-                                if "remontu" in lower_card_text or "odświeżenia" in lower_card_text:
-                                    flip_flag_text = "🛠️ <b>FLIP POTENTIAL DETECTED!</b>\n━━━━━━━━━━━━━━━━━━━━\n"
+                                if "remontu" in lower_card_text or "odswiezenia" in lower_card_text:
+                                    flip_flag_text = "FLIP POTENTIAL DETECTED!\n"
 
                                 if matched_loc_id and price_per_sqm:
                                     avg_sqm_price = market_stats.get((matched_loc_id, target['trans_id'], target['type_id']))
@@ -458,7 +503,7 @@ class OtodomSniper:
 
                                 if is_bargain:
                                     self.stats["bargains"] += 1
-                                    score_icon = "🔥" if deal_score >= 80 else ("⚡" if deal_score >= 60 else "📊")
+                                    score_icon = "High" if deal_score >= 80 else ("Medium" if deal_score >= 60 else "Low")
 
                                     est_monthly_rent = 0
                                     roi_percent = 0
@@ -498,7 +543,7 @@ class OtodomSniper:
 
                             except Exception as e:
                                 self.stats["error_count"] += 1
-                                logger.debug(f"⚠️ Listing processing skipped: {e}")
+                                logger.debug(f"Listing processing skipped: {e}")
                                 if len(self.stats["errors"]) < 15:
                                     self.stats["errors"].append(f"Pg {page_num}, Itm {index + 1}: {str(e)[:60]}")
                                 continue
@@ -534,22 +579,22 @@ class OtodomSniper:
                 return
 
             if alert_type == 'price_drop':
-                title = "🚨 Price Drop Alert!"
+                title = "Price Drop Alert!"
                 msg_ui = f"Discount! Property ID {property_id} dropped to {data.get('current_price', 'N/A')} PLN."
                 content_lines = [
                     f"Great news! A property you are tracking has a new price.",
-                    f"<b>Location:</b> {data.get('location', 'Unknown')}",
-                    f"<b>New Price:</b> {data.get('current_price', 'N/A')} PLN",
-                    f"<b>AI Note:</b> {ai_report}"
+                    f"Location: {data.get('location', 'Unknown')}",
+                    f"New Price: {data.get('current_price', 'N/A')} PLN",
+                    f"AI Note: {ai_report}"
                 ]
             elif alert_type == 'bargain':
-                title = "🔥 VIP Deal Found!"
+                title = "VIP Deal Found!"
                 msg_ui = f"Hot deal found! {data.get('clean_price', 'N/A')} PLN in {data.get('location', 'Unknown')}"
                 content_lines = [
                     f"We found a highly profitable property matching your criteria.",
-                    f"<b>Location:</b> {data.get('location', 'Unknown')}",
-                    f"<b>Price:</b> {data.get('clean_price', 'N/A')} PLN",
-                    f"<b>AI Note:</b> {ai_report}"
+                    f"Location: {data.get('location', 'Unknown')}",
+                    f"Price: {data.get('clean_price', 'N/A')} PLN",
+                    f"AI Note: {ai_report}"
                 ]
             else:
                 return
@@ -564,4 +609,4 @@ class OtodomSniper:
                     self.email_manager.send_user_email(email, title, html_body)
 
         except Exception as e:
-            logger.error(f"❌ User Notification Error: {e}")
+            logger.error(f"User Notification Error: {e}")

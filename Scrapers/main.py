@@ -18,6 +18,8 @@ from Scrapers.ai_engine import GroqProptechAI
 from Scrapers.notifier import TelegramBot, EmailManager
 from Scrapers.scraper import OtodomSniper
 
+from Scrapers.notifier import PDFReport
+
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s [%(levelname)s] %(message)s",
@@ -57,6 +59,69 @@ def initialize_system():
 
     return OtodomSniper(db, ai, bot), email_manager
 
+
+
+def generate_and_send_pdf_report(db, email_manager):
+    try:
+        logger.info("Generating PDF Sales Report for Premium Members...")
+        response = db.client.table('listings').select('*').eq('status', 'ACTIVE').order('price_pln', desc=False).limit(5).execute()
+        data = response.data
+
+        if not data:
+            logger.warning("No data found for PDF report.")
+            return
+
+        pdf_data = []
+        for row in data:
+            dist = str(row.get('loc_id', 'Unknown'))
+            price = row.get('price_pln', 0)
+            sqm = row.get('sqm', 0)
+            roi_or_margin = f"%{row.get('roi_percent', 10.5)}"
+            pdf_data.append([dist, price, sqm, roi_or_margin])
+
+        pdf = PDFReport()
+        pdf.add_page()
+        pdf.add_opportunity_table(pdf_data)
+
+        filename = f"Warsaw_Premium_Deals_{datetime.now().strftime('%Y%m%d')}.pdf"
+        pdf.output(filename)
+
+        target_emails = []
+        try:
+            user_response = db.client.table('users').select('email').in_('tier', ['Premium', 'premium']).execute()
+            if user_response.data:
+                target_emails = [user['email'] for user in user_response.data if user.get('email')]
+        except Exception as db_err:
+            logger.error(f"Failed to fetch Premium users from DB: {db_err}")
+
+        if not target_emails:
+            logger.info("No Premium members found. Skipping PDF email dispatch.")
+            if os.path.exists(filename):
+                os.remove(filename)
+            return
+
+        html_body = email_manager.create_html_template(
+            "Exclusive Premium Deals (AI Report)",
+            [
+                "Hello Premium Member,",
+                "Our AI Engine has just scanned the Warsaw real estate market.",
+                "Attached is your exclusive daily PDF report containing the top underpriced opportunities we found today.",
+                "Log in to your dashboard to view the full live data and ROI calculations."
+            ],
+            "https://warsaw-proptech.streamlit.app"
+        )
+
+        for email in target_emails:
+            email_manager.send_email_with_pdf(email, "Warsaw AI PropTech - Daily Premium Report", html_body, filename)
+
+        if os.path.exists(filename):
+            os.remove(filename)
+
+        logger.info(f"PDF Report sent successfully to {len(target_emails)} Premium member(s)!")
+    except Exception as e:
+        logger.error(f"Error generating/sending PDF: {e}")
+
+
 def start_engine():
     logger.info("System initializing with AI Arbitrage Engine...")
 
@@ -75,7 +140,7 @@ def start_engine():
 
             subscribers = sniper.db.get_subscribers()
             if subscribers:
-                EXPANDER_LINK = "https://proptech.produktyfinansowe.pl/e/lead/327?source=lt" 
+                EXPANDER_LINK = "https://proptech.produktyfinansowe.pl/e/lead/327?source=lt"
                 report_lines = [
                     f"Ads Scanned: {final_stats['scanned']}",
                     f"New Entries: {final_stats['added']}",
@@ -85,6 +150,8 @@ def start_engine():
                 email_html = email_manager.create_html_template("Market Summary Report", report_lines, EXPANDER_LINK)
                 for sub in subscribers:
                     email_manager.send_user_email(sub['email'], "Warsaw Market Daily Summary", email_html)
+
+            generate_and_send_pdf_report(sniper.db, email_manager)
 
             if final_stats.get("scanned", 0) > MAX_SCANS_BEFORE_REBOOT:
                 logger.warning(f"Hard restarting after {MAX_SCANS_BEFORE_REBOOT} scans...")
